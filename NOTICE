@@ -1,0 +1,12 @@
+ghidra-s390x
+Copyright 2026 Paulo Pereira
+
+This product is licensed under the Apache License, Version 2.0 (see LICENSE).
+
+This product is a processor module and loader set for Ghidra
+(https://github.com/NationalSecurityAgency/ghidra), developed by the
+National Security Agency and licensed under the Apache License, Version 2.0.
+The SLEIGH, .ldefs, .pspec and .cspec layout follows Ghidra's own processor
+modules. The test harness compiles against Ghidra's decompiler C++ sources
+(Ghidra/Features/Decompiler/src/decompile/cpp), which are fetched at build
+time and are not redistributed here.

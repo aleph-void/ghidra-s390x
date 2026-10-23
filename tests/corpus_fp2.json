@@ -1,0 +1,730 @@
+[
+  {
+    "bytes_hex": "2012",
+    "capstone_mnemonic": "lpdr",
+    "capstone_op_str": "%f1, %f2",
+    "category": "fp-rr",
+    "notes": "LPDR: FP extension"
+  },
+  {
+    "bytes_hex": "2112",
+    "capstone_mnemonic": "lndr",
+    "capstone_op_str": "%f1, %f2",
+    "category": "fp-rr",
+    "notes": "LNDR: FP extension"
+  },
+  {
+    "bytes_hex": "2212",
+    "capstone_mnemonic": "ltdr",
+    "capstone_op_str": "%f1, %f2",
+    "category": "fp-rr",
+    "notes": "LTDR: FP extension"
+  },
+  {
+    "bytes_hex": "2312",
+    "capstone_mnemonic": "lcdr",
+    "capstone_op_str": "%f1, %f2",
+    "category": "fp-rr",
+    "notes": "LCDR: FP extension"
+  },
+  {
+    "bytes_hex": "2412",
+    "capstone_mnemonic": "hdr",
+    "capstone_op_str": "%f1, %f2",
+    "category": "fp-rr",
+    "notes": "HDR: FP extension"
+  },
+  {
+    "bytes_hex": "2712",
+    "capstone_mnemonic": "mxdr",
+    "capstone_op_str": "%f1, %f2",
+    "category": "fp-rr",
+    "notes": "MXDR: FP extension"
+  },
+  {
+    "bytes_hex": "2e12",
+    "capstone_mnemonic": "awr",
+    "capstone_op_str": "%f1, %f2",
+    "category": "fp-rr",
+    "notes": "AWR: FP extension"
+  },
+  {
+    "bytes_hex": "2f12",
+    "capstone_mnemonic": "swr",
+    "capstone_op_str": "%f1, %f2",
+    "category": "fp-rr",
+    "notes": "SWR: FP extension"
+  },
+  {
+    "bytes_hex": "3012",
+    "capstone_mnemonic": "lper",
+    "capstone_op_str": "%f1, %f2",
+    "category": "fp-rr",
+    "notes": "LPER: FP extension"
+  },
+  {
+    "bytes_hex": "3112",
+    "capstone_mnemonic": "lner",
+    "capstone_op_str": "%f1, %f2",
+    "category": "fp-rr",
+    "notes": "LNER: FP extension"
+  },
+  {
+    "bytes_hex": "3212",
+    "capstone_mnemonic": "lter",
+    "capstone_op_str": "%f1, %f2",
+    "category": "fp-rr",
+    "notes": "LTER: FP extension"
+  },
+  {
+    "bytes_hex": "3312",
+    "capstone_mnemonic": "lcer",
+    "capstone_op_str": "%f1, %f2",
+    "category": "fp-rr",
+    "notes": "LCER: FP extension"
+  },
+  {
+    "bytes_hex": "3412",
+    "capstone_mnemonic": "her",
+    "capstone_op_str": "%f1, %f2",
+    "category": "fp-rr",
+    "notes": "HER: FP extension"
+  },
+  {
+    "bytes_hex": "3e12",
+    "capstone_mnemonic": "aur",
+    "capstone_op_str": "%f1, %f2",
+    "category": "fp-rr",
+    "notes": "AUR: FP extension"
+  },
+  {
+    "bytes_hex": "3f12",
+    "capstone_mnemonic": "sur",
+    "capstone_op_str": "%f1, %f2",
+    "category": "fp-rr",
+    "notes": "SUR: FP extension"
+  },
+  {
+    "bytes_hex": "6e122123",
+    "capstone_mnemonic": "aw",
+    "capstone_op_str": "%f1, 0x123(%r2, %r2)",
+    "category": "fp-rx",
+    "notes": "AW: FP extension"
+  },
+  {
+    "bytes_hex": "6f122123",
+    "capstone_mnemonic": "sw",
+    "capstone_op_str": "%f1, 0x123(%r2, %r2)",
+    "category": "fp-rx",
+    "notes": "SW: FP extension"
+  },
+  {
+    "bytes_hex": "7e122123",
+    "capstone_mnemonic": "au",
+    "capstone_op_str": "%f1, 0x123(%r2, %r2)",
+    "category": "fp-rx",
+    "notes": "AU: FP extension"
+  },
+  {
+    "bytes_hex": "7f122123",
+    "capstone_mnemonic": "su",
+    "capstone_op_str": "%f1, 0x123(%r2, %r2)",
+    "category": "fp-rx",
+    "notes": "SU: FP extension"
+  },
+  {
+    "bytes_hex": "b3240012",
+    "capstone_mnemonic": "lder",
+    "capstone_op_str": "%f1, %f2",
+    "category": "fp-rre",
+    "notes": "LDER: FP extension"
+  },
+  {
+    "bytes_hex": "b3260012",
+    "capstone_mnemonic": "lxer",
+    "capstone_op_str": "%f1, %f2",
+    "category": "fp-rre",
+    "notes": "LXER: FP extension"
+  },
+  {
+    "bytes_hex": "b3370012",
+    "capstone_mnemonic": "meer",
+    "capstone_op_str": "%f1, %f2",
+    "category": "fp-rre",
+    "notes": "MEER: FP extension"
+  },
+  {
+    "bytes_hex": "b2450012",
+    "capstone_mnemonic": "sqer",
+    "capstone_op_str": "%f1, %f2",
+    "category": "fp-rre",
+    "notes": "SQER: FP extension"
+  },
+  {
+    "bytes_hex": "b2440012",
+    "capstone_mnemonic": "sqdr",
+    "capstone_op_str": "%f1, %f2",
+    "category": "fp-rre",
+    "notes": "SQDR: FP extension"
+  },
+  {
+    "bytes_hex": "b3770012",
+    "capstone_mnemonic": "fier",
+    "capstone_op_str": "%f1, %f2",
+    "category": "fp-rre",
+    "notes": "FIER: FP extension"
+  },
+  {
+    "bytes_hex": "b37f0012",
+    "capstone_mnemonic": "fidr",
+    "capstone_op_str": "%f1, %f2",
+    "category": "fp-rre",
+    "notes": "FIDR: FP extension"
+  },
+  {
+    "bytes_hex": "ed1221230026",
+    "capstone_mnemonic": "lxe",
+    "capstone_op_str": "%f1, 0x123(%r2, %r2)",
+    "category": "fp-rxe",
+    "notes": "LXE: FP extension"
+  },
+  {
+    "bytes_hex": "ed1221230034",
+    "capstone_mnemonic": "sqe",
+    "capstone_op_str": "%f1, 0x123(%r2, %r2)",
+    "category": "fp-rxe",
+    "notes": "SQE: FP extension"
+  },
+  {
+    "bytes_hex": "ed1221230035",
+    "capstone_mnemonic": "sqd",
+    "capstone_op_str": "%f1, 0x123(%r2, %r2)",
+    "category": "fp-rxe",
+    "notes": "SQD: FP extension"
+  },
+  {
+    "bytes_hex": "ed1221230037",
+    "capstone_mnemonic": "mee",
+    "capstone_op_str": "%f1, 0x123(%r2, %r2)",
+    "category": "fp-rxe",
+    "notes": "MEE: FP extension"
+  },
+  {
+    "bytes_hex": "b3b80012",
+    "capstone_mnemonic": "cfer",
+    "capstone_op_str": "%r1, 0, %f2",
+    "category": "fp-rrf",
+    "notes": "CFER: FP extension"
+  },
+  {
+    "bytes_hex": "b3b90012",
+    "capstone_mnemonic": "cfdr",
+    "capstone_op_str": "%r1, 0, %f2",
+    "category": "fp-rrf",
+    "notes": "CFDR: FP extension"
+  },
+  {
+    "bytes_hex": "b3c80012",
+    "capstone_mnemonic": "cger",
+    "capstone_op_str": "%r1, 0, %f2",
+    "category": "fp-rrf",
+    "notes": "CGER: FP extension"
+  },
+  {
+    "bytes_hex": "b3c90012",
+    "capstone_mnemonic": "cgdr",
+    "capstone_op_str": "%r1, 0, %f2",
+    "category": "fp-rrf",
+    "notes": "CGDR: FP extension"
+  },
+  {
+    "bytes_hex": "ed322123103c",
+    "capstone_mnemonic": "mayh",
+    "capstone_op_str": "%f1, %f3, 0x123(%r2, %r2)",
+    "category": "fp-rxf",
+    "notes": "MAYH: FP extension"
+  },
+  {
+    "bytes_hex": "ed322123103d",
+    "capstone_mnemonic": "myh",
+    "capstone_op_str": "%f1, %f3, 0x123(%r2, %r2)",
+    "category": "fp-rxf",
+    "notes": "MYH: FP extension"
+  },
+  {
+    "bytes_hex": "ed322123103a",
+    "capstone_mnemonic": "may",
+    "capstone_op_str": "%f1, %f3, 0x123(%r2, %r2)",
+    "category": "fp-rxf",
+    "notes": "MAY: FP extension"
+  },
+  {
+    "bytes_hex": "ed322123103b",
+    "capstone_mnemonic": "my",
+    "capstone_op_str": "%f1, %f3, 0x123(%r2, %r2)",
+    "category": "fp-rxf",
+    "notes": "MY: FP extension"
+  },
+  {
+    "bytes_hex": "ed3221231038",
+    "capstone_mnemonic": "mayl",
+    "capstone_op_str": "%f1, %f3, 0x123(%r2, %r2)",
+    "category": "fp-rxf",
+    "notes": "MAYL: FP extension"
+  },
+  {
+    "bytes_hex": "ed3221231039",
+    "capstone_mnemonic": "myl",
+    "capstone_op_str": "%f1, %f3, 0x123(%r2, %r2)",
+    "category": "fp-rxf",
+    "notes": "MYL: FP extension"
+  },
+  {
+    "bytes_hex": "b3030012",
+    "capstone_mnemonic": "lcebr",
+    "capstone_op_str": "%f1, %f2",
+    "category": "fp-rre",
+    "notes": "LCEBR: FP extension"
+  },
+  {
+    "bytes_hex": "b3060012",
+    "capstone_mnemonic": "lxebr",
+    "capstone_op_str": "%f1, %f2",
+    "category": "fp-rre",
+    "notes": "LXEBR: FP extension"
+  },
+  {
+    "bytes_hex": "b3070012",
+    "capstone_mnemonic": "mxdbr",
+    "capstone_op_str": "%f1, %f2",
+    "category": "fp-rre",
+    "notes": "MXDBR: FP extension"
+  },
+  {
+    "bytes_hex": "b3080012",
+    "capstone_mnemonic": "kebr",
+    "capstone_op_str": "%f1, %f2",
+    "category": "fp-rre",
+    "notes": "KEBR: FP extension"
+  },
+  {
+    "bytes_hex": "b3100012",
+    "capstone_mnemonic": "lpdbr",
+    "capstone_op_str": "%f1, %f2",
+    "category": "fp-rre",
+    "notes": "LPDBR: FP extension"
+  },
+  {
+    "bytes_hex": "b3110012",
+    "capstone_mnemonic": "lndbr",
+    "capstone_op_str": "%f1, %f2",
+    "category": "fp-rre",
+    "notes": "LNDBR: FP extension"
+  },
+  {
+    "bytes_hex": "b3120012",
+    "capstone_mnemonic": "ltdbr",
+    "capstone_op_str": "%f1, %f2",
+    "category": "fp-rre",
+    "notes": "LTDBR: FP extension"
+  },
+  {
+    "bytes_hex": "b3130012",
+    "capstone_mnemonic": "lcdbr",
+    "capstone_op_str": "%f1, %f2",
+    "category": "fp-rre",
+    "notes": "LCDBR: FP extension"
+  },
+  {
+    "bytes_hex": "b3170012",
+    "capstone_mnemonic": "meebr",
+    "capstone_op_str": "%f1, %f2",
+    "category": "fp-rre",
+    "notes": "MEEBR: FP extension"
+  },
+  {
+    "bytes_hex": "b3180012",
+    "capstone_mnemonic": "kdbr",
+    "capstone_op_str": "%f1, %f2",
+    "category": "fp-rre",
+    "notes": "KDBR: FP extension"
+  },
+  {
+    "bytes_hex": "b3140012",
+    "capstone_mnemonic": "sqebr",
+    "capstone_op_str": "%f1, %f2",
+    "category": "fp-rre",
+    "notes": "SQEBR: FP extension"
+  },
+  {
+    "bytes_hex": "b3150012",
+    "capstone_mnemonic": "sqdbr",
+    "capstone_op_str": "%f1, %f2",
+    "category": "fp-rre",
+    "notes": "SQDBR: FP extension"
+  },
+  {
+    "bytes_hex": "b30e1032",
+    "capstone_mnemonic": "maebr",
+    "capstone_op_str": "%f1, %f3, %f2",
+    "category": "fp-rrd",
+    "notes": "MAEBR: FP extension"
+  },
+  {
+    "bytes_hex": "b30f1032",
+    "capstone_mnemonic": "msebr",
+    "capstone_op_str": "%f1, %f3, %f2",
+    "category": "fp-rrd",
+    "notes": "MSEBR: FP extension"
+  },
+  {
+    "bytes_hex": "b31e1032",
+    "capstone_mnemonic": "madbr",
+    "capstone_op_str": "%f1, %f3, %f2",
+    "category": "fp-rrd",
+    "notes": "MADBR: FP extension"
+  },
+  {
+    "bytes_hex": "b31f1032",
+    "capstone_mnemonic": "msdbr",
+    "capstone_op_str": "%f1, %f3, %f2",
+    "category": "fp-rrd",
+    "notes": "MSDBR: FP extension"
+  },
+  {
+    "bytes_hex": "ed1221230004",
+    "capstone_mnemonic": "ldeb",
+    "capstone_op_str": "%f1, 0x123(%r2, %r2)",
+    "category": "fp-rxe",
+    "notes": "LDEB: FP extension"
+  },
+  {
+    "bytes_hex": "ed1221230005",
+    "capstone_mnemonic": "lxdb",
+    "capstone_op_str": "%f1, 0x123(%r2, %r2)",
+    "category": "fp-rxe",
+    "notes": "LXDB: FP extension"
+  },
+  {
+    "bytes_hex": "ed1221230006",
+    "capstone_mnemonic": "lxeb",
+    "capstone_op_str": "%f1, 0x123(%r2, %r2)",
+    "category": "fp-rxe",
+    "notes": "LXEB: FP extension"
+  },
+  {
+    "bytes_hex": "ed1221230007",
+    "capstone_mnemonic": "mxdb",
+    "capstone_op_str": "%f1, 0x123(%r2, %r2)",
+    "category": "fp-rxe",
+    "notes": "MXDB: FP extension"
+  },
+  {
+    "bytes_hex": "ed1221230008",
+    "capstone_mnemonic": "keb",
+    "capstone_op_str": "%f1, 0x123(%r2, %r2)",
+    "category": "fp-rxe",
+    "notes": "KEB: FP extension"
+  },
+  {
+    "bytes_hex": "ed1221230014",
+    "capstone_mnemonic": "sqeb",
+    "capstone_op_str": "%f1, 0x123(%r2, %r2)",
+    "category": "fp-rxe",
+    "notes": "SQEB: FP extension"
+  },
+  {
+    "bytes_hex": "ed1221230015",
+    "capstone_mnemonic": "sqdb",
+    "capstone_op_str": "%f1, 0x123(%r2, %r2)",
+    "category": "fp-rxe",
+    "notes": "SQDB: FP extension"
+  },
+  {
+    "bytes_hex": "ed1221230017",
+    "capstone_mnemonic": "meeb",
+    "capstone_op_str": "%f1, 0x123(%r2, %r2)",
+    "category": "fp-rxe",
+    "notes": "MEEB: FP extension"
+  },
+  {
+    "bytes_hex": "ed1221230018",
+    "capstone_mnemonic": "kdb",
+    "capstone_op_str": "%f1, 0x123(%r2, %r2)",
+    "category": "fp-rxe",
+    "notes": "KDB: FP extension"
+  },
+  {
+    "bytes_hex": "ed1221230010",
+    "capstone_mnemonic": "tceb",
+    "capstone_op_str": "%f1, 0x123(%r2, %r2)",
+    "category": "fp-rxe",
+    "notes": "TCEB: FP extension"
+  },
+  {
+    "bytes_hex": "ed1221230011",
+    "capstone_mnemonic": "tcdb",
+    "capstone_op_str": "%f1, 0x123(%r2, %r2)",
+    "category": "fp-rxe",
+    "notes": "TCDB: FP extension"
+  },
+  {
+    "bytes_hex": "ed1221230012",
+    "capstone_mnemonic": "tcxb",
+    "capstone_op_str": "%f1, 0x123(%r2, %r2)",
+    "category": "fp-rxe",
+    "notes": "TCXB: FP extension"
+  },
+  {
+    "bytes_hex": "b3530012",
+    "capstone_mnemonic": "diebr",
+    "capstone_op_str": "%f1, %f0, %f2, 0",
+    "category": "fp-rrf",
+    "notes": "DIEBR: FP extension"
+  },
+  {
+    "bytes_hex": "b35b0012",
+    "capstone_mnemonic": "didbr",
+    "capstone_op_str": "%f1, %f0, %f2, 0",
+    "category": "fp-rrf",
+    "notes": "DIDBR: FP extension"
+  },
+  {
+    "bytes_hex": "b3720012",
+    "capstone_mnemonic": "cpsdr",
+    "capstone_op_str": "%f1, %f0, %f2",
+    "category": "fp-rrf",
+    "notes": "CPSDR: FP extension"
+  },
+  {
+    "bytes_hex": "b3980012",
+    "capstone_mnemonic": "cfebr",
+    "capstone_op_str": "%r1, 0, %f2",
+    "category": "fp-rrf",
+    "notes": "CFEBR: FP extension"
+  },
+  {
+    "bytes_hex": "b3982012",
+    "capstone_mnemonic": "cfebr",
+    "capstone_op_str": "%r1, 2, %f2",
+    "category": "fp-rrf",
+    "notes": "CFEBRA: FP extension"
+  },
+  {
+    "bytes_hex": "b3990012",
+    "capstone_mnemonic": "cfdbr",
+    "capstone_op_str": "%r1, 0, %f2",
+    "category": "fp-rrf",
+    "notes": "CFDBR: FP extension"
+  },
+  {
+    "bytes_hex": "b3992012",
+    "capstone_mnemonic": "cfdbr",
+    "capstone_op_str": "%r1, 2, %f2",
+    "category": "fp-rrf",
+    "notes": "CFDBRA: FP extension"
+  },
+  {
+    "bytes_hex": "b3a80012",
+    "capstone_mnemonic": "cgebr",
+    "capstone_op_str": "%r1, 0, %f2",
+    "category": "fp-rrf",
+    "notes": "CGEBR: FP extension"
+  },
+  {
+    "bytes_hex": "b3a82012",
+    "capstone_mnemonic": "cgebr",
+    "capstone_op_str": "%r1, 2, %f2",
+    "category": "fp-rrf",
+    "notes": "CGEBRA: FP extension"
+  },
+  {
+    "bytes_hex": "b3a90012",
+    "capstone_mnemonic": "cgdbr",
+    "capstone_op_str": "%r1, 0, %f2",
+    "category": "fp-rrf",
+    "notes": "CGDBR: FP extension"
+  },
+  {
+    "bytes_hex": "b3a92012",
+    "capstone_mnemonic": "cgdbr",
+    "capstone_op_str": "%r1, 2, %f2",
+    "category": "fp-rrf",
+    "notes": "CGDBRA: FP extension"
+  },
+  {
+    "bytes_hex": "b3960012",
+    "capstone_mnemonic": "cxfbr",
+    "capstone_op_str": "%f1, %r2",
+    "category": "fp-rre",
+    "notes": "CXFBR: FP extension"
+  },
+  {
+    "bytes_hex": "b3962012",
+    "capstone_mnemonic": "cxfbra",
+    "capstone_op_str": "%f1, 2, %r2, 0",
+    "category": "fp-rrf",
+    "notes": "CXFBRA: FP extension"
+  },
+  {
+    "bytes_hex": "b3a60012",
+    "capstone_mnemonic": "cxgbr",
+    "capstone_op_str": "%f1, %r2",
+    "category": "fp-rre",
+    "notes": "CXGBR: FP extension"
+  },
+  {
+    "bytes_hex": "b3a62012",
+    "capstone_mnemonic": "cxgbra",
+    "capstone_op_str": "%f1, 2, %r2, 0",
+    "category": "fp-rrf",
+    "notes": "CXGBRA: FP extension"
+  },
+  {
+    "bytes_hex": "b3942012",
+    "capstone_mnemonic": "cefbra",
+    "capstone_op_str": "%f1, 2, %r2, 0",
+    "category": "fp-rrf",
+    "notes": "CEFBRA: FP extension"
+  },
+  {
+    "bytes_hex": "b3a42012",
+    "capstone_mnemonic": "cegbra",
+    "capstone_op_str": "%f1, 2, %r2, 0",
+    "category": "fp-rrf",
+    "notes": "CEGBRA: FP extension"
+  },
+  {
+    "bytes_hex": "b3952012",
+    "capstone_mnemonic": "cdfbra",
+    "capstone_op_str": "%f1, 2, %r2, 0",
+    "category": "fp-rrf",
+    "notes": "CDFBRA: FP extension"
+  },
+  {
+    "bytes_hex": "b3a52012",
+    "capstone_mnemonic": "cdgbra",
+    "capstone_op_str": "%f1, 2, %r2, 0",
+    "category": "fp-rrf",
+    "notes": "CDGBRA: FP extension"
+  },
+  {
+    "bytes_hex": "b3572012",
+    "capstone_mnemonic": "fiebr",
+    "capstone_op_str": "%f1, 2, %f2",
+    "category": "fp-rrf",
+    "notes": "FIEBRA: FP extension"
+  },
+  {
+    "bytes_hex": "b35f2012",
+    "capstone_mnemonic": "fidbr",
+    "capstone_op_str": "%f1, 2, %f2",
+    "category": "fp-rrf",
+    "notes": "FIDBRA: FP extension"
+  },
+  {
+    "bytes_hex": "b3b82012",
+    "capstone_mnemonic": "cfer",
+    "capstone_op_str": "%r1, 2, %f2",
+    "category": "fp-rrf",
+    "notes": "CFERA: FP extension"
+  },
+  {
+    "bytes_hex": "b3b92012",
+    "capstone_mnemonic": "cfdr",
+    "capstone_op_str": "%r1, 2, %f2",
+    "category": "fp-rrf",
+    "notes": "CFDRA: FP extension"
+  },
+  {
+    "bytes_hex": "b3c82012",
+    "capstone_mnemonic": "cger",
+    "capstone_op_str": "%r1, 2, %f2",
+    "category": "fp-rrf",
+    "notes": "CGERA: FP extension"
+  },
+  {
+    "bytes_hex": "b3c92012",
+    "capstone_mnemonic": "cgdr",
+    "capstone_op_str": "%r1, 2, %f2",
+    "category": "fp-rrf",
+    "notes": "CGDRA: FP extension"
+  },
+  {
+    "bytes_hex": "b3440012",
+    "capstone_mnemonic": "ledbr",
+    "capstone_op_str": "%f1, %f2",
+    "category": "fp-rre",
+    "notes": "LEDBR: FP extension"
+  },
+  {
+    "bytes_hex": "b3442012",
+    "capstone_mnemonic": "ledbra",
+    "capstone_op_str": "%f1, 2, %f2, 0",
+    "category": "fp-rrf",
+    "notes": "LEDBRA: FP extension"
+  },
+  {
+    "bytes_hex": "b3700012",
+    "capstone_mnemonic": "lpdfr",
+    "capstone_op_str": "%f1, %f2",
+    "category": "fp-rre",
+    "notes": "LPDFR: load positive long HFP"
+  },
+  {
+    "bytes_hex": "b3710012",
+    "capstone_mnemonic": "lndfr",
+    "capstone_op_str": "%f1, %f2",
+    "category": "fp-rre",
+    "notes": "LNDFR: load negative long HFP"
+  },
+  {
+    "bytes_hex": "b3730012",
+    "capstone_mnemonic": "lcdfr",
+    "capstone_op_str": "%f1, %f2",
+    "category": "fp-rre",
+    "notes": "LCDFR: load complement long HFP"
+  },
+  {
+    "bytes_hex": "b3580012",
+    "capstone_mnemonic": "thder",
+    "capstone_op_str": "%f1, %f2",
+    "category": "fp-rre",
+    "notes": "THDER: convert BFP to HFP short->long"
+  },
+  {
+    "bytes_hex": "b3590012",
+    "capstone_mnemonic": "thdr",
+    "capstone_op_str": "%f1, %f2",
+    "category": "fp-rre",
+    "notes": "THDR: convert BFP to HFP long"
+  },
+  {
+    "bytes_hex": "ed322123100e",
+    "capstone_mnemonic": "maeb",
+    "capstone_op_str": "%f1, %f3, 0x123(%r2, %r2)",
+    "category": "fp-rxf",
+    "notes": "MAEB: multiply and add short BFP"
+  },
+  {
+    "bytes_hex": "ed322123100f",
+    "capstone_mnemonic": "mseb",
+    "capstone_op_str": "%f1, %f3, 0x123(%r2, %r2)",
+    "category": "fp-rxf",
+    "notes": "MSEB: multiply and subtract short BFP"
+  },
+  {
+    "bytes_hex": "ed322123101e",
+    "capstone_mnemonic": "madb",
+    "capstone_op_str": "%f1, %f3, 0x123(%r2, %r2)",
+    "category": "fp-rxf",
+    "notes": "MADB: multiply and add long BFP"
+  },
+  {
+    "bytes_hex": "ed322123101f",
+    "capstone_mnemonic": "msdb",
+    "capstone_op_str": "%f1, %f3, 0x123(%r2, %r2)",
+    "category": "fp-rxf",
+    "notes": "MSDB: multiply and subtract long BFP"
+  }
+]

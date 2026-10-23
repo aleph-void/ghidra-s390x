@@ -1,0 +1,15 @@
+# Build artifacts and backups
+__pycache__/
+*.pyc
+*.bak
+*.log
+.DS_Store
+loaders/build/
+loaders/build-elfreloc/
+tests/s390x_decode
+tests/s390x_pcode
+tests/ghidra_smoke_disasm.txt
+tests/ghidra_smoke_decompile.c
+# Ghidra decompiler build outputs (never commit)
+libsla.a
+sleigh_opt
