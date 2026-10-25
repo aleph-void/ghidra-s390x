@@ -193,7 +193,7 @@ define token RILb(48)
     RILb_OP = (40,47)
     RILb_R1 = (36,39)
     RILb_OPCD = (32,35)
-    RILb_RI2 = (0,31)
+    RILb_RI2 = (0,31) signed
 ;
 
 # RILc: 6 bytes. OP(0-7), M1(8-11), OPCD(12-15), RI2(16-47).
@@ -201,7 +201,7 @@ define token RILc(48)
     RILc_OP = (40,47)
     RILc_M1 = (36,39)
     RILc_OPCD = (32,35)
-    RILc_RI2 = (0,31)
+    RILc_RI2 = (0,31) signed
 ;
 
 # SSa: 6 bytes. OP(0-7), L(8-15), B1(16-19), D1(20-31), B2(32-35), D2(36-47).
@@ -421,10 +421,8 @@ macro ea_D20(dest, B, X, DH, DL) {
 # (PoP: the offset is "a signed binary integer specifying the number of
 # halfwords that is added to the address of the instruction".)
 macro rel_RI32(dest, RI) {
-    # Sign-extend 32-bit RI to 64 bits: (x ^ 0x80000000) - 0x80000000
-    dest = RI;
-    dest = (dest ^ 0x80000000) - 0x80000000;
-    dest = inst_start + dest * 2;
+    # RI is a signed halfword count (RILb_RI2/RILc_RI2 are signed fields)
+    dest = inst_start + RI * 2;
 }
 
 # ---------------------------------------------------------------------------

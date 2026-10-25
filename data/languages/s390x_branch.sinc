@@ -443,7 +443,7 @@ RIb_Target: RIb_TargetLoc is RIb_TargetLoc { export *:8 RIb_TargetLoc; }
 RILb_TargetLoc: tgt is RILb_RI2 [ tgt = inst_start + RILb_RI2 * 2; ] { export *[const]:8 tgt; }
 RILb_Target: RILb_TargetLoc is RILb_TargetLoc { export *:8 RILb_TargetLoc; }
 
-:JNOP RIc_RI2 is RIc_OP=0xA7 & RIc_M1=0x0 & RIc_OP2=0x4 & RIc_RI2
+:JNOP RIc_TargetLoc is RIc_OP=0xA7 & RIc_M1=0x0 & RIc_OP2=0x4 & RIc_TargetLoc
 {
     # BRC with mask 0 never branches; falls through. (PoP J-1.)
 }
@@ -622,7 +622,7 @@ RILb_Target: RILb_TargetLoc is RILb_TargetLoc { export *:8 RILb_TargetLoc; }
 # extended mnemonic and fall back to the base :brcl constructor.
 # ---------------------------------------------------------------------------
 
-:JLNOP RILc_RI2 is RILc_OP=0xC0 & RILc_M1=0x0 & RILc_OPCD=0x4 & RILc_RI2
+:JLNOP RILc_TargetLoc is RILc_OP=0xC0 & RILc_M1=0x0 & RILc_OPCD=0x4 & RILc_TargetLoc
 {
     # BRCL with mask 0 never branches; falls through. (PoP J-1.)
 }
@@ -832,7 +832,10 @@ RILb_Target: RILb_TargetLoc is RILb_TargetLoc { export *:8 RILb_TargetLoc; }
     # not statically analyzable. Opaque by design.
 }
 
-:TRAP4 is S_OP=0xB2FF & S_B2 & S_D2
+# display-only address operand (tools/fix_display.py)
+db_S_D2_S_B2: S_D2 is S_D2 & S_B2=0  { }
+db_S_D2_S_B2: S_D2(S_B2) is S_D2 & S_B2  { }
+:TRAP4 db_S_D2_S_B2 is S_OP=0xB2FF & S_B2 & S_D2 & db_S_D2_S_B2
 {
     # TRAP4 (PoP 10-189): the second-operand address is not used by the
     # instruction (operands left unconstrained). Otherwise as TRAP2.
@@ -867,9 +870,6 @@ RILb_Target: RILb_TargetLoc is RILb_TargetLoc { export *:8 RILb_TargetLoc; }
     psw = (zext(hi) << 64) | zext(lo);
 }
 
-# display-only address operand (tools/fix_display.py)
-db_S_D2_S_B2: S_D2 is S_D2 & S_B2=0  { }
-db_S_D2_S_B2: S_D2(S_B2) is S_D2 & S_B2  { }
 :LPSWE db_S_D2_S_B2 is S_OP=0xB2B2 & S_B2 & S_D2 & db_S_D2_S_B2
 {
     # TODO(privileged): see header above.
@@ -907,7 +907,7 @@ db_S_D2_S_B2: S_D2(S_B2) is S_D2 & S_B2  { }
     *:1 ea = 0;
 }
 
-:DIAGNOSE "diag " RSa_R1 "," RSa_R3 "," db_RSa_D2_RSa_B2 is RSa_OP=0x83 & RSa_R1 & RSa_R3 & RSa_B2 & RSa_D2 & db_RSa_D2_RSa_B2
+:DIAG RSa_R1 "," RSa_R3 "," db_RSa_D2_RSa_B2 is RSa_OP=0x83 & RSa_R1 & RSa_R3 & RSa_B2 & RSa_D2 & db_RSa_D2_RSa_B2
 {
     # DIAGNOSE (PoP 10-24): model-dependent function. Bits 8-31 "may be
     # used as in the SI or RS formats, or in some other way"; displayed

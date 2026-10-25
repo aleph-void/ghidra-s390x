@@ -336,7 +336,6 @@ define token RXYFs(48)
     RXYFs_B2  = (28,31)
     RXYFs_DL2 = (16,27)
     RXYFs_DH2 = (8,15)
-    RXYFs_D20 = (8,27)
     RXYFs_OP2 = (0,7)
 ;
 
@@ -347,7 +346,6 @@ define token RXYFl(48)
     RXYFl_B2  = (28,31)
     RXYFl_DL2 = (16,27)
     RXYFl_DH2 = (8,15)
-    RXYFl_D20 = (8,27)
     RXYFl_OP2 = (0,7)
 ;
 
@@ -1936,60 +1934,56 @@ dxb_RXFs_DL2_RXFs_X2_RXFs_B2: RXFs_DL2(RXFs_X2,RXFs_B2) is RXFs_DL2 & RXFs_X2 & 
 # ============================================================================
 
 # display-only address operand (tools/fix_display.py)
-dxb_RXYFs_D20_RXYFs_X2_RXYFs_B2: RXYFs_D20 is RXYFs_D20 & RXYFs_X2=0 & RXYFs_B2=0  { }
-dxb_RXYFs_D20_RXYFs_X2_RXYFs_B2: RXYFs_D20(RXYFs_B2) is RXYFs_D20 & RXYFs_X2=0 & RXYFs_B2  { }
-dxb_RXYFs_D20_RXYFs_X2_RXYFs_B2: RXYFs_D20(RXYFs_X2,0) is RXYFs_D20 & RXYFs_X2 & RXYFs_B2=0  { }
-dxb_RXYFs_D20_RXYFs_X2_RXYFs_B2: RXYFs_D20(RXYFs_X2,RXYFs_B2) is RXYFs_D20 & RXYFs_X2 & RXYFs_B2  { }
-:LEY RXYFs_R1 "," dxb_RXYFs_D20_RXYFs_X2_RXYFs_B2 is RXYFs_OP=0xED & RXYFs_OP2=0x64 & RXYFs_R1 & RXYFs_X2 & RXYFs_B2 & RXYFs_D20 & dxb_RXYFs_D20_RXYFs_X2_RXYFs_B2
+dxb_RXYFs_D20_RXYFs_X2_RXYFs_B2: dispRXYFs_DL2 is RXYFs_DL2 & RXYFs_DH2 & RXYFs_X2=0 & RXYFs_B2=0 [ dispRXYFs_DL2 = ((RXYFs_DH2 << 12) | RXYFs_DL2) - (((RXYFs_DH2 >> 7) & 1) << 20); ] { }
+dxb_RXYFs_D20_RXYFs_X2_RXYFs_B2: dispRXYFs_DL2(RXYFs_B2) is RXYFs_DL2 & RXYFs_DH2 & RXYFs_X2=0 & RXYFs_B2 [ dispRXYFs_DL2 = ((RXYFs_DH2 << 12) | RXYFs_DL2) - (((RXYFs_DH2 >> 7) & 1) << 20); ] { }
+dxb_RXYFs_D20_RXYFs_X2_RXYFs_B2: dispRXYFs_DL2(RXYFs_X2,0) is RXYFs_DL2 & RXYFs_DH2 & RXYFs_X2 & RXYFs_B2=0 [ dispRXYFs_DL2 = ((RXYFs_DH2 << 12) | RXYFs_DL2) - (((RXYFs_DH2 >> 7) & 1) << 20); ] { }
+dxb_RXYFs_D20_RXYFs_X2_RXYFs_B2: dispRXYFs_DL2(RXYFs_X2,RXYFs_B2) is RXYFs_DL2 & RXYFs_DH2 & RXYFs_X2 & RXYFs_B2 [ dispRXYFs_DL2 = ((RXYFs_DH2 << 12) | RXYFs_DL2) - (((RXYFs_DH2 >> 7) & 1) << 20); ] { }
+:LEY RXYFs_R1 "," dxb_RXYFs_D20_RXYFs_X2_RXYFs_B2 is RXYFs_OP=0xED & RXYFs_OP2=0x64 & RXYFs_R1 & RXYFs_X2 & RXYFs_B2 & RXYFs_DL2 & RXYFs_DH2 & dxb_RXYFs_D20_RXYFs_X2_RXYFs_B2
 {
     # LOAD (short HFP, 20-bit displacement). CC unchanged.
     # TODO: HFP approx. D20 is displayed unsigned; negative displacements
     #   appear as large hex (p-code sign-extends correctly).
     local ea:8; local d:8; local dh:8; local dl:8;
-    d = RXYFs_D20;
-    dh = d >> 12;
-    dl = d - (dh << 12);
+    dh = RXYFs_DH2;
+    dl = RXYFs_DL2;
     ea_D20(ea, RXYFs_B2, RXYFs_X2, dh, dl);
     RXYFs_R1 = *:4 ea;
 }
 
 # display-only address operand (tools/fix_display.py)
-dxb_RXYFl_D20_RXYFl_X2_RXYFl_B2: RXYFl_D20 is RXYFl_D20 & RXYFl_X2=0 & RXYFl_B2=0  { }
-dxb_RXYFl_D20_RXYFl_X2_RXYFl_B2: RXYFl_D20(RXYFl_B2) is RXYFl_D20 & RXYFl_X2=0 & RXYFl_B2  { }
-dxb_RXYFl_D20_RXYFl_X2_RXYFl_B2: RXYFl_D20(RXYFl_X2,0) is RXYFl_D20 & RXYFl_X2 & RXYFl_B2=0  { }
-dxb_RXYFl_D20_RXYFl_X2_RXYFl_B2: RXYFl_D20(RXYFl_X2,RXYFl_B2) is RXYFl_D20 & RXYFl_X2 & RXYFl_B2  { }
-:LDY RXYFl_R1 "," dxb_RXYFl_D20_RXYFl_X2_RXYFl_B2 is RXYFl_OP=0xED & RXYFl_OP2=0x65 & RXYFl_R1 & RXYFl_X2 & RXYFl_B2 & RXYFl_D20 & dxb_RXYFl_D20_RXYFl_X2_RXYFl_B2
+dxb_RXYFl_D20_RXYFl_X2_RXYFl_B2: dispRXYFl_DL2 is RXYFl_DL2 & RXYFl_DH2 & RXYFl_X2=0 & RXYFl_B2=0 [ dispRXYFl_DL2 = ((RXYFl_DH2 << 12) | RXYFl_DL2) - (((RXYFl_DH2 >> 7) & 1) << 20); ] { }
+dxb_RXYFl_D20_RXYFl_X2_RXYFl_B2: dispRXYFl_DL2(RXYFl_B2) is RXYFl_DL2 & RXYFl_DH2 & RXYFl_X2=0 & RXYFl_B2 [ dispRXYFl_DL2 = ((RXYFl_DH2 << 12) | RXYFl_DL2) - (((RXYFl_DH2 >> 7) & 1) << 20); ] { }
+dxb_RXYFl_D20_RXYFl_X2_RXYFl_B2: dispRXYFl_DL2(RXYFl_X2,0) is RXYFl_DL2 & RXYFl_DH2 & RXYFl_X2 & RXYFl_B2=0 [ dispRXYFl_DL2 = ((RXYFl_DH2 << 12) | RXYFl_DL2) - (((RXYFl_DH2 >> 7) & 1) << 20); ] { }
+dxb_RXYFl_D20_RXYFl_X2_RXYFl_B2: dispRXYFl_DL2(RXYFl_X2,RXYFl_B2) is RXYFl_DL2 & RXYFl_DH2 & RXYFl_X2 & RXYFl_B2 [ dispRXYFl_DL2 = ((RXYFl_DH2 << 12) | RXYFl_DL2) - (((RXYFl_DH2 >> 7) & 1) << 20); ] { }
+:LDY RXYFl_R1 "," dxb_RXYFl_D20_RXYFl_X2_RXYFl_B2 is RXYFl_OP=0xED & RXYFl_OP2=0x65 & RXYFl_R1 & RXYFl_X2 & RXYFl_B2 & RXYFl_DL2 & RXYFl_DH2 & dxb_RXYFl_D20_RXYFl_X2_RXYFl_B2
 {
     # LOAD (long HFP, 20-bit displacement). CC unchanged.
     # TODO: HFP approx. D20 displayed unsigned; p-code sign-extends.
     local ea:8; local d:8; local dh:8; local dl:8;
-    d = RXYFl_D20;
-    dh = d >> 12;
-    dl = d - (dh << 12);
+    dh = RXYFl_DH2;
+    dl = RXYFl_DL2;
     ea_D20(ea, RXYFl_B2, RXYFl_X2, dh, dl);
     RXYFl_R1 = *:8 ea;
 }
 
-:STEY RXYFs_R1 "," dxb_RXYFs_D20_RXYFs_X2_RXYFs_B2 is RXYFs_OP=0xED & RXYFs_OP2=0x66 & RXYFs_R1 & RXYFs_X2 & RXYFs_B2 & RXYFs_D20 & dxb_RXYFs_D20_RXYFs_X2_RXYFs_B2
+:STEY RXYFs_R1 "," dxb_RXYFs_D20_RXYFs_X2_RXYFs_B2 is RXYFs_OP=0xED & RXYFs_OP2=0x66 & RXYFs_R1 & RXYFs_X2 & RXYFs_B2 & RXYFs_DL2 & RXYFs_DH2 & dxb_RXYFs_D20_RXYFs_X2_RXYFs_B2
 {
     # STORE (short HFP, 20-bit displacement). CC unchanged.
     # D20 displayed unsigned; p-code sign-extends.
     local ea:8; local d:8; local dh:8; local dl:8;
-    d = RXYFs_D20;
-    dh = d >> 12;
-    dl = d - (dh << 12);
+    dh = RXYFs_DH2;
+    dl = RXYFs_DL2;
     ea_D20(ea, RXYFs_B2, RXYFs_X2, dh, dl);
     *:4 ea = RXYFs_R1;
 }
 
-:STDY RXYFl_R1 "," dxb_RXYFl_D20_RXYFl_X2_RXYFl_B2 is RXYFl_OP=0xED & RXYFl_OP2=0x67 & RXYFl_R1 & RXYFl_X2 & RXYFl_B2 & RXYFl_D20 & dxb_RXYFl_D20_RXYFl_X2_RXYFl_B2
+:STDY RXYFl_R1 "," dxb_RXYFl_D20_RXYFl_X2_RXYFl_B2 is RXYFl_OP=0xED & RXYFl_OP2=0x67 & RXYFl_R1 & RXYFl_X2 & RXYFl_B2 & RXYFl_DL2 & RXYFl_DH2 & dxb_RXYFl_D20_RXYFl_X2_RXYFl_B2
 {
     # STORE (long HFP, 20-bit displacement). CC unchanged.
     # D20 displayed unsigned; p-code sign-extends.
     local ea:8; local d:8; local dh:8; local dl:8;
-    d = RXYFl_D20;
-    dh = d >> 12;
-    dl = d - (dh << 12);
+    dh = RXYFl_DH2;
+    dl = RXYFl_DL2;
     ea_D20(ea, RXYFl_B2, RXYFl_X2, dh, dl);
     *:8 ea = RXYFl_R1;
 }

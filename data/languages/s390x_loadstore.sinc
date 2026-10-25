@@ -228,7 +228,8 @@ dxb_RXYa_DL2_RXYa_X2_RXYa_B2: dispRXYa_DL2(RXYa_X2,RXYa_B2) is RXYa_DL2 & RXYa_D
 }
 
 # LARL — LOAD ADDRESS RELATIVE LONG: R1 = inst_start + 2*sign_extend(RI2).
-:LARL RILb_R1 "," RILb_RI2 is RILb_OP=0xC0 & RILb_R1 & RILb_OPCD=0x0 & RILb_RI2
+LARL_Target: tgt is RILb_RI2 [ tgt = inst_start + RILb_RI2 * 2; ] { export *[const]:8 tgt; }
+:LARL RILb_R1 "," LARL_Target is RILb_OP=0xC0 & RILb_R1 & RILb_OPCD=0x0 & RILb_RI2 & LARL_Target
 {
     rel_RI32(RILb_R1, RILb_RI2);
 }
