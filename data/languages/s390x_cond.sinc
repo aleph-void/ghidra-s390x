@@ -96,7 +96,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 # high half). CC unchanged. M3=0: NOP; M3=15: unconditional (PoP 7-326).
 # ===========================================================================
 # LOCR: low 32 bits.
-:LOCRO "LOCRO " RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB9F2 & RRFc_M3=1 & RRFc_R1 & RRFc_R2
+:LOCRO RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB9F2 & RRFc_M3=1 & RRFc_R1 & RRFc_R2
 {
     local _c_m:1;
     local _c_ccval:1;
@@ -111,7 +111,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:LOCRH "LOCRH " RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB9F2 & RRFc_M3=2 & RRFc_R1 & RRFc_R2
+:LOCRH RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB9F2 & RRFc_M3=2 & RRFc_R1 & RRFc_R2
 {
     local _c_m:1;
     local _c_ccval:1;
@@ -126,7 +126,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:LOCRNLE "LOCRNLE " RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB9F2 & RRFc_M3=3 & RRFc_R1 & RRFc_R2
+:LOCRNLE RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB9F2 & RRFc_M3=3 & RRFc_R1 & RRFc_R2
 {
     local _c_m:1;
     local _c_ccval:1;
@@ -141,7 +141,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:LOCRL "LOCRL " RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB9F2 & RRFc_M3=4 & RRFc_R1 & RRFc_R2
+:LOCRL RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB9F2 & RRFc_M3=4 & RRFc_R1 & RRFc_R2
 {
     local _c_m:1;
     local _c_ccval:1;
@@ -156,7 +156,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:LOCRNHE "LOCRNHE " RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB9F2 & RRFc_M3=5 & RRFc_R1 & RRFc_R2
+:LOCRNHE RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB9F2 & RRFc_M3=5 & RRFc_R1 & RRFc_R2
 {
     local _c_m:1;
     local _c_ccval:1;
@@ -171,7 +171,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:LOCRLH "LOCRLH " RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB9F2 & RRFc_M3=6 & RRFc_R1 & RRFc_R2
+:LOCRLH RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB9F2 & RRFc_M3=6 & RRFc_R1 & RRFc_R2
 {
     local _c_m:1;
     local _c_ccval:1;
@@ -186,7 +186,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:LOCRNE "LOCRNE " RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB9F2 & RRFc_M3=7 & RRFc_R1 & RRFc_R2
+:LOCRNE RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB9F2 & RRFc_M3=7 & RRFc_R1 & RRFc_R2
 {
     local _c_m:1;
     local _c_ccval:1;
@@ -201,7 +201,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:LOCRE "LOCRE " RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB9F2 & RRFc_M3=8 & RRFc_R1 & RRFc_R2
+:LOCRE RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB9F2 & RRFc_M3=8 & RRFc_R1 & RRFc_R2
 {
     local _c_m:1;
     local _c_ccval:1;
@@ -216,7 +216,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:LOCRNLH "LOCRNLH " RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB9F2 & RRFc_M3=9 & RRFc_R1 & RRFc_R2
+:LOCRNLH RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB9F2 & RRFc_M3=9 & RRFc_R1 & RRFc_R2
 {
     local _c_m:1;
     local _c_ccval:1;
@@ -231,7 +231,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:LOCRHE "LOCRHE " RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB9F2 & RRFc_M3=10 & RRFc_R1 & RRFc_R2
+:LOCRHE RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB9F2 & RRFc_M3=10 & RRFc_R1 & RRFc_R2
 {
     local _c_m:1;
     local _c_ccval:1;
@@ -246,7 +246,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:LOCRNL "LOCRNL " RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB9F2 & RRFc_M3=11 & RRFc_R1 & RRFc_R2
+:LOCRNL RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB9F2 & RRFc_M3=11 & RRFc_R1 & RRFc_R2
 {
     local _c_m:1;
     local _c_ccval:1;
@@ -261,7 +261,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:LOCRLE "LOCRLE " RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB9F2 & RRFc_M3=12 & RRFc_R1 & RRFc_R2
+:LOCRLE RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB9F2 & RRFc_M3=12 & RRFc_R1 & RRFc_R2
 {
     local _c_m:1;
     local _c_ccval:1;
@@ -276,7 +276,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:LOCRNH "LOCRNH " RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB9F2 & RRFc_M3=13 & RRFc_R1 & RRFc_R2
+:LOCRNH RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB9F2 & RRFc_M3=13 & RRFc_R1 & RRFc_R2
 {
     local _c_m:1;
     local _c_ccval:1;
@@ -291,7 +291,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:LOCRNO "LOCRNO " RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB9F2 & RRFc_M3=14 & RRFc_R1 & RRFc_R2
+:LOCRNO RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB9F2 & RRFc_M3=14 & RRFc_R1 & RRFc_R2
 {
     local _c_m:1;
     local _c_ccval:1;
@@ -306,7 +306,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:LOCR "LOCR " RRFc_R1 "," RRFc_R2 "," RRFc_M3 is RRFc_OP=0xB9F2 & RRFc_M3 & RRFc_R1 & RRFc_R2
+:LOCR RRFc_R1 "," RRFc_R2 "," RRFc_M3 is RRFc_OP=0xB9F2 & RRFc_M3 & RRFc_R1 & RRFc_R2
 {
     local _c_m:1;
     local _c_ccval:1;
@@ -322,7 +322,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 }
 
 # LOCGR: all 64 bits.
-:LOCGRO "LOCGRO " RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB9E2 & RRFc_M3=1 & RRFc_R1 & RRFc_R2
+:LOCGRO RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB9E2 & RRFc_M3=1 & RRFc_R1 & RRFc_R2
 {
     local _c_m:1;
     local _c_ccval:1;
@@ -337,7 +337,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:LOCGRH "LOCGRH " RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB9E2 & RRFc_M3=2 & RRFc_R1 & RRFc_R2
+:LOCGRH RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB9E2 & RRFc_M3=2 & RRFc_R1 & RRFc_R2
 {
     local _c_m:1;
     local _c_ccval:1;
@@ -352,7 +352,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:LOCGRNLE "LOCGRNLE " RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB9E2 & RRFc_M3=3 & RRFc_R1 & RRFc_R2
+:LOCGRNLE RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB9E2 & RRFc_M3=3 & RRFc_R1 & RRFc_R2
 {
     local _c_m:1;
     local _c_ccval:1;
@@ -367,7 +367,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:LOCGRL "LOCGRL " RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB9E2 & RRFc_M3=4 & RRFc_R1 & RRFc_R2
+:LOCGRL RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB9E2 & RRFc_M3=4 & RRFc_R1 & RRFc_R2
 {
     local _c_m:1;
     local _c_ccval:1;
@@ -382,7 +382,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:LOCGRNHE "LOCGRNHE " RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB9E2 & RRFc_M3=5 & RRFc_R1 & RRFc_R2
+:LOCGRNHE RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB9E2 & RRFc_M3=5 & RRFc_R1 & RRFc_R2
 {
     local _c_m:1;
     local _c_ccval:1;
@@ -397,7 +397,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:LOCGRLH "LOCGRLH " RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB9E2 & RRFc_M3=6 & RRFc_R1 & RRFc_R2
+:LOCGRLH RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB9E2 & RRFc_M3=6 & RRFc_R1 & RRFc_R2
 {
     local _c_m:1;
     local _c_ccval:1;
@@ -412,7 +412,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:LOCGRNE "LOCGRNE " RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB9E2 & RRFc_M3=7 & RRFc_R1 & RRFc_R2
+:LOCGRNE RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB9E2 & RRFc_M3=7 & RRFc_R1 & RRFc_R2
 {
     local _c_m:1;
     local _c_ccval:1;
@@ -427,7 +427,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:LOCGRE "LOCGRE " RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB9E2 & RRFc_M3=8 & RRFc_R1 & RRFc_R2
+:LOCGRE RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB9E2 & RRFc_M3=8 & RRFc_R1 & RRFc_R2
 {
     local _c_m:1;
     local _c_ccval:1;
@@ -442,7 +442,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:LOCGRNLH "LOCGRNLH " RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB9E2 & RRFc_M3=9 & RRFc_R1 & RRFc_R2
+:LOCGRNLH RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB9E2 & RRFc_M3=9 & RRFc_R1 & RRFc_R2
 {
     local _c_m:1;
     local _c_ccval:1;
@@ -457,7 +457,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:LOCGRHE "LOCGRHE " RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB9E2 & RRFc_M3=10 & RRFc_R1 & RRFc_R2
+:LOCGRHE RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB9E2 & RRFc_M3=10 & RRFc_R1 & RRFc_R2
 {
     local _c_m:1;
     local _c_ccval:1;
@@ -472,7 +472,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:LOCGRNL "LOCGRNL " RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB9E2 & RRFc_M3=11 & RRFc_R1 & RRFc_R2
+:LOCGRNL RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB9E2 & RRFc_M3=11 & RRFc_R1 & RRFc_R2
 {
     local _c_m:1;
     local _c_ccval:1;
@@ -487,7 +487,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:LOCGRLE "LOCGRLE " RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB9E2 & RRFc_M3=12 & RRFc_R1 & RRFc_R2
+:LOCGRLE RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB9E2 & RRFc_M3=12 & RRFc_R1 & RRFc_R2
 {
     local _c_m:1;
     local _c_ccval:1;
@@ -502,7 +502,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:LOCGRNH "LOCGRNH " RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB9E2 & RRFc_M3=13 & RRFc_R1 & RRFc_R2
+:LOCGRNH RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB9E2 & RRFc_M3=13 & RRFc_R1 & RRFc_R2
 {
     local _c_m:1;
     local _c_ccval:1;
@@ -517,7 +517,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:LOCGRNO "LOCGRNO " RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB9E2 & RRFc_M3=14 & RRFc_R1 & RRFc_R2
+:LOCGRNO RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB9E2 & RRFc_M3=14 & RRFc_R1 & RRFc_R2
 {
     local _c_m:1;
     local _c_ccval:1;
@@ -532,7 +532,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:LOCGR "LOCGR " RRFc_R1 "," RRFc_R2 "," RRFc_M3 is RRFc_OP=0xB9E2 & RRFc_M3 & RRFc_R1 & RRFc_R2
+:LOCGR RRFc_R1 "," RRFc_R2 "," RRFc_M3 is RRFc_OP=0xB9E2 & RRFc_M3 & RRFc_R1 & RRFc_R2
 {
     local _c_m:1;
     local _c_ccval:1;
@@ -548,7 +548,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 }
 
 # LOCFHR: high 32 bits.
-:LOCFHRO "LOCFHRO " RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB9E0 & RRFc_M3=1 & RRFc_R1 & RRFc_R2
+:LOCFHRO RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB9E0 & RRFc_M3=1 & RRFc_R1 & RRFc_R2
 {
     local _c_m:1;
     local _c_ccval:1;
@@ -563,7 +563,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:LOCFHRH "LOCFHRH " RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB9E0 & RRFc_M3=2 & RRFc_R1 & RRFc_R2
+:LOCFHRH RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB9E0 & RRFc_M3=2 & RRFc_R1 & RRFc_R2
 {
     local _c_m:1;
     local _c_ccval:1;
@@ -578,7 +578,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:LOCFHRNLE "LOCFHRNLE " RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB9E0 & RRFc_M3=3 & RRFc_R1 & RRFc_R2
+:LOCFHRNLE RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB9E0 & RRFc_M3=3 & RRFc_R1 & RRFc_R2
 {
     local _c_m:1;
     local _c_ccval:1;
@@ -593,7 +593,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:LOCFHRL "LOCFHRL " RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB9E0 & RRFc_M3=4 & RRFc_R1 & RRFc_R2
+:LOCFHRL RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB9E0 & RRFc_M3=4 & RRFc_R1 & RRFc_R2
 {
     local _c_m:1;
     local _c_ccval:1;
@@ -608,7 +608,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:LOCFHRNHE "LOCFHRNHE " RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB9E0 & RRFc_M3=5 & RRFc_R1 & RRFc_R2
+:LOCFHRNHE RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB9E0 & RRFc_M3=5 & RRFc_R1 & RRFc_R2
 {
     local _c_m:1;
     local _c_ccval:1;
@@ -623,7 +623,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:LOCFHRLH "LOCFHRLH " RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB9E0 & RRFc_M3=6 & RRFc_R1 & RRFc_R2
+:LOCFHRLH RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB9E0 & RRFc_M3=6 & RRFc_R1 & RRFc_R2
 {
     local _c_m:1;
     local _c_ccval:1;
@@ -638,7 +638,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:LOCFHRNE "LOCFHRNE " RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB9E0 & RRFc_M3=7 & RRFc_R1 & RRFc_R2
+:LOCFHRNE RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB9E0 & RRFc_M3=7 & RRFc_R1 & RRFc_R2
 {
     local _c_m:1;
     local _c_ccval:1;
@@ -653,7 +653,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:LOCFHRE "LOCFHRE " RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB9E0 & RRFc_M3=8 & RRFc_R1 & RRFc_R2
+:LOCFHRE RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB9E0 & RRFc_M3=8 & RRFc_R1 & RRFc_R2
 {
     local _c_m:1;
     local _c_ccval:1;
@@ -668,7 +668,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:LOCFHRNLH "LOCFHRNLH " RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB9E0 & RRFc_M3=9 & RRFc_R1 & RRFc_R2
+:LOCFHRNLH RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB9E0 & RRFc_M3=9 & RRFc_R1 & RRFc_R2
 {
     local _c_m:1;
     local _c_ccval:1;
@@ -683,7 +683,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:LOCFHRHE "LOCFHRHE " RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB9E0 & RRFc_M3=10 & RRFc_R1 & RRFc_R2
+:LOCFHRHE RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB9E0 & RRFc_M3=10 & RRFc_R1 & RRFc_R2
 {
     local _c_m:1;
     local _c_ccval:1;
@@ -698,7 +698,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:LOCFHRNL "LOCFHRNL " RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB9E0 & RRFc_M3=11 & RRFc_R1 & RRFc_R2
+:LOCFHRNL RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB9E0 & RRFc_M3=11 & RRFc_R1 & RRFc_R2
 {
     local _c_m:1;
     local _c_ccval:1;
@@ -713,7 +713,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:LOCFHRLE "LOCFHRLE " RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB9E0 & RRFc_M3=12 & RRFc_R1 & RRFc_R2
+:LOCFHRLE RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB9E0 & RRFc_M3=12 & RRFc_R1 & RRFc_R2
 {
     local _c_m:1;
     local _c_ccval:1;
@@ -728,7 +728,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:LOCFHRNH "LOCFHRNH " RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB9E0 & RRFc_M3=13 & RRFc_R1 & RRFc_R2
+:LOCFHRNH RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB9E0 & RRFc_M3=13 & RRFc_R1 & RRFc_R2
 {
     local _c_m:1;
     local _c_ccval:1;
@@ -743,7 +743,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:LOCFHRNO "LOCFHRNO " RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB9E0 & RRFc_M3=14 & RRFc_R1 & RRFc_R2
+:LOCFHRNO RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB9E0 & RRFc_M3=14 & RRFc_R1 & RRFc_R2
 {
     local _c_m:1;
     local _c_ccval:1;
@@ -758,7 +758,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:LOCFHR "LOCFHR " RRFc_R1 "," RRFc_R2 "," RRFc_M3 is RRFc_OP=0xB9E0 & RRFc_M3 & RRFc_R1 & RRFc_R2
+:LOCFHR RRFc_R1 "," RRFc_R2 "," RRFc_M3 is RRFc_OP=0xB9E0 & RRFc_M3 & RRFc_R1 & RRFc_R2
 {
     local _c_m:1;
     local _c_ccval:1;
@@ -782,7 +782,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 # M3 bit 3 is reserved; only bits 0-2 participate in the trap test.
 # ===========================================================================
 # CRT: cc_scmp32, 32-bit operands.
-:CRTH "CRTH " RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB972 & RRFc_M3=2 & RRFc_R1 & RRFc_R2
+:CRTH RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB972 & RRFc_M3=2 & RRFc_R1 & RRFc_R2
 {
     local a:8;
     local b:8;
@@ -800,7 +800,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <trap_done>
 }
 
-:CRTL "CRTL " RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB972 & RRFc_M3=4 & RRFc_R1 & RRFc_R2
+:CRTL RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB972 & RRFc_M3=4 & RRFc_R1 & RRFc_R2
 {
     local a:8;
     local b:8;
@@ -818,7 +818,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <trap_done>
 }
 
-:CRTLH "CRTLH " RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB972 & RRFc_M3=6 & RRFc_R1 & RRFc_R2
+:CRTLH RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB972 & RRFc_M3=6 & RRFc_R1 & RRFc_R2
 {
     local a:8;
     local b:8;
@@ -836,7 +836,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <trap_done>
 }
 
-:CRTE "CRTE " RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB972 & RRFc_M3=8 & RRFc_R1 & RRFc_R2
+:CRTE RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB972 & RRFc_M3=8 & RRFc_R1 & RRFc_R2
 {
     local a:8;
     local b:8;
@@ -854,7 +854,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <trap_done>
 }
 
-:CRTHE "CRTHE " RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB972 & RRFc_M3=10 & RRFc_R1 & RRFc_R2
+:CRTHE RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB972 & RRFc_M3=10 & RRFc_R1 & RRFc_R2
 {
     local a:8;
     local b:8;
@@ -872,7 +872,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <trap_done>
 }
 
-:CRTLE "CRTLE " RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB972 & RRFc_M3=12 & RRFc_R1 & RRFc_R2
+:CRTLE RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB972 & RRFc_M3=12 & RRFc_R1 & RRFc_R2
 {
     local a:8;
     local b:8;
@@ -890,7 +890,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <trap_done>
 }
 
-:CRT "CRT " RRFc_R1 "," RRFc_R2 "," RRFc_M3 is RRFc_OP=0xB972 & RRFc_M3 & RRFc_R1 & RRFc_R2
+:CRT RRFc_R1 "," RRFc_R2 "," RRFc_M3 is RRFc_OP=0xB972 & RRFc_M3 & RRFc_R1 & RRFc_R2
 {
     local a:8;
     local b:8;
@@ -909,7 +909,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 }
 
 # CLRT: cc_ucmp, 32-bit operands.
-:CLRTH "CLRTH " RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB973 & RRFc_M3=2 & RRFc_R1 & RRFc_R2
+:CLRTH RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB973 & RRFc_M3=2 & RRFc_R1 & RRFc_R2
 {
     local a:8;
     local b:8;
@@ -927,7 +927,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <trap_done>
 }
 
-:CLRTL "CLRTL " RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB973 & RRFc_M3=4 & RRFc_R1 & RRFc_R2
+:CLRTL RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB973 & RRFc_M3=4 & RRFc_R1 & RRFc_R2
 {
     local a:8;
     local b:8;
@@ -945,7 +945,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <trap_done>
 }
 
-:CLRTLH "CLRTLH " RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB973 & RRFc_M3=6 & RRFc_R1 & RRFc_R2
+:CLRTLH RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB973 & RRFc_M3=6 & RRFc_R1 & RRFc_R2
 {
     local a:8;
     local b:8;
@@ -963,7 +963,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <trap_done>
 }
 
-:CLRTE "CLRTE " RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB973 & RRFc_M3=8 & RRFc_R1 & RRFc_R2
+:CLRTE RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB973 & RRFc_M3=8 & RRFc_R1 & RRFc_R2
 {
     local a:8;
     local b:8;
@@ -981,7 +981,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <trap_done>
 }
 
-:CLRTHE "CLRTHE " RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB973 & RRFc_M3=10 & RRFc_R1 & RRFc_R2
+:CLRTHE RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB973 & RRFc_M3=10 & RRFc_R1 & RRFc_R2
 {
     local a:8;
     local b:8;
@@ -999,7 +999,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <trap_done>
 }
 
-:CLRTLE "CLRTLE " RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB973 & RRFc_M3=12 & RRFc_R1 & RRFc_R2
+:CLRTLE RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB973 & RRFc_M3=12 & RRFc_R1 & RRFc_R2
 {
     local a:8;
     local b:8;
@@ -1017,7 +1017,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <trap_done>
 }
 
-:CLRT "CLRT " RRFc_R1 "," RRFc_R2 "," RRFc_M3 is RRFc_OP=0xB973 & RRFc_M3 & RRFc_R1 & RRFc_R2
+:CLRT RRFc_R1 "," RRFc_R2 "," RRFc_M3 is RRFc_OP=0xB973 & RRFc_M3 & RRFc_R1 & RRFc_R2
 {
     local a:8;
     local b:8;
@@ -1036,7 +1036,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 }
 
 # CGRT: cc_scmp64, 64-bit operands.
-:CGRTH "CGRTH " RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB960 & RRFc_M3=2 & RRFc_R1 & RRFc_R2
+:CGRTH RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB960 & RRFc_M3=2 & RRFc_R1 & RRFc_R2
 {
     local a:8;
     local b:8;
@@ -1054,7 +1054,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <trap_done>
 }
 
-:CGRTL "CGRTL " RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB960 & RRFc_M3=4 & RRFc_R1 & RRFc_R2
+:CGRTL RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB960 & RRFc_M3=4 & RRFc_R1 & RRFc_R2
 {
     local a:8;
     local b:8;
@@ -1072,7 +1072,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <trap_done>
 }
 
-:CGRTLH "CGRTLH " RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB960 & RRFc_M3=6 & RRFc_R1 & RRFc_R2
+:CGRTLH RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB960 & RRFc_M3=6 & RRFc_R1 & RRFc_R2
 {
     local a:8;
     local b:8;
@@ -1090,7 +1090,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <trap_done>
 }
 
-:CGRTE "CGRTE " RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB960 & RRFc_M3=8 & RRFc_R1 & RRFc_R2
+:CGRTE RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB960 & RRFc_M3=8 & RRFc_R1 & RRFc_R2
 {
     local a:8;
     local b:8;
@@ -1108,7 +1108,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <trap_done>
 }
 
-:CGRTHE "CGRTHE " RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB960 & RRFc_M3=10 & RRFc_R1 & RRFc_R2
+:CGRTHE RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB960 & RRFc_M3=10 & RRFc_R1 & RRFc_R2
 {
     local a:8;
     local b:8;
@@ -1126,7 +1126,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <trap_done>
 }
 
-:CGRTLE "CGRTLE " RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB960 & RRFc_M3=12 & RRFc_R1 & RRFc_R2
+:CGRTLE RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB960 & RRFc_M3=12 & RRFc_R1 & RRFc_R2
 {
     local a:8;
     local b:8;
@@ -1144,7 +1144,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <trap_done>
 }
 
-:CGRT "CGRT " RRFc_R1 "," RRFc_R2 "," RRFc_M3 is RRFc_OP=0xB960 & RRFc_M3 & RRFc_R1 & RRFc_R2
+:CGRT RRFc_R1 "," RRFc_R2 "," RRFc_M3 is RRFc_OP=0xB960 & RRFc_M3 & RRFc_R1 & RRFc_R2
 {
     local a:8;
     local b:8;
@@ -1163,7 +1163,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 }
 
 # CLGRT: cc_ucmp, 64-bit operands.
-:CLGRTH "CLGRTH " RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB961 & RRFc_M3=2 & RRFc_R1 & RRFc_R2
+:CLGRTH RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB961 & RRFc_M3=2 & RRFc_R1 & RRFc_R2
 {
     local a:8;
     local b:8;
@@ -1181,7 +1181,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <trap_done>
 }
 
-:CLGRTL "CLGRTL " RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB961 & RRFc_M3=4 & RRFc_R1 & RRFc_R2
+:CLGRTL RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB961 & RRFc_M3=4 & RRFc_R1 & RRFc_R2
 {
     local a:8;
     local b:8;
@@ -1199,7 +1199,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <trap_done>
 }
 
-:CLGRTLH "CLGRTLH " RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB961 & RRFc_M3=6 & RRFc_R1 & RRFc_R2
+:CLGRTLH RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB961 & RRFc_M3=6 & RRFc_R1 & RRFc_R2
 {
     local a:8;
     local b:8;
@@ -1217,7 +1217,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <trap_done>
 }
 
-:CLGRTE "CLGRTE " RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB961 & RRFc_M3=8 & RRFc_R1 & RRFc_R2
+:CLGRTE RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB961 & RRFc_M3=8 & RRFc_R1 & RRFc_R2
 {
     local a:8;
     local b:8;
@@ -1235,7 +1235,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <trap_done>
 }
 
-:CLGRTHE "CLGRTHE " RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB961 & RRFc_M3=10 & RRFc_R1 & RRFc_R2
+:CLGRTHE RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB961 & RRFc_M3=10 & RRFc_R1 & RRFc_R2
 {
     local a:8;
     local b:8;
@@ -1253,7 +1253,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <trap_done>
 }
 
-:CLGRTLE "CLGRTLE " RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB961 & RRFc_M3=12 & RRFc_R1 & RRFc_R2
+:CLGRTLE RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB961 & RRFc_M3=12 & RRFc_R1 & RRFc_R2
 {
     local a:8;
     local b:8;
@@ -1271,7 +1271,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <trap_done>
 }
 
-:CLGRT "CLGRT " RRFc_R1 "," RRFc_R2 "," RRFc_M3 is RRFc_OP=0xB961 & RRFc_M3 & RRFc_R1 & RRFc_R2
+:CLGRT RRFc_R1 "," RRFc_R2 "," RRFc_M3 is RRFc_OP=0xB961 & RRFc_M3 & RRFc_R1 & RRFc_R2
 {
     local a:8;
     local b:8;
@@ -1295,7 +1295,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 # the mask is the LAST operand: LOC R1,D2(B2),M3 / STOC R1,D2(B2),M3.
 # ===========================================================================
 # LOC: 32-bit, low half (load).
-:LOCO "LOCO " RSYb_R1 "," RSYb_DL2 "(" RSYb_B2 ")" is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=1 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xF2
+:LOCO RSYb_R1 "," db_RSYb_DL2_RSYb_B2 is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=1 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xF2 & db_RSYb_DL2_RSYb_B2
 {
     local ea:8;
     local w:4;
@@ -1314,7 +1314,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:LOCH "LOCH " RSYb_R1 "," RSYb_DL2 "(" RSYb_B2 ")" is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=2 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xF2
+:LOCH RSYb_R1 "," db_RSYb_DL2_RSYb_B2 is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=2 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xF2 & db_RSYb_DL2_RSYb_B2
 {
     local ea:8;
     local w:4;
@@ -1333,7 +1333,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:LOCNLE "LOCNLE " RSYb_R1 "," RSYb_DL2 "(" RSYb_B2 ")" is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=3 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xF2
+:LOCNLE RSYb_R1 "," db_RSYb_DL2_RSYb_B2 is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=3 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xF2 & db_RSYb_DL2_RSYb_B2
 {
     local ea:8;
     local w:4;
@@ -1352,7 +1352,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:LOCL "LOCL " RSYb_R1 "," RSYb_DL2 "(" RSYb_B2 ")" is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=4 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xF2
+:LOCL RSYb_R1 "," db_RSYb_DL2_RSYb_B2 is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=4 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xF2 & db_RSYb_DL2_RSYb_B2
 {
     local ea:8;
     local w:4;
@@ -1371,7 +1371,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:LOCNHE "LOCNHE " RSYb_R1 "," RSYb_DL2 "(" RSYb_B2 ")" is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=5 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xF2
+:LOCNHE RSYb_R1 "," db_RSYb_DL2_RSYb_B2 is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=5 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xF2 & db_RSYb_DL2_RSYb_B2
 {
     local ea:8;
     local w:4;
@@ -1390,7 +1390,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:LOCLH "LOCLH " RSYb_R1 "," RSYb_DL2 "(" RSYb_B2 ")" is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=6 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xF2
+:LOCLH RSYb_R1 "," db_RSYb_DL2_RSYb_B2 is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=6 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xF2 & db_RSYb_DL2_RSYb_B2
 {
     local ea:8;
     local w:4;
@@ -1409,7 +1409,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:LOCNE "LOCNE " RSYb_R1 "," RSYb_DL2 "(" RSYb_B2 ")" is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=7 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xF2
+:LOCNE RSYb_R1 "," db_RSYb_DL2_RSYb_B2 is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=7 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xF2 & db_RSYb_DL2_RSYb_B2
 {
     local ea:8;
     local w:4;
@@ -1428,7 +1428,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:LOCE "LOCE " RSYb_R1 "," RSYb_DL2 "(" RSYb_B2 ")" is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=8 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xF2
+:LOCE RSYb_R1 "," db_RSYb_DL2_RSYb_B2 is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=8 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xF2 & db_RSYb_DL2_RSYb_B2
 {
     local ea:8;
     local w:4;
@@ -1447,7 +1447,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:LOCNLH "LOCNLH " RSYb_R1 "," RSYb_DL2 "(" RSYb_B2 ")" is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=9 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xF2
+:LOCNLH RSYb_R1 "," db_RSYb_DL2_RSYb_B2 is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=9 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xF2 & db_RSYb_DL2_RSYb_B2
 {
     local ea:8;
     local w:4;
@@ -1466,7 +1466,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:LOCHE "LOCHE " RSYb_R1 "," RSYb_DL2 "(" RSYb_B2 ")" is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=10 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xF2
+:LOCHE RSYb_R1 "," db_RSYb_DL2_RSYb_B2 is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=10 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xF2 & db_RSYb_DL2_RSYb_B2
 {
     local ea:8;
     local w:4;
@@ -1485,7 +1485,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:LOCNL "LOCNL " RSYb_R1 "," RSYb_DL2 "(" RSYb_B2 ")" is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=11 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xF2
+:LOCNL RSYb_R1 "," db_RSYb_DL2_RSYb_B2 is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=11 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xF2 & db_RSYb_DL2_RSYb_B2
 {
     local ea:8;
     local w:4;
@@ -1504,7 +1504,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:LOCLE "LOCLE " RSYb_R1 "," RSYb_DL2 "(" RSYb_B2 ")" is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=12 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xF2
+:LOCLE RSYb_R1 "," db_RSYb_DL2_RSYb_B2 is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=12 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xF2 & db_RSYb_DL2_RSYb_B2
 {
     local ea:8;
     local w:4;
@@ -1523,7 +1523,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:LOCNH "LOCNH " RSYb_R1 "," RSYb_DL2 "(" RSYb_B2 ")" is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=13 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xF2
+:LOCNH RSYb_R1 "," db_RSYb_DL2_RSYb_B2 is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=13 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xF2 & db_RSYb_DL2_RSYb_B2
 {
     local ea:8;
     local w:4;
@@ -1542,7 +1542,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:LOCNO "LOCNO " RSYb_R1 "," RSYb_DL2 "(" RSYb_B2 ")" is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=14 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xF2
+:LOCNO RSYb_R1 "," db_RSYb_DL2_RSYb_B2 is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=14 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xF2 & db_RSYb_DL2_RSYb_B2
 {
     local ea:8;
     local w:4;
@@ -1561,7 +1561,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:LOC "LOC " RSYb_R1 "," RSYb_DL2 "(" RSYb_B2 ")," RSYb_M3 is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xF2
+:LOC RSYb_R1 "," db_RSYb_DL2_RSYb_B2 "," RSYb_M3 is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xF2 & db_RSYb_DL2_RSYb_B2
 {
     local ea:8;
     local w:4;
@@ -1581,7 +1581,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 }
 
 # LOCG: 64-bit (load).
-:LOCGO "LOCGO " RSYb_R1 "," RSYb_DL2 "(" RSYb_B2 ")" is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=1 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xE2
+:LOCGO RSYb_R1 "," db_RSYb_DL2_RSYb_B2 is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=1 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xE2 & db_RSYb_DL2_RSYb_B2
 {
     local ea:8;
     local _c_m:1;
@@ -1598,7 +1598,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:LOCGH "LOCGH " RSYb_R1 "," RSYb_DL2 "(" RSYb_B2 ")" is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=2 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xE2
+:LOCGH RSYb_R1 "," db_RSYb_DL2_RSYb_B2 is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=2 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xE2 & db_RSYb_DL2_RSYb_B2
 {
     local ea:8;
     local _c_m:1;
@@ -1615,7 +1615,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:LOCGNLE "LOCGNLE " RSYb_R1 "," RSYb_DL2 "(" RSYb_B2 ")" is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=3 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xE2
+:LOCGNLE RSYb_R1 "," db_RSYb_DL2_RSYb_B2 is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=3 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xE2 & db_RSYb_DL2_RSYb_B2
 {
     local ea:8;
     local _c_m:1;
@@ -1632,7 +1632,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:LOCGL "LOCGL " RSYb_R1 "," RSYb_DL2 "(" RSYb_B2 ")" is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=4 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xE2
+:LOCGL RSYb_R1 "," db_RSYb_DL2_RSYb_B2 is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=4 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xE2 & db_RSYb_DL2_RSYb_B2
 {
     local ea:8;
     local _c_m:1;
@@ -1649,7 +1649,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:LOCGNHE "LOCGNHE " RSYb_R1 "," RSYb_DL2 "(" RSYb_B2 ")" is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=5 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xE2
+:LOCGNHE RSYb_R1 "," db_RSYb_DL2_RSYb_B2 is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=5 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xE2 & db_RSYb_DL2_RSYb_B2
 {
     local ea:8;
     local _c_m:1;
@@ -1666,7 +1666,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:LOCGLH "LOCGLH " RSYb_R1 "," RSYb_DL2 "(" RSYb_B2 ")" is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=6 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xE2
+:LOCGLH RSYb_R1 "," db_RSYb_DL2_RSYb_B2 is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=6 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xE2 & db_RSYb_DL2_RSYb_B2
 {
     local ea:8;
     local _c_m:1;
@@ -1683,7 +1683,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:LOCGNE "LOCGNE " RSYb_R1 "," RSYb_DL2 "(" RSYb_B2 ")" is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=7 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xE2
+:LOCGNE RSYb_R1 "," db_RSYb_DL2_RSYb_B2 is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=7 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xE2 & db_RSYb_DL2_RSYb_B2
 {
     local ea:8;
     local _c_m:1;
@@ -1700,7 +1700,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:LOCGE "LOCGE " RSYb_R1 "," RSYb_DL2 "(" RSYb_B2 ")" is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=8 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xE2
+:LOCGE RSYb_R1 "," db_RSYb_DL2_RSYb_B2 is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=8 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xE2 & db_RSYb_DL2_RSYb_B2
 {
     local ea:8;
     local _c_m:1;
@@ -1717,7 +1717,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:LOCGNLH "LOCGNLH " RSYb_R1 "," RSYb_DL2 "(" RSYb_B2 ")" is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=9 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xE2
+:LOCGNLH RSYb_R1 "," db_RSYb_DL2_RSYb_B2 is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=9 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xE2 & db_RSYb_DL2_RSYb_B2
 {
     local ea:8;
     local _c_m:1;
@@ -1734,7 +1734,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:LOCGHE "LOCGHE " RSYb_R1 "," RSYb_DL2 "(" RSYb_B2 ")" is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=10 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xE2
+:LOCGHE RSYb_R1 "," db_RSYb_DL2_RSYb_B2 is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=10 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xE2 & db_RSYb_DL2_RSYb_B2
 {
     local ea:8;
     local _c_m:1;
@@ -1751,7 +1751,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:LOCGNL "LOCGNL " RSYb_R1 "," RSYb_DL2 "(" RSYb_B2 ")" is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=11 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xE2
+:LOCGNL RSYb_R1 "," db_RSYb_DL2_RSYb_B2 is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=11 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xE2 & db_RSYb_DL2_RSYb_B2
 {
     local ea:8;
     local _c_m:1;
@@ -1768,7 +1768,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:LOCGLE "LOCGLE " RSYb_R1 "," RSYb_DL2 "(" RSYb_B2 ")" is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=12 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xE2
+:LOCGLE RSYb_R1 "," db_RSYb_DL2_RSYb_B2 is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=12 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xE2 & db_RSYb_DL2_RSYb_B2
 {
     local ea:8;
     local _c_m:1;
@@ -1785,7 +1785,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:LOCGNH "LOCGNH " RSYb_R1 "," RSYb_DL2 "(" RSYb_B2 ")" is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=13 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xE2
+:LOCGNH RSYb_R1 "," db_RSYb_DL2_RSYb_B2 is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=13 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xE2 & db_RSYb_DL2_RSYb_B2
 {
     local ea:8;
     local _c_m:1;
@@ -1802,7 +1802,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:LOCGNO "LOCGNO " RSYb_R1 "," RSYb_DL2 "(" RSYb_B2 ")" is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=14 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xE2
+:LOCGNO RSYb_R1 "," db_RSYb_DL2_RSYb_B2 is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=14 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xE2 & db_RSYb_DL2_RSYb_B2
 {
     local ea:8;
     local _c_m:1;
@@ -1819,7 +1819,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:LOCG "LOCG " RSYb_R1 "," RSYb_DL2 "(" RSYb_B2 ")," RSYb_M3 is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xE2
+:LOCG RSYb_R1 "," db_RSYb_DL2_RSYb_B2 "," RSYb_M3 is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xE2 & db_RSYb_DL2_RSYb_B2
 {
     local ea:8;
     local _c_m:1;
@@ -1837,7 +1837,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 }
 
 # LOCFH: 32-bit, high half (load).
-:LOCFHO "LOCFHO " RSYb_R1 "," RSYb_DL2 "(" RSYb_B2 ")" is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=1 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xE0
+:LOCFHO RSYb_R1 "," db_RSYb_DL2_RSYb_B2 is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=1 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xE0 & db_RSYb_DL2_RSYb_B2
 {
     local ea:8;
     local w:4;
@@ -1856,7 +1856,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:LOCFHH "LOCFHH " RSYb_R1 "," RSYb_DL2 "(" RSYb_B2 ")" is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=2 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xE0
+:LOCFHH RSYb_R1 "," db_RSYb_DL2_RSYb_B2 is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=2 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xE0 & db_RSYb_DL2_RSYb_B2
 {
     local ea:8;
     local w:4;
@@ -1875,7 +1875,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:LOCFHNLE "LOCFHNLE " RSYb_R1 "," RSYb_DL2 "(" RSYb_B2 ")" is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=3 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xE0
+:LOCFHNLE RSYb_R1 "," db_RSYb_DL2_RSYb_B2 is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=3 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xE0 & db_RSYb_DL2_RSYb_B2
 {
     local ea:8;
     local w:4;
@@ -1894,7 +1894,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:LOCFHL "LOCFHL " RSYb_R1 "," RSYb_DL2 "(" RSYb_B2 ")" is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=4 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xE0
+:LOCFHL RSYb_R1 "," db_RSYb_DL2_RSYb_B2 is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=4 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xE0 & db_RSYb_DL2_RSYb_B2
 {
     local ea:8;
     local w:4;
@@ -1913,7 +1913,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:LOCFHNHE "LOCFHNHE " RSYb_R1 "," RSYb_DL2 "(" RSYb_B2 ")" is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=5 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xE0
+:LOCFHNHE RSYb_R1 "," db_RSYb_DL2_RSYb_B2 is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=5 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xE0 & db_RSYb_DL2_RSYb_B2
 {
     local ea:8;
     local w:4;
@@ -1932,7 +1932,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:LOCFHLH "LOCFHLH " RSYb_R1 "," RSYb_DL2 "(" RSYb_B2 ")" is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=6 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xE0
+:LOCFHLH RSYb_R1 "," db_RSYb_DL2_RSYb_B2 is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=6 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xE0 & db_RSYb_DL2_RSYb_B2
 {
     local ea:8;
     local w:4;
@@ -1951,7 +1951,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:LOCFHNE "LOCFHNE " RSYb_R1 "," RSYb_DL2 "(" RSYb_B2 ")" is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=7 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xE0
+:LOCFHNE RSYb_R1 "," db_RSYb_DL2_RSYb_B2 is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=7 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xE0 & db_RSYb_DL2_RSYb_B2
 {
     local ea:8;
     local w:4;
@@ -1970,7 +1970,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:LOCFHE "LOCFHE " RSYb_R1 "," RSYb_DL2 "(" RSYb_B2 ")" is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=8 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xE0
+:LOCFHE RSYb_R1 "," db_RSYb_DL2_RSYb_B2 is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=8 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xE0 & db_RSYb_DL2_RSYb_B2
 {
     local ea:8;
     local w:4;
@@ -1989,7 +1989,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:LOCFHNLH "LOCFHNLH " RSYb_R1 "," RSYb_DL2 "(" RSYb_B2 ")" is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=9 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xE0
+:LOCFHNLH RSYb_R1 "," db_RSYb_DL2_RSYb_B2 is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=9 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xE0 & db_RSYb_DL2_RSYb_B2
 {
     local ea:8;
     local w:4;
@@ -2008,7 +2008,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:LOCFHHE "LOCFHHE " RSYb_R1 "," RSYb_DL2 "(" RSYb_B2 ")" is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=10 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xE0
+:LOCFHHE RSYb_R1 "," db_RSYb_DL2_RSYb_B2 is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=10 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xE0 & db_RSYb_DL2_RSYb_B2
 {
     local ea:8;
     local w:4;
@@ -2027,7 +2027,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:LOCFHNL "LOCFHNL " RSYb_R1 "," RSYb_DL2 "(" RSYb_B2 ")" is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=11 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xE0
+:LOCFHNL RSYb_R1 "," db_RSYb_DL2_RSYb_B2 is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=11 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xE0 & db_RSYb_DL2_RSYb_B2
 {
     local ea:8;
     local w:4;
@@ -2046,7 +2046,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:LOCFHLE "LOCFHLE " RSYb_R1 "," RSYb_DL2 "(" RSYb_B2 ")" is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=12 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xE0
+:LOCFHLE RSYb_R1 "," db_RSYb_DL2_RSYb_B2 is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=12 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xE0 & db_RSYb_DL2_RSYb_B2
 {
     local ea:8;
     local w:4;
@@ -2065,7 +2065,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:LOCFHNH "LOCFHNH " RSYb_R1 "," RSYb_DL2 "(" RSYb_B2 ")" is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=13 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xE0
+:LOCFHNH RSYb_R1 "," db_RSYb_DL2_RSYb_B2 is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=13 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xE0 & db_RSYb_DL2_RSYb_B2
 {
     local ea:8;
     local w:4;
@@ -2084,7 +2084,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:LOCFHNO "LOCFHNO " RSYb_R1 "," RSYb_DL2 "(" RSYb_B2 ")" is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=14 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xE0
+:LOCFHNO RSYb_R1 "," db_RSYb_DL2_RSYb_B2 is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=14 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xE0 & db_RSYb_DL2_RSYb_B2
 {
     local ea:8;
     local w:4;
@@ -2103,7 +2103,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:LOCFH "LOCFH " RSYb_R1 "," RSYb_DL2 "(" RSYb_B2 ")," RSYb_M3 is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xE0
+:LOCFH RSYb_R1 "," db_RSYb_DL2_RSYb_B2 "," RSYb_M3 is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xE0 & db_RSYb_DL2_RSYb_B2
 {
     local ea:8;
     local w:4;
@@ -2123,7 +2123,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 }
 
 # STOC: 32-bit, low half (store).
-:STOCO "STOCO " RSYb_R1 "," RSYb_DL2 "(" RSYb_B2 ")" is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=1 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xF3
+:STOCO RSYb_R1 "," db_RSYb_DL2_RSYb_B2 is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=1 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xF3 & db_RSYb_DL2_RSYb_B2
 {
     local ea:8;
     local _c_m:1;
@@ -2140,7 +2140,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:STOCH "STOCH " RSYb_R1 "," RSYb_DL2 "(" RSYb_B2 ")" is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=2 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xF3
+:STOCH RSYb_R1 "," db_RSYb_DL2_RSYb_B2 is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=2 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xF3 & db_RSYb_DL2_RSYb_B2
 {
     local ea:8;
     local _c_m:1;
@@ -2157,7 +2157,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:STOCNLE "STOCNLE " RSYb_R1 "," RSYb_DL2 "(" RSYb_B2 ")" is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=3 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xF3
+:STOCNLE RSYb_R1 "," db_RSYb_DL2_RSYb_B2 is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=3 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xF3 & db_RSYb_DL2_RSYb_B2
 {
     local ea:8;
     local _c_m:1;
@@ -2174,7 +2174,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:STOCL "STOCL " RSYb_R1 "," RSYb_DL2 "(" RSYb_B2 ")" is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=4 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xF3
+:STOCL RSYb_R1 "," db_RSYb_DL2_RSYb_B2 is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=4 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xF3 & db_RSYb_DL2_RSYb_B2
 {
     local ea:8;
     local _c_m:1;
@@ -2191,7 +2191,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:STOCNHE "STOCNHE " RSYb_R1 "," RSYb_DL2 "(" RSYb_B2 ")" is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=5 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xF3
+:STOCNHE RSYb_R1 "," db_RSYb_DL2_RSYb_B2 is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=5 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xF3 & db_RSYb_DL2_RSYb_B2
 {
     local ea:8;
     local _c_m:1;
@@ -2208,7 +2208,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:STOCLH "STOCLH " RSYb_R1 "," RSYb_DL2 "(" RSYb_B2 ")" is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=6 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xF3
+:STOCLH RSYb_R1 "," db_RSYb_DL2_RSYb_B2 is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=6 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xF3 & db_RSYb_DL2_RSYb_B2
 {
     local ea:8;
     local _c_m:1;
@@ -2225,7 +2225,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:STOCNE "STOCNE " RSYb_R1 "," RSYb_DL2 "(" RSYb_B2 ")" is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=7 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xF3
+:STOCNE RSYb_R1 "," db_RSYb_DL2_RSYb_B2 is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=7 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xF3 & db_RSYb_DL2_RSYb_B2
 {
     local ea:8;
     local _c_m:1;
@@ -2242,7 +2242,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:STOCE "STOCE " RSYb_R1 "," RSYb_DL2 "(" RSYb_B2 ")" is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=8 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xF3
+:STOCE RSYb_R1 "," db_RSYb_DL2_RSYb_B2 is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=8 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xF3 & db_RSYb_DL2_RSYb_B2
 {
     local ea:8;
     local _c_m:1;
@@ -2259,7 +2259,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:STOCNLH "STOCNLH " RSYb_R1 "," RSYb_DL2 "(" RSYb_B2 ")" is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=9 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xF3
+:STOCNLH RSYb_R1 "," db_RSYb_DL2_RSYb_B2 is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=9 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xF3 & db_RSYb_DL2_RSYb_B2
 {
     local ea:8;
     local _c_m:1;
@@ -2276,7 +2276,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:STOCHE "STOCHE " RSYb_R1 "," RSYb_DL2 "(" RSYb_B2 ")" is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=10 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xF3
+:STOCHE RSYb_R1 "," db_RSYb_DL2_RSYb_B2 is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=10 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xF3 & db_RSYb_DL2_RSYb_B2
 {
     local ea:8;
     local _c_m:1;
@@ -2293,7 +2293,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:STOCNL "STOCNL " RSYb_R1 "," RSYb_DL2 "(" RSYb_B2 ")" is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=11 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xF3
+:STOCNL RSYb_R1 "," db_RSYb_DL2_RSYb_B2 is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=11 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xF3 & db_RSYb_DL2_RSYb_B2
 {
     local ea:8;
     local _c_m:1;
@@ -2310,7 +2310,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:STOCLE "STOCLE " RSYb_R1 "," RSYb_DL2 "(" RSYb_B2 ")" is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=12 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xF3
+:STOCLE RSYb_R1 "," db_RSYb_DL2_RSYb_B2 is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=12 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xF3 & db_RSYb_DL2_RSYb_B2
 {
     local ea:8;
     local _c_m:1;
@@ -2327,7 +2327,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:STOCNH "STOCNH " RSYb_R1 "," RSYb_DL2 "(" RSYb_B2 ")" is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=13 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xF3
+:STOCNH RSYb_R1 "," db_RSYb_DL2_RSYb_B2 is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=13 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xF3 & db_RSYb_DL2_RSYb_B2
 {
     local ea:8;
     local _c_m:1;
@@ -2344,7 +2344,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:STOCNO "STOCNO " RSYb_R1 "," RSYb_DL2 "(" RSYb_B2 ")" is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=14 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xF3
+:STOCNO RSYb_R1 "," db_RSYb_DL2_RSYb_B2 is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=14 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xF3 & db_RSYb_DL2_RSYb_B2
 {
     local ea:8;
     local _c_m:1;
@@ -2361,7 +2361,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:STOC "STOC " RSYb_R1 "," RSYb_DL2 "(" RSYb_B2 ")," RSYb_M3 is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xF3
+:STOC RSYb_R1 "," db_RSYb_DL2_RSYb_B2 "," RSYb_M3 is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xF3 & db_RSYb_DL2_RSYb_B2
 {
     local ea:8;
     local _c_m:1;
@@ -2379,7 +2379,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 }
 
 # STOCG: 64-bit (store).
-:STOCGO "STOCGO " RSYb_R1 "," RSYb_DL2 "(" RSYb_B2 ")" is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=1 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xE3
+:STOCGO RSYb_R1 "," db_RSYb_DL2_RSYb_B2 is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=1 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xE3 & db_RSYb_DL2_RSYb_B2
 {
     local ea:8;
     local _c_m:1;
@@ -2396,7 +2396,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:STOCGH "STOCGH " RSYb_R1 "," RSYb_DL2 "(" RSYb_B2 ")" is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=2 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xE3
+:STOCGH RSYb_R1 "," db_RSYb_DL2_RSYb_B2 is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=2 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xE3 & db_RSYb_DL2_RSYb_B2
 {
     local ea:8;
     local _c_m:1;
@@ -2413,7 +2413,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:STOCGNLE "STOCGNLE " RSYb_R1 "," RSYb_DL2 "(" RSYb_B2 ")" is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=3 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xE3
+:STOCGNLE RSYb_R1 "," db_RSYb_DL2_RSYb_B2 is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=3 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xE3 & db_RSYb_DL2_RSYb_B2
 {
     local ea:8;
     local _c_m:1;
@@ -2430,7 +2430,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:STOCGL "STOCGL " RSYb_R1 "," RSYb_DL2 "(" RSYb_B2 ")" is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=4 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xE3
+:STOCGL RSYb_R1 "," db_RSYb_DL2_RSYb_B2 is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=4 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xE3 & db_RSYb_DL2_RSYb_B2
 {
     local ea:8;
     local _c_m:1;
@@ -2447,7 +2447,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:STOCGNHE "STOCGNHE " RSYb_R1 "," RSYb_DL2 "(" RSYb_B2 ")" is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=5 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xE3
+:STOCGNHE RSYb_R1 "," db_RSYb_DL2_RSYb_B2 is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=5 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xE3 & db_RSYb_DL2_RSYb_B2
 {
     local ea:8;
     local _c_m:1;
@@ -2464,7 +2464,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:STOCGLH "STOCGLH " RSYb_R1 "," RSYb_DL2 "(" RSYb_B2 ")" is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=6 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xE3
+:STOCGLH RSYb_R1 "," db_RSYb_DL2_RSYb_B2 is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=6 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xE3 & db_RSYb_DL2_RSYb_B2
 {
     local ea:8;
     local _c_m:1;
@@ -2481,7 +2481,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:STOCGNE "STOCGNE " RSYb_R1 "," RSYb_DL2 "(" RSYb_B2 ")" is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=7 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xE3
+:STOCGNE RSYb_R1 "," db_RSYb_DL2_RSYb_B2 is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=7 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xE3 & db_RSYb_DL2_RSYb_B2
 {
     local ea:8;
     local _c_m:1;
@@ -2498,7 +2498,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:STOCGE "STOCGE " RSYb_R1 "," RSYb_DL2 "(" RSYb_B2 ")" is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=8 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xE3
+:STOCGE RSYb_R1 "," db_RSYb_DL2_RSYb_B2 is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=8 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xE3 & db_RSYb_DL2_RSYb_B2
 {
     local ea:8;
     local _c_m:1;
@@ -2515,7 +2515,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:STOCGNLH "STOCGNLH " RSYb_R1 "," RSYb_DL2 "(" RSYb_B2 ")" is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=9 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xE3
+:STOCGNLH RSYb_R1 "," db_RSYb_DL2_RSYb_B2 is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=9 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xE3 & db_RSYb_DL2_RSYb_B2
 {
     local ea:8;
     local _c_m:1;
@@ -2532,7 +2532,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:STOCGHE "STOCGHE " RSYb_R1 "," RSYb_DL2 "(" RSYb_B2 ")" is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=10 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xE3
+:STOCGHE RSYb_R1 "," db_RSYb_DL2_RSYb_B2 is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=10 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xE3 & db_RSYb_DL2_RSYb_B2
 {
     local ea:8;
     local _c_m:1;
@@ -2549,7 +2549,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:STOCGNL "STOCGNL " RSYb_R1 "," RSYb_DL2 "(" RSYb_B2 ")" is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=11 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xE3
+:STOCGNL RSYb_R1 "," db_RSYb_DL2_RSYb_B2 is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=11 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xE3 & db_RSYb_DL2_RSYb_B2
 {
     local ea:8;
     local _c_m:1;
@@ -2566,7 +2566,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:STOCGLE "STOCGLE " RSYb_R1 "," RSYb_DL2 "(" RSYb_B2 ")" is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=12 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xE3
+:STOCGLE RSYb_R1 "," db_RSYb_DL2_RSYb_B2 is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=12 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xE3 & db_RSYb_DL2_RSYb_B2
 {
     local ea:8;
     local _c_m:1;
@@ -2583,7 +2583,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:STOCGNH "STOCGNH " RSYb_R1 "," RSYb_DL2 "(" RSYb_B2 ")" is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=13 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xE3
+:STOCGNH RSYb_R1 "," db_RSYb_DL2_RSYb_B2 is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=13 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xE3 & db_RSYb_DL2_RSYb_B2
 {
     local ea:8;
     local _c_m:1;
@@ -2600,7 +2600,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:STOCGNO "STOCGNO " RSYb_R1 "," RSYb_DL2 "(" RSYb_B2 ")" is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=14 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xE3
+:STOCGNO RSYb_R1 "," db_RSYb_DL2_RSYb_B2 is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=14 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xE3 & db_RSYb_DL2_RSYb_B2
 {
     local ea:8;
     local _c_m:1;
@@ -2617,7 +2617,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:STOCG "STOCG " RSYb_R1 "," RSYb_DL2 "(" RSYb_B2 ")," RSYb_M3 is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xE3
+:STOCG RSYb_R1 "," db_RSYb_DL2_RSYb_B2 "," RSYb_M3 is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xE3 & db_RSYb_DL2_RSYb_B2
 {
     local ea:8;
     local _c_m:1;
@@ -2635,7 +2635,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 }
 
 # STOCFH: 32-bit, high half (store).
-:STOCFHO "STOCFHO " RSYb_R1 "," RSYb_DL2 "(" RSYb_B2 ")" is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=1 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xE1
+:STOCFHO RSYb_R1 "," db_RSYb_DL2_RSYb_B2 is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=1 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xE1 & db_RSYb_DL2_RSYb_B2
 {
     local ea:8;
     local tmp:8;
@@ -2656,7 +2656,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:STOCFHH "STOCFHH " RSYb_R1 "," RSYb_DL2 "(" RSYb_B2 ")" is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=2 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xE1
+:STOCFHH RSYb_R1 "," db_RSYb_DL2_RSYb_B2 is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=2 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xE1 & db_RSYb_DL2_RSYb_B2
 {
     local ea:8;
     local tmp:8;
@@ -2677,7 +2677,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:STOCFHNLE "STOCFHNLE " RSYb_R1 "," RSYb_DL2 "(" RSYb_B2 ")" is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=3 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xE1
+:STOCFHNLE RSYb_R1 "," db_RSYb_DL2_RSYb_B2 is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=3 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xE1 & db_RSYb_DL2_RSYb_B2
 {
     local ea:8;
     local tmp:8;
@@ -2698,7 +2698,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:STOCFHL "STOCFHL " RSYb_R1 "," RSYb_DL2 "(" RSYb_B2 ")" is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=4 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xE1
+:STOCFHL RSYb_R1 "," db_RSYb_DL2_RSYb_B2 is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=4 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xE1 & db_RSYb_DL2_RSYb_B2
 {
     local ea:8;
     local tmp:8;
@@ -2719,7 +2719,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:STOCFHNHE "STOCFHNHE " RSYb_R1 "," RSYb_DL2 "(" RSYb_B2 ")" is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=5 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xE1
+:STOCFHNHE RSYb_R1 "," db_RSYb_DL2_RSYb_B2 is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=5 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xE1 & db_RSYb_DL2_RSYb_B2
 {
     local ea:8;
     local tmp:8;
@@ -2740,7 +2740,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:STOCFHLH "STOCFHLH " RSYb_R1 "," RSYb_DL2 "(" RSYb_B2 ")" is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=6 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xE1
+:STOCFHLH RSYb_R1 "," db_RSYb_DL2_RSYb_B2 is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=6 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xE1 & db_RSYb_DL2_RSYb_B2
 {
     local ea:8;
     local tmp:8;
@@ -2761,7 +2761,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:STOCFHNE "STOCFHNE " RSYb_R1 "," RSYb_DL2 "(" RSYb_B2 ")" is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=7 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xE1
+:STOCFHNE RSYb_R1 "," db_RSYb_DL2_RSYb_B2 is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=7 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xE1 & db_RSYb_DL2_RSYb_B2
 {
     local ea:8;
     local tmp:8;
@@ -2782,7 +2782,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:STOCFHE "STOCFHE " RSYb_R1 "," RSYb_DL2 "(" RSYb_B2 ")" is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=8 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xE1
+:STOCFHE RSYb_R1 "," db_RSYb_DL2_RSYb_B2 is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=8 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xE1 & db_RSYb_DL2_RSYb_B2
 {
     local ea:8;
     local tmp:8;
@@ -2803,7 +2803,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:STOCFHNLH "STOCFHNLH " RSYb_R1 "," RSYb_DL2 "(" RSYb_B2 ")" is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=9 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xE1
+:STOCFHNLH RSYb_R1 "," db_RSYb_DL2_RSYb_B2 is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=9 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xE1 & db_RSYb_DL2_RSYb_B2
 {
     local ea:8;
     local tmp:8;
@@ -2824,7 +2824,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:STOCFHHE "STOCFHHE " RSYb_R1 "," RSYb_DL2 "(" RSYb_B2 ")" is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=10 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xE1
+:STOCFHHE RSYb_R1 "," db_RSYb_DL2_RSYb_B2 is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=10 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xE1 & db_RSYb_DL2_RSYb_B2
 {
     local ea:8;
     local tmp:8;
@@ -2845,7 +2845,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:STOCFHNL "STOCFHNL " RSYb_R1 "," RSYb_DL2 "(" RSYb_B2 ")" is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=11 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xE1
+:STOCFHNL RSYb_R1 "," db_RSYb_DL2_RSYb_B2 is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=11 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xE1 & db_RSYb_DL2_RSYb_B2
 {
     local ea:8;
     local tmp:8;
@@ -2866,7 +2866,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:STOCFHLE "STOCFHLE " RSYb_R1 "," RSYb_DL2 "(" RSYb_B2 ")" is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=12 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xE1
+:STOCFHLE RSYb_R1 "," db_RSYb_DL2_RSYb_B2 is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=12 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xE1 & db_RSYb_DL2_RSYb_B2
 {
     local ea:8;
     local tmp:8;
@@ -2887,7 +2887,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:STOCFHNH "STOCFHNH " RSYb_R1 "," RSYb_DL2 "(" RSYb_B2 ")" is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=13 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xE1
+:STOCFHNH RSYb_R1 "," db_RSYb_DL2_RSYb_B2 is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=13 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xE1 & db_RSYb_DL2_RSYb_B2
 {
     local ea:8;
     local tmp:8;
@@ -2908,7 +2908,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:STOCFHNO "STOCFHNO " RSYb_R1 "," RSYb_DL2 "(" RSYb_B2 ")" is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=14 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xE1
+:STOCFHNO RSYb_R1 "," db_RSYb_DL2_RSYb_B2 is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=14 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xE1 & db_RSYb_DL2_RSYb_B2
 {
     local ea:8;
     local tmp:8;
@@ -2929,7 +2929,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:STOCFH "STOCFH " RSYb_R1 "," RSYb_DL2 "(" RSYb_B2 ")," RSYb_M3 is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xE1
+:STOCFH RSYb_R1 "," db_RSYb_DL2_RSYb_B2 "," RSYb_M3 is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0xE1 & db_RSYb_DL2_RSYb_B2
 {
     local ea:8;
     local tmp:8;
@@ -2956,7 +2956,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 # the mask is the SECOND operand: CLT R1,M3,D2(B2).
 # ===========================================================================
 # CLT: unsigned 32-bit compare against storage operand.
-:CLTH "CLTH " RSYb_R1 "," RSYb_DL2 "(" RSYb_B2 ")" is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=2 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0x23
+:CLTH RSYb_R1 "," db_RSYb_DL2_RSYb_B2 is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=2 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0x23 & db_RSYb_DL2_RSYb_B2
 {
     local ea:8;
     local a:8;
@@ -2976,7 +2976,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <trap_done>
 }
 
-:CLTL "CLTL " RSYb_R1 "," RSYb_DL2 "(" RSYb_B2 ")" is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=4 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0x23
+:CLTL RSYb_R1 "," db_RSYb_DL2_RSYb_B2 is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=4 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0x23 & db_RSYb_DL2_RSYb_B2
 {
     local ea:8;
     local a:8;
@@ -2996,7 +2996,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <trap_done>
 }
 
-:CLTLH "CLTLH " RSYb_R1 "," RSYb_DL2 "(" RSYb_B2 ")" is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=6 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0x23
+:CLTLH RSYb_R1 "," db_RSYb_DL2_RSYb_B2 is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=6 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0x23 & db_RSYb_DL2_RSYb_B2
 {
     local ea:8;
     local a:8;
@@ -3016,7 +3016,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <trap_done>
 }
 
-:CLTE "CLTE " RSYb_R1 "," RSYb_DL2 "(" RSYb_B2 ")" is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=8 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0x23
+:CLTE RSYb_R1 "," db_RSYb_DL2_RSYb_B2 is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=8 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0x23 & db_RSYb_DL2_RSYb_B2
 {
     local ea:8;
     local a:8;
@@ -3036,7 +3036,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <trap_done>
 }
 
-:CLTHE "CLTHE " RSYb_R1 "," RSYb_DL2 "(" RSYb_B2 ")" is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=10 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0x23
+:CLTHE RSYb_R1 "," db_RSYb_DL2_RSYb_B2 is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=10 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0x23 & db_RSYb_DL2_RSYb_B2
 {
     local ea:8;
     local a:8;
@@ -3056,7 +3056,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <trap_done>
 }
 
-:CLTLE "CLTLE " RSYb_R1 "," RSYb_DL2 "(" RSYb_B2 ")" is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=12 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0x23
+:CLTLE RSYb_R1 "," db_RSYb_DL2_RSYb_B2 is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=12 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0x23 & db_RSYb_DL2_RSYb_B2
 {
     local ea:8;
     local a:8;
@@ -3076,7 +3076,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <trap_done>
 }
 
-:CLT "CLT " RSYb_R1 "," RSYb_M3 "," RSYb_DL2 "(" RSYb_B2 ")" is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0x23
+:CLT RSYb_R1 "," RSYb_M3 "," db_RSYb_DL2_RSYb_B2 is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0x23 & db_RSYb_DL2_RSYb_B2
 {
     local ea:8;
     local a:8;
@@ -3097,7 +3097,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 }
 
 # CLGT: unsigned 64-bit compare against storage operand.
-:CLGTH "CLGTH " RSYb_R1 "," RSYb_DL2 "(" RSYb_B2 ")" is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=2 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0x2B
+:CLGTH RSYb_R1 "," db_RSYb_DL2_RSYb_B2 is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=2 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0x2B & db_RSYb_DL2_RSYb_B2
 {
     local ea:8;
     local a:8;
@@ -3117,7 +3117,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <trap_done>
 }
 
-:CLGTL "CLGTL " RSYb_R1 "," RSYb_DL2 "(" RSYb_B2 ")" is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=4 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0x2B
+:CLGTL RSYb_R1 "," db_RSYb_DL2_RSYb_B2 is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=4 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0x2B & db_RSYb_DL2_RSYb_B2
 {
     local ea:8;
     local a:8;
@@ -3137,7 +3137,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <trap_done>
 }
 
-:CLGTLH "CLGTLH " RSYb_R1 "," RSYb_DL2 "(" RSYb_B2 ")" is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=6 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0x2B
+:CLGTLH RSYb_R1 "," db_RSYb_DL2_RSYb_B2 is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=6 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0x2B & db_RSYb_DL2_RSYb_B2
 {
     local ea:8;
     local a:8;
@@ -3157,7 +3157,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <trap_done>
 }
 
-:CLGTE "CLGTE " RSYb_R1 "," RSYb_DL2 "(" RSYb_B2 ")" is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=8 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0x2B
+:CLGTE RSYb_R1 "," db_RSYb_DL2_RSYb_B2 is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=8 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0x2B & db_RSYb_DL2_RSYb_B2
 {
     local ea:8;
     local a:8;
@@ -3177,7 +3177,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <trap_done>
 }
 
-:CLGTHE "CLGTHE " RSYb_R1 "," RSYb_DL2 "(" RSYb_B2 ")" is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=10 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0x2B
+:CLGTHE RSYb_R1 "," db_RSYb_DL2_RSYb_B2 is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=10 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0x2B & db_RSYb_DL2_RSYb_B2
 {
     local ea:8;
     local a:8;
@@ -3197,7 +3197,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <trap_done>
 }
 
-:CLGTLE "CLGTLE " RSYb_R1 "," RSYb_DL2 "(" RSYb_B2 ")" is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=12 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0x2B
+:CLGTLE RSYb_R1 "," db_RSYb_DL2_RSYb_B2 is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=12 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0x2B & db_RSYb_DL2_RSYb_B2
 {
     local ea:8;
     local a:8;
@@ -3217,7 +3217,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <trap_done>
 }
 
-:CLGT "CLGT " RSYb_R1 "," RSYb_M3 "," RSYb_DL2 "(" RSYb_B2 ")" is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0x2B
+:CLGT RSYb_R1 "," RSYb_M3 "," db_RSYb_DL2_RSYb_B2 is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0x2B & db_RSYb_DL2_RSYb_B2
 {
     local ea:8;
     local a:8;
@@ -3245,7 +3245,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 # CC unchanged. (There is no LOCFHI; LOCHHI is the high-half form.)
 # ===========================================================================
 # LOCHI: sign-extended I2 into low 32 bits.
-:LOCHIO "LOCHIO " RIEg_R1 "," RIEg_I2 is RIEg_OP=0xEC & RIEg_R1 & RIEg_M3=1 & RIEg_I2 & RIEg_IGN & RIEg_OP2=0x42
+:LOCHIO RIEg_R1 "," RIEg_I2 is RIEg_OP=0xEC & RIEg_R1 & RIEg_M3=1 & RIEg_I2 & RIEg_IGN & RIEg_OP2=0x42
 {
     local _ext_rieg_i2:2;
     local w:4;
@@ -3264,7 +3264,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:LOCHIH "LOCHIH " RIEg_R1 "," RIEg_I2 is RIEg_OP=0xEC & RIEg_R1 & RIEg_M3=2 & RIEg_I2 & RIEg_IGN & RIEg_OP2=0x42
+:LOCHIH RIEg_R1 "," RIEg_I2 is RIEg_OP=0xEC & RIEg_R1 & RIEg_M3=2 & RIEg_I2 & RIEg_IGN & RIEg_OP2=0x42
 {
     local _ext_rieg_i2:2;
     local w:4;
@@ -3283,7 +3283,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:LOCHINLE "LOCHINLE " RIEg_R1 "," RIEg_I2 is RIEg_OP=0xEC & RIEg_R1 & RIEg_M3=3 & RIEg_I2 & RIEg_IGN & RIEg_OP2=0x42
+:LOCHINLE RIEg_R1 "," RIEg_I2 is RIEg_OP=0xEC & RIEg_R1 & RIEg_M3=3 & RIEg_I2 & RIEg_IGN & RIEg_OP2=0x42
 {
     local _ext_rieg_i2:2;
     local w:4;
@@ -3302,7 +3302,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:LOCHIL "LOCHIL " RIEg_R1 "," RIEg_I2 is RIEg_OP=0xEC & RIEg_R1 & RIEg_M3=4 & RIEg_I2 & RIEg_IGN & RIEg_OP2=0x42
+:LOCHIL RIEg_R1 "," RIEg_I2 is RIEg_OP=0xEC & RIEg_R1 & RIEg_M3=4 & RIEg_I2 & RIEg_IGN & RIEg_OP2=0x42
 {
     local _ext_rieg_i2:2;
     local w:4;
@@ -3321,7 +3321,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:LOCHINHE "LOCHINHE " RIEg_R1 "," RIEg_I2 is RIEg_OP=0xEC & RIEg_R1 & RIEg_M3=5 & RIEg_I2 & RIEg_IGN & RIEg_OP2=0x42
+:LOCHINHE RIEg_R1 "," RIEg_I2 is RIEg_OP=0xEC & RIEg_R1 & RIEg_M3=5 & RIEg_I2 & RIEg_IGN & RIEg_OP2=0x42
 {
     local _ext_rieg_i2:2;
     local w:4;
@@ -3340,7 +3340,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:LOCHILH "LOCHILH " RIEg_R1 "," RIEg_I2 is RIEg_OP=0xEC & RIEg_R1 & RIEg_M3=6 & RIEg_I2 & RIEg_IGN & RIEg_OP2=0x42
+:LOCHILH RIEg_R1 "," RIEg_I2 is RIEg_OP=0xEC & RIEg_R1 & RIEg_M3=6 & RIEg_I2 & RIEg_IGN & RIEg_OP2=0x42
 {
     local _ext_rieg_i2:2;
     local w:4;
@@ -3359,7 +3359,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:LOCHINE "LOCHINE " RIEg_R1 "," RIEg_I2 is RIEg_OP=0xEC & RIEg_R1 & RIEg_M3=7 & RIEg_I2 & RIEg_IGN & RIEg_OP2=0x42
+:LOCHINE RIEg_R1 "," RIEg_I2 is RIEg_OP=0xEC & RIEg_R1 & RIEg_M3=7 & RIEg_I2 & RIEg_IGN & RIEg_OP2=0x42
 {
     local _ext_rieg_i2:2;
     local w:4;
@@ -3378,7 +3378,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:LOCHIE "LOCHIE " RIEg_R1 "," RIEg_I2 is RIEg_OP=0xEC & RIEg_R1 & RIEg_M3=8 & RIEg_I2 & RIEg_IGN & RIEg_OP2=0x42
+:LOCHIE RIEg_R1 "," RIEg_I2 is RIEg_OP=0xEC & RIEg_R1 & RIEg_M3=8 & RIEg_I2 & RIEg_IGN & RIEg_OP2=0x42
 {
     local _ext_rieg_i2:2;
     local w:4;
@@ -3397,7 +3397,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:LOCHINLH "LOCHINLH " RIEg_R1 "," RIEg_I2 is RIEg_OP=0xEC & RIEg_R1 & RIEg_M3=9 & RIEg_I2 & RIEg_IGN & RIEg_OP2=0x42
+:LOCHINLH RIEg_R1 "," RIEg_I2 is RIEg_OP=0xEC & RIEg_R1 & RIEg_M3=9 & RIEg_I2 & RIEg_IGN & RIEg_OP2=0x42
 {
     local _ext_rieg_i2:2;
     local w:4;
@@ -3416,7 +3416,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:LOCHIHE "LOCHIHE " RIEg_R1 "," RIEg_I2 is RIEg_OP=0xEC & RIEg_R1 & RIEg_M3=10 & RIEg_I2 & RIEg_IGN & RIEg_OP2=0x42
+:LOCHIHE RIEg_R1 "," RIEg_I2 is RIEg_OP=0xEC & RIEg_R1 & RIEg_M3=10 & RIEg_I2 & RIEg_IGN & RIEg_OP2=0x42
 {
     local _ext_rieg_i2:2;
     local w:4;
@@ -3435,7 +3435,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:LOCHINL "LOCHINL " RIEg_R1 "," RIEg_I2 is RIEg_OP=0xEC & RIEg_R1 & RIEg_M3=11 & RIEg_I2 & RIEg_IGN & RIEg_OP2=0x42
+:LOCHINL RIEg_R1 "," RIEg_I2 is RIEg_OP=0xEC & RIEg_R1 & RIEg_M3=11 & RIEg_I2 & RIEg_IGN & RIEg_OP2=0x42
 {
     local _ext_rieg_i2:2;
     local w:4;
@@ -3454,7 +3454,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:LOCHILE "LOCHILE " RIEg_R1 "," RIEg_I2 is RIEg_OP=0xEC & RIEg_R1 & RIEg_M3=12 & RIEg_I2 & RIEg_IGN & RIEg_OP2=0x42
+:LOCHILE RIEg_R1 "," RIEg_I2 is RIEg_OP=0xEC & RIEg_R1 & RIEg_M3=12 & RIEg_I2 & RIEg_IGN & RIEg_OP2=0x42
 {
     local _ext_rieg_i2:2;
     local w:4;
@@ -3473,7 +3473,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:LOCHINH "LOCHINH " RIEg_R1 "," RIEg_I2 is RIEg_OP=0xEC & RIEg_R1 & RIEg_M3=13 & RIEg_I2 & RIEg_IGN & RIEg_OP2=0x42
+:LOCHINH RIEg_R1 "," RIEg_I2 is RIEg_OP=0xEC & RIEg_R1 & RIEg_M3=13 & RIEg_I2 & RIEg_IGN & RIEg_OP2=0x42
 {
     local _ext_rieg_i2:2;
     local w:4;
@@ -3492,7 +3492,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:LOCHINO "LOCHINO " RIEg_R1 "," RIEg_I2 is RIEg_OP=0xEC & RIEg_R1 & RIEg_M3=14 & RIEg_I2 & RIEg_IGN & RIEg_OP2=0x42
+:LOCHINO RIEg_R1 "," RIEg_I2 is RIEg_OP=0xEC & RIEg_R1 & RIEg_M3=14 & RIEg_I2 & RIEg_IGN & RIEg_OP2=0x42
 {
     local _ext_rieg_i2:2;
     local w:4;
@@ -3511,7 +3511,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:LOCHI "LOCHI " RIEg_R1 "," RIEg_I2 "," RIEg_M3 is RIEg_OP=0xEC & RIEg_R1 & RIEg_M3 & RIEg_I2 & RIEg_IGN & RIEg_OP2=0x42
+:LOCHI RIEg_R1 "," RIEg_I2 "," RIEg_M3 is RIEg_OP=0xEC & RIEg_R1 & RIEg_M3 & RIEg_I2 & RIEg_IGN & RIEg_OP2=0x42
 {
     local _ext_rieg_i2:2;
     local w:4;
@@ -3531,7 +3531,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 }
 
 # LOCGHI: sign-extended I2 into all 64 bits.
-:LOCGHIO "LOCGHIO " RIEg_R1 "," RIEg_I2 is RIEg_OP=0xEC & RIEg_R1 & RIEg_M3=1 & RIEg_I2 & RIEg_IGN & RIEg_OP2=0x46
+:LOCGHIO RIEg_R1 "," RIEg_I2 is RIEg_OP=0xEC & RIEg_R1 & RIEg_M3=1 & RIEg_I2 & RIEg_IGN & RIEg_OP2=0x46
 {
     local _ext_rieg_i2:2;
     local _c_m:1;
@@ -3548,7 +3548,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:LOCGHIH "LOCGHIH " RIEg_R1 "," RIEg_I2 is RIEg_OP=0xEC & RIEg_R1 & RIEg_M3=2 & RIEg_I2 & RIEg_IGN & RIEg_OP2=0x46
+:LOCGHIH RIEg_R1 "," RIEg_I2 is RIEg_OP=0xEC & RIEg_R1 & RIEg_M3=2 & RIEg_I2 & RIEg_IGN & RIEg_OP2=0x46
 {
     local _ext_rieg_i2:2;
     local _c_m:1;
@@ -3565,7 +3565,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:LOCGHINLE "LOCGHINLE " RIEg_R1 "," RIEg_I2 is RIEg_OP=0xEC & RIEg_R1 & RIEg_M3=3 & RIEg_I2 & RIEg_IGN & RIEg_OP2=0x46
+:LOCGHINLE RIEg_R1 "," RIEg_I2 is RIEg_OP=0xEC & RIEg_R1 & RIEg_M3=3 & RIEg_I2 & RIEg_IGN & RIEg_OP2=0x46
 {
     local _ext_rieg_i2:2;
     local _c_m:1;
@@ -3582,7 +3582,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:LOCGHIL "LOCGHIL " RIEg_R1 "," RIEg_I2 is RIEg_OP=0xEC & RIEg_R1 & RIEg_M3=4 & RIEg_I2 & RIEg_IGN & RIEg_OP2=0x46
+:LOCGHIL RIEg_R1 "," RIEg_I2 is RIEg_OP=0xEC & RIEg_R1 & RIEg_M3=4 & RIEg_I2 & RIEg_IGN & RIEg_OP2=0x46
 {
     local _ext_rieg_i2:2;
     local _c_m:1;
@@ -3599,7 +3599,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:LOCGHINHE "LOCGHINHE " RIEg_R1 "," RIEg_I2 is RIEg_OP=0xEC & RIEg_R1 & RIEg_M3=5 & RIEg_I2 & RIEg_IGN & RIEg_OP2=0x46
+:LOCGHINHE RIEg_R1 "," RIEg_I2 is RIEg_OP=0xEC & RIEg_R1 & RIEg_M3=5 & RIEg_I2 & RIEg_IGN & RIEg_OP2=0x46
 {
     local _ext_rieg_i2:2;
     local _c_m:1;
@@ -3616,7 +3616,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:LOCGHILH "LOCGHILH " RIEg_R1 "," RIEg_I2 is RIEg_OP=0xEC & RIEg_R1 & RIEg_M3=6 & RIEg_I2 & RIEg_IGN & RIEg_OP2=0x46
+:LOCGHILH RIEg_R1 "," RIEg_I2 is RIEg_OP=0xEC & RIEg_R1 & RIEg_M3=6 & RIEg_I2 & RIEg_IGN & RIEg_OP2=0x46
 {
     local _ext_rieg_i2:2;
     local _c_m:1;
@@ -3633,7 +3633,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:LOCGHINE "LOCGHINE " RIEg_R1 "," RIEg_I2 is RIEg_OP=0xEC & RIEg_R1 & RIEg_M3=7 & RIEg_I2 & RIEg_IGN & RIEg_OP2=0x46
+:LOCGHINE RIEg_R1 "," RIEg_I2 is RIEg_OP=0xEC & RIEg_R1 & RIEg_M3=7 & RIEg_I2 & RIEg_IGN & RIEg_OP2=0x46
 {
     local _ext_rieg_i2:2;
     local _c_m:1;
@@ -3650,7 +3650,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:LOCGHIE "LOCGHIE " RIEg_R1 "," RIEg_I2 is RIEg_OP=0xEC & RIEg_R1 & RIEg_M3=8 & RIEg_I2 & RIEg_IGN & RIEg_OP2=0x46
+:LOCGHIE RIEg_R1 "," RIEg_I2 is RIEg_OP=0xEC & RIEg_R1 & RIEg_M3=8 & RIEg_I2 & RIEg_IGN & RIEg_OP2=0x46
 {
     local _ext_rieg_i2:2;
     local _c_m:1;
@@ -3667,7 +3667,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:LOCGHINLH "LOCGHINLH " RIEg_R1 "," RIEg_I2 is RIEg_OP=0xEC & RIEg_R1 & RIEg_M3=9 & RIEg_I2 & RIEg_IGN & RIEg_OP2=0x46
+:LOCGHINLH RIEg_R1 "," RIEg_I2 is RIEg_OP=0xEC & RIEg_R1 & RIEg_M3=9 & RIEg_I2 & RIEg_IGN & RIEg_OP2=0x46
 {
     local _ext_rieg_i2:2;
     local _c_m:1;
@@ -3684,7 +3684,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:LOCGHIHE "LOCGHIHE " RIEg_R1 "," RIEg_I2 is RIEg_OP=0xEC & RIEg_R1 & RIEg_M3=10 & RIEg_I2 & RIEg_IGN & RIEg_OP2=0x46
+:LOCGHIHE RIEg_R1 "," RIEg_I2 is RIEg_OP=0xEC & RIEg_R1 & RIEg_M3=10 & RIEg_I2 & RIEg_IGN & RIEg_OP2=0x46
 {
     local _ext_rieg_i2:2;
     local _c_m:1;
@@ -3701,7 +3701,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:LOCGHINL "LOCGHINL " RIEg_R1 "," RIEg_I2 is RIEg_OP=0xEC & RIEg_R1 & RIEg_M3=11 & RIEg_I2 & RIEg_IGN & RIEg_OP2=0x46
+:LOCGHINL RIEg_R1 "," RIEg_I2 is RIEg_OP=0xEC & RIEg_R1 & RIEg_M3=11 & RIEg_I2 & RIEg_IGN & RIEg_OP2=0x46
 {
     local _ext_rieg_i2:2;
     local _c_m:1;
@@ -3718,7 +3718,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:LOCGHILE "LOCGHILE " RIEg_R1 "," RIEg_I2 is RIEg_OP=0xEC & RIEg_R1 & RIEg_M3=12 & RIEg_I2 & RIEg_IGN & RIEg_OP2=0x46
+:LOCGHILE RIEg_R1 "," RIEg_I2 is RIEg_OP=0xEC & RIEg_R1 & RIEg_M3=12 & RIEg_I2 & RIEg_IGN & RIEg_OP2=0x46
 {
     local _ext_rieg_i2:2;
     local _c_m:1;
@@ -3735,7 +3735,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:LOCGHINH "LOCGHINH " RIEg_R1 "," RIEg_I2 is RIEg_OP=0xEC & RIEg_R1 & RIEg_M3=13 & RIEg_I2 & RIEg_IGN & RIEg_OP2=0x46
+:LOCGHINH RIEg_R1 "," RIEg_I2 is RIEg_OP=0xEC & RIEg_R1 & RIEg_M3=13 & RIEg_I2 & RIEg_IGN & RIEg_OP2=0x46
 {
     local _ext_rieg_i2:2;
     local _c_m:1;
@@ -3752,7 +3752,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:LOCGHINO "LOCGHINO " RIEg_R1 "," RIEg_I2 is RIEg_OP=0xEC & RIEg_R1 & RIEg_M3=14 & RIEg_I2 & RIEg_IGN & RIEg_OP2=0x46
+:LOCGHINO RIEg_R1 "," RIEg_I2 is RIEg_OP=0xEC & RIEg_R1 & RIEg_M3=14 & RIEg_I2 & RIEg_IGN & RIEg_OP2=0x46
 {
     local _ext_rieg_i2:2;
     local _c_m:1;
@@ -3769,7 +3769,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:LOCGHI "LOCGHI " RIEg_R1 "," RIEg_I2 "," RIEg_M3 is RIEg_OP=0xEC & RIEg_R1 & RIEg_M3 & RIEg_I2 & RIEg_IGN & RIEg_OP2=0x46
+:LOCGHI RIEg_R1 "," RIEg_I2 "," RIEg_M3 is RIEg_OP=0xEC & RIEg_R1 & RIEg_M3 & RIEg_I2 & RIEg_IGN & RIEg_OP2=0x46
 {
     local _ext_rieg_i2:2;
     local _c_m:1;
@@ -3787,7 +3787,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 }
 
 # LOCHHI: sign-extended I2 into high 32 bits.
-:LOCHHIO "LOCHHIO " RIEg_R1 "," RIEg_I2 is RIEg_OP=0xEC & RIEg_R1 & RIEg_M3=1 & RIEg_I2 & RIEg_IGN & RIEg_OP2=0x4E
+:LOCHHIO RIEg_R1 "," RIEg_I2 is RIEg_OP=0xEC & RIEg_R1 & RIEg_M3=1 & RIEg_I2 & RIEg_IGN & RIEg_OP2=0x4E
 {
     local _ext_rieg_i2:2;
     local w:4;
@@ -3806,7 +3806,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:LOCHHIH "LOCHHIH " RIEg_R1 "," RIEg_I2 is RIEg_OP=0xEC & RIEg_R1 & RIEg_M3=2 & RIEg_I2 & RIEg_IGN & RIEg_OP2=0x4E
+:LOCHHIH RIEg_R1 "," RIEg_I2 is RIEg_OP=0xEC & RIEg_R1 & RIEg_M3=2 & RIEg_I2 & RIEg_IGN & RIEg_OP2=0x4E
 {
     local _ext_rieg_i2:2;
     local w:4;
@@ -3825,7 +3825,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:LOCHHINLE "LOCHHINLE " RIEg_R1 "," RIEg_I2 is RIEg_OP=0xEC & RIEg_R1 & RIEg_M3=3 & RIEg_I2 & RIEg_IGN & RIEg_OP2=0x4E
+:LOCHHINLE RIEg_R1 "," RIEg_I2 is RIEg_OP=0xEC & RIEg_R1 & RIEg_M3=3 & RIEg_I2 & RIEg_IGN & RIEg_OP2=0x4E
 {
     local _ext_rieg_i2:2;
     local w:4;
@@ -3844,7 +3844,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:LOCHHIL "LOCHHIL " RIEg_R1 "," RIEg_I2 is RIEg_OP=0xEC & RIEg_R1 & RIEg_M3=4 & RIEg_I2 & RIEg_IGN & RIEg_OP2=0x4E
+:LOCHHIL RIEg_R1 "," RIEg_I2 is RIEg_OP=0xEC & RIEg_R1 & RIEg_M3=4 & RIEg_I2 & RIEg_IGN & RIEg_OP2=0x4E
 {
     local _ext_rieg_i2:2;
     local w:4;
@@ -3863,7 +3863,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:LOCHHINHE "LOCHHINHE " RIEg_R1 "," RIEg_I2 is RIEg_OP=0xEC & RIEg_R1 & RIEg_M3=5 & RIEg_I2 & RIEg_IGN & RIEg_OP2=0x4E
+:LOCHHINHE RIEg_R1 "," RIEg_I2 is RIEg_OP=0xEC & RIEg_R1 & RIEg_M3=5 & RIEg_I2 & RIEg_IGN & RIEg_OP2=0x4E
 {
     local _ext_rieg_i2:2;
     local w:4;
@@ -3882,7 +3882,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:LOCHHILH "LOCHHILH " RIEg_R1 "," RIEg_I2 is RIEg_OP=0xEC & RIEg_R1 & RIEg_M3=6 & RIEg_I2 & RIEg_IGN & RIEg_OP2=0x4E
+:LOCHHILH RIEg_R1 "," RIEg_I2 is RIEg_OP=0xEC & RIEg_R1 & RIEg_M3=6 & RIEg_I2 & RIEg_IGN & RIEg_OP2=0x4E
 {
     local _ext_rieg_i2:2;
     local w:4;
@@ -3901,7 +3901,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:LOCHHINE "LOCHHINE " RIEg_R1 "," RIEg_I2 is RIEg_OP=0xEC & RIEg_R1 & RIEg_M3=7 & RIEg_I2 & RIEg_IGN & RIEg_OP2=0x4E
+:LOCHHINE RIEg_R1 "," RIEg_I2 is RIEg_OP=0xEC & RIEg_R1 & RIEg_M3=7 & RIEg_I2 & RIEg_IGN & RIEg_OP2=0x4E
 {
     local _ext_rieg_i2:2;
     local w:4;
@@ -3920,7 +3920,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:LOCHHIE "LOCHHIE " RIEg_R1 "," RIEg_I2 is RIEg_OP=0xEC & RIEg_R1 & RIEg_M3=8 & RIEg_I2 & RIEg_IGN & RIEg_OP2=0x4E
+:LOCHHIE RIEg_R1 "," RIEg_I2 is RIEg_OP=0xEC & RIEg_R1 & RIEg_M3=8 & RIEg_I2 & RIEg_IGN & RIEg_OP2=0x4E
 {
     local _ext_rieg_i2:2;
     local w:4;
@@ -3939,7 +3939,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:LOCHHINLH "LOCHHINLH " RIEg_R1 "," RIEg_I2 is RIEg_OP=0xEC & RIEg_R1 & RIEg_M3=9 & RIEg_I2 & RIEg_IGN & RIEg_OP2=0x4E
+:LOCHHINLH RIEg_R1 "," RIEg_I2 is RIEg_OP=0xEC & RIEg_R1 & RIEg_M3=9 & RIEg_I2 & RIEg_IGN & RIEg_OP2=0x4E
 {
     local _ext_rieg_i2:2;
     local w:4;
@@ -3958,7 +3958,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:LOCHHIHE "LOCHHIHE " RIEg_R1 "," RIEg_I2 is RIEg_OP=0xEC & RIEg_R1 & RIEg_M3=10 & RIEg_I2 & RIEg_IGN & RIEg_OP2=0x4E
+:LOCHHIHE RIEg_R1 "," RIEg_I2 is RIEg_OP=0xEC & RIEg_R1 & RIEg_M3=10 & RIEg_I2 & RIEg_IGN & RIEg_OP2=0x4E
 {
     local _ext_rieg_i2:2;
     local w:4;
@@ -3977,7 +3977,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:LOCHHINL "LOCHHINL " RIEg_R1 "," RIEg_I2 is RIEg_OP=0xEC & RIEg_R1 & RIEg_M3=11 & RIEg_I2 & RIEg_IGN & RIEg_OP2=0x4E
+:LOCHHINL RIEg_R1 "," RIEg_I2 is RIEg_OP=0xEC & RIEg_R1 & RIEg_M3=11 & RIEg_I2 & RIEg_IGN & RIEg_OP2=0x4E
 {
     local _ext_rieg_i2:2;
     local w:4;
@@ -3996,7 +3996,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:LOCHHILE "LOCHHILE " RIEg_R1 "," RIEg_I2 is RIEg_OP=0xEC & RIEg_R1 & RIEg_M3=12 & RIEg_I2 & RIEg_IGN & RIEg_OP2=0x4E
+:LOCHHILE RIEg_R1 "," RIEg_I2 is RIEg_OP=0xEC & RIEg_R1 & RIEg_M3=12 & RIEg_I2 & RIEg_IGN & RIEg_OP2=0x4E
 {
     local _ext_rieg_i2:2;
     local w:4;
@@ -4015,7 +4015,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:LOCHHINH "LOCHHINH " RIEg_R1 "," RIEg_I2 is RIEg_OP=0xEC & RIEg_R1 & RIEg_M3=13 & RIEg_I2 & RIEg_IGN & RIEg_OP2=0x4E
+:LOCHHINH RIEg_R1 "," RIEg_I2 is RIEg_OP=0xEC & RIEg_R1 & RIEg_M3=13 & RIEg_I2 & RIEg_IGN & RIEg_OP2=0x4E
 {
     local _ext_rieg_i2:2;
     local w:4;
@@ -4034,7 +4034,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:LOCHHINO "LOCHHINO " RIEg_R1 "," RIEg_I2 is RIEg_OP=0xEC & RIEg_R1 & RIEg_M3=14 & RIEg_I2 & RIEg_IGN & RIEg_OP2=0x4E
+:LOCHHINO RIEg_R1 "," RIEg_I2 is RIEg_OP=0xEC & RIEg_R1 & RIEg_M3=14 & RIEg_I2 & RIEg_IGN & RIEg_OP2=0x4E
 {
     local _ext_rieg_i2:2;
     local w:4;
@@ -4053,7 +4053,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <c_done>
 }
 
-:LOCHHI "LOCHHI " RIEg_R1 "," RIEg_I2 "," RIEg_M3 is RIEg_OP=0xEC & RIEg_R1 & RIEg_M3 & RIEg_I2 & RIEg_IGN & RIEg_OP2=0x4E
+:LOCHHI RIEg_R1 "," RIEg_I2 "," RIEg_M3 is RIEg_OP=0xEC & RIEg_R1 & RIEg_M3 & RIEg_I2 & RIEg_IGN & RIEg_OP2=0x4E
 {
     local _ext_rieg_i2:2;
     local w:4;
@@ -4080,7 +4080,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 # compare-and-trap data exception is modeled via trap_compare_data().
 # ===========================================================================
 # CIT: cc_scmp32, I2 sext-extended.
-:CITH "CITH " RIEa_R1 "," RIEa_I2 is RIEa_OP=0xEC & RIEa_R1 & RIEa_IGN1 & RIEa_I2 & RIEa_M3=2 & RIEa_IGN2 & RIEa_OP2=0x72
+:CITH RIEa_R1 "," RIEa_I2 is RIEa_OP=0xEC & RIEa_R1 & RIEa_IGN1 & RIEa_I2 & RIEa_M3=2 & RIEa_IGN2 & RIEa_OP2=0x72
 {
     local a:8;
     local b:8;
@@ -4100,7 +4100,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <trap_done>
 }
 
-:CITL "CITL " RIEa_R1 "," RIEa_I2 is RIEa_OP=0xEC & RIEa_R1 & RIEa_IGN1 & RIEa_I2 & RIEa_M3=4 & RIEa_IGN2 & RIEa_OP2=0x72
+:CITL RIEa_R1 "," RIEa_I2 is RIEa_OP=0xEC & RIEa_R1 & RIEa_IGN1 & RIEa_I2 & RIEa_M3=4 & RIEa_IGN2 & RIEa_OP2=0x72
 {
     local a:8;
     local b:8;
@@ -4120,7 +4120,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <trap_done>
 }
 
-:CITLH "CITLH " RIEa_R1 "," RIEa_I2 is RIEa_OP=0xEC & RIEa_R1 & RIEa_IGN1 & RIEa_I2 & RIEa_M3=6 & RIEa_IGN2 & RIEa_OP2=0x72
+:CITLH RIEa_R1 "," RIEa_I2 is RIEa_OP=0xEC & RIEa_R1 & RIEa_IGN1 & RIEa_I2 & RIEa_M3=6 & RIEa_IGN2 & RIEa_OP2=0x72
 {
     local a:8;
     local b:8;
@@ -4140,7 +4140,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <trap_done>
 }
 
-:CITE "CITE " RIEa_R1 "," RIEa_I2 is RIEa_OP=0xEC & RIEa_R1 & RIEa_IGN1 & RIEa_I2 & RIEa_M3=8 & RIEa_IGN2 & RIEa_OP2=0x72
+:CITE RIEa_R1 "," RIEa_I2 is RIEa_OP=0xEC & RIEa_R1 & RIEa_IGN1 & RIEa_I2 & RIEa_M3=8 & RIEa_IGN2 & RIEa_OP2=0x72
 {
     local a:8;
     local b:8;
@@ -4160,7 +4160,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <trap_done>
 }
 
-:CITHE "CITHE " RIEa_R1 "," RIEa_I2 is RIEa_OP=0xEC & RIEa_R1 & RIEa_IGN1 & RIEa_I2 & RIEa_M3=10 & RIEa_IGN2 & RIEa_OP2=0x72
+:CITHE RIEa_R1 "," RIEa_I2 is RIEa_OP=0xEC & RIEa_R1 & RIEa_IGN1 & RIEa_I2 & RIEa_M3=10 & RIEa_IGN2 & RIEa_OP2=0x72
 {
     local a:8;
     local b:8;
@@ -4180,7 +4180,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <trap_done>
 }
 
-:CITLE "CITLE " RIEa_R1 "," RIEa_I2 is RIEa_OP=0xEC & RIEa_R1 & RIEa_IGN1 & RIEa_I2 & RIEa_M3=12 & RIEa_IGN2 & RIEa_OP2=0x72
+:CITLE RIEa_R1 "," RIEa_I2 is RIEa_OP=0xEC & RIEa_R1 & RIEa_IGN1 & RIEa_I2 & RIEa_M3=12 & RIEa_IGN2 & RIEa_OP2=0x72
 {
     local a:8;
     local b:8;
@@ -4200,7 +4200,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <trap_done>
 }
 
-:CIT "CIT " RIEa_R1 "," RIEa_I2 "," RIEa_M3 is RIEa_OP=0xEC & RIEa_R1 & RIEa_IGN1 & RIEa_I2 & RIEa_M3 & RIEa_IGN2 & RIEa_OP2=0x72
+:CIT RIEa_R1 "," RIEa_I2 "," RIEa_M3 is RIEa_OP=0xEC & RIEa_R1 & RIEa_IGN1 & RIEa_I2 & RIEa_M3 & RIEa_IGN2 & RIEa_OP2=0x72
 {
     local a:8;
     local b:8;
@@ -4221,7 +4221,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 }
 
 # CGIT: cc_scmp64, I2 sext-extended.
-:CGITH "CGITH " RIEa_R1 "," RIEa_I2 is RIEa_OP=0xEC & RIEa_R1 & RIEa_IGN1 & RIEa_I2 & RIEa_M3=2 & RIEa_IGN2 & RIEa_OP2=0x70
+:CGITH RIEa_R1 "," RIEa_I2 is RIEa_OP=0xEC & RIEa_R1 & RIEa_IGN1 & RIEa_I2 & RIEa_M3=2 & RIEa_IGN2 & RIEa_OP2=0x70
 {
     local a:8;
     local b:8;
@@ -4241,7 +4241,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <trap_done>
 }
 
-:CGITL "CGITL " RIEa_R1 "," RIEa_I2 is RIEa_OP=0xEC & RIEa_R1 & RIEa_IGN1 & RIEa_I2 & RIEa_M3=4 & RIEa_IGN2 & RIEa_OP2=0x70
+:CGITL RIEa_R1 "," RIEa_I2 is RIEa_OP=0xEC & RIEa_R1 & RIEa_IGN1 & RIEa_I2 & RIEa_M3=4 & RIEa_IGN2 & RIEa_OP2=0x70
 {
     local a:8;
     local b:8;
@@ -4261,7 +4261,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <trap_done>
 }
 
-:CGITLH "CGITLH " RIEa_R1 "," RIEa_I2 is RIEa_OP=0xEC & RIEa_R1 & RIEa_IGN1 & RIEa_I2 & RIEa_M3=6 & RIEa_IGN2 & RIEa_OP2=0x70
+:CGITLH RIEa_R1 "," RIEa_I2 is RIEa_OP=0xEC & RIEa_R1 & RIEa_IGN1 & RIEa_I2 & RIEa_M3=6 & RIEa_IGN2 & RIEa_OP2=0x70
 {
     local a:8;
     local b:8;
@@ -4281,7 +4281,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <trap_done>
 }
 
-:CGITE "CGITE " RIEa_R1 "," RIEa_I2 is RIEa_OP=0xEC & RIEa_R1 & RIEa_IGN1 & RIEa_I2 & RIEa_M3=8 & RIEa_IGN2 & RIEa_OP2=0x70
+:CGITE RIEa_R1 "," RIEa_I2 is RIEa_OP=0xEC & RIEa_R1 & RIEa_IGN1 & RIEa_I2 & RIEa_M3=8 & RIEa_IGN2 & RIEa_OP2=0x70
 {
     local a:8;
     local b:8;
@@ -4301,7 +4301,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <trap_done>
 }
 
-:CGITHE "CGITHE " RIEa_R1 "," RIEa_I2 is RIEa_OP=0xEC & RIEa_R1 & RIEa_IGN1 & RIEa_I2 & RIEa_M3=10 & RIEa_IGN2 & RIEa_OP2=0x70
+:CGITHE RIEa_R1 "," RIEa_I2 is RIEa_OP=0xEC & RIEa_R1 & RIEa_IGN1 & RIEa_I2 & RIEa_M3=10 & RIEa_IGN2 & RIEa_OP2=0x70
 {
     local a:8;
     local b:8;
@@ -4321,7 +4321,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <trap_done>
 }
 
-:CGITLE "CGITLE " RIEa_R1 "," RIEa_I2 is RIEa_OP=0xEC & RIEa_R1 & RIEa_IGN1 & RIEa_I2 & RIEa_M3=12 & RIEa_IGN2 & RIEa_OP2=0x70
+:CGITLE RIEa_R1 "," RIEa_I2 is RIEa_OP=0xEC & RIEa_R1 & RIEa_IGN1 & RIEa_I2 & RIEa_M3=12 & RIEa_IGN2 & RIEa_OP2=0x70
 {
     local a:8;
     local b:8;
@@ -4341,7 +4341,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <trap_done>
 }
 
-:CGIT "CGIT " RIEa_R1 "," RIEa_I2 "," RIEa_M3 is RIEa_OP=0xEC & RIEa_R1 & RIEa_IGN1 & RIEa_I2 & RIEa_M3 & RIEa_IGN2 & RIEa_OP2=0x70
+:CGIT RIEa_R1 "," RIEa_I2 "," RIEa_M3 is RIEa_OP=0xEC & RIEa_R1 & RIEa_IGN1 & RIEa_I2 & RIEa_M3 & RIEa_IGN2 & RIEa_OP2=0x70
 {
     local a:8;
     local b:8;
@@ -4362,7 +4362,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 }
 
 # CLFIT: cc_ucmp, I2 zext-extended.
-:CLFITH "CLFITH " RIEa_R1 "," RIEa_I2 is RIEa_OP=0xEC & RIEa_R1 & RIEa_IGN1 & RIEa_I2 & RIEa_M3=2 & RIEa_IGN2 & RIEa_OP2=0x73
+:CLFITH RIEa_R1 "," RIEa_I2 is RIEa_OP=0xEC & RIEa_R1 & RIEa_IGN1 & RIEa_I2 & RIEa_M3=2 & RIEa_IGN2 & RIEa_OP2=0x73
 {
     local a:8;
     local b:8;
@@ -4382,7 +4382,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <trap_done>
 }
 
-:CLFITL "CLFITL " RIEa_R1 "," RIEa_I2 is RIEa_OP=0xEC & RIEa_R1 & RIEa_IGN1 & RIEa_I2 & RIEa_M3=4 & RIEa_IGN2 & RIEa_OP2=0x73
+:CLFITL RIEa_R1 "," RIEa_I2 is RIEa_OP=0xEC & RIEa_R1 & RIEa_IGN1 & RIEa_I2 & RIEa_M3=4 & RIEa_IGN2 & RIEa_OP2=0x73
 {
     local a:8;
     local b:8;
@@ -4402,7 +4402,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <trap_done>
 }
 
-:CLFITLH "CLFITLH " RIEa_R1 "," RIEa_I2 is RIEa_OP=0xEC & RIEa_R1 & RIEa_IGN1 & RIEa_I2 & RIEa_M3=6 & RIEa_IGN2 & RIEa_OP2=0x73
+:CLFITLH RIEa_R1 "," RIEa_I2 is RIEa_OP=0xEC & RIEa_R1 & RIEa_IGN1 & RIEa_I2 & RIEa_M3=6 & RIEa_IGN2 & RIEa_OP2=0x73
 {
     local a:8;
     local b:8;
@@ -4422,7 +4422,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <trap_done>
 }
 
-:CLFITE "CLFITE " RIEa_R1 "," RIEa_I2 is RIEa_OP=0xEC & RIEa_R1 & RIEa_IGN1 & RIEa_I2 & RIEa_M3=8 & RIEa_IGN2 & RIEa_OP2=0x73
+:CLFITE RIEa_R1 "," RIEa_I2 is RIEa_OP=0xEC & RIEa_R1 & RIEa_IGN1 & RIEa_I2 & RIEa_M3=8 & RIEa_IGN2 & RIEa_OP2=0x73
 {
     local a:8;
     local b:8;
@@ -4442,7 +4442,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <trap_done>
 }
 
-:CLFITHE "CLFITHE " RIEa_R1 "," RIEa_I2 is RIEa_OP=0xEC & RIEa_R1 & RIEa_IGN1 & RIEa_I2 & RIEa_M3=10 & RIEa_IGN2 & RIEa_OP2=0x73
+:CLFITHE RIEa_R1 "," RIEa_I2 is RIEa_OP=0xEC & RIEa_R1 & RIEa_IGN1 & RIEa_I2 & RIEa_M3=10 & RIEa_IGN2 & RIEa_OP2=0x73
 {
     local a:8;
     local b:8;
@@ -4462,7 +4462,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <trap_done>
 }
 
-:CLFITLE "CLFITLE " RIEa_R1 "," RIEa_I2 is RIEa_OP=0xEC & RIEa_R1 & RIEa_IGN1 & RIEa_I2 & RIEa_M3=12 & RIEa_IGN2 & RIEa_OP2=0x73
+:CLFITLE RIEa_R1 "," RIEa_I2 is RIEa_OP=0xEC & RIEa_R1 & RIEa_IGN1 & RIEa_I2 & RIEa_M3=12 & RIEa_IGN2 & RIEa_OP2=0x73
 {
     local a:8;
     local b:8;
@@ -4482,7 +4482,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <trap_done>
 }
 
-:CLFIT "CLFIT " RIEa_R1 "," RIEa_I2 "," RIEa_M3 is RIEa_OP=0xEC & RIEa_R1 & RIEa_IGN1 & RIEa_I2 & RIEa_M3 & RIEa_IGN2 & RIEa_OP2=0x73
+:CLFIT RIEa_R1 "," RIEa_I2 "," RIEa_M3 is RIEa_OP=0xEC & RIEa_R1 & RIEa_IGN1 & RIEa_I2 & RIEa_M3 & RIEa_IGN2 & RIEa_OP2=0x73
 {
     local a:8;
     local b:8;
@@ -4503,7 +4503,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 }
 
 # CLGIT: cc_ucmp, I2 zext-extended.
-:CLGITH "CLGITH " RIEa_R1 "," RIEa_I2 is RIEa_OP=0xEC & RIEa_R1 & RIEa_IGN1 & RIEa_I2 & RIEa_M3=2 & RIEa_IGN2 & RIEa_OP2=0x71
+:CLGITH RIEa_R1 "," RIEa_I2 is RIEa_OP=0xEC & RIEa_R1 & RIEa_IGN1 & RIEa_I2 & RIEa_M3=2 & RIEa_IGN2 & RIEa_OP2=0x71
 {
     local a:8;
     local b:8;
@@ -4523,7 +4523,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <trap_done>
 }
 
-:CLGITL "CLGITL " RIEa_R1 "," RIEa_I2 is RIEa_OP=0xEC & RIEa_R1 & RIEa_IGN1 & RIEa_I2 & RIEa_M3=4 & RIEa_IGN2 & RIEa_OP2=0x71
+:CLGITL RIEa_R1 "," RIEa_I2 is RIEa_OP=0xEC & RIEa_R1 & RIEa_IGN1 & RIEa_I2 & RIEa_M3=4 & RIEa_IGN2 & RIEa_OP2=0x71
 {
     local a:8;
     local b:8;
@@ -4543,7 +4543,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <trap_done>
 }
 
-:CLGITLH "CLGITLH " RIEa_R1 "," RIEa_I2 is RIEa_OP=0xEC & RIEa_R1 & RIEa_IGN1 & RIEa_I2 & RIEa_M3=6 & RIEa_IGN2 & RIEa_OP2=0x71
+:CLGITLH RIEa_R1 "," RIEa_I2 is RIEa_OP=0xEC & RIEa_R1 & RIEa_IGN1 & RIEa_I2 & RIEa_M3=6 & RIEa_IGN2 & RIEa_OP2=0x71
 {
     local a:8;
     local b:8;
@@ -4563,7 +4563,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <trap_done>
 }
 
-:CLGITE "CLGITE " RIEa_R1 "," RIEa_I2 is RIEa_OP=0xEC & RIEa_R1 & RIEa_IGN1 & RIEa_I2 & RIEa_M3=8 & RIEa_IGN2 & RIEa_OP2=0x71
+:CLGITE RIEa_R1 "," RIEa_I2 is RIEa_OP=0xEC & RIEa_R1 & RIEa_IGN1 & RIEa_I2 & RIEa_M3=8 & RIEa_IGN2 & RIEa_OP2=0x71
 {
     local a:8;
     local b:8;
@@ -4583,7 +4583,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <trap_done>
 }
 
-:CLGITHE "CLGITHE " RIEa_R1 "," RIEa_I2 is RIEa_OP=0xEC & RIEa_R1 & RIEa_IGN1 & RIEa_I2 & RIEa_M3=10 & RIEa_IGN2 & RIEa_OP2=0x71
+:CLGITHE RIEa_R1 "," RIEa_I2 is RIEa_OP=0xEC & RIEa_R1 & RIEa_IGN1 & RIEa_I2 & RIEa_M3=10 & RIEa_IGN2 & RIEa_OP2=0x71
 {
     local a:8;
     local b:8;
@@ -4603,7 +4603,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <trap_done>
 }
 
-:CLGITLE "CLGITLE " RIEa_R1 "," RIEa_I2 is RIEa_OP=0xEC & RIEa_R1 & RIEa_IGN1 & RIEa_I2 & RIEa_M3=12 & RIEa_IGN2 & RIEa_OP2=0x71
+:CLGITLE RIEa_R1 "," RIEa_I2 is RIEa_OP=0xEC & RIEa_R1 & RIEa_IGN1 & RIEa_I2 & RIEa_M3=12 & RIEa_IGN2 & RIEa_OP2=0x71
 {
     local a:8;
     local b:8;
@@ -4623,7 +4623,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <trap_done>
 }
 
-:CLGIT "CLGIT " RIEa_R1 "," RIEa_I2 "," RIEa_M3 is RIEa_OP=0xEC & RIEa_R1 & RIEa_IGN1 & RIEa_I2 & RIEa_M3 & RIEa_IGN2 & RIEa_OP2=0x71
+:CLGIT RIEa_R1 "," RIEa_I2 "," RIEa_M3 is RIEa_OP=0xEC & RIEa_R1 & RIEa_IGN1 & RIEa_I2 & RIEa_M3 & RIEa_IGN2 & RIEa_OP2=0x71
 {
     local a:8;
     local b:8;
@@ -4651,7 +4651,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 # instructions, so the corpus vectors are decode-only.
 # ===========================================================================
 # SELR: 32-bit, low halves.
-:SELRO "SELRO " RRFa_R1 "," RRFa_R2 "," RRFa_R3 is RRFa_OP=0xB9F0 & RRFa_R3 & RRFa_M4=1 & RRFa_R1 & RRFa_R2
+:SELRO RRFa_R1 "," RRFa_R2 "," RRFa_R3 is RRFa_OP=0xB9F0 & RRFa_R3 & RRFa_M4=1 & RRFa_R1 & RRFa_R2
 {
     local _s_ccval:1;
     local _s_bit:1;
@@ -4665,7 +4665,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <sel_done>
 }
 
-:SELRH "SELRH " RRFa_R1 "," RRFa_R2 "," RRFa_R3 is RRFa_OP=0xB9F0 & RRFa_R3 & RRFa_M4=2 & RRFa_R1 & RRFa_R2
+:SELRH RRFa_R1 "," RRFa_R2 "," RRFa_R3 is RRFa_OP=0xB9F0 & RRFa_R3 & RRFa_M4=2 & RRFa_R1 & RRFa_R2
 {
     local _s_ccval:1;
     local _s_bit:1;
@@ -4679,7 +4679,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <sel_done>
 }
 
-:SELRL "SELRL " RRFa_R1 "," RRFa_R2 "," RRFa_R3 is RRFa_OP=0xB9F0 & RRFa_R3 & RRFa_M4=4 & RRFa_R1 & RRFa_R2
+:SELRL RRFa_R1 "," RRFa_R2 "," RRFa_R3 is RRFa_OP=0xB9F0 & RRFa_R3 & RRFa_M4=4 & RRFa_R1 & RRFa_R2
 {
     local _s_ccval:1;
     local _s_bit:1;
@@ -4693,7 +4693,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <sel_done>
 }
 
-:SELRNE "SELRNE " RRFa_R1 "," RRFa_R2 "," RRFa_R3 is RRFa_OP=0xB9F0 & RRFa_R3 & RRFa_M4=7 & RRFa_R1 & RRFa_R2
+:SELRNE RRFa_R1 "," RRFa_R2 "," RRFa_R3 is RRFa_OP=0xB9F0 & RRFa_R3 & RRFa_M4=7 & RRFa_R1 & RRFa_R2
 {
     local _s_ccval:1;
     local _s_bit:1;
@@ -4707,7 +4707,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <sel_done>
 }
 
-:SELRE "SELRE " RRFa_R1 "," RRFa_R2 "," RRFa_R3 is RRFa_OP=0xB9F0 & RRFa_R3 & RRFa_M4=8 & RRFa_R1 & RRFa_R2
+:SELRE RRFa_R1 "," RRFa_R2 "," RRFa_R3 is RRFa_OP=0xB9F0 & RRFa_R3 & RRFa_M4=8 & RRFa_R1 & RRFa_R2
 {
     local _s_ccval:1;
     local _s_bit:1;
@@ -4721,7 +4721,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <sel_done>
 }
 
-:SELRNL "SELRNL " RRFa_R1 "," RRFa_R2 "," RRFa_R3 is RRFa_OP=0xB9F0 & RRFa_R3 & RRFa_M4=11 & RRFa_R1 & RRFa_R2
+:SELRNL RRFa_R1 "," RRFa_R2 "," RRFa_R3 is RRFa_OP=0xB9F0 & RRFa_R3 & RRFa_M4=11 & RRFa_R1 & RRFa_R2
 {
     local _s_ccval:1;
     local _s_bit:1;
@@ -4735,7 +4735,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <sel_done>
 }
 
-:SELRNH "SELRNH " RRFa_R1 "," RRFa_R2 "," RRFa_R3 is RRFa_OP=0xB9F0 & RRFa_R3 & RRFa_M4=13 & RRFa_R1 & RRFa_R2
+:SELRNH RRFa_R1 "," RRFa_R2 "," RRFa_R3 is RRFa_OP=0xB9F0 & RRFa_R3 & RRFa_M4=13 & RRFa_R1 & RRFa_R2
 {
     local _s_ccval:1;
     local _s_bit:1;
@@ -4749,7 +4749,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <sel_done>
 }
 
-:SELRNO "SELRNO " RRFa_R1 "," RRFa_R2 "," RRFa_R3 is RRFa_OP=0xB9F0 & RRFa_R3 & RRFa_M4=14 & RRFa_R1 & RRFa_R2
+:SELRNO RRFa_R1 "," RRFa_R2 "," RRFa_R3 is RRFa_OP=0xB9F0 & RRFa_R3 & RRFa_M4=14 & RRFa_R1 & RRFa_R2
 {
     local _s_ccval:1;
     local _s_bit:1;
@@ -4763,7 +4763,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <sel_done>
 }
 
-:SELR "SELR " RRFa_R1 "," RRFa_R2 "," RRFa_R3 "," RRFa_M4 is RRFa_OP=0xB9F0 & RRFa_R3 & RRFa_M4 & RRFa_R1 & RRFa_R2
+:SELR RRFa_R1 "," RRFa_R2 "," RRFa_R3 "," RRFa_M4 is RRFa_OP=0xB9F0 & RRFa_R3 & RRFa_M4 & RRFa_R1 & RRFa_R2
 {
     local _s_ccval:1;
     local _s_bit:1;
@@ -4778,7 +4778,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 }
 
 # SELGR: 64-bit.
-:SELGRO "SELGRO " RRFa_R1 "," RRFa_R2 "," RRFa_R3 is RRFa_OP=0xB9E3 & RRFa_R3 & RRFa_M4=1 & RRFa_R1 & RRFa_R2
+:SELGRO RRFa_R1 "," RRFa_R2 "," RRFa_R3 is RRFa_OP=0xB9E3 & RRFa_R3 & RRFa_M4=1 & RRFa_R1 & RRFa_R2
 {
     local _s_ccval:1;
     local _s_bit:1;
@@ -4792,7 +4792,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <sel_done>
 }
 
-:SELGRH "SELGRH " RRFa_R1 "," RRFa_R2 "," RRFa_R3 is RRFa_OP=0xB9E3 & RRFa_R3 & RRFa_M4=2 & RRFa_R1 & RRFa_R2
+:SELGRH RRFa_R1 "," RRFa_R2 "," RRFa_R3 is RRFa_OP=0xB9E3 & RRFa_R3 & RRFa_M4=2 & RRFa_R1 & RRFa_R2
 {
     local _s_ccval:1;
     local _s_bit:1;
@@ -4806,7 +4806,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <sel_done>
 }
 
-:SELGRL "SELGRL " RRFa_R1 "," RRFa_R2 "," RRFa_R3 is RRFa_OP=0xB9E3 & RRFa_R3 & RRFa_M4=4 & RRFa_R1 & RRFa_R2
+:SELGRL RRFa_R1 "," RRFa_R2 "," RRFa_R3 is RRFa_OP=0xB9E3 & RRFa_R3 & RRFa_M4=4 & RRFa_R1 & RRFa_R2
 {
     local _s_ccval:1;
     local _s_bit:1;
@@ -4820,7 +4820,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <sel_done>
 }
 
-:SELGRNE "SELGRNE " RRFa_R1 "," RRFa_R2 "," RRFa_R3 is RRFa_OP=0xB9E3 & RRFa_R3 & RRFa_M4=7 & RRFa_R1 & RRFa_R2
+:SELGRNE RRFa_R1 "," RRFa_R2 "," RRFa_R3 is RRFa_OP=0xB9E3 & RRFa_R3 & RRFa_M4=7 & RRFa_R1 & RRFa_R2
 {
     local _s_ccval:1;
     local _s_bit:1;
@@ -4834,7 +4834,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <sel_done>
 }
 
-:SELGRE "SELGRE " RRFa_R1 "," RRFa_R2 "," RRFa_R3 is RRFa_OP=0xB9E3 & RRFa_R3 & RRFa_M4=8 & RRFa_R1 & RRFa_R2
+:SELGRE RRFa_R1 "," RRFa_R2 "," RRFa_R3 is RRFa_OP=0xB9E3 & RRFa_R3 & RRFa_M4=8 & RRFa_R1 & RRFa_R2
 {
     local _s_ccval:1;
     local _s_bit:1;
@@ -4848,7 +4848,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <sel_done>
 }
 
-:SELGRNL "SELGRNL " RRFa_R1 "," RRFa_R2 "," RRFa_R3 is RRFa_OP=0xB9E3 & RRFa_R3 & RRFa_M4=11 & RRFa_R1 & RRFa_R2
+:SELGRNL RRFa_R1 "," RRFa_R2 "," RRFa_R3 is RRFa_OP=0xB9E3 & RRFa_R3 & RRFa_M4=11 & RRFa_R1 & RRFa_R2
 {
     local _s_ccval:1;
     local _s_bit:1;
@@ -4862,7 +4862,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <sel_done>
 }
 
-:SELGRNH "SELGRNH " RRFa_R1 "," RRFa_R2 "," RRFa_R3 is RRFa_OP=0xB9E3 & RRFa_R3 & RRFa_M4=13 & RRFa_R1 & RRFa_R2
+:SELGRNH RRFa_R1 "," RRFa_R2 "," RRFa_R3 is RRFa_OP=0xB9E3 & RRFa_R3 & RRFa_M4=13 & RRFa_R1 & RRFa_R2
 {
     local _s_ccval:1;
     local _s_bit:1;
@@ -4876,7 +4876,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <sel_done>
 }
 
-:SELGRNO "SELGRNO " RRFa_R1 "," RRFa_R2 "," RRFa_R3 is RRFa_OP=0xB9E3 & RRFa_R3 & RRFa_M4=14 & RRFa_R1 & RRFa_R2
+:SELGRNO RRFa_R1 "," RRFa_R2 "," RRFa_R3 is RRFa_OP=0xB9E3 & RRFa_R3 & RRFa_M4=14 & RRFa_R1 & RRFa_R2
 {
     local _s_ccval:1;
     local _s_bit:1;
@@ -4890,7 +4890,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <sel_done>
 }
 
-:SELGR "SELGR " RRFa_R1 "," RRFa_R2 "," RRFa_R3 "," RRFa_M4 is RRFa_OP=0xB9E3 & RRFa_R3 & RRFa_M4 & RRFa_R1 & RRFa_R2
+:SELGR RRFa_R1 "," RRFa_R2 "," RRFa_R3 "," RRFa_M4 is RRFa_OP=0xB9E3 & RRFa_R3 & RRFa_M4 & RRFa_R1 & RRFa_R2
 {
     local _s_ccval:1;
     local _s_bit:1;
@@ -4905,7 +4905,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 }
 
 # SELFHR: 32-bit, high halves.
-:SELFHRO "SELFHRO " RRFa_R1 "," RRFa_R2 "," RRFa_R3 is RRFa_OP=0xB9C0 & RRFa_R3 & RRFa_M4=1 & RRFa_R1 & RRFa_R2
+:SELFHRO RRFa_R1 "," RRFa_R2 "," RRFa_R3 is RRFa_OP=0xB9C0 & RRFa_R3 & RRFa_M4=1 & RRFa_R1 & RRFa_R2
 {
     local _s_ccval:1;
     local _s_bit:1;
@@ -4919,7 +4919,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <sel_done>
 }
 
-:SELFHRH "SELFHRH " RRFa_R1 "," RRFa_R2 "," RRFa_R3 is RRFa_OP=0xB9C0 & RRFa_R3 & RRFa_M4=2 & RRFa_R1 & RRFa_R2
+:SELFHRH RRFa_R1 "," RRFa_R2 "," RRFa_R3 is RRFa_OP=0xB9C0 & RRFa_R3 & RRFa_M4=2 & RRFa_R1 & RRFa_R2
 {
     local _s_ccval:1;
     local _s_bit:1;
@@ -4933,7 +4933,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <sel_done>
 }
 
-:SELFHRL "SELFHRL " RRFa_R1 "," RRFa_R2 "," RRFa_R3 is RRFa_OP=0xB9C0 & RRFa_R3 & RRFa_M4=4 & RRFa_R1 & RRFa_R2
+:SELFHRL RRFa_R1 "," RRFa_R2 "," RRFa_R3 is RRFa_OP=0xB9C0 & RRFa_R3 & RRFa_M4=4 & RRFa_R1 & RRFa_R2
 {
     local _s_ccval:1;
     local _s_bit:1;
@@ -4947,7 +4947,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <sel_done>
 }
 
-:SELFHRNE "SELFHRNE " RRFa_R1 "," RRFa_R2 "," RRFa_R3 is RRFa_OP=0xB9C0 & RRFa_R3 & RRFa_M4=7 & RRFa_R1 & RRFa_R2
+:SELFHRNE RRFa_R1 "," RRFa_R2 "," RRFa_R3 is RRFa_OP=0xB9C0 & RRFa_R3 & RRFa_M4=7 & RRFa_R1 & RRFa_R2
 {
     local _s_ccval:1;
     local _s_bit:1;
@@ -4961,7 +4961,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <sel_done>
 }
 
-:SELFHRE "SELFHRE " RRFa_R1 "," RRFa_R2 "," RRFa_R3 is RRFa_OP=0xB9C0 & RRFa_R3 & RRFa_M4=8 & RRFa_R1 & RRFa_R2
+:SELFHRE RRFa_R1 "," RRFa_R2 "," RRFa_R3 is RRFa_OP=0xB9C0 & RRFa_R3 & RRFa_M4=8 & RRFa_R1 & RRFa_R2
 {
     local _s_ccval:1;
     local _s_bit:1;
@@ -4975,7 +4975,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <sel_done>
 }
 
-:SELFHRNL "SELFHRNL " RRFa_R1 "," RRFa_R2 "," RRFa_R3 is RRFa_OP=0xB9C0 & RRFa_R3 & RRFa_M4=11 & RRFa_R1 & RRFa_R2
+:SELFHRNL RRFa_R1 "," RRFa_R2 "," RRFa_R3 is RRFa_OP=0xB9C0 & RRFa_R3 & RRFa_M4=11 & RRFa_R1 & RRFa_R2
 {
     local _s_ccval:1;
     local _s_bit:1;
@@ -4989,7 +4989,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <sel_done>
 }
 
-:SELFHRNH "SELFHRNH " RRFa_R1 "," RRFa_R2 "," RRFa_R3 is RRFa_OP=0xB9C0 & RRFa_R3 & RRFa_M4=13 & RRFa_R1 & RRFa_R2
+:SELFHRNH RRFa_R1 "," RRFa_R2 "," RRFa_R3 is RRFa_OP=0xB9C0 & RRFa_R3 & RRFa_M4=13 & RRFa_R1 & RRFa_R2
 {
     local _s_ccval:1;
     local _s_bit:1;
@@ -5003,7 +5003,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <sel_done>
 }
 
-:SELFHRNO "SELFHRNO " RRFa_R1 "," RRFa_R2 "," RRFa_R3 is RRFa_OP=0xB9C0 & RRFa_R3 & RRFa_M4=14 & RRFa_R1 & RRFa_R2
+:SELFHRNO RRFa_R1 "," RRFa_R2 "," RRFa_R3 is RRFa_OP=0xB9C0 & RRFa_R3 & RRFa_M4=14 & RRFa_R1 & RRFa_R2
 {
     local _s_ccval:1;
     local _s_bit:1;
@@ -5017,7 +5017,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <sel_done>
 }
 
-:SELFHR "SELFHR " RRFa_R1 "," RRFa_R2 "," RRFa_R3 "," RRFa_M4 is RRFa_OP=0xB9C0 & RRFa_R3 & RRFa_M4 & RRFa_R1 & RRFa_R2
+:SELFHR RRFa_R1 "," RRFa_R2 "," RRFa_R3 "," RRFa_M4 is RRFa_OP=0xB9C0 & RRFa_R3 & RRFa_M4 & RRFa_R1 & RRFa_R2
 {
     local _s_ccval:1;
     local _s_bit:1;
@@ -5042,7 +5042,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 # LLGTAT E39C: bits 1-31 of the word -> bits 33-63 of R1, zeros in 0-32.
 # LFHAT E3C8: 32-bit -> bits 0-31 of R1 (high half), bits 32-63 unchanged.
 # ===========================================================================
-:LAT "LAT " RXYa_R1 "," RXYa_DL2 "(" RXYa_X2 "," RXYa_B2 ")" is RXYa_OP=0xE3 & RXYa_R1 & RXYa_X2 & RXYa_B2 & RXYa_DL2 & RXYa_DH2 & RXYa_OP2=0x9F
+:LAT RXYa_R1 "," dxb_RXYa_DL2_RXYa_X2_RXYa_B2 is RXYa_OP=0xE3 & RXYa_R1 & RXYa_X2 & RXYa_B2 & RXYa_DL2 & RXYa_DH2 & RXYa_OP2=0x9F & dxb_RXYa_DL2_RXYa_X2_RXYa_B2
 {
     local ea:8;
     local w:4;
@@ -5056,7 +5056,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <lat_done>
 }
 
-:LGAT "LGAT " RXYa_R1 "," RXYa_DL2 "(" RXYa_X2 "," RXYa_B2 ")" is RXYa_OP=0xE3 & RXYa_R1 & RXYa_X2 & RXYa_B2 & RXYa_DL2 & RXYa_DH2 & RXYa_OP2=0x85
+:LGAT RXYa_R1 "," dxb_RXYa_DL2_RXYa_X2_RXYa_B2 is RXYa_OP=0xE3 & RXYa_R1 & RXYa_X2 & RXYa_B2 & RXYa_DL2 & RXYa_DH2 & RXYa_OP2=0x85 & dxb_RXYa_DL2_RXYa_X2_RXYa_B2
 {
     local ea:8;
     ea_D20(ea, RXYa_B2, RXYa_X2, RXYa_DH2, RXYa_DL2);
@@ -5068,7 +5068,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <lat_done>
 }
 
-:LLGFAT "LLGFAT " RXYa_R1 "," RXYa_DL2 "(" RXYa_X2 "," RXYa_B2 ")" is RXYa_OP=0xE3 & RXYa_R1 & RXYa_X2 & RXYa_B2 & RXYa_DL2 & RXYa_DH2 & RXYa_OP2=0x9D
+:LLGFAT RXYa_R1 "," dxb_RXYa_DL2_RXYa_X2_RXYa_B2 is RXYa_OP=0xE3 & RXYa_R1 & RXYa_X2 & RXYa_B2 & RXYa_DL2 & RXYa_DH2 & RXYa_OP2=0x9D & dxb_RXYa_DL2_RXYa_X2_RXYa_B2
 {
     local ea:8;
     local w:4;
@@ -5082,7 +5082,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <lat_done>
 }
 
-:LLGTAT "LLGTAT " RXYa_R1 "," RXYa_DL2 "(" RXYa_X2 "," RXYa_B2 ")" is RXYa_OP=0xE3 & RXYa_R1 & RXYa_X2 & RXYa_B2 & RXYa_DL2 & RXYa_DH2 & RXYa_OP2=0x9C
+:LLGTAT RXYa_R1 "," dxb_RXYa_DL2_RXYa_X2_RXYa_B2 is RXYa_OP=0xE3 & RXYa_R1 & RXYa_X2 & RXYa_B2 & RXYa_DL2 & RXYa_DH2 & RXYa_OP2=0x9C & dxb_RXYa_DL2_RXYa_X2_RXYa_B2
 {
     local ea:8;
     local w:4;
@@ -5096,7 +5096,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 <lat_done>
 }
 
-:LFHAT "LFHAT " RXYa_R1 "," RXYa_DL2 "(" RXYa_X2 "," RXYa_B2 ")" is RXYa_OP=0xE3 & RXYa_R1 & RXYa_X2 & RXYa_B2 & RXYa_DL2 & RXYa_DH2 & RXYa_OP2=0xC8
+:LFHAT RXYa_R1 "," dxb_RXYa_DL2_RXYa_X2_RXYa_B2 is RXYa_OP=0xE3 & RXYa_R1 & RXYa_X2 & RXYa_B2 & RXYa_DL2 & RXYa_DH2 & RXYa_OP2=0xC8 & dxb_RXYa_DL2_RXYa_X2_RXYa_B2
 {
     local ea:8;
     local w:4;
@@ -5120,7 +5120,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 # Harness note: display prints the raw L field (length-1); the harness
 # adds 1 for the 'mvcin' mnemonic (SS_LEN_MNEMS), like mvc/xc/nc/oc/clc.
 # ===========================================================================
-:MVCIN "MVCIN " SSa_D1 "(" SSa_L "," SSa_B1 ")," SSa_D2 "(" SSa_B2 ")" is SSa_OP=0xE8 & SSa_L & SSa_B1 & SSa_D1 & SSa_B2 & SSa_D2
+:MVCIN dlb_SSa_D1_SSa_L_SSa_B1 "," db_SSa_D2_SSa_B2 is SSa_OP=0xE8 & SSa_L & SSa_B1 & SSa_D1 & SSa_B2 & SSa_D2 & dlb_SSa_D1_SSa_L_SSa_B1 & db_SSa_D2_SSa_B2
 {
     local ea1:8;
     local ea2:8;
@@ -5149,7 +5149,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 # (special-operation exception in problem state; DAT and storage-key
 # controlled) 4 KiB page copy. Cannot be modeled honestly in p-code.
 # ===========================================================================
-:MVPG "MVPG " RRE_R1 "," RRE_R2 is RRE_OP=0xB254 & RRE_R1 & RRE_R2
+:MVPG RRE_R1 "," RRE_R2 is RRE_OP=0xB254 & RRE_R1 & RRE_R2
 {
 }
 
@@ -5158,7 +5158,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 # operand in storage is placed into the FPC (floating-point-control)
 # register. CC unchanged. (LFAS, the signaling variant, is not covered.)
 # ===========================================================================
-:LFPC "LFPC " S_D2 "(" S_B2 ")" is S_OP=0xB29D & S_B2 & S_D2
+:LFPC db_S_D2_S_B2 is S_OP=0xB29D & S_B2 & S_D2 & db_S_D2_S_B2
 {
     local ea:8;
     ea_D12(ea, S_B2, zero, S_D2);

@@ -154,55 +154,60 @@ macro vgbm16(d, w) {
 }
 
 # --- Vector constructors ---
-:vl "vl " VVRX_V1a "," VVRX_D2 "(" VVRX_X2 "," VVRX_B2 ")" is VVRX_OP=0xE7 & VVRX_OP2=0x06 & VVRX_M3=0x0 & VVRX_V1X=0 & VVRX_V1a & VVRX_D2 & VVRX_X2 & VVRX_B2
+# display-only address operand (tools/fix_display.py)
+dxb_VVRX_D2_VVRX_X2_VVRX_B2: VVRX_D2 is VVRX_D2 & VVRX_X2=0 & VVRX_B2=0  { }
+dxb_VVRX_D2_VVRX_X2_VVRX_B2: VVRX_D2(VVRX_B2) is VVRX_D2 & VVRX_X2=0 & VVRX_B2  { }
+dxb_VVRX_D2_VVRX_X2_VVRX_B2: VVRX_D2(VVRX_X2,0) is VVRX_D2 & VVRX_X2 & VVRX_B2=0  { }
+dxb_VVRX_D2_VVRX_X2_VVRX_B2: VVRX_D2(VVRX_X2,VVRX_B2) is VVRX_D2 & VVRX_X2 & VVRX_B2  { }
+:VL VVRX_V1a "," dxb_VVRX_D2_VVRX_X2_VVRX_B2 is VVRX_OP=0xE7 & VVRX_OP2=0x06 & VVRX_M3=0x0 & VVRX_V1X=0 & VVRX_V1a & VVRX_D2 & VVRX_X2 & VVRX_B2 & dxb_VVRX_D2_VVRX_X2_VVRX_B2
 {
     local ea:8;
     ea_D12(ea, VVRX_B2, VVRX_X2, VVRX_D2);
     VVRX_V1a = *:16 ea;
 }
 
-:vl "vl " VVRX_V1b "," VVRX_D2 "(" VVRX_X2 "," VVRX_B2 ")" is VVRX_OP=0xE7 & VVRX_OP2=0x06 & VVRX_M3=0x0 & VVRX_V1X=1 & VVRX_V1b & VVRX_D2 & VVRX_X2 & VVRX_B2
+:VL VVRX_V1b "," dxb_VVRX_D2_VVRX_X2_VVRX_B2 is VVRX_OP=0xE7 & VVRX_OP2=0x06 & VVRX_M3=0x0 & VVRX_V1X=1 & VVRX_V1b & VVRX_D2 & VVRX_X2 & VVRX_B2 & dxb_VVRX_D2_VVRX_X2_VVRX_B2
 {
     local ea:8;
     ea_D12(ea, VVRX_B2, VVRX_X2, VVRX_D2);
     VVRX_V1b = *:16 ea;
 }
 
-:vst "vst " VVRX_V1a "," VVRX_D2 "(" VVRX_X2 "," VVRX_B2 ")" is VVRX_OP=0xE7 & VVRX_OP2=0x0E & VVRX_M3=0x0 & VVRX_V1X=0 & VVRX_V1a & VVRX_D2 & VVRX_X2 & VVRX_B2
+:VST VVRX_V1a "," dxb_VVRX_D2_VVRX_X2_VVRX_B2 is VVRX_OP=0xE7 & VVRX_OP2=0x0E & VVRX_M3=0x0 & VVRX_V1X=0 & VVRX_V1a & VVRX_D2 & VVRX_X2 & VVRX_B2 & dxb_VVRX_D2_VVRX_X2_VVRX_B2
 {
     local ea:8;
     ea_D12(ea, VVRX_B2, VVRX_X2, VVRX_D2);
     *:16 ea = VVRX_V1a;
 }
 
-:vst "vst " VVRX_V1b "," VVRX_D2 "(" VVRX_X2 "," VVRX_B2 ")" is VVRX_OP=0xE7 & VVRX_OP2=0x0E & VVRX_M3=0x0 & VVRX_V1X=1 & VVRX_V1b & VVRX_D2 & VVRX_X2 & VVRX_B2
+:VST VVRX_V1b "," dxb_VVRX_D2_VVRX_X2_VVRX_B2 is VVRX_OP=0xE7 & VVRX_OP2=0x0E & VVRX_M3=0x0 & VVRX_V1X=1 & VVRX_V1b & VVRX_D2 & VVRX_X2 & VVRX_B2 & dxb_VVRX_D2_VVRX_X2_VVRX_B2
 {
     local ea:8;
     ea_D12(ea, VVRX_B2, VVRX_X2, VVRX_D2);
     *:16 ea = VVRX_V1b;
 }
 
-:vlr "vlr " VVRRa_V1a "," VVRRa_V2a is VVRRa_OP=0xE7 & VVRRa_OP2=0x56 & VVRRa_V1X=0 & VVRRa_V2X=0 & VVRRa_V1a & VVRRa_V2a
+:VLR VVRRa_V1a "," VVRRa_V2a is VVRRa_OP=0xE7 & VVRRa_OP2=0x56 & VVRRa_V1X=0 & VVRRa_V2X=0 & VVRRa_V1a & VVRRa_V2a
 {
     VVRRa_V1a = VVRRa_V2a;
 }
 
-:vlr "vlr " VVRRa_V1a "," VVRRa_V2b is VVRRa_OP=0xE7 & VVRRa_OP2=0x56 & VVRRa_V1X=0 & VVRRa_V2X=1 & VVRRa_V1a & VVRRa_V2b
+:VLR VVRRa_V1a "," VVRRa_V2b is VVRRa_OP=0xE7 & VVRRa_OP2=0x56 & VVRRa_V1X=0 & VVRRa_V2X=1 & VVRRa_V1a & VVRRa_V2b
 {
     VVRRa_V1a = VVRRa_V2b;
 }
 
-:vlr "vlr " VVRRa_V1b "," VVRRa_V2a is VVRRa_OP=0xE7 & VVRRa_OP2=0x56 & VVRRa_V1X=1 & VVRRa_V2X=0 & VVRRa_V1b & VVRRa_V2a
+:VLR VVRRa_V1b "," VVRRa_V2a is VVRRa_OP=0xE7 & VVRRa_OP2=0x56 & VVRRa_V1X=1 & VVRRa_V2X=0 & VVRRa_V1b & VVRRa_V2a
 {
     VVRRa_V1b = VVRRa_V2a;
 }
 
-:vlr "vlr " VVRRa_V1b "," VVRRa_V2b is VVRRa_OP=0xE7 & VVRRa_OP2=0x56 & VVRRa_V1X=1 & VVRRa_V2X=1 & VVRRa_V1b & VVRRa_V2b
+:VLR VVRRa_V1b "," VVRRa_V2b is VVRRa_OP=0xE7 & VVRRa_OP2=0x56 & VVRRa_V1X=1 & VVRRa_V2X=1 & VVRRa_V1b & VVRRa_V2b
 {
     VVRRa_V1b = VVRRa_V2b;
 }
 
-:vab "vab " VVRRc_V1a "," VVRRc_V2a "," VVRRc_V3a is VVRRc_OP=0xE7 & VVRRc_OP2=0xF3 & VVRRc_M3=0x0 & VVRRc_V1X=0 & VVRRc_V2X=0 & VVRRc_V3X=0 & VVRRc_V1a & VVRRc_V2a & VVRRc_V3a
+:VAB VVRRc_V1a "," VVRRc_V2a "," VVRRc_V3a is VVRRc_OP=0xE7 & VVRRc_OP2=0xF3 & VVRRc_M3=0x0 & VVRRc_V1X=0 & VVRRc_V2X=0 & VVRRc_V3X=0 & VVRRc_V1a & VVRRc_V2a & VVRRc_V3a
 {
     # Element-wise add, 1-byte elements (PoP VA/VS).
     local esz:8; local sub:8;
@@ -210,7 +215,7 @@ macro vgbm16(d, w) {
     velem_op(VVRRc_V1a, VVRRc_V2a, VVRRc_V3a, esz, sub);
 }
 
-:vab "vab " VVRRc_V1a "," VVRRc_V2a "," VVRRc_V3b is VVRRc_OP=0xE7 & VVRRc_OP2=0xF3 & VVRRc_M3=0x0 & VVRRc_V1X=0 & VVRRc_V2X=0 & VVRRc_V3X=1 & VVRRc_V1a & VVRRc_V2a & VVRRc_V3b
+:VAB VVRRc_V1a "," VVRRc_V2a "," VVRRc_V3b is VVRRc_OP=0xE7 & VVRRc_OP2=0xF3 & VVRRc_M3=0x0 & VVRRc_V1X=0 & VVRRc_V2X=0 & VVRRc_V3X=1 & VVRRc_V1a & VVRRc_V2a & VVRRc_V3b
 {
     # Element-wise add, 1-byte elements (PoP VA/VS).
     local esz:8; local sub:8;
@@ -218,7 +223,7 @@ macro vgbm16(d, w) {
     velem_op(VVRRc_V1a, VVRRc_V2a, VVRRc_V3b, esz, sub);
 }
 
-:vab "vab " VVRRc_V1a "," VVRRc_V2b "," VVRRc_V3a is VVRRc_OP=0xE7 & VVRRc_OP2=0xF3 & VVRRc_M3=0x0 & VVRRc_V1X=0 & VVRRc_V2X=1 & VVRRc_V3X=0 & VVRRc_V1a & VVRRc_V2b & VVRRc_V3a
+:VAB VVRRc_V1a "," VVRRc_V2b "," VVRRc_V3a is VVRRc_OP=0xE7 & VVRRc_OP2=0xF3 & VVRRc_M3=0x0 & VVRRc_V1X=0 & VVRRc_V2X=1 & VVRRc_V3X=0 & VVRRc_V1a & VVRRc_V2b & VVRRc_V3a
 {
     # Element-wise add, 1-byte elements (PoP VA/VS).
     local esz:8; local sub:8;
@@ -226,7 +231,7 @@ macro vgbm16(d, w) {
     velem_op(VVRRc_V1a, VVRRc_V2b, VVRRc_V3a, esz, sub);
 }
 
-:vab "vab " VVRRc_V1a "," VVRRc_V2b "," VVRRc_V3b is VVRRc_OP=0xE7 & VVRRc_OP2=0xF3 & VVRRc_M3=0x0 & VVRRc_V1X=0 & VVRRc_V2X=1 & VVRRc_V3X=1 & VVRRc_V1a & VVRRc_V2b & VVRRc_V3b
+:VAB VVRRc_V1a "," VVRRc_V2b "," VVRRc_V3b is VVRRc_OP=0xE7 & VVRRc_OP2=0xF3 & VVRRc_M3=0x0 & VVRRc_V1X=0 & VVRRc_V2X=1 & VVRRc_V3X=1 & VVRRc_V1a & VVRRc_V2b & VVRRc_V3b
 {
     # Element-wise add, 1-byte elements (PoP VA/VS).
     local esz:8; local sub:8;
@@ -234,7 +239,7 @@ macro vgbm16(d, w) {
     velem_op(VVRRc_V1a, VVRRc_V2b, VVRRc_V3b, esz, sub);
 }
 
-:vab "vab " VVRRc_V1b "," VVRRc_V2a "," VVRRc_V3a is VVRRc_OP=0xE7 & VVRRc_OP2=0xF3 & VVRRc_M3=0x0 & VVRRc_V1X=1 & VVRRc_V2X=0 & VVRRc_V3X=0 & VVRRc_V1b & VVRRc_V2a & VVRRc_V3a
+:VAB VVRRc_V1b "," VVRRc_V2a "," VVRRc_V3a is VVRRc_OP=0xE7 & VVRRc_OP2=0xF3 & VVRRc_M3=0x0 & VVRRc_V1X=1 & VVRRc_V2X=0 & VVRRc_V3X=0 & VVRRc_V1b & VVRRc_V2a & VVRRc_V3a
 {
     # Element-wise add, 1-byte elements (PoP VA/VS).
     local esz:8; local sub:8;
@@ -242,7 +247,7 @@ macro vgbm16(d, w) {
     velem_op(VVRRc_V1b, VVRRc_V2a, VVRRc_V3a, esz, sub);
 }
 
-:vab "vab " VVRRc_V1b "," VVRRc_V2a "," VVRRc_V3b is VVRRc_OP=0xE7 & VVRRc_OP2=0xF3 & VVRRc_M3=0x0 & VVRRc_V1X=1 & VVRRc_V2X=0 & VVRRc_V3X=1 & VVRRc_V1b & VVRRc_V2a & VVRRc_V3b
+:VAB VVRRc_V1b "," VVRRc_V2a "," VVRRc_V3b is VVRRc_OP=0xE7 & VVRRc_OP2=0xF3 & VVRRc_M3=0x0 & VVRRc_V1X=1 & VVRRc_V2X=0 & VVRRc_V3X=1 & VVRRc_V1b & VVRRc_V2a & VVRRc_V3b
 {
     # Element-wise add, 1-byte elements (PoP VA/VS).
     local esz:8; local sub:8;
@@ -250,7 +255,7 @@ macro vgbm16(d, w) {
     velem_op(VVRRc_V1b, VVRRc_V2a, VVRRc_V3b, esz, sub);
 }
 
-:vab "vab " VVRRc_V1b "," VVRRc_V2b "," VVRRc_V3a is VVRRc_OP=0xE7 & VVRRc_OP2=0xF3 & VVRRc_M3=0x0 & VVRRc_V1X=1 & VVRRc_V2X=1 & VVRRc_V3X=0 & VVRRc_V1b & VVRRc_V2b & VVRRc_V3a
+:VAB VVRRc_V1b "," VVRRc_V2b "," VVRRc_V3a is VVRRc_OP=0xE7 & VVRRc_OP2=0xF3 & VVRRc_M3=0x0 & VVRRc_V1X=1 & VVRRc_V2X=1 & VVRRc_V3X=0 & VVRRc_V1b & VVRRc_V2b & VVRRc_V3a
 {
     # Element-wise add, 1-byte elements (PoP VA/VS).
     local esz:8; local sub:8;
@@ -258,7 +263,7 @@ macro vgbm16(d, w) {
     velem_op(VVRRc_V1b, VVRRc_V2b, VVRRc_V3a, esz, sub);
 }
 
-:vab "vab " VVRRc_V1b "," VVRRc_V2b "," VVRRc_V3b is VVRRc_OP=0xE7 & VVRRc_OP2=0xF3 & VVRRc_M3=0x0 & VVRRc_V1X=1 & VVRRc_V2X=1 & VVRRc_V3X=1 & VVRRc_V1b & VVRRc_V2b & VVRRc_V3b
+:VAB VVRRc_V1b "," VVRRc_V2b "," VVRRc_V3b is VVRRc_OP=0xE7 & VVRRc_OP2=0xF3 & VVRRc_M3=0x0 & VVRRc_V1X=1 & VVRRc_V2X=1 & VVRRc_V3X=1 & VVRRc_V1b & VVRRc_V2b & VVRRc_V3b
 {
     # Element-wise add, 1-byte elements (PoP VA/VS).
     local esz:8; local sub:8;
@@ -266,7 +271,7 @@ macro vgbm16(d, w) {
     velem_op(VVRRc_V1b, VVRRc_V2b, VVRRc_V3b, esz, sub);
 }
 
-:vsb "vsb " VVRRc_V1a "," VVRRc_V2a "," VVRRc_V3a is VVRRc_OP=0xE7 & VVRRc_OP2=0xF7 & VVRRc_M3=0x0 & VVRRc_V1X=0 & VVRRc_V2X=0 & VVRRc_V3X=0 & VVRRc_V1a & VVRRc_V2a & VVRRc_V3a
+:VSB VVRRc_V1a "," VVRRc_V2a "," VVRRc_V3a is VVRRc_OP=0xE7 & VVRRc_OP2=0xF7 & VVRRc_M3=0x0 & VVRRc_V1X=0 & VVRRc_V2X=0 & VVRRc_V3X=0 & VVRRc_V1a & VVRRc_V2a & VVRRc_V3a
 {
     # Element-wise subtract, 1-byte elements (PoP VA/VS).
     local esz:8; local sub:8;
@@ -274,7 +279,7 @@ macro vgbm16(d, w) {
     velem_op(VVRRc_V1a, VVRRc_V2a, VVRRc_V3a, esz, sub);
 }
 
-:vsb "vsb " VVRRc_V1a "," VVRRc_V2a "," VVRRc_V3b is VVRRc_OP=0xE7 & VVRRc_OP2=0xF7 & VVRRc_M3=0x0 & VVRRc_V1X=0 & VVRRc_V2X=0 & VVRRc_V3X=1 & VVRRc_V1a & VVRRc_V2a & VVRRc_V3b
+:VSB VVRRc_V1a "," VVRRc_V2a "," VVRRc_V3b is VVRRc_OP=0xE7 & VVRRc_OP2=0xF7 & VVRRc_M3=0x0 & VVRRc_V1X=0 & VVRRc_V2X=0 & VVRRc_V3X=1 & VVRRc_V1a & VVRRc_V2a & VVRRc_V3b
 {
     # Element-wise subtract, 1-byte elements (PoP VA/VS).
     local esz:8; local sub:8;
@@ -282,7 +287,7 @@ macro vgbm16(d, w) {
     velem_op(VVRRc_V1a, VVRRc_V2a, VVRRc_V3b, esz, sub);
 }
 
-:vsb "vsb " VVRRc_V1a "," VVRRc_V2b "," VVRRc_V3a is VVRRc_OP=0xE7 & VVRRc_OP2=0xF7 & VVRRc_M3=0x0 & VVRRc_V1X=0 & VVRRc_V2X=1 & VVRRc_V3X=0 & VVRRc_V1a & VVRRc_V2b & VVRRc_V3a
+:VSB VVRRc_V1a "," VVRRc_V2b "," VVRRc_V3a is VVRRc_OP=0xE7 & VVRRc_OP2=0xF7 & VVRRc_M3=0x0 & VVRRc_V1X=0 & VVRRc_V2X=1 & VVRRc_V3X=0 & VVRRc_V1a & VVRRc_V2b & VVRRc_V3a
 {
     # Element-wise subtract, 1-byte elements (PoP VA/VS).
     local esz:8; local sub:8;
@@ -290,7 +295,7 @@ macro vgbm16(d, w) {
     velem_op(VVRRc_V1a, VVRRc_V2b, VVRRc_V3a, esz, sub);
 }
 
-:vsb "vsb " VVRRc_V1a "," VVRRc_V2b "," VVRRc_V3b is VVRRc_OP=0xE7 & VVRRc_OP2=0xF7 & VVRRc_M3=0x0 & VVRRc_V1X=0 & VVRRc_V2X=1 & VVRRc_V3X=1 & VVRRc_V1a & VVRRc_V2b & VVRRc_V3b
+:VSB VVRRc_V1a "," VVRRc_V2b "," VVRRc_V3b is VVRRc_OP=0xE7 & VVRRc_OP2=0xF7 & VVRRc_M3=0x0 & VVRRc_V1X=0 & VVRRc_V2X=1 & VVRRc_V3X=1 & VVRRc_V1a & VVRRc_V2b & VVRRc_V3b
 {
     # Element-wise subtract, 1-byte elements (PoP VA/VS).
     local esz:8; local sub:8;
@@ -298,7 +303,7 @@ macro vgbm16(d, w) {
     velem_op(VVRRc_V1a, VVRRc_V2b, VVRRc_V3b, esz, sub);
 }
 
-:vsb "vsb " VVRRc_V1b "," VVRRc_V2a "," VVRRc_V3a is VVRRc_OP=0xE7 & VVRRc_OP2=0xF7 & VVRRc_M3=0x0 & VVRRc_V1X=1 & VVRRc_V2X=0 & VVRRc_V3X=0 & VVRRc_V1b & VVRRc_V2a & VVRRc_V3a
+:VSB VVRRc_V1b "," VVRRc_V2a "," VVRRc_V3a is VVRRc_OP=0xE7 & VVRRc_OP2=0xF7 & VVRRc_M3=0x0 & VVRRc_V1X=1 & VVRRc_V2X=0 & VVRRc_V3X=0 & VVRRc_V1b & VVRRc_V2a & VVRRc_V3a
 {
     # Element-wise subtract, 1-byte elements (PoP VA/VS).
     local esz:8; local sub:8;
@@ -306,7 +311,7 @@ macro vgbm16(d, w) {
     velem_op(VVRRc_V1b, VVRRc_V2a, VVRRc_V3a, esz, sub);
 }
 
-:vsb "vsb " VVRRc_V1b "," VVRRc_V2a "," VVRRc_V3b is VVRRc_OP=0xE7 & VVRRc_OP2=0xF7 & VVRRc_M3=0x0 & VVRRc_V1X=1 & VVRRc_V2X=0 & VVRRc_V3X=1 & VVRRc_V1b & VVRRc_V2a & VVRRc_V3b
+:VSB VVRRc_V1b "," VVRRc_V2a "," VVRRc_V3b is VVRRc_OP=0xE7 & VVRRc_OP2=0xF7 & VVRRc_M3=0x0 & VVRRc_V1X=1 & VVRRc_V2X=0 & VVRRc_V3X=1 & VVRRc_V1b & VVRRc_V2a & VVRRc_V3b
 {
     # Element-wise subtract, 1-byte elements (PoP VA/VS).
     local esz:8; local sub:8;
@@ -314,7 +319,7 @@ macro vgbm16(d, w) {
     velem_op(VVRRc_V1b, VVRRc_V2a, VVRRc_V3b, esz, sub);
 }
 
-:vsb "vsb " VVRRc_V1b "," VVRRc_V2b "," VVRRc_V3a is VVRRc_OP=0xE7 & VVRRc_OP2=0xF7 & VVRRc_M3=0x0 & VVRRc_V1X=1 & VVRRc_V2X=1 & VVRRc_V3X=0 & VVRRc_V1b & VVRRc_V2b & VVRRc_V3a
+:VSB VVRRc_V1b "," VVRRc_V2b "," VVRRc_V3a is VVRRc_OP=0xE7 & VVRRc_OP2=0xF7 & VVRRc_M3=0x0 & VVRRc_V1X=1 & VVRRc_V2X=1 & VVRRc_V3X=0 & VVRRc_V1b & VVRRc_V2b & VVRRc_V3a
 {
     # Element-wise subtract, 1-byte elements (PoP VA/VS).
     local esz:8; local sub:8;
@@ -322,7 +327,7 @@ macro vgbm16(d, w) {
     velem_op(VVRRc_V1b, VVRRc_V2b, VVRRc_V3a, esz, sub);
 }
 
-:vsb "vsb " VVRRc_V1b "," VVRRc_V2b "," VVRRc_V3b is VVRRc_OP=0xE7 & VVRRc_OP2=0xF7 & VVRRc_M3=0x0 & VVRRc_V1X=1 & VVRRc_V2X=1 & VVRRc_V3X=1 & VVRRc_V1b & VVRRc_V2b & VVRRc_V3b
+:VSB VVRRc_V1b "," VVRRc_V2b "," VVRRc_V3b is VVRRc_OP=0xE7 & VVRRc_OP2=0xF7 & VVRRc_M3=0x0 & VVRRc_V1X=1 & VVRRc_V2X=1 & VVRRc_V3X=1 & VVRRc_V1b & VVRRc_V2b & VVRRc_V3b
 {
     # Element-wise subtract, 1-byte elements (PoP VA/VS).
     local esz:8; local sub:8;
@@ -330,7 +335,7 @@ macro vgbm16(d, w) {
     velem_op(VVRRc_V1b, VVRRc_V2b, VVRRc_V3b, esz, sub);
 }
 
-:vah "vah " VVRRc_V1a "," VVRRc_V2a "," VVRRc_V3a is VVRRc_OP=0xE7 & VVRRc_OP2=0xF3 & VVRRc_M3=0x1 & VVRRc_V1X=0 & VVRRc_V2X=0 & VVRRc_V3X=0 & VVRRc_V1a & VVRRc_V2a & VVRRc_V3a
+:VAH VVRRc_V1a "," VVRRc_V2a "," VVRRc_V3a is VVRRc_OP=0xE7 & VVRRc_OP2=0xF3 & VVRRc_M3=0x1 & VVRRc_V1X=0 & VVRRc_V2X=0 & VVRRc_V3X=0 & VVRRc_V1a & VVRRc_V2a & VVRRc_V3a
 {
     # Element-wise add, 2-byte elements (PoP VA/VS).
     local esz:8; local sub:8;
@@ -338,7 +343,7 @@ macro vgbm16(d, w) {
     velem_op(VVRRc_V1a, VVRRc_V2a, VVRRc_V3a, esz, sub);
 }
 
-:vah "vah " VVRRc_V1a "," VVRRc_V2a "," VVRRc_V3b is VVRRc_OP=0xE7 & VVRRc_OP2=0xF3 & VVRRc_M3=0x1 & VVRRc_V1X=0 & VVRRc_V2X=0 & VVRRc_V3X=1 & VVRRc_V1a & VVRRc_V2a & VVRRc_V3b
+:VAH VVRRc_V1a "," VVRRc_V2a "," VVRRc_V3b is VVRRc_OP=0xE7 & VVRRc_OP2=0xF3 & VVRRc_M3=0x1 & VVRRc_V1X=0 & VVRRc_V2X=0 & VVRRc_V3X=1 & VVRRc_V1a & VVRRc_V2a & VVRRc_V3b
 {
     # Element-wise add, 2-byte elements (PoP VA/VS).
     local esz:8; local sub:8;
@@ -346,7 +351,7 @@ macro vgbm16(d, w) {
     velem_op(VVRRc_V1a, VVRRc_V2a, VVRRc_V3b, esz, sub);
 }
 
-:vah "vah " VVRRc_V1a "," VVRRc_V2b "," VVRRc_V3a is VVRRc_OP=0xE7 & VVRRc_OP2=0xF3 & VVRRc_M3=0x1 & VVRRc_V1X=0 & VVRRc_V2X=1 & VVRRc_V3X=0 & VVRRc_V1a & VVRRc_V2b & VVRRc_V3a
+:VAH VVRRc_V1a "," VVRRc_V2b "," VVRRc_V3a is VVRRc_OP=0xE7 & VVRRc_OP2=0xF3 & VVRRc_M3=0x1 & VVRRc_V1X=0 & VVRRc_V2X=1 & VVRRc_V3X=0 & VVRRc_V1a & VVRRc_V2b & VVRRc_V3a
 {
     # Element-wise add, 2-byte elements (PoP VA/VS).
     local esz:8; local sub:8;
@@ -354,7 +359,7 @@ macro vgbm16(d, w) {
     velem_op(VVRRc_V1a, VVRRc_V2b, VVRRc_V3a, esz, sub);
 }
 
-:vah "vah " VVRRc_V1a "," VVRRc_V2b "," VVRRc_V3b is VVRRc_OP=0xE7 & VVRRc_OP2=0xF3 & VVRRc_M3=0x1 & VVRRc_V1X=0 & VVRRc_V2X=1 & VVRRc_V3X=1 & VVRRc_V1a & VVRRc_V2b & VVRRc_V3b
+:VAH VVRRc_V1a "," VVRRc_V2b "," VVRRc_V3b is VVRRc_OP=0xE7 & VVRRc_OP2=0xF3 & VVRRc_M3=0x1 & VVRRc_V1X=0 & VVRRc_V2X=1 & VVRRc_V3X=1 & VVRRc_V1a & VVRRc_V2b & VVRRc_V3b
 {
     # Element-wise add, 2-byte elements (PoP VA/VS).
     local esz:8; local sub:8;
@@ -362,7 +367,7 @@ macro vgbm16(d, w) {
     velem_op(VVRRc_V1a, VVRRc_V2b, VVRRc_V3b, esz, sub);
 }
 
-:vah "vah " VVRRc_V1b "," VVRRc_V2a "," VVRRc_V3a is VVRRc_OP=0xE7 & VVRRc_OP2=0xF3 & VVRRc_M3=0x1 & VVRRc_V1X=1 & VVRRc_V2X=0 & VVRRc_V3X=0 & VVRRc_V1b & VVRRc_V2a & VVRRc_V3a
+:VAH VVRRc_V1b "," VVRRc_V2a "," VVRRc_V3a is VVRRc_OP=0xE7 & VVRRc_OP2=0xF3 & VVRRc_M3=0x1 & VVRRc_V1X=1 & VVRRc_V2X=0 & VVRRc_V3X=0 & VVRRc_V1b & VVRRc_V2a & VVRRc_V3a
 {
     # Element-wise add, 2-byte elements (PoP VA/VS).
     local esz:8; local sub:8;
@@ -370,7 +375,7 @@ macro vgbm16(d, w) {
     velem_op(VVRRc_V1b, VVRRc_V2a, VVRRc_V3a, esz, sub);
 }
 
-:vah "vah " VVRRc_V1b "," VVRRc_V2a "," VVRRc_V3b is VVRRc_OP=0xE7 & VVRRc_OP2=0xF3 & VVRRc_M3=0x1 & VVRRc_V1X=1 & VVRRc_V2X=0 & VVRRc_V3X=1 & VVRRc_V1b & VVRRc_V2a & VVRRc_V3b
+:VAH VVRRc_V1b "," VVRRc_V2a "," VVRRc_V3b is VVRRc_OP=0xE7 & VVRRc_OP2=0xF3 & VVRRc_M3=0x1 & VVRRc_V1X=1 & VVRRc_V2X=0 & VVRRc_V3X=1 & VVRRc_V1b & VVRRc_V2a & VVRRc_V3b
 {
     # Element-wise add, 2-byte elements (PoP VA/VS).
     local esz:8; local sub:8;
@@ -378,7 +383,7 @@ macro vgbm16(d, w) {
     velem_op(VVRRc_V1b, VVRRc_V2a, VVRRc_V3b, esz, sub);
 }
 
-:vah "vah " VVRRc_V1b "," VVRRc_V2b "," VVRRc_V3a is VVRRc_OP=0xE7 & VVRRc_OP2=0xF3 & VVRRc_M3=0x1 & VVRRc_V1X=1 & VVRRc_V2X=1 & VVRRc_V3X=0 & VVRRc_V1b & VVRRc_V2b & VVRRc_V3a
+:VAH VVRRc_V1b "," VVRRc_V2b "," VVRRc_V3a is VVRRc_OP=0xE7 & VVRRc_OP2=0xF3 & VVRRc_M3=0x1 & VVRRc_V1X=1 & VVRRc_V2X=1 & VVRRc_V3X=0 & VVRRc_V1b & VVRRc_V2b & VVRRc_V3a
 {
     # Element-wise add, 2-byte elements (PoP VA/VS).
     local esz:8; local sub:8;
@@ -386,7 +391,7 @@ macro vgbm16(d, w) {
     velem_op(VVRRc_V1b, VVRRc_V2b, VVRRc_V3a, esz, sub);
 }
 
-:vah "vah " VVRRc_V1b "," VVRRc_V2b "," VVRRc_V3b is VVRRc_OP=0xE7 & VVRRc_OP2=0xF3 & VVRRc_M3=0x1 & VVRRc_V1X=1 & VVRRc_V2X=1 & VVRRc_V3X=1 & VVRRc_V1b & VVRRc_V2b & VVRRc_V3b
+:VAH VVRRc_V1b "," VVRRc_V2b "," VVRRc_V3b is VVRRc_OP=0xE7 & VVRRc_OP2=0xF3 & VVRRc_M3=0x1 & VVRRc_V1X=1 & VVRRc_V2X=1 & VVRRc_V3X=1 & VVRRc_V1b & VVRRc_V2b & VVRRc_V3b
 {
     # Element-wise add, 2-byte elements (PoP VA/VS).
     local esz:8; local sub:8;
@@ -394,7 +399,7 @@ macro vgbm16(d, w) {
     velem_op(VVRRc_V1b, VVRRc_V2b, VVRRc_V3b, esz, sub);
 }
 
-:vsh "vsh " VVRRc_V1a "," VVRRc_V2a "," VVRRc_V3a is VVRRc_OP=0xE7 & VVRRc_OP2=0xF7 & VVRRc_M3=0x1 & VVRRc_V1X=0 & VVRRc_V2X=0 & VVRRc_V3X=0 & VVRRc_V1a & VVRRc_V2a & VVRRc_V3a
+:VSH VVRRc_V1a "," VVRRc_V2a "," VVRRc_V3a is VVRRc_OP=0xE7 & VVRRc_OP2=0xF7 & VVRRc_M3=0x1 & VVRRc_V1X=0 & VVRRc_V2X=0 & VVRRc_V3X=0 & VVRRc_V1a & VVRRc_V2a & VVRRc_V3a
 {
     # Element-wise subtract, 2-byte elements (PoP VA/VS).
     local esz:8; local sub:8;
@@ -402,7 +407,7 @@ macro vgbm16(d, w) {
     velem_op(VVRRc_V1a, VVRRc_V2a, VVRRc_V3a, esz, sub);
 }
 
-:vsh "vsh " VVRRc_V1a "," VVRRc_V2a "," VVRRc_V3b is VVRRc_OP=0xE7 & VVRRc_OP2=0xF7 & VVRRc_M3=0x1 & VVRRc_V1X=0 & VVRRc_V2X=0 & VVRRc_V3X=1 & VVRRc_V1a & VVRRc_V2a & VVRRc_V3b
+:VSH VVRRc_V1a "," VVRRc_V2a "," VVRRc_V3b is VVRRc_OP=0xE7 & VVRRc_OP2=0xF7 & VVRRc_M3=0x1 & VVRRc_V1X=0 & VVRRc_V2X=0 & VVRRc_V3X=1 & VVRRc_V1a & VVRRc_V2a & VVRRc_V3b
 {
     # Element-wise subtract, 2-byte elements (PoP VA/VS).
     local esz:8; local sub:8;
@@ -410,7 +415,7 @@ macro vgbm16(d, w) {
     velem_op(VVRRc_V1a, VVRRc_V2a, VVRRc_V3b, esz, sub);
 }
 
-:vsh "vsh " VVRRc_V1a "," VVRRc_V2b "," VVRRc_V3a is VVRRc_OP=0xE7 & VVRRc_OP2=0xF7 & VVRRc_M3=0x1 & VVRRc_V1X=0 & VVRRc_V2X=1 & VVRRc_V3X=0 & VVRRc_V1a & VVRRc_V2b & VVRRc_V3a
+:VSH VVRRc_V1a "," VVRRc_V2b "," VVRRc_V3a is VVRRc_OP=0xE7 & VVRRc_OP2=0xF7 & VVRRc_M3=0x1 & VVRRc_V1X=0 & VVRRc_V2X=1 & VVRRc_V3X=0 & VVRRc_V1a & VVRRc_V2b & VVRRc_V3a
 {
     # Element-wise subtract, 2-byte elements (PoP VA/VS).
     local esz:8; local sub:8;
@@ -418,7 +423,7 @@ macro vgbm16(d, w) {
     velem_op(VVRRc_V1a, VVRRc_V2b, VVRRc_V3a, esz, sub);
 }
 
-:vsh "vsh " VVRRc_V1a "," VVRRc_V2b "," VVRRc_V3b is VVRRc_OP=0xE7 & VVRRc_OP2=0xF7 & VVRRc_M3=0x1 & VVRRc_V1X=0 & VVRRc_V2X=1 & VVRRc_V3X=1 & VVRRc_V1a & VVRRc_V2b & VVRRc_V3b
+:VSH VVRRc_V1a "," VVRRc_V2b "," VVRRc_V3b is VVRRc_OP=0xE7 & VVRRc_OP2=0xF7 & VVRRc_M3=0x1 & VVRRc_V1X=0 & VVRRc_V2X=1 & VVRRc_V3X=1 & VVRRc_V1a & VVRRc_V2b & VVRRc_V3b
 {
     # Element-wise subtract, 2-byte elements (PoP VA/VS).
     local esz:8; local sub:8;
@@ -426,7 +431,7 @@ macro vgbm16(d, w) {
     velem_op(VVRRc_V1a, VVRRc_V2b, VVRRc_V3b, esz, sub);
 }
 
-:vsh "vsh " VVRRc_V1b "," VVRRc_V2a "," VVRRc_V3a is VVRRc_OP=0xE7 & VVRRc_OP2=0xF7 & VVRRc_M3=0x1 & VVRRc_V1X=1 & VVRRc_V2X=0 & VVRRc_V3X=0 & VVRRc_V1b & VVRRc_V2a & VVRRc_V3a
+:VSH VVRRc_V1b "," VVRRc_V2a "," VVRRc_V3a is VVRRc_OP=0xE7 & VVRRc_OP2=0xF7 & VVRRc_M3=0x1 & VVRRc_V1X=1 & VVRRc_V2X=0 & VVRRc_V3X=0 & VVRRc_V1b & VVRRc_V2a & VVRRc_V3a
 {
     # Element-wise subtract, 2-byte elements (PoP VA/VS).
     local esz:8; local sub:8;
@@ -434,7 +439,7 @@ macro vgbm16(d, w) {
     velem_op(VVRRc_V1b, VVRRc_V2a, VVRRc_V3a, esz, sub);
 }
 
-:vsh "vsh " VVRRc_V1b "," VVRRc_V2a "," VVRRc_V3b is VVRRc_OP=0xE7 & VVRRc_OP2=0xF7 & VVRRc_M3=0x1 & VVRRc_V1X=1 & VVRRc_V2X=0 & VVRRc_V3X=1 & VVRRc_V1b & VVRRc_V2a & VVRRc_V3b
+:VSH VVRRc_V1b "," VVRRc_V2a "," VVRRc_V3b is VVRRc_OP=0xE7 & VVRRc_OP2=0xF7 & VVRRc_M3=0x1 & VVRRc_V1X=1 & VVRRc_V2X=0 & VVRRc_V3X=1 & VVRRc_V1b & VVRRc_V2a & VVRRc_V3b
 {
     # Element-wise subtract, 2-byte elements (PoP VA/VS).
     local esz:8; local sub:8;
@@ -442,7 +447,7 @@ macro vgbm16(d, w) {
     velem_op(VVRRc_V1b, VVRRc_V2a, VVRRc_V3b, esz, sub);
 }
 
-:vsh "vsh " VVRRc_V1b "," VVRRc_V2b "," VVRRc_V3a is VVRRc_OP=0xE7 & VVRRc_OP2=0xF7 & VVRRc_M3=0x1 & VVRRc_V1X=1 & VVRRc_V2X=1 & VVRRc_V3X=0 & VVRRc_V1b & VVRRc_V2b & VVRRc_V3a
+:VSH VVRRc_V1b "," VVRRc_V2b "," VVRRc_V3a is VVRRc_OP=0xE7 & VVRRc_OP2=0xF7 & VVRRc_M3=0x1 & VVRRc_V1X=1 & VVRRc_V2X=1 & VVRRc_V3X=0 & VVRRc_V1b & VVRRc_V2b & VVRRc_V3a
 {
     # Element-wise subtract, 2-byte elements (PoP VA/VS).
     local esz:8; local sub:8;
@@ -450,7 +455,7 @@ macro vgbm16(d, w) {
     velem_op(VVRRc_V1b, VVRRc_V2b, VVRRc_V3a, esz, sub);
 }
 
-:vsh "vsh " VVRRc_V1b "," VVRRc_V2b "," VVRRc_V3b is VVRRc_OP=0xE7 & VVRRc_OP2=0xF7 & VVRRc_M3=0x1 & VVRRc_V1X=1 & VVRRc_V2X=1 & VVRRc_V3X=1 & VVRRc_V1b & VVRRc_V2b & VVRRc_V3b
+:VSH VVRRc_V1b "," VVRRc_V2b "," VVRRc_V3b is VVRRc_OP=0xE7 & VVRRc_OP2=0xF7 & VVRRc_M3=0x1 & VVRRc_V1X=1 & VVRRc_V2X=1 & VVRRc_V3X=1 & VVRRc_V1b & VVRRc_V2b & VVRRc_V3b
 {
     # Element-wise subtract, 2-byte elements (PoP VA/VS).
     local esz:8; local sub:8;
@@ -458,7 +463,7 @@ macro vgbm16(d, w) {
     velem_op(VVRRc_V1b, VVRRc_V2b, VVRRc_V3b, esz, sub);
 }
 
-:vaf "vaf " VVRRc_V1a "," VVRRc_V2a "," VVRRc_V3a is VVRRc_OP=0xE7 & VVRRc_OP2=0xF3 & VVRRc_M3=0x2 & VVRRc_V1X=0 & VVRRc_V2X=0 & VVRRc_V3X=0 & VVRRc_V1a & VVRRc_V2a & VVRRc_V3a
+:VAF VVRRc_V1a "," VVRRc_V2a "," VVRRc_V3a is VVRRc_OP=0xE7 & VVRRc_OP2=0xF3 & VVRRc_M3=0x2 & VVRRc_V1X=0 & VVRRc_V2X=0 & VVRRc_V3X=0 & VVRRc_V1a & VVRRc_V2a & VVRRc_V3a
 {
     # Element-wise add, 4-byte elements (PoP VA/VS).
     local esz:8; local sub:8;
@@ -466,7 +471,7 @@ macro vgbm16(d, w) {
     velem_op(VVRRc_V1a, VVRRc_V2a, VVRRc_V3a, esz, sub);
 }
 
-:vaf "vaf " VVRRc_V1a "," VVRRc_V2a "," VVRRc_V3b is VVRRc_OP=0xE7 & VVRRc_OP2=0xF3 & VVRRc_M3=0x2 & VVRRc_V1X=0 & VVRRc_V2X=0 & VVRRc_V3X=1 & VVRRc_V1a & VVRRc_V2a & VVRRc_V3b
+:VAF VVRRc_V1a "," VVRRc_V2a "," VVRRc_V3b is VVRRc_OP=0xE7 & VVRRc_OP2=0xF3 & VVRRc_M3=0x2 & VVRRc_V1X=0 & VVRRc_V2X=0 & VVRRc_V3X=1 & VVRRc_V1a & VVRRc_V2a & VVRRc_V3b
 {
     # Element-wise add, 4-byte elements (PoP VA/VS).
     local esz:8; local sub:8;
@@ -474,7 +479,7 @@ macro vgbm16(d, w) {
     velem_op(VVRRc_V1a, VVRRc_V2a, VVRRc_V3b, esz, sub);
 }
 
-:vaf "vaf " VVRRc_V1a "," VVRRc_V2b "," VVRRc_V3a is VVRRc_OP=0xE7 & VVRRc_OP2=0xF3 & VVRRc_M3=0x2 & VVRRc_V1X=0 & VVRRc_V2X=1 & VVRRc_V3X=0 & VVRRc_V1a & VVRRc_V2b & VVRRc_V3a
+:VAF VVRRc_V1a "," VVRRc_V2b "," VVRRc_V3a is VVRRc_OP=0xE7 & VVRRc_OP2=0xF3 & VVRRc_M3=0x2 & VVRRc_V1X=0 & VVRRc_V2X=1 & VVRRc_V3X=0 & VVRRc_V1a & VVRRc_V2b & VVRRc_V3a
 {
     # Element-wise add, 4-byte elements (PoP VA/VS).
     local esz:8; local sub:8;
@@ -482,7 +487,7 @@ macro vgbm16(d, w) {
     velem_op(VVRRc_V1a, VVRRc_V2b, VVRRc_V3a, esz, sub);
 }
 
-:vaf "vaf " VVRRc_V1a "," VVRRc_V2b "," VVRRc_V3b is VVRRc_OP=0xE7 & VVRRc_OP2=0xF3 & VVRRc_M3=0x2 & VVRRc_V1X=0 & VVRRc_V2X=1 & VVRRc_V3X=1 & VVRRc_V1a & VVRRc_V2b & VVRRc_V3b
+:VAF VVRRc_V1a "," VVRRc_V2b "," VVRRc_V3b is VVRRc_OP=0xE7 & VVRRc_OP2=0xF3 & VVRRc_M3=0x2 & VVRRc_V1X=0 & VVRRc_V2X=1 & VVRRc_V3X=1 & VVRRc_V1a & VVRRc_V2b & VVRRc_V3b
 {
     # Element-wise add, 4-byte elements (PoP VA/VS).
     local esz:8; local sub:8;
@@ -490,7 +495,7 @@ macro vgbm16(d, w) {
     velem_op(VVRRc_V1a, VVRRc_V2b, VVRRc_V3b, esz, sub);
 }
 
-:vaf "vaf " VVRRc_V1b "," VVRRc_V2a "," VVRRc_V3a is VVRRc_OP=0xE7 & VVRRc_OP2=0xF3 & VVRRc_M3=0x2 & VVRRc_V1X=1 & VVRRc_V2X=0 & VVRRc_V3X=0 & VVRRc_V1b & VVRRc_V2a & VVRRc_V3a
+:VAF VVRRc_V1b "," VVRRc_V2a "," VVRRc_V3a is VVRRc_OP=0xE7 & VVRRc_OP2=0xF3 & VVRRc_M3=0x2 & VVRRc_V1X=1 & VVRRc_V2X=0 & VVRRc_V3X=0 & VVRRc_V1b & VVRRc_V2a & VVRRc_V3a
 {
     # Element-wise add, 4-byte elements (PoP VA/VS).
     local esz:8; local sub:8;
@@ -498,7 +503,7 @@ macro vgbm16(d, w) {
     velem_op(VVRRc_V1b, VVRRc_V2a, VVRRc_V3a, esz, sub);
 }
 
-:vaf "vaf " VVRRc_V1b "," VVRRc_V2a "," VVRRc_V3b is VVRRc_OP=0xE7 & VVRRc_OP2=0xF3 & VVRRc_M3=0x2 & VVRRc_V1X=1 & VVRRc_V2X=0 & VVRRc_V3X=1 & VVRRc_V1b & VVRRc_V2a & VVRRc_V3b
+:VAF VVRRc_V1b "," VVRRc_V2a "," VVRRc_V3b is VVRRc_OP=0xE7 & VVRRc_OP2=0xF3 & VVRRc_M3=0x2 & VVRRc_V1X=1 & VVRRc_V2X=0 & VVRRc_V3X=1 & VVRRc_V1b & VVRRc_V2a & VVRRc_V3b
 {
     # Element-wise add, 4-byte elements (PoP VA/VS).
     local esz:8; local sub:8;
@@ -506,7 +511,7 @@ macro vgbm16(d, w) {
     velem_op(VVRRc_V1b, VVRRc_V2a, VVRRc_V3b, esz, sub);
 }
 
-:vaf "vaf " VVRRc_V1b "," VVRRc_V2b "," VVRRc_V3a is VVRRc_OP=0xE7 & VVRRc_OP2=0xF3 & VVRRc_M3=0x2 & VVRRc_V1X=1 & VVRRc_V2X=1 & VVRRc_V3X=0 & VVRRc_V1b & VVRRc_V2b & VVRRc_V3a
+:VAF VVRRc_V1b "," VVRRc_V2b "," VVRRc_V3a is VVRRc_OP=0xE7 & VVRRc_OP2=0xF3 & VVRRc_M3=0x2 & VVRRc_V1X=1 & VVRRc_V2X=1 & VVRRc_V3X=0 & VVRRc_V1b & VVRRc_V2b & VVRRc_V3a
 {
     # Element-wise add, 4-byte elements (PoP VA/VS).
     local esz:8; local sub:8;
@@ -514,7 +519,7 @@ macro vgbm16(d, w) {
     velem_op(VVRRc_V1b, VVRRc_V2b, VVRRc_V3a, esz, sub);
 }
 
-:vaf "vaf " VVRRc_V1b "," VVRRc_V2b "," VVRRc_V3b is VVRRc_OP=0xE7 & VVRRc_OP2=0xF3 & VVRRc_M3=0x2 & VVRRc_V1X=1 & VVRRc_V2X=1 & VVRRc_V3X=1 & VVRRc_V1b & VVRRc_V2b & VVRRc_V3b
+:VAF VVRRc_V1b "," VVRRc_V2b "," VVRRc_V3b is VVRRc_OP=0xE7 & VVRRc_OP2=0xF3 & VVRRc_M3=0x2 & VVRRc_V1X=1 & VVRRc_V2X=1 & VVRRc_V3X=1 & VVRRc_V1b & VVRRc_V2b & VVRRc_V3b
 {
     # Element-wise add, 4-byte elements (PoP VA/VS).
     local esz:8; local sub:8;
@@ -522,7 +527,7 @@ macro vgbm16(d, w) {
     velem_op(VVRRc_V1b, VVRRc_V2b, VVRRc_V3b, esz, sub);
 }
 
-:vsf "vsf " VVRRc_V1a "," VVRRc_V2a "," VVRRc_V3a is VVRRc_OP=0xE7 & VVRRc_OP2=0xF7 & VVRRc_M3=0x2 & VVRRc_V1X=0 & VVRRc_V2X=0 & VVRRc_V3X=0 & VVRRc_V1a & VVRRc_V2a & VVRRc_V3a
+:VSF VVRRc_V1a "," VVRRc_V2a "," VVRRc_V3a is VVRRc_OP=0xE7 & VVRRc_OP2=0xF7 & VVRRc_M3=0x2 & VVRRc_V1X=0 & VVRRc_V2X=0 & VVRRc_V3X=0 & VVRRc_V1a & VVRRc_V2a & VVRRc_V3a
 {
     # Element-wise subtract, 4-byte elements (PoP VA/VS).
     local esz:8; local sub:8;
@@ -530,7 +535,7 @@ macro vgbm16(d, w) {
     velem_op(VVRRc_V1a, VVRRc_V2a, VVRRc_V3a, esz, sub);
 }
 
-:vsf "vsf " VVRRc_V1a "," VVRRc_V2a "," VVRRc_V3b is VVRRc_OP=0xE7 & VVRRc_OP2=0xF7 & VVRRc_M3=0x2 & VVRRc_V1X=0 & VVRRc_V2X=0 & VVRRc_V3X=1 & VVRRc_V1a & VVRRc_V2a & VVRRc_V3b
+:VSF VVRRc_V1a "," VVRRc_V2a "," VVRRc_V3b is VVRRc_OP=0xE7 & VVRRc_OP2=0xF7 & VVRRc_M3=0x2 & VVRRc_V1X=0 & VVRRc_V2X=0 & VVRRc_V3X=1 & VVRRc_V1a & VVRRc_V2a & VVRRc_V3b
 {
     # Element-wise subtract, 4-byte elements (PoP VA/VS).
     local esz:8; local sub:8;
@@ -538,7 +543,7 @@ macro vgbm16(d, w) {
     velem_op(VVRRc_V1a, VVRRc_V2a, VVRRc_V3b, esz, sub);
 }
 
-:vsf "vsf " VVRRc_V1a "," VVRRc_V2b "," VVRRc_V3a is VVRRc_OP=0xE7 & VVRRc_OP2=0xF7 & VVRRc_M3=0x2 & VVRRc_V1X=0 & VVRRc_V2X=1 & VVRRc_V3X=0 & VVRRc_V1a & VVRRc_V2b & VVRRc_V3a
+:VSF VVRRc_V1a "," VVRRc_V2b "," VVRRc_V3a is VVRRc_OP=0xE7 & VVRRc_OP2=0xF7 & VVRRc_M3=0x2 & VVRRc_V1X=0 & VVRRc_V2X=1 & VVRRc_V3X=0 & VVRRc_V1a & VVRRc_V2b & VVRRc_V3a
 {
     # Element-wise subtract, 4-byte elements (PoP VA/VS).
     local esz:8; local sub:8;
@@ -546,7 +551,7 @@ macro vgbm16(d, w) {
     velem_op(VVRRc_V1a, VVRRc_V2b, VVRRc_V3a, esz, sub);
 }
 
-:vsf "vsf " VVRRc_V1a "," VVRRc_V2b "," VVRRc_V3b is VVRRc_OP=0xE7 & VVRRc_OP2=0xF7 & VVRRc_M3=0x2 & VVRRc_V1X=0 & VVRRc_V2X=1 & VVRRc_V3X=1 & VVRRc_V1a & VVRRc_V2b & VVRRc_V3b
+:VSF VVRRc_V1a "," VVRRc_V2b "," VVRRc_V3b is VVRRc_OP=0xE7 & VVRRc_OP2=0xF7 & VVRRc_M3=0x2 & VVRRc_V1X=0 & VVRRc_V2X=1 & VVRRc_V3X=1 & VVRRc_V1a & VVRRc_V2b & VVRRc_V3b
 {
     # Element-wise subtract, 4-byte elements (PoP VA/VS).
     local esz:8; local sub:8;
@@ -554,7 +559,7 @@ macro vgbm16(d, w) {
     velem_op(VVRRc_V1a, VVRRc_V2b, VVRRc_V3b, esz, sub);
 }
 
-:vsf "vsf " VVRRc_V1b "," VVRRc_V2a "," VVRRc_V3a is VVRRc_OP=0xE7 & VVRRc_OP2=0xF7 & VVRRc_M3=0x2 & VVRRc_V1X=1 & VVRRc_V2X=0 & VVRRc_V3X=0 & VVRRc_V1b & VVRRc_V2a & VVRRc_V3a
+:VSF VVRRc_V1b "," VVRRc_V2a "," VVRRc_V3a is VVRRc_OP=0xE7 & VVRRc_OP2=0xF7 & VVRRc_M3=0x2 & VVRRc_V1X=1 & VVRRc_V2X=0 & VVRRc_V3X=0 & VVRRc_V1b & VVRRc_V2a & VVRRc_V3a
 {
     # Element-wise subtract, 4-byte elements (PoP VA/VS).
     local esz:8; local sub:8;
@@ -562,7 +567,7 @@ macro vgbm16(d, w) {
     velem_op(VVRRc_V1b, VVRRc_V2a, VVRRc_V3a, esz, sub);
 }
 
-:vsf "vsf " VVRRc_V1b "," VVRRc_V2a "," VVRRc_V3b is VVRRc_OP=0xE7 & VVRRc_OP2=0xF7 & VVRRc_M3=0x2 & VVRRc_V1X=1 & VVRRc_V2X=0 & VVRRc_V3X=1 & VVRRc_V1b & VVRRc_V2a & VVRRc_V3b
+:VSF VVRRc_V1b "," VVRRc_V2a "," VVRRc_V3b is VVRRc_OP=0xE7 & VVRRc_OP2=0xF7 & VVRRc_M3=0x2 & VVRRc_V1X=1 & VVRRc_V2X=0 & VVRRc_V3X=1 & VVRRc_V1b & VVRRc_V2a & VVRRc_V3b
 {
     # Element-wise subtract, 4-byte elements (PoP VA/VS).
     local esz:8; local sub:8;
@@ -570,7 +575,7 @@ macro vgbm16(d, w) {
     velem_op(VVRRc_V1b, VVRRc_V2a, VVRRc_V3b, esz, sub);
 }
 
-:vsf "vsf " VVRRc_V1b "," VVRRc_V2b "," VVRRc_V3a is VVRRc_OP=0xE7 & VVRRc_OP2=0xF7 & VVRRc_M3=0x2 & VVRRc_V1X=1 & VVRRc_V2X=1 & VVRRc_V3X=0 & VVRRc_V1b & VVRRc_V2b & VVRRc_V3a
+:VSF VVRRc_V1b "," VVRRc_V2b "," VVRRc_V3a is VVRRc_OP=0xE7 & VVRRc_OP2=0xF7 & VVRRc_M3=0x2 & VVRRc_V1X=1 & VVRRc_V2X=1 & VVRRc_V3X=0 & VVRRc_V1b & VVRRc_V2b & VVRRc_V3a
 {
     # Element-wise subtract, 4-byte elements (PoP VA/VS).
     local esz:8; local sub:8;
@@ -578,7 +583,7 @@ macro vgbm16(d, w) {
     velem_op(VVRRc_V1b, VVRRc_V2b, VVRRc_V3a, esz, sub);
 }
 
-:vsf "vsf " VVRRc_V1b "," VVRRc_V2b "," VVRRc_V3b is VVRRc_OP=0xE7 & VVRRc_OP2=0xF7 & VVRRc_M3=0x2 & VVRRc_V1X=1 & VVRRc_V2X=1 & VVRRc_V3X=1 & VVRRc_V1b & VVRRc_V2b & VVRRc_V3b
+:VSF VVRRc_V1b "," VVRRc_V2b "," VVRRc_V3b is VVRRc_OP=0xE7 & VVRRc_OP2=0xF7 & VVRRc_M3=0x2 & VVRRc_V1X=1 & VVRRc_V2X=1 & VVRRc_V3X=1 & VVRRc_V1b & VVRRc_V2b & VVRRc_V3b
 {
     # Element-wise subtract, 4-byte elements (PoP VA/VS).
     local esz:8; local sub:8;
@@ -586,7 +591,7 @@ macro vgbm16(d, w) {
     velem_op(VVRRc_V1b, VVRRc_V2b, VVRRc_V3b, esz, sub);
 }
 
-:vag "vag " VVRRc_V1a "," VVRRc_V2a "," VVRRc_V3a is VVRRc_OP=0xE7 & VVRRc_OP2=0xF3 & VVRRc_M3=0x3 & VVRRc_V1X=0 & VVRRc_V2X=0 & VVRRc_V3X=0 & VVRRc_V1a & VVRRc_V2a & VVRRc_V3a
+:VAG VVRRc_V1a "," VVRRc_V2a "," VVRRc_V3a is VVRRc_OP=0xE7 & VVRRc_OP2=0xF3 & VVRRc_M3=0x3 & VVRRc_V1X=0 & VVRRc_V2X=0 & VVRRc_V3X=0 & VVRRc_V1a & VVRRc_V2a & VVRRc_V3a
 {
     # Element-wise add, 8-byte elements (PoP VA/VS).
     local esz:8; local sub:8;
@@ -594,7 +599,7 @@ macro vgbm16(d, w) {
     velem_op(VVRRc_V1a, VVRRc_V2a, VVRRc_V3a, esz, sub);
 }
 
-:vag "vag " VVRRc_V1a "," VVRRc_V2a "," VVRRc_V3b is VVRRc_OP=0xE7 & VVRRc_OP2=0xF3 & VVRRc_M3=0x3 & VVRRc_V1X=0 & VVRRc_V2X=0 & VVRRc_V3X=1 & VVRRc_V1a & VVRRc_V2a & VVRRc_V3b
+:VAG VVRRc_V1a "," VVRRc_V2a "," VVRRc_V3b is VVRRc_OP=0xE7 & VVRRc_OP2=0xF3 & VVRRc_M3=0x3 & VVRRc_V1X=0 & VVRRc_V2X=0 & VVRRc_V3X=1 & VVRRc_V1a & VVRRc_V2a & VVRRc_V3b
 {
     # Element-wise add, 8-byte elements (PoP VA/VS).
     local esz:8; local sub:8;
@@ -602,7 +607,7 @@ macro vgbm16(d, w) {
     velem_op(VVRRc_V1a, VVRRc_V2a, VVRRc_V3b, esz, sub);
 }
 
-:vag "vag " VVRRc_V1a "," VVRRc_V2b "," VVRRc_V3a is VVRRc_OP=0xE7 & VVRRc_OP2=0xF3 & VVRRc_M3=0x3 & VVRRc_V1X=0 & VVRRc_V2X=1 & VVRRc_V3X=0 & VVRRc_V1a & VVRRc_V2b & VVRRc_V3a
+:VAG VVRRc_V1a "," VVRRc_V2b "," VVRRc_V3a is VVRRc_OP=0xE7 & VVRRc_OP2=0xF3 & VVRRc_M3=0x3 & VVRRc_V1X=0 & VVRRc_V2X=1 & VVRRc_V3X=0 & VVRRc_V1a & VVRRc_V2b & VVRRc_V3a
 {
     # Element-wise add, 8-byte elements (PoP VA/VS).
     local esz:8; local sub:8;
@@ -610,7 +615,7 @@ macro vgbm16(d, w) {
     velem_op(VVRRc_V1a, VVRRc_V2b, VVRRc_V3a, esz, sub);
 }
 
-:vag "vag " VVRRc_V1a "," VVRRc_V2b "," VVRRc_V3b is VVRRc_OP=0xE7 & VVRRc_OP2=0xF3 & VVRRc_M3=0x3 & VVRRc_V1X=0 & VVRRc_V2X=1 & VVRRc_V3X=1 & VVRRc_V1a & VVRRc_V2b & VVRRc_V3b
+:VAG VVRRc_V1a "," VVRRc_V2b "," VVRRc_V3b is VVRRc_OP=0xE7 & VVRRc_OP2=0xF3 & VVRRc_M3=0x3 & VVRRc_V1X=0 & VVRRc_V2X=1 & VVRRc_V3X=1 & VVRRc_V1a & VVRRc_V2b & VVRRc_V3b
 {
     # Element-wise add, 8-byte elements (PoP VA/VS).
     local esz:8; local sub:8;
@@ -618,7 +623,7 @@ macro vgbm16(d, w) {
     velem_op(VVRRc_V1a, VVRRc_V2b, VVRRc_V3b, esz, sub);
 }
 
-:vag "vag " VVRRc_V1b "," VVRRc_V2a "," VVRRc_V3a is VVRRc_OP=0xE7 & VVRRc_OP2=0xF3 & VVRRc_M3=0x3 & VVRRc_V1X=1 & VVRRc_V2X=0 & VVRRc_V3X=0 & VVRRc_V1b & VVRRc_V2a & VVRRc_V3a
+:VAG VVRRc_V1b "," VVRRc_V2a "," VVRRc_V3a is VVRRc_OP=0xE7 & VVRRc_OP2=0xF3 & VVRRc_M3=0x3 & VVRRc_V1X=1 & VVRRc_V2X=0 & VVRRc_V3X=0 & VVRRc_V1b & VVRRc_V2a & VVRRc_V3a
 {
     # Element-wise add, 8-byte elements (PoP VA/VS).
     local esz:8; local sub:8;
@@ -626,7 +631,7 @@ macro vgbm16(d, w) {
     velem_op(VVRRc_V1b, VVRRc_V2a, VVRRc_V3a, esz, sub);
 }
 
-:vag "vag " VVRRc_V1b "," VVRRc_V2a "," VVRRc_V3b is VVRRc_OP=0xE7 & VVRRc_OP2=0xF3 & VVRRc_M3=0x3 & VVRRc_V1X=1 & VVRRc_V2X=0 & VVRRc_V3X=1 & VVRRc_V1b & VVRRc_V2a & VVRRc_V3b
+:VAG VVRRc_V1b "," VVRRc_V2a "," VVRRc_V3b is VVRRc_OP=0xE7 & VVRRc_OP2=0xF3 & VVRRc_M3=0x3 & VVRRc_V1X=1 & VVRRc_V2X=0 & VVRRc_V3X=1 & VVRRc_V1b & VVRRc_V2a & VVRRc_V3b
 {
     # Element-wise add, 8-byte elements (PoP VA/VS).
     local esz:8; local sub:8;
@@ -634,7 +639,7 @@ macro vgbm16(d, w) {
     velem_op(VVRRc_V1b, VVRRc_V2a, VVRRc_V3b, esz, sub);
 }
 
-:vag "vag " VVRRc_V1b "," VVRRc_V2b "," VVRRc_V3a is VVRRc_OP=0xE7 & VVRRc_OP2=0xF3 & VVRRc_M3=0x3 & VVRRc_V1X=1 & VVRRc_V2X=1 & VVRRc_V3X=0 & VVRRc_V1b & VVRRc_V2b & VVRRc_V3a
+:VAG VVRRc_V1b "," VVRRc_V2b "," VVRRc_V3a is VVRRc_OP=0xE7 & VVRRc_OP2=0xF3 & VVRRc_M3=0x3 & VVRRc_V1X=1 & VVRRc_V2X=1 & VVRRc_V3X=0 & VVRRc_V1b & VVRRc_V2b & VVRRc_V3a
 {
     # Element-wise add, 8-byte elements (PoP VA/VS).
     local esz:8; local sub:8;
@@ -642,7 +647,7 @@ macro vgbm16(d, w) {
     velem_op(VVRRc_V1b, VVRRc_V2b, VVRRc_V3a, esz, sub);
 }
 
-:vag "vag " VVRRc_V1b "," VVRRc_V2b "," VVRRc_V3b is VVRRc_OP=0xE7 & VVRRc_OP2=0xF3 & VVRRc_M3=0x3 & VVRRc_V1X=1 & VVRRc_V2X=1 & VVRRc_V3X=1 & VVRRc_V1b & VVRRc_V2b & VVRRc_V3b
+:VAG VVRRc_V1b "," VVRRc_V2b "," VVRRc_V3b is VVRRc_OP=0xE7 & VVRRc_OP2=0xF3 & VVRRc_M3=0x3 & VVRRc_V1X=1 & VVRRc_V2X=1 & VVRRc_V3X=1 & VVRRc_V1b & VVRRc_V2b & VVRRc_V3b
 {
     # Element-wise add, 8-byte elements (PoP VA/VS).
     local esz:8; local sub:8;
@@ -650,7 +655,7 @@ macro vgbm16(d, w) {
     velem_op(VVRRc_V1b, VVRRc_V2b, VVRRc_V3b, esz, sub);
 }
 
-:vsg "vsg " VVRRc_V1a "," VVRRc_V2a "," VVRRc_V3a is VVRRc_OP=0xE7 & VVRRc_OP2=0xF7 & VVRRc_M3=0x3 & VVRRc_V1X=0 & VVRRc_V2X=0 & VVRRc_V3X=0 & VVRRc_V1a & VVRRc_V2a & VVRRc_V3a
+:VSG VVRRc_V1a "," VVRRc_V2a "," VVRRc_V3a is VVRRc_OP=0xE7 & VVRRc_OP2=0xF7 & VVRRc_M3=0x3 & VVRRc_V1X=0 & VVRRc_V2X=0 & VVRRc_V3X=0 & VVRRc_V1a & VVRRc_V2a & VVRRc_V3a
 {
     # Element-wise subtract, 8-byte elements (PoP VA/VS).
     local esz:8; local sub:8;
@@ -658,7 +663,7 @@ macro vgbm16(d, w) {
     velem_op(VVRRc_V1a, VVRRc_V2a, VVRRc_V3a, esz, sub);
 }
 
-:vsg "vsg " VVRRc_V1a "," VVRRc_V2a "," VVRRc_V3b is VVRRc_OP=0xE7 & VVRRc_OP2=0xF7 & VVRRc_M3=0x3 & VVRRc_V1X=0 & VVRRc_V2X=0 & VVRRc_V3X=1 & VVRRc_V1a & VVRRc_V2a & VVRRc_V3b
+:VSG VVRRc_V1a "," VVRRc_V2a "," VVRRc_V3b is VVRRc_OP=0xE7 & VVRRc_OP2=0xF7 & VVRRc_M3=0x3 & VVRRc_V1X=0 & VVRRc_V2X=0 & VVRRc_V3X=1 & VVRRc_V1a & VVRRc_V2a & VVRRc_V3b
 {
     # Element-wise subtract, 8-byte elements (PoP VA/VS).
     local esz:8; local sub:8;
@@ -666,7 +671,7 @@ macro vgbm16(d, w) {
     velem_op(VVRRc_V1a, VVRRc_V2a, VVRRc_V3b, esz, sub);
 }
 
-:vsg "vsg " VVRRc_V1a "," VVRRc_V2b "," VVRRc_V3a is VVRRc_OP=0xE7 & VVRRc_OP2=0xF7 & VVRRc_M3=0x3 & VVRRc_V1X=0 & VVRRc_V2X=1 & VVRRc_V3X=0 & VVRRc_V1a & VVRRc_V2b & VVRRc_V3a
+:VSG VVRRc_V1a "," VVRRc_V2b "," VVRRc_V3a is VVRRc_OP=0xE7 & VVRRc_OP2=0xF7 & VVRRc_M3=0x3 & VVRRc_V1X=0 & VVRRc_V2X=1 & VVRRc_V3X=0 & VVRRc_V1a & VVRRc_V2b & VVRRc_V3a
 {
     # Element-wise subtract, 8-byte elements (PoP VA/VS).
     local esz:8; local sub:8;
@@ -674,7 +679,7 @@ macro vgbm16(d, w) {
     velem_op(VVRRc_V1a, VVRRc_V2b, VVRRc_V3a, esz, sub);
 }
 
-:vsg "vsg " VVRRc_V1a "," VVRRc_V2b "," VVRRc_V3b is VVRRc_OP=0xE7 & VVRRc_OP2=0xF7 & VVRRc_M3=0x3 & VVRRc_V1X=0 & VVRRc_V2X=1 & VVRRc_V3X=1 & VVRRc_V1a & VVRRc_V2b & VVRRc_V3b
+:VSG VVRRc_V1a "," VVRRc_V2b "," VVRRc_V3b is VVRRc_OP=0xE7 & VVRRc_OP2=0xF7 & VVRRc_M3=0x3 & VVRRc_V1X=0 & VVRRc_V2X=1 & VVRRc_V3X=1 & VVRRc_V1a & VVRRc_V2b & VVRRc_V3b
 {
     # Element-wise subtract, 8-byte elements (PoP VA/VS).
     local esz:8; local sub:8;
@@ -682,7 +687,7 @@ macro vgbm16(d, w) {
     velem_op(VVRRc_V1a, VVRRc_V2b, VVRRc_V3b, esz, sub);
 }
 
-:vsg "vsg " VVRRc_V1b "," VVRRc_V2a "," VVRRc_V3a is VVRRc_OP=0xE7 & VVRRc_OP2=0xF7 & VVRRc_M3=0x3 & VVRRc_V1X=1 & VVRRc_V2X=0 & VVRRc_V3X=0 & VVRRc_V1b & VVRRc_V2a & VVRRc_V3a
+:VSG VVRRc_V1b "," VVRRc_V2a "," VVRRc_V3a is VVRRc_OP=0xE7 & VVRRc_OP2=0xF7 & VVRRc_M3=0x3 & VVRRc_V1X=1 & VVRRc_V2X=0 & VVRRc_V3X=0 & VVRRc_V1b & VVRRc_V2a & VVRRc_V3a
 {
     # Element-wise subtract, 8-byte elements (PoP VA/VS).
     local esz:8; local sub:8;
@@ -690,7 +695,7 @@ macro vgbm16(d, w) {
     velem_op(VVRRc_V1b, VVRRc_V2a, VVRRc_V3a, esz, sub);
 }
 
-:vsg "vsg " VVRRc_V1b "," VVRRc_V2a "," VVRRc_V3b is VVRRc_OP=0xE7 & VVRRc_OP2=0xF7 & VVRRc_M3=0x3 & VVRRc_V1X=1 & VVRRc_V2X=0 & VVRRc_V3X=1 & VVRRc_V1b & VVRRc_V2a & VVRRc_V3b
+:VSG VVRRc_V1b "," VVRRc_V2a "," VVRRc_V3b is VVRRc_OP=0xE7 & VVRRc_OP2=0xF7 & VVRRc_M3=0x3 & VVRRc_V1X=1 & VVRRc_V2X=0 & VVRRc_V3X=1 & VVRRc_V1b & VVRRc_V2a & VVRRc_V3b
 {
     # Element-wise subtract, 8-byte elements (PoP VA/VS).
     local esz:8; local sub:8;
@@ -698,7 +703,7 @@ macro vgbm16(d, w) {
     velem_op(VVRRc_V1b, VVRRc_V2a, VVRRc_V3b, esz, sub);
 }
 
-:vsg "vsg " VVRRc_V1b "," VVRRc_V2b "," VVRRc_V3a is VVRRc_OP=0xE7 & VVRRc_OP2=0xF7 & VVRRc_M3=0x3 & VVRRc_V1X=1 & VVRRc_V2X=1 & VVRRc_V3X=0 & VVRRc_V1b & VVRRc_V2b & VVRRc_V3a
+:VSG VVRRc_V1b "," VVRRc_V2b "," VVRRc_V3a is VVRRc_OP=0xE7 & VVRRc_OP2=0xF7 & VVRRc_M3=0x3 & VVRRc_V1X=1 & VVRRc_V2X=1 & VVRRc_V3X=0 & VVRRc_V1b & VVRRc_V2b & VVRRc_V3a
 {
     # Element-wise subtract, 8-byte elements (PoP VA/VS).
     local esz:8; local sub:8;
@@ -706,7 +711,7 @@ macro vgbm16(d, w) {
     velem_op(VVRRc_V1b, VVRRc_V2b, VVRRc_V3a, esz, sub);
 }
 
-:vsg "vsg " VVRRc_V1b "," VVRRc_V2b "," VVRRc_V3b is VVRRc_OP=0xE7 & VVRRc_OP2=0xF7 & VVRRc_M3=0x3 & VVRRc_V1X=1 & VVRRc_V2X=1 & VVRRc_V3X=1 & VVRRc_V1b & VVRRc_V2b & VVRRc_V3b
+:VSG VVRRc_V1b "," VVRRc_V2b "," VVRRc_V3b is VVRRc_OP=0xE7 & VVRRc_OP2=0xF7 & VVRRc_M3=0x3 & VVRRc_V1X=1 & VVRRc_V2X=1 & VVRRc_V3X=1 & VVRRc_V1b & VVRRc_V2b & VVRRc_V3b
 {
     # Element-wise subtract, 8-byte elements (PoP VA/VS).
     local esz:8; local sub:8;
@@ -714,7 +719,7 @@ macro vgbm16(d, w) {
     velem_op(VVRRc_V1b, VVRRc_V2b, VVRRc_V3b, esz, sub);
 }
 
-:vgbm "vgbm " VVRIa_V1a "," VVRIa_I2 is VVRIa_OP=0xE7 & VVRIa_OP2=0x44 & VVRIa_V1X=0 & VVRIa_V1a & VVRIa_I2 & VVRIa_M3
+:VGBM VVRIa_V1a "," VVRIa_I2 is VVRIa_OP=0xE7 & VVRIa_OP2=0x44 & VVRIa_V1X=0 & VVRIa_V1a & VVRIa_I2 & VVRIa_M3
 {
     # VGBM: byte i = (I2 bit i) ? 0xFF : 0x00; M3 ignored.
     local imm:2; local w:8;
@@ -723,7 +728,7 @@ macro vgbm16(d, w) {
     vgbm16(VVRIa_V1a, w);
 }
 
-:vgbm "vgbm " VVRIa_V1b "," VVRIa_I2 is VVRIa_OP=0xE7 & VVRIa_OP2=0x44 & VVRIa_V1X=1 & VVRIa_V1b & VVRIa_I2 & VVRIa_M3
+:VGBM VVRIa_V1b "," VVRIa_I2 is VVRIa_OP=0xE7 & VVRIa_OP2=0x44 & VVRIa_V1X=1 & VVRIa_V1b & VVRIa_I2 & VVRIa_M3
 {
     # VGBM: byte i = (I2 bit i) ? 0xFF : 0x00; M3 ignored.
     local imm:2; local w:8;

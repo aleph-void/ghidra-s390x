@@ -252,7 +252,7 @@ macro sdiv64_exc(q, r, dvd, dvs, qp, rp) {
 # R1 bits 0-31 unchanged. CC unchanged. (PoP 7-346/7-347.)
 # ---------------------------------------------------------------------------
 
-:MH "MH " RXa_R1 "," RXa_D2 "(" RXa_X2 "," RXa_B2 ")" is RXa_OP=0x4C & RXa_R1 & RXa_X2 & RXa_B2 & RXa_D2
+:MH RXa_R1 "," dxb_RXa_D2_RXa_X2_RXa_B2 is RXa_OP=0x4C & RXa_R1 & RXa_X2 & RXa_B2 & RXa_D2 & dxb_RXa_D2_RXa_X2_RXa_B2
 {
     local ea:8;
     local mc:8; local mp:8; local p:8;
@@ -266,7 +266,7 @@ macro sdiv64_exc(q, r, dvd, dvs, qp, rp) {
     RXa_R1 = (RXa_R1 & (0xFFFFFFFF << 32)) | (p & 0xffffffff);
 }
 
-:MHY "MHY " RXYa_R1 "," RXYa_DL2 "(" RXYa_X2 "," RXYa_B2 ")" is RXYa_OP=0xE3 & RXYa_R1 & RXYa_X2 & RXYa_B2 & RXYa_DL2 & RXYa_DH2 & RXYa_OP2=0x7C
+:MHY RXYa_R1 "," dxb_RXYa_DL2_RXYa_X2_RXYa_B2 is RXYa_OP=0xE3 & RXYa_R1 & RXYa_X2 & RXYa_B2 & RXYa_DL2 & RXYa_DH2 & RXYa_OP2=0x7C & dxb_RXYa_DL2_RXYa_X2_RXYa_B2
 {
     local ea:8;
     local mc:8; local mp:8; local p:8;
@@ -280,7 +280,7 @@ macro sdiv64_exc(q, r, dvd, dvs, qp, rp) {
     RXYa_R1 = (RXYa_R1 & (0xFFFFFFFF << 32)) | (p & 0xffffffff);
 }
 
-:MHI "MHI " RIa_R1 "," RIa_I2 is RIa_OP=0xA7 & RIa_R1 & RIa_OPCD=0xC & RIa_I2
+:MHI RIa_R1 "," RIa_I2 is RIa_OP=0xA7 & RIa_R1 & RIa_OPCD=0xC & RIa_I2
 {
     local mc:8; local mp:8; local p:8;
     local iw:2;
@@ -297,7 +297,7 @@ macro sdiv64_exc(q, r, dvd, dvs, qp, rp) {
 # (PoP 7-346/7-347.)
 # ---------------------------------------------------------------------------
 
-:MGH "MGH " RXYa_R1 "," RXYa_DL2 "(" RXYa_X2 "," RXYa_B2 ")" is RXYa_OP=0xE3 & RXYa_R1 & RXYa_X2 & RXYa_B2 & RXYa_DL2 & RXYa_DH2 & RXYa_OP2=0x3C
+:MGH RXYa_R1 "," dxb_RXYa_DL2_RXYa_X2_RXYa_B2 is RXYa_OP=0xE3 & RXYa_R1 & RXYa_X2 & RXYa_B2 & RXYa_DL2 & RXYa_DH2 & RXYa_OP2=0x3C & dxb_RXYa_DL2_RXYa_X2_RXYa_B2
 {
     local ea:8;
     local mp:8;
@@ -308,7 +308,7 @@ macro sdiv64_exc(q, r, dvd, dvs, qp, rp) {
     RXYa_R1 = RXYa_R1 * mp;
 }
 
-:MGHI "MGHI " RIa_R1 "," RIa_I2 is RIa_OP=0xA7 & RIa_R1 & RIa_OPCD=0xD & RIa_I2
+:MGHI RIa_R1 "," RIa_I2 is RIa_OP=0xA7 & RIa_R1 & RIa_OPCD=0xD & RIa_I2
 {
     local mp:8;
     local iw:2;
@@ -323,7 +323,7 @@ macro sdiv64_exc(q, r, dvd, dvs, qp, rp) {
 # CC unchanged. (PoP 7-348/7-349.)
 # ---------------------------------------------------------------------------
 
-:MS "MS " RXa_R1 "," RXa_D2 "(" RXa_X2 "," RXa_B2 ")" is RXa_OP=0x71 & RXa_R1 & RXa_X2 & RXa_B2 & RXa_D2
+:MS RXa_R1 "," dxb_RXa_D2_RXa_X2_RXa_B2 is RXa_OP=0x71 & RXa_R1 & RXa_X2 & RXa_B2 & RXa_D2 & dxb_RXa_D2_RXa_X2_RXa_B2
 {
     local ea:8;
     local mc:8; local mp:8; local p:8;
@@ -337,7 +337,7 @@ macro sdiv64_exc(q, r, dvd, dvs, qp, rp) {
     RXa_R1 = (RXa_R1 & (0xFFFFFFFF << 32)) | (p & 0xffffffff);
 }
 
-:MSY "MSY " RXYa_R1 "," RXYa_DL2 "(" RXYa_X2 "," RXYa_B2 ")" is RXYa_OP=0xE3 & RXYa_R1 & RXYa_X2 & RXYa_B2 & RXYa_DL2 & RXYa_DH2 & RXYa_OP2=0x51
+:MSY RXYa_R1 "," dxb_RXYa_DL2_RXYa_X2_RXYa_B2 is RXYa_OP=0xE3 & RXYa_R1 & RXYa_X2 & RXYa_B2 & RXYa_DL2 & RXYa_DH2 & RXYa_OP2=0x51 & dxb_RXYa_DL2_RXYa_X2_RXYa_B2
 {
     local ea:8;
     local mc:8; local mp:8; local p:8;
@@ -351,7 +351,7 @@ macro sdiv64_exc(q, r, dvd, dvs, qp, rp) {
     RXYa_R1 = (RXYa_R1 & (0xFFFFFFFF << 32)) | (p & 0xffffffff);
 }
 
-:MSR "MSR " RRE_R1 "," RRE_R2 is RRE_OP=0xB252 & RRE_R1 & RRE_R2
+:MSR RRE_R1 "," RRE_R2 is RRE_OP=0xB252 & RRE_R1 & RRE_R2
 {
     local mc:8; local mp:8; local p:8;
     mp = RRE_R2 & 0xffffffff;
@@ -362,7 +362,7 @@ macro sdiv64_exc(q, r, dvd, dvs, qp, rp) {
     RRE_R1 = (RRE_R1 & (0xFFFFFFFF << 32)) | (p & 0xffffffff);
 }
 
-:MSFI "MSFI " RILa_R1 "," RILa_I2 is RILa_OP=0xC2 & RILa_R1 & RILa_OPCD=0x1 & RILa_I2
+:MSFI RILa_R1 "," RILa_I2 is RILa_OP=0xC2 & RILa_R1 & RILa_OPCD=0x1 & RILa_I2
 {
     local mc:8; local mp:8; local p:8;
     local iw:4;
@@ -379,19 +379,19 @@ macro sdiv64_exc(q, r, dvd, dvs, qp, rp) {
 # R1 = low 64 bits of (R1 * multiplier). CC unchanged. (PoP 7-348/7-349.)
 # ---------------------------------------------------------------------------
 
-:MSG "MSG " RXYa_R1 "," RXYa_DL2 "(" RXYa_X2 "," RXYa_B2 ")" is RXYa_OP=0xE3 & RXYa_R1 & RXYa_X2 & RXYa_B2 & RXYa_DL2 & RXYa_DH2 & RXYa_OP2=0x0C
+:MSG RXYa_R1 "," dxb_RXYa_DL2_RXYa_X2_RXYa_B2 is RXYa_OP=0xE3 & RXYa_R1 & RXYa_X2 & RXYa_B2 & RXYa_DL2 & RXYa_DH2 & RXYa_OP2=0x0C & dxb_RXYa_DL2_RXYa_X2_RXYa_B2
 {
     local ea:8;
     ea_D20(ea, RXYa_B2, RXYa_X2, RXYa_DH2, RXYa_DL2);
     RXYa_R1 = RXYa_R1 * (*:8 ea);
 }
 
-:MSGR "MSGR " RRE_R1 "," RRE_R2 is RRE_OP=0xB90C & RRE_R1 & RRE_R2
+:MSGR RRE_R1 "," RRE_R2 is RRE_OP=0xB90C & RRE_R1 & RRE_R2
 {
     RRE_R1 = RRE_R1 * RRE_R2;
 }
 
-:MSGF "MSGF " RXYa_R1 "," RXYa_DL2 "(" RXYa_X2 "," RXYa_B2 ")" is RXYa_OP=0xE3 & RXYa_R1 & RXYa_X2 & RXYa_B2 & RXYa_DL2 & RXYa_DH2 & RXYa_OP2=0x1C
+:MSGF RXYa_R1 "," dxb_RXYa_DL2_RXYa_X2_RXYa_B2 is RXYa_OP=0xE3 & RXYa_R1 & RXYa_X2 & RXYa_B2 & RXYa_DL2 & RXYa_DH2 & RXYa_OP2=0x1C & dxb_RXYa_DL2_RXYa_X2_RXYa_B2
 {
     local ea:8;
     local mp:8;
@@ -402,7 +402,7 @@ macro sdiv64_exc(q, r, dvd, dvs, qp, rp) {
     RXYa_R1 = RXYa_R1 * mp;
 }
 
-:MSGFR "MSGFR " RRE_R1 "," RRE_R2 is RRE_OP=0xB91C & RRE_R1 & RRE_R2
+:MSGFR RRE_R1 "," RRE_R2 is RRE_OP=0xB91C & RRE_R1 & RRE_R2
 {
     local mp:8;
     mp = RRE_R2 & 0xffffffff;
@@ -410,7 +410,7 @@ macro sdiv64_exc(q, r, dvd, dvs, qp, rp) {
     RRE_R1 = RRE_R1 * mp;
 }
 
-:MSGFI "MSGFI " RILa_R1 "," RILa_I2 is RILa_OP=0xC2 & RILa_R1 & RILa_OPCD=0x0 & RILa_I2
+:MSGFI RILa_R1 "," RILa_I2 is RILa_OP=0xC2 & RILa_R1 & RILa_OPCD=0x0 & RILa_I2
 {
     local mp:8;
     local iw:4;

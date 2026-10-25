@@ -107,12 +107,12 @@ macro rel_RI16(dest, RI) {
 # Extended mnemonics are the PoP Appendix J recommended set.
 # ---------------------------------------------------------------------------
 
-:nopr "nopr " RRb_R2 is RRb_OP=0x07 & RRb_M1=0x0 & RRb_R2
+:NOPR RRb_R2 is RRb_OP=0x07 & RRb_M1=0x0 & RRb_R2
 {
     # BCR with mask 0 never branches; falls through. (PoP J-1.)
 }
 
-:bor "bor " RRb_R2 is RRb_OP=0x07 & RRb_M1=0x1 & RRb_R2 & RRb_R2n
+:BOR RRb_R2 is RRb_OP=0x07 & RRb_M1=0x1 & RRb_R2 & RRb_R2n
 {
     # BCR mask=1: branch to the address in R2 iff the mask bit for the
     # current condition code is 1 (mask bit for CC=i is 8>>i, PoP 7-47) AND
@@ -131,7 +131,7 @@ macro rel_RI16(dest, RI) {
     if (((_b_m & _b_bit) != 0) && (_b_r2n != 0)) goto RRb_R2;
 }
 
-:bhr "bhr " RRb_R2 is RRb_OP=0x07 & RRb_M1=0x2 & RRb_R2 & RRb_R2n
+:BHR RRb_R2 is RRb_OP=0x07 & RRb_M1=0x2 & RRb_R2 & RRb_R2n
 {
     # BCR mask=2: branch to the address in R2 iff the mask bit for the
     # current condition code is 1 (mask bit for CC=i is 8>>i, PoP 7-47) AND
@@ -150,7 +150,7 @@ macro rel_RI16(dest, RI) {
     if (((_b_m & _b_bit) != 0) && (_b_r2n != 0)) goto RRb_R2;
 }
 
-:bnler "bnler " RRb_R2 is RRb_OP=0x07 & RRb_M1=0x3 & RRb_R2 & RRb_R2n
+:BNLER RRb_R2 is RRb_OP=0x07 & RRb_M1=0x3 & RRb_R2 & RRb_R2n
 {
     # BCR mask=3: branch to the address in R2 iff the mask bit for the
     # current condition code is 1 (mask bit for CC=i is 8>>i, PoP 7-47) AND
@@ -169,7 +169,7 @@ macro rel_RI16(dest, RI) {
     if (((_b_m & _b_bit) != 0) && (_b_r2n != 0)) goto RRb_R2;
 }
 
-:blr "blr " RRb_R2 is RRb_OP=0x07 & RRb_M1=0x4 & RRb_R2 & RRb_R2n
+:BLR RRb_R2 is RRb_OP=0x07 & RRb_M1=0x4 & RRb_R2 & RRb_R2n
 {
     # BCR mask=4: branch to the address in R2 iff the mask bit for the
     # current condition code is 1 (mask bit for CC=i is 8>>i, PoP 7-47) AND
@@ -188,7 +188,7 @@ macro rel_RI16(dest, RI) {
     if (((_b_m & _b_bit) != 0) && (_b_r2n != 0)) goto RRb_R2;
 }
 
-:bnher "bnher " RRb_R2 is RRb_OP=0x07 & RRb_M1=0x5 & RRb_R2 & RRb_R2n
+:BNHER RRb_R2 is RRb_OP=0x07 & RRb_M1=0x5 & RRb_R2 & RRb_R2n
 {
     # BCR mask=5: branch to the address in R2 iff the mask bit for the
     # current condition code is 1 (mask bit for CC=i is 8>>i, PoP 7-47) AND
@@ -207,7 +207,7 @@ macro rel_RI16(dest, RI) {
     if (((_b_m & _b_bit) != 0) && (_b_r2n != 0)) goto RRb_R2;
 }
 
-:blhr "blhr " RRb_R2 is RRb_OP=0x07 & RRb_M1=0x6 & RRb_R2 & RRb_R2n
+:BLHR RRb_R2 is RRb_OP=0x07 & RRb_M1=0x6 & RRb_R2 & RRb_R2n
 {
     # BCR mask=6: branch to the address in R2 iff the mask bit for the
     # current condition code is 1 (mask bit for CC=i is 8>>i, PoP 7-47) AND
@@ -226,7 +226,7 @@ macro rel_RI16(dest, RI) {
     if (((_b_m & _b_bit) != 0) && (_b_r2n != 0)) goto RRb_R2;
 }
 
-:bner "bner " RRb_R2 is RRb_OP=0x07 & RRb_M1=0x7 & RRb_R2 & RRb_R2n
+:BNER RRb_R2 is RRb_OP=0x07 & RRb_M1=0x7 & RRb_R2 & RRb_R2n
 {
     # BCR mask=7: branch to the address in R2 iff the mask bit for the
     # current condition code is 1 (mask bit for CC=i is 8>>i, PoP 7-47) AND
@@ -245,7 +245,7 @@ macro rel_RI16(dest, RI) {
     if (((_b_m & _b_bit) != 0) && (_b_r2n != 0)) goto RRb_R2;
 }
 
-:ber "ber " RRb_R2 is RRb_OP=0x07 & RRb_M1=0x8 & RRb_R2 & RRb_R2n
+:BER RRb_R2 is RRb_OP=0x07 & RRb_M1=0x8 & RRb_R2 & RRb_R2n
 {
     # BCR mask=8: branch to the address in R2 iff the mask bit for the
     # current condition code is 1 (mask bit for CC=i is 8>>i, PoP 7-47) AND
@@ -264,7 +264,7 @@ macro rel_RI16(dest, RI) {
     if (((_b_m & _b_bit) != 0) && (_b_r2n != 0)) goto RRb_R2;
 }
 
-:bnlhr "bnlhr " RRb_R2 is RRb_OP=0x07 & RRb_M1=0x9 & RRb_R2 & RRb_R2n
+:BNLHR RRb_R2 is RRb_OP=0x07 & RRb_M1=0x9 & RRb_R2 & RRb_R2n
 {
     # BCR mask=9: branch to the address in R2 iff the mask bit for the
     # current condition code is 1 (mask bit for CC=i is 8>>i, PoP 7-47) AND
@@ -283,7 +283,7 @@ macro rel_RI16(dest, RI) {
     if (((_b_m & _b_bit) != 0) && (_b_r2n != 0)) goto RRb_R2;
 }
 
-:bher "bher " RRb_R2 is RRb_OP=0x07 & RRb_M1=0xA & RRb_R2 & RRb_R2n
+:BHER RRb_R2 is RRb_OP=0x07 & RRb_M1=0xA & RRb_R2 & RRb_R2n
 {
     # BCR mask=10: branch to the address in R2 iff the mask bit for the
     # current condition code is 1 (mask bit for CC=i is 8>>i, PoP 7-47) AND
@@ -302,7 +302,7 @@ macro rel_RI16(dest, RI) {
     if (((_b_m & _b_bit) != 0) && (_b_r2n != 0)) goto RRb_R2;
 }
 
-:bnlr "bnlr " RRb_R2 is RRb_OP=0x07 & RRb_M1=0xB & RRb_R2 & RRb_R2n
+:BNLR RRb_R2 is RRb_OP=0x07 & RRb_M1=0xB & RRb_R2 & RRb_R2n
 {
     # BCR mask=11: branch to the address in R2 iff the mask bit for the
     # current condition code is 1 (mask bit for CC=i is 8>>i, PoP 7-47) AND
@@ -321,7 +321,7 @@ macro rel_RI16(dest, RI) {
     if (((_b_m & _b_bit) != 0) && (_b_r2n != 0)) goto RRb_R2;
 }
 
-:bler "bler " RRb_R2 is RRb_OP=0x07 & RRb_M1=0xC & RRb_R2 & RRb_R2n
+:BLER RRb_R2 is RRb_OP=0x07 & RRb_M1=0xC & RRb_R2 & RRb_R2n
 {
     # BCR mask=12: branch to the address in R2 iff the mask bit for the
     # current condition code is 1 (mask bit for CC=i is 8>>i, PoP 7-47) AND
@@ -340,7 +340,7 @@ macro rel_RI16(dest, RI) {
     if (((_b_m & _b_bit) != 0) && (_b_r2n != 0)) goto RRb_R2;
 }
 
-:bnhr "bnhr " RRb_R2 is RRb_OP=0x07 & RRb_M1=0xD & RRb_R2 & RRb_R2n
+:BNHR RRb_R2 is RRb_OP=0x07 & RRb_M1=0xD & RRb_R2 & RRb_R2n
 {
     # BCR mask=13: branch to the address in R2 iff the mask bit for the
     # current condition code is 1 (mask bit for CC=i is 8>>i, PoP 7-47) AND
@@ -359,7 +359,7 @@ macro rel_RI16(dest, RI) {
     if (((_b_m & _b_bit) != 0) && (_b_r2n != 0)) goto RRb_R2;
 }
 
-:bnor "bnor " RRb_R2 is RRb_OP=0x07 & RRb_M1=0xE & RRb_R2 & RRb_R2n
+:BNOR RRb_R2 is RRb_OP=0x07 & RRb_M1=0xE & RRb_R2 & RRb_R2n
 {
     # BCR mask=14: branch to the address in R2 iff the mask bit for the
     # current condition code is 1 (mask bit for CC=i is 8>>i, PoP 7-47) AND
@@ -378,7 +378,7 @@ macro rel_RI16(dest, RI) {
     if (((_b_m & _b_bit) != 0) && (_b_r2n != 0)) goto RRb_R2;
 }
 
-:br_ret "br " RRb_R2 is RRb_OP=0x07 & RRb_M1=0xF & RRb_R2 & RRb_R2n=14
+:BR RRb_R2 is RRb_OP=0x07 & RRb_M1=0xF & RRb_R2 & RRb_R2n=14
 {
     # br %r14: the s390x return idiom. r14 is the link register declared
     # as <returnaddress> in s390x.cspec, so emit an explicit return and
@@ -388,7 +388,7 @@ macro rel_RI16(dest, RI) {
     return [RRb_R2];
 }
 
-:br "br " RRb_R2 is RRb_OP=0x07 & RRb_M1=0xF & RRb_R2 & RRb_R2n != 0 & RRb_R2n != 14
+:BR RRb_R2 is RRb_OP=0x07 & RRb_M1=0xF & RRb_R2 & RRb_R2n != 0 & RRb_R2n != 14
 {
     # BCR mask=15: unconditional branch to the address in R2 (PoP 7-41,
     # programming note 3). The condition is on the mask FIELD (=15), not
@@ -397,12 +397,12 @@ macro rel_RI16(dest, RI) {
     goto RRb_R2;
 }
 
-:br_nop "br " RRb_R2 is RRb_OP=0x07 & RRb_M1=0xF & RRb_R2 & RRb_R2n=0
+:BR RRb_R2 is RRb_OP=0x07 & RRb_M1=0xF & RRb_R2 & RRb_R2n=0
 {
     # R2 field = 0: BCR is a no-operation (PoP 7-41, note 3). Falls through.
 }
 
-:bcr "bcr " RRb_M1 "," RRb_R2 is RRb_OP=0x07 & RRb_M1 & RRb_R2 & RRb_R2n
+:BCR RRb_M1 "," RRb_R2 is RRb_OP=0x07 & RRb_M1 & RRb_R2 & RRb_R2n
 {
     # BCR mask=M1: branch to the address in R2 iff the mask bit for the
     # current condition code is 1 (mask bit for CC=i is 8>>i, PoP 7-47) AND
@@ -443,12 +443,12 @@ RIb_Target: RIb_TargetLoc is RIb_TargetLoc { export *:8 RIb_TargetLoc; }
 RILb_TargetLoc: tgt is RILb_RI2 [ tgt = inst_start + RILb_RI2 * 2; ] { export *[const]:8 tgt; }
 RILb_Target: RILb_TargetLoc is RILb_TargetLoc { export *:8 RILb_TargetLoc; }
 
-:jnop "jnop " RIc_RI2 is RIc_OP=0xA7 & RIc_M1=0x0 & RIc_OP2=0x4 & RIc_RI2
+:JNOP RIc_RI2 is RIc_OP=0xA7 & RIc_M1=0x0 & RIc_OP2=0x4 & RIc_RI2
 {
     # BRC with mask 0 never branches; falls through. (PoP J-1.)
 }
 
-:jo "jo " RIc_Target is RIc_OP=0xA7 & RIc_M1=0x1 & RIc_OP2=0x4 & RIc_Target
+:JO RIc_Target is RIc_OP=0xA7 & RIc_M1=0x1 & RIc_OP2=0x4 & RIc_Target
 {
     local _b_m:1;
     local _b_ccval:1;
@@ -459,7 +459,7 @@ RILb_Target: RILb_TargetLoc is RILb_TargetLoc { export *:8 RILb_TargetLoc; }
     if ((_b_m & _b_bit) != 0) goto RIc_Target;
 }
 
-:jh "jh " RIc_Target is RIc_OP=0xA7 & RIc_M1=0x2 & RIc_OP2=0x4 & RIc_Target
+:JH RIc_Target is RIc_OP=0xA7 & RIc_M1=0x2 & RIc_OP2=0x4 & RIc_Target
 {
     local _b_m:1;
     local _b_ccval:1;
@@ -474,7 +474,7 @@ RILb_Target: RILb_TargetLoc is RILb_TargetLoc { export *:8 RILb_TargetLoc; }
 # composite-condition spellings below are the LLVM/Capstone set (verified
 # against Capstone 5.0 for all 16 masks), which the differential harness
 # uses as its oracle.
-:jnle "jnle " RIc_Target is RIc_OP=0xA7 & RIc_M1=0x3 & RIc_OP2=0x4 & RIc_Target
+:JNLE RIc_Target is RIc_OP=0xA7 & RIc_M1=0x3 & RIc_OP2=0x4 & RIc_Target
 {
     local _b_m:1;
     local _b_ccval:1;
@@ -485,7 +485,7 @@ RILb_Target: RILb_TargetLoc is RILb_TargetLoc { export *:8 RILb_TargetLoc; }
     if ((_b_m & _b_bit) != 0) goto RIc_Target;
 }
 
-:jl "jl " RIc_Target is RIc_OP=0xA7 & RIc_M1=0x4 & RIc_OP2=0x4 & RIc_Target
+:JL RIc_Target is RIc_OP=0xA7 & RIc_M1=0x4 & RIc_OP2=0x4 & RIc_Target
 {
     local _b_m:1;
     local _b_ccval:1;
@@ -496,7 +496,7 @@ RILb_Target: RILb_TargetLoc is RILb_TargetLoc { export *:8 RILb_TargetLoc; }
     if ((_b_m & _b_bit) != 0) goto RIc_Target;
 }
 
-:jnhe "jnhe " RIc_Target is RIc_OP=0xA7 & RIc_M1=0x5 & RIc_OP2=0x4 & RIc_Target
+:JNHE RIc_Target is RIc_OP=0xA7 & RIc_M1=0x5 & RIc_OP2=0x4 & RIc_Target
 {
     local _b_m:1;
     local _b_ccval:1;
@@ -507,7 +507,7 @@ RILb_Target: RILb_TargetLoc is RILb_TargetLoc { export *:8 RILb_TargetLoc; }
     if ((_b_m & _b_bit) != 0) goto RIc_Target;
 }
 
-:jlh "jlh " RIc_Target is RIc_OP=0xA7 & RIc_M1=0x6 & RIc_OP2=0x4 & RIc_Target
+:JLH RIc_Target is RIc_OP=0xA7 & RIc_M1=0x6 & RIc_OP2=0x4 & RIc_Target
 {
     local _b_m:1;
     local _b_ccval:1;
@@ -518,7 +518,7 @@ RILb_Target: RILb_TargetLoc is RILb_TargetLoc { export *:8 RILb_TargetLoc; }
     if ((_b_m & _b_bit) != 0) goto RIc_Target;
 }
 
-:jne "jne " RIc_Target is RIc_OP=0xA7 & RIc_M1=0x7 & RIc_OP2=0x4 & RIc_Target
+:JNE RIc_Target is RIc_OP=0xA7 & RIc_M1=0x7 & RIc_OP2=0x4 & RIc_Target
 {
     local _b_m:1;
     local _b_ccval:1;
@@ -529,7 +529,7 @@ RILb_Target: RILb_TargetLoc is RILb_TargetLoc { export *:8 RILb_TargetLoc; }
     if ((_b_m & _b_bit) != 0) goto RIc_Target;
 }
 
-:je "je " RIc_Target is RIc_OP=0xA7 & RIc_M1=0x8 & RIc_OP2=0x4 & RIc_Target
+:JE RIc_Target is RIc_OP=0xA7 & RIc_M1=0x8 & RIc_OP2=0x4 & RIc_Target
 {
     local _b_m:1;
     local _b_ccval:1;
@@ -540,7 +540,7 @@ RILb_Target: RILb_TargetLoc is RILb_TargetLoc { export *:8 RILb_TargetLoc; }
     if ((_b_m & _b_bit) != 0) goto RIc_Target;
 }
 
-:jnlh "jnlh " RIc_Target is RIc_OP=0xA7 & RIc_M1=0x9 & RIc_OP2=0x4 & RIc_Target
+:JNLH RIc_Target is RIc_OP=0xA7 & RIc_M1=0x9 & RIc_OP2=0x4 & RIc_Target
 {
     local _b_m:1;
     local _b_ccval:1;
@@ -551,7 +551,7 @@ RILb_Target: RILb_TargetLoc is RILb_TargetLoc { export *:8 RILb_TargetLoc; }
     if ((_b_m & _b_bit) != 0) goto RIc_Target;
 }
 
-:jhe "jhe " RIc_Target is RIc_OP=0xA7 & RIc_M1=0xA & RIc_OP2=0x4 & RIc_Target
+:JHE RIc_Target is RIc_OP=0xA7 & RIc_M1=0xA & RIc_OP2=0x4 & RIc_Target
 {
     local _b_m:1;
     local _b_ccval:1;
@@ -562,7 +562,7 @@ RILb_Target: RILb_TargetLoc is RILb_TargetLoc { export *:8 RILb_TargetLoc; }
     if ((_b_m & _b_bit) != 0) goto RIc_Target;
 }
 
-:jnl "jnl " RIc_Target is RIc_OP=0xA7 & RIc_M1=0xB & RIc_OP2=0x4 & RIc_Target
+:JNL RIc_Target is RIc_OP=0xA7 & RIc_M1=0xB & RIc_OP2=0x4 & RIc_Target
 {
     local _b_m:1;
     local _b_ccval:1;
@@ -573,7 +573,7 @@ RILb_Target: RILb_TargetLoc is RILb_TargetLoc { export *:8 RILb_TargetLoc; }
     if ((_b_m & _b_bit) != 0) goto RIc_Target;
 }
 
-:jle "jle " RIc_Target is RIc_OP=0xA7 & RIc_M1=0xC & RIc_OP2=0x4 & RIc_Target
+:JLE RIc_Target is RIc_OP=0xA7 & RIc_M1=0xC & RIc_OP2=0x4 & RIc_Target
 {
     local _b_m:1;
     local _b_ccval:1;
@@ -584,7 +584,7 @@ RILb_Target: RILb_TargetLoc is RILb_TargetLoc { export *:8 RILb_TargetLoc; }
     if ((_b_m & _b_bit) != 0) goto RIc_Target;
 }
 
-:jnh "jnh " RIc_Target is RIc_OP=0xA7 & RIc_M1=0xD & RIc_OP2=0x4 & RIc_Target
+:JNH RIc_Target is RIc_OP=0xA7 & RIc_M1=0xD & RIc_OP2=0x4 & RIc_Target
 {
     local _b_m:1;
     local _b_ccval:1;
@@ -595,7 +595,7 @@ RILb_Target: RILb_TargetLoc is RILb_TargetLoc { export *:8 RILb_TargetLoc; }
     if ((_b_m & _b_bit) != 0) goto RIc_Target;
 }
 
-:jno "jno " RIc_Target is RIc_OP=0xA7 & RIc_M1=0xE & RIc_OP2=0x4 & RIc_Target
+:JNO RIc_Target is RIc_OP=0xA7 & RIc_M1=0xE & RIc_OP2=0x4 & RIc_Target
 {
     local _b_m:1;
     local _b_ccval:1;
@@ -606,7 +606,7 @@ RILb_Target: RILb_TargetLoc is RILb_TargetLoc { export *:8 RILb_TargetLoc; }
     if ((_b_m & _b_bit) != 0) goto RIc_Target;
 }
 
-:j "j " RIc_Target is RIc_OP=0xA7 & RIc_M1=0xF & RIc_OP2=0x4 & RIc_Target
+:J RIc_Target is RIc_OP=0xA7 & RIc_M1=0xF & RIc_OP2=0x4 & RIc_Target
 {
     goto RIc_Target;
 }
@@ -622,12 +622,12 @@ RILb_Target: RILb_TargetLoc is RILb_TargetLoc { export *:8 RILb_TargetLoc; }
 # extended mnemonic and fall back to the base :brcl constructor.
 # ---------------------------------------------------------------------------
 
-:jlnop "jlnop " RILc_RI2 is RILc_OP=0xC0 & RILc_M1=0x0 & RILc_OPCD=0x4 & RILc_RI2
+:JLNOP RILc_RI2 is RILc_OP=0xC0 & RILc_M1=0x0 & RILc_OPCD=0x4 & RILc_RI2
 {
     # BRCL with mask 0 never branches; falls through. (PoP J-1.)
 }
 
-:jlo "jlo " RILc_Target is RILc_OP=0xC0 & RILc_M1=0x1 & RILc_OPCD=0x4 & RILc_Target
+:JLO RILc_Target is RILc_OP=0xC0 & RILc_M1=0x1 & RILc_OPCD=0x4 & RILc_Target
 {
     local _b_m:1;
     local _b_ccval:1;
@@ -638,7 +638,7 @@ RILb_Target: RILb_TargetLoc is RILb_TargetLoc { export *:8 RILb_TargetLoc; }
     if ((_b_m & _b_bit) != 0) goto RILc_Target;
 }
 
-:jlh "jlh " RILc_Target is RILc_OP=0xC0 & RILc_M1=0x2 & RILc_OPCD=0x4 & RILc_Target
+:JLH RILc_Target is RILc_OP=0xC0 & RILc_M1=0x2 & RILc_OPCD=0x4 & RILc_Target
 {
     local _b_m:1;
     local _b_ccval:1;
@@ -649,7 +649,7 @@ RILb_Target: RILb_TargetLoc is RILb_TargetLoc { export *:8 RILb_TargetLoc; }
     if ((_b_m & _b_bit) != 0) goto RILc_Target;
 }
 
-:jll "jll " RILc_Target is RILc_OP=0xC0 & RILc_M1=0x4 & RILc_OPCD=0x4 & RILc_Target
+:JLL RILc_Target is RILc_OP=0xC0 & RILc_M1=0x4 & RILc_OPCD=0x4 & RILc_Target
 {
     local _b_m:1;
     local _b_ccval:1;
@@ -660,7 +660,7 @@ RILb_Target: RILb_TargetLoc is RILb_TargetLoc { export *:8 RILb_TargetLoc; }
     if ((_b_m & _b_bit) != 0) goto RILc_Target;
 }
 
-:jlne "jlne " RILc_Target is RILc_OP=0xC0 & RILc_M1=0x7 & RILc_OPCD=0x4 & RILc_Target
+:JLNE RILc_Target is RILc_OP=0xC0 & RILc_M1=0x7 & RILc_OPCD=0x4 & RILc_Target
 {
     local _b_m:1;
     local _b_ccval:1;
@@ -671,7 +671,7 @@ RILb_Target: RILb_TargetLoc is RILb_TargetLoc { export *:8 RILb_TargetLoc; }
     if ((_b_m & _b_bit) != 0) goto RILc_Target;
 }
 
-:jle "jle " RILc_Target is RILc_OP=0xC0 & RILc_M1=0x8 & RILc_OPCD=0x4 & RILc_Target
+:JLE RILc_Target is RILc_OP=0xC0 & RILc_M1=0x8 & RILc_OPCD=0x4 & RILc_Target
 {
     local _b_m:1;
     local _b_ccval:1;
@@ -682,7 +682,7 @@ RILb_Target: RILb_TargetLoc is RILb_TargetLoc { export *:8 RILb_TargetLoc; }
     if ((_b_m & _b_bit) != 0) goto RILc_Target;
 }
 
-:jlnl "jlnl " RILc_Target is RILc_OP=0xC0 & RILc_M1=0xB & RILc_OPCD=0x4 & RILc_Target
+:JLNL RILc_Target is RILc_OP=0xC0 & RILc_M1=0xB & RILc_OPCD=0x4 & RILc_Target
 {
     local _b_m:1;
     local _b_ccval:1;
@@ -693,7 +693,7 @@ RILb_Target: RILb_TargetLoc is RILb_TargetLoc { export *:8 RILb_TargetLoc; }
     if ((_b_m & _b_bit) != 0) goto RILc_Target;
 }
 
-:jlnh "jlnh " RILc_Target is RILc_OP=0xC0 & RILc_M1=0xD & RILc_OPCD=0x4 & RILc_Target
+:JLNH RILc_Target is RILc_OP=0xC0 & RILc_M1=0xD & RILc_OPCD=0x4 & RILc_Target
 {
     local _b_m:1;
     local _b_ccval:1;
@@ -704,7 +704,7 @@ RILb_Target: RILb_TargetLoc is RILb_TargetLoc { export *:8 RILb_TargetLoc; }
     if ((_b_m & _b_bit) != 0) goto RILc_Target;
 }
 
-:jlno "jlno " RILc_Target is RILc_OP=0xC0 & RILc_M1=0xE & RILc_OPCD=0x4 & RILc_Target
+:JLNO RILc_Target is RILc_OP=0xC0 & RILc_M1=0xE & RILc_OPCD=0x4 & RILc_Target
 {
     local _b_m:1;
     local _b_ccval:1;
@@ -715,12 +715,12 @@ RILb_Target: RILb_TargetLoc is RILb_TargetLoc { export *:8 RILb_TargetLoc; }
     if ((_b_m & _b_bit) != 0) goto RILc_Target;
 }
 
-:jlu "jlu " RILc_Target is RILc_OP=0xC0 & RILc_M1=0xF & RILc_OPCD=0x4 & RILc_Target
+:JLU RILc_Target is RILc_OP=0xC0 & RILc_M1=0xF & RILc_OPCD=0x4 & RILc_Target
 {
     goto RILc_Target;
 }
 
-:brcl "brcl " RILc_M1 "," RILc_Target is RILc_OP=0xC0 & RILc_M1 & RILc_OPCD=0x4 & RILc_Target
+:BRCL RILc_M1 "," RILc_Target is RILc_OP=0xC0 & RILc_M1 & RILc_OPCD=0x4 & RILc_Target
 {
     local _b_m:1;
     local _b_ccval:1;
@@ -739,7 +739,7 @@ RILb_Target: RILb_TargetLoc is RILb_TargetLoc { export *:8 RILb_TargetLoc; }
 # 64-bit updated instruction address.)
 # ---------------------------------------------------------------------------
 
-:bras "bras " RIb_R1 "," RIb_Target is RIb_OP=0xA7 & RIb_R1 & RIb_OP2=0x5 & RIb_Target
+:BRAS RIb_R1 "," RIb_Target is RIb_OP=0xA7 & RIb_R1 & RIb_OP2=0x5 & RIb_Target
 {
     # PoP 7-47: the link is stored even when RIb_R1 designates r0, and the
     # branch is always taken.
@@ -747,14 +747,14 @@ RILb_Target: RILb_TargetLoc is RILb_TargetLoc { export *:8 RILb_TargetLoc; }
     call RIb_Target;
 }
 
-:brasl "brasl " RILb_R1 "," RILb_Target is RILb_OP=0xC0 & RILb_R1 & RILb_OPCD=0x5 & RILb_Target
+:BRASL RILb_R1 "," RILb_Target is RILb_OP=0xC0 & RILb_R1 & RILb_OPCD=0x5 & RILb_Target
 {
     # As BRAS, with the 32-bit relative offset (PoP 7-47).
     RILb_R1 = inst_next;
     call RILb_Target;
 }
 
-:basr "basr " RR_R1 "," RR_R2 is RR_OP=0x0D & RR_R1 & RR_R2
+:BASR RR_R1 "," RR_R2 is RR_OP=0x0D & RR_R1 & RR_R2
 {
     # PoP 7-37: link always stored; when RR_R2=0 no branch occurs.
     RR_R1 = inst_next;
@@ -763,7 +763,7 @@ RILb_Target: RILb_TargetLoc is RILb_TargetLoc { export *:8 RILb_TargetLoc; }
     <call_skip_1>
 }
 
-:balr "balr " RR_R1 "," RR_R2 is RR_OP=0x05 & RR_R1 & RR_R2
+:BALR RR_R1 "," RR_R2 is RR_OP=0x05 & RR_R1 & RR_R2
 {
     # PoP 7-36: as BASR (compatibility instruction; prefer BASR/BRASL).
     RR_R1 = inst_next;
@@ -772,7 +772,7 @@ RILb_Target: RILb_TargetLoc is RILb_TargetLoc { export *:8 RILb_TargetLoc; }
     <call_skip_2>
 }
 
-:bal "bal " RXa_R1 "," RXa_D2 "(" RXa_X2 "," RXa_B2 ")" is RXa_OP=0x45 & RXa_R1 & RXa_X2 & RXa_B2 & RXa_D2
+:BAL RXa_R1 "," dxb_RXa_D2_RXa_X2_RXa_B2 is RXa_OP=0x45 & RXa_R1 & RXa_X2 & RXa_B2 & RXa_D2 & dxb_RXa_D2_RXa_X2_RXa_B2
 {
     # PoP 7-36: the branch address (EA) is computed BEFORE RXa_R1 is changed.
     # In 64-bit mode the link is the full updated instruction address;
@@ -783,7 +783,7 @@ RILb_Target: RILb_TargetLoc is RILb_TargetLoc { export *:8 RILb_TargetLoc; }
     call [ea];
 }
 
-:bas "bas " RXa_R1 "," RXa_D2 "(" RXa_X2 "," RXa_B2 ")" is RXa_OP=0x4D & RXa_R1 & RXa_X2 & RXa_B2 & RXa_D2
+:BAS RXa_R1 "," dxb_RXa_D2_RXa_X2_RXa_B2 is RXa_OP=0x4D & RXa_R1 & RXa_X2 & RXa_B2 & RXa_D2 & dxb_RXa_D2_RXa_X2_RXa_B2
 {
     # PoP 7-37: as BAL, without the legacy link-format baggage.
     local ea:8;
@@ -792,7 +792,7 @@ RILb_Target: RILb_TargetLoc is RILb_TargetLoc { export *:8 RILb_TargetLoc; }
     call [ea];
 }
 
-:bakr "bakr " RRE_R1 "," RRE_R2 is RRE_OP=0xB240 & RRE_IGN & RRE_R1 & RRE_R2
+:BAKR RRE_R1 "," RRE_R2 is RRE_OP=0xB240 & RRE_IGN & RRE_R1 & RRE_R2
 {
     # TODO: BAKR pushes a branch-state entry (PSW, registers, return
     # address) onto the linkage stack (PoP 10-11); the stack manipulation
@@ -804,7 +804,7 @@ RILb_Target: RILb_TargetLoc is RILb_TargetLoc { export *:8 RILb_TargetLoc; }
     <call_skip_3>
 }
 
-:pr "pr" is E_OP=0x01 & E_OP2=0x01
+:PR is E_OP=0x01 & E_OP2=0x01
 {
     # TODO(verify): PROGRAM RETURN unstacks the linkage stack (PoP 10-112);
     # the return target is not statically known. Pcode empty: control flow
@@ -816,7 +816,7 @@ RILb_Target: RILb_TargetLoc is RILb_TargetLoc { export *:8 RILb_TargetLoc; }
 # machine-dependent). They fall through; no control-flow pcode is emitted.
 # ---------------------------------------------------------------------------
 
-:svc "svc " I_I is I_OP=0x0A & I_I
+:SVC I_I is I_OP=0x0A & I_I
 {
     # SUPERVISOR CALL (PoP 7-457): raises a supervisor-call interruption;
     # the I_I field becomes the low byte of the interruption code. The
@@ -826,13 +826,13 @@ RILb_Target: RILb_TargetLoc is RILb_TargetLoc { export *:8 RILb_TargetLoc; }
     # TODO: model Linux s390x syscalls (SVC 0, number in r1) as calls.
 }
 
-:trap2 "trap2" is E_OP=0x01 & E_OP2=0xFF
+:TRAP2 is E_OP=0x01 & E_OP2=0xFF
 {
     # TRAP2 (PoP 10-189): traps depending on control-register bits;
     # not statically analyzable. Opaque by design.
 }
 
-:trap4 "trap4" is S_OP=0xB2FF & S_B2 & S_D2
+:TRAP4 is S_OP=0xB2FF & S_B2 & S_D2
 {
     # TRAP4 (PoP 10-189): the second-operand address is not used by the
     # instruction (operands left unconstrained). Otherwise as TRAP2.
@@ -845,7 +845,7 @@ RILb_Target: RILb_TargetLoc is RILb_TargetLoc { export *:8 RILb_TargetLoc; }
 # TODO(privileged)). These never appear in problem-state (user) code.
 # ---------------------------------------------------------------------------
 
-:lpsw "lpsw " SI_D1 "(" SI_B1 ")" is SI_OP=0x82 & SI_I2 & SI_B1 & SI_D1
+:LPSW db_SI_D1_SI_B1 is SI_OP=0x82 & SI_I2 & SI_B1 & SI_D1 & db_SI_D1_SI_B1
 {
     # TODO(privileged): see header above.
     # PoP 10-56: the doubleword at the EA forms a 16-byte PSW. Bits 8-15
@@ -867,7 +867,10 @@ RILb_Target: RILb_TargetLoc is RILb_TargetLoc { export *:8 RILb_TargetLoc; }
     psw = (zext(hi) << 64) | zext(lo);
 }
 
-:lpswe "lpswe " S_D2 "(" S_B2 ")" is S_OP=0xB2B2 & S_B2 & S_D2
+# display-only address operand (tools/fix_display.py)
+db_S_D2_S_B2: S_D2 is S_D2 & S_B2=0  { }
+db_S_D2_S_B2: S_D2(S_B2) is S_D2 & S_B2  { }
+:LPSWE db_S_D2_S_B2 is S_OP=0xB2B2 & S_B2 & S_D2 & db_S_D2_S_B2
 {
     # TODO(privileged): see header above.
     # PoP 10-57: the quadword at the EA replaces the full 16-byte PSW.
@@ -876,7 +879,7 @@ RILb_Target: RILb_TargetLoc is RILb_TargetLoc { export *:8 RILb_TargetLoc; }
     psw = *(ea);
 }
 
-:ssm "ssm " SI_D1 "(" SI_B1 ")" is SI_OP=0x80 & SI_I2 & SI_B1 & SI_D1
+:SSM db_SI_D1_SI_B1 is SI_OP=0x80 & SI_I2 & SI_B1 & SI_D1 & db_SI_D1_SI_B1
 {
     # TODO(privileged): the PSW-validity specification check (PoP 10-145)
     # is not modeled. Bits 8-15 of the instruction are reserved.
@@ -888,7 +891,7 @@ RILb_Target: RILb_TargetLoc is RILb_TargetLoc { export *:8 RILb_TargetLoc; }
     pswm = (pswm & ((0xFFFFFF << 32) | 0xFFFFFFFF)) | (zext(b) << 56);
 }
 
-:stnsm "stnsm " SI_D1 "(" SI_B1 ")," SI_I2 is SI_OP=0xAC & SI_I2 & SI_B1 & SI_D1
+:STNSM db_SI_D1_SI_B1 "," SI_I2 is SI_OP=0xAC & SI_I2 & SI_B1 & SI_D1 & db_SI_D1_SI_B1
 {
     local ea:8;
     ea_D12(ea, SI_B1, zero, SI_D1);
@@ -896,7 +899,7 @@ RILb_Target: RILb_TargetLoc is RILb_TargetLoc { export *:8 RILb_TargetLoc; }
     *:1 ea = 0;
 }
 
-:stosm "stosm " SI_D1 "(" SI_B1 ")," SI_I2 is SI_OP=0xAD & SI_I2 & SI_B1 & SI_D1
+:STOSM db_SI_D1_SI_B1 "," SI_I2 is SI_OP=0xAD & SI_I2 & SI_B1 & SI_D1 & db_SI_D1_SI_B1
 {
     local ea:8;
     ea_D12(ea, SI_B1, zero, SI_D1);
@@ -904,7 +907,7 @@ RILb_Target: RILb_TargetLoc is RILb_TargetLoc { export *:8 RILb_TargetLoc; }
     *:1 ea = 0;
 }
 
-:diagnose "diag " RSa_R1 "," RSa_R3 "," RSa_D2 "(" RSa_B2 ")" is RSa_OP=0x83 & RSa_R1 & RSa_R3 & RSa_B2 & RSa_D2
+:DIAGNOSE "diag " RSa_R1 "," RSa_R3 "," db_RSa_D2_RSa_B2 is RSa_OP=0x83 & RSa_R1 & RSa_R3 & RSa_B2 & RSa_D2 & db_RSa_D2_RSa_B2
 {
     # DIAGNOSE (PoP 10-24): model-dependent function. Bits 8-31 "may be
     # used as in the SI or RS formats, or in some other way"; displayed
@@ -912,7 +915,7 @@ RILb_Target: RILb_TargetLoc is RILb_TargetLoc { export *:8 RILb_TargetLoc; }
     # Semantics deliberately not modeled.
 }
 
-:ex "ex " RXa_R1 "," RXa_D2 "(" RXa_X2 "," RXa_B2 ")" is RXa_OP=0x44 & RXa_R1 & RXa_X2 & RXa_B2 & RXa_D2
+:EX RXa_R1 "," dxb_RXa_D2_RXa_X2_RXa_B2 is RXa_OP=0x44 & RXa_R1 & RXa_X2 & RXa_B2 & RXa_D2 & dxb_RXa_D2_RXa_X2_RXa_B2
 {
     # TODO: EXECUTE runs the target instruction with bits 56-63 of RXa_R1
     # ORed into its second byte (PoP 7-294). Fully dynamic; deliberately

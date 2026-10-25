@@ -152,12 +152,17 @@ attach variables [ RIEd_R3c ] [ r1 r1 r3 r3 r5 r5 r7 r7 r9 r9 r11 r11 r13 r13 r1
 # mask operand for M1=0, `b` for M1=15.
 # ---------------------------------------------------------------------------
 
-:bc "bc 0," RXb_D2 "(" RXb_X2 "," RXb_B2 ")" is RXb_OP=0x47 & RXb_M1=0x0 & RXb_X2 & RXb_B2 & RXb_D2
+# display-only address operand (tools/fix_display.py)
+dxb_RXb_D2_RXb_X2_RXb_B2: RXb_D2 is RXb_D2 & RXb_X2=0 & RXb_B2=0  { }
+dxb_RXb_D2_RXb_X2_RXb_B2: RXb_D2(RXb_B2) is RXb_D2 & RXb_X2=0 & RXb_B2  { }
+dxb_RXb_D2_RXb_X2_RXb_B2: RXb_D2(RXb_X2,0) is RXb_D2 & RXb_X2 & RXb_B2=0  { }
+dxb_RXb_D2_RXb_X2_RXb_B2: RXb_D2(RXb_X2,RXb_B2) is RXb_D2 & RXb_X2 & RXb_B2  { }
+:BC "0" "," dxb_RXb_D2_RXb_X2_RXb_B2 is RXb_OP=0x47 & RXb_M1=0x0 & RXb_X2 & RXb_B2 & RXb_D2 & dxb_RXb_D2_RXb_X2_RXb_B2
 {
     # Mask 0 never branches; falls through. (PoP J-1.)
 }
 
-:bo "bo " RXb_D2 "(" RXb_X2 "," RXb_B2 ")" is RXb_OP=0x47 & RXb_M1=0x1 & RXb_X2 & RXb_B2 & RXb_D2
+:BO dxb_RXb_D2_RXb_X2_RXb_B2 is RXb_OP=0x47 & RXb_M1=0x1 & RXb_X2 & RXb_B2 & RXb_D2 & dxb_RXb_D2_RXb_X2_RXb_B2
 {
     local ea:8;
     local _b_m:1;
@@ -172,7 +177,7 @@ attach variables [ RIEd_R3c ] [ r1 r1 r3 r3 r5 r5 r7 r7 r9 r9 r11 r11 r13 r13 r1
     <br2_skip_1>
 }
 
-:bh "bh " RXb_D2 "(" RXb_X2 "," RXb_B2 ")" is RXb_OP=0x47 & RXb_M1=0x2 & RXb_X2 & RXb_B2 & RXb_D2
+:BH dxb_RXb_D2_RXb_X2_RXb_B2 is RXb_OP=0x47 & RXb_M1=0x2 & RXb_X2 & RXb_B2 & RXb_D2 & dxb_RXb_D2_RXb_X2_RXb_B2
 {
     local ea:8;
     local _b_m:1;
@@ -187,7 +192,7 @@ attach variables [ RIEd_R3c ] [ r1 r1 r3 r3 r5 r5 r7 r7 r9 r9 r11 r11 r13 r13 r1
     <br2_skip_2>
 }
 
-:bnle "bnle " RXb_D2 "(" RXb_X2 "," RXb_B2 ")" is RXb_OP=0x47 & RXb_M1=0x3 & RXb_X2 & RXb_B2 & RXb_D2
+:BNLE dxb_RXb_D2_RXb_X2_RXb_B2 is RXb_OP=0x47 & RXb_M1=0x3 & RXb_X2 & RXb_B2 & RXb_D2 & dxb_RXb_D2_RXb_X2_RXb_B2
 {
     local ea:8;
     local _b_m:1;
@@ -202,7 +207,7 @@ attach variables [ RIEd_R3c ] [ r1 r1 r3 r3 r5 r5 r7 r7 r9 r9 r11 r11 r13 r13 r1
     <br2_skip_3>
 }
 
-:bl "bl " RXb_D2 "(" RXb_X2 "," RXb_B2 ")" is RXb_OP=0x47 & RXb_M1=0x4 & RXb_X2 & RXb_B2 & RXb_D2
+:BL dxb_RXb_D2_RXb_X2_RXb_B2 is RXb_OP=0x47 & RXb_M1=0x4 & RXb_X2 & RXb_B2 & RXb_D2 & dxb_RXb_D2_RXb_X2_RXb_B2
 {
     local ea:8;
     local _b_m:1;
@@ -217,7 +222,7 @@ attach variables [ RIEd_R3c ] [ r1 r1 r3 r3 r5 r5 r7 r7 r9 r9 r11 r11 r13 r13 r1
     <br2_skip_4>
 }
 
-:bnhe "bnhe " RXb_D2 "(" RXb_X2 "," RXb_B2 ")" is RXb_OP=0x47 & RXb_M1=0x5 & RXb_X2 & RXb_B2 & RXb_D2
+:BNHE dxb_RXb_D2_RXb_X2_RXb_B2 is RXb_OP=0x47 & RXb_M1=0x5 & RXb_X2 & RXb_B2 & RXb_D2 & dxb_RXb_D2_RXb_X2_RXb_B2
 {
     local ea:8;
     local _b_m:1;
@@ -232,7 +237,7 @@ attach variables [ RIEd_R3c ] [ r1 r1 r3 r3 r5 r5 r7 r7 r9 r9 r11 r11 r13 r13 r1
     <br2_skip_5>
 }
 
-:blh "blh " RXb_D2 "(" RXb_X2 "," RXb_B2 ")" is RXb_OP=0x47 & RXb_M1=0x6 & RXb_X2 & RXb_B2 & RXb_D2
+:BLH dxb_RXb_D2_RXb_X2_RXb_B2 is RXb_OP=0x47 & RXb_M1=0x6 & RXb_X2 & RXb_B2 & RXb_D2 & dxb_RXb_D2_RXb_X2_RXb_B2
 {
     local ea:8;
     local _b_m:1;
@@ -247,7 +252,7 @@ attach variables [ RIEd_R3c ] [ r1 r1 r3 r3 r5 r5 r7 r7 r9 r9 r11 r11 r13 r13 r1
     <br2_skip_6>
 }
 
-:bne "bne " RXb_D2 "(" RXb_X2 "," RXb_B2 ")" is RXb_OP=0x47 & RXb_M1=0x7 & RXb_X2 & RXb_B2 & RXb_D2
+:BNE dxb_RXb_D2_RXb_X2_RXb_B2 is RXb_OP=0x47 & RXb_M1=0x7 & RXb_X2 & RXb_B2 & RXb_D2 & dxb_RXb_D2_RXb_X2_RXb_B2
 {
     local ea:8;
     local _b_m:1;
@@ -262,7 +267,7 @@ attach variables [ RIEd_R3c ] [ r1 r1 r3 r3 r5 r5 r7 r7 r9 r9 r11 r11 r13 r13 r1
     <br2_skip_7>
 }
 
-:be "be " RXb_D2 "(" RXb_X2 "," RXb_B2 ")" is RXb_OP=0x47 & RXb_M1=0x8 & RXb_X2 & RXb_B2 & RXb_D2
+:BE dxb_RXb_D2_RXb_X2_RXb_B2 is RXb_OP=0x47 & RXb_M1=0x8 & RXb_X2 & RXb_B2 & RXb_D2 & dxb_RXb_D2_RXb_X2_RXb_B2
 {
     local ea:8;
     local _b_m:1;
@@ -277,7 +282,7 @@ attach variables [ RIEd_R3c ] [ r1 r1 r3 r3 r5 r5 r7 r7 r9 r9 r11 r11 r13 r13 r1
     <br2_skip_8>
 }
 
-:bnlh "bnlh " RXb_D2 "(" RXb_X2 "," RXb_B2 ")" is RXb_OP=0x47 & RXb_M1=0x9 & RXb_X2 & RXb_B2 & RXb_D2
+:BNLH dxb_RXb_D2_RXb_X2_RXb_B2 is RXb_OP=0x47 & RXb_M1=0x9 & RXb_X2 & RXb_B2 & RXb_D2 & dxb_RXb_D2_RXb_X2_RXb_B2
 {
     local ea:8;
     local _b_m:1;
@@ -292,7 +297,7 @@ attach variables [ RIEd_R3c ] [ r1 r1 r3 r3 r5 r5 r7 r7 r9 r9 r11 r11 r13 r13 r1
     <br2_skip_9>
 }
 
-:bhe "bhe " RXb_D2 "(" RXb_X2 "," RXb_B2 ")" is RXb_OP=0x47 & RXb_M1=0xA & RXb_X2 & RXb_B2 & RXb_D2
+:BHE dxb_RXb_D2_RXb_X2_RXb_B2 is RXb_OP=0x47 & RXb_M1=0xA & RXb_X2 & RXb_B2 & RXb_D2 & dxb_RXb_D2_RXb_X2_RXb_B2
 {
     local ea:8;
     local _b_m:1;
@@ -307,7 +312,7 @@ attach variables [ RIEd_R3c ] [ r1 r1 r3 r3 r5 r5 r7 r7 r9 r9 r11 r11 r13 r13 r1
     <br2_skip_10>
 }
 
-:bnl "bnl " RXb_D2 "(" RXb_X2 "," RXb_B2 ")" is RXb_OP=0x47 & RXb_M1=0xB & RXb_X2 & RXb_B2 & RXb_D2
+:BNL dxb_RXb_D2_RXb_X2_RXb_B2 is RXb_OP=0x47 & RXb_M1=0xB & RXb_X2 & RXb_B2 & RXb_D2 & dxb_RXb_D2_RXb_X2_RXb_B2
 {
     local ea:8;
     local _b_m:1;
@@ -322,7 +327,7 @@ attach variables [ RIEd_R3c ] [ r1 r1 r3 r3 r5 r5 r7 r7 r9 r9 r11 r11 r13 r13 r1
     <br2_skip_11>
 }
 
-:ble "ble " RXb_D2 "(" RXb_X2 "," RXb_B2 ")" is RXb_OP=0x47 & RXb_M1=0xC & RXb_X2 & RXb_B2 & RXb_D2
+:BLE dxb_RXb_D2_RXb_X2_RXb_B2 is RXb_OP=0x47 & RXb_M1=0xC & RXb_X2 & RXb_B2 & RXb_D2 & dxb_RXb_D2_RXb_X2_RXb_B2
 {
     local ea:8;
     local _b_m:1;
@@ -337,7 +342,7 @@ attach variables [ RIEd_R3c ] [ r1 r1 r3 r3 r5 r5 r7 r7 r9 r9 r11 r11 r13 r13 r1
     <br2_skip_12>
 }
 
-:bnh "bnh " RXb_D2 "(" RXb_X2 "," RXb_B2 ")" is RXb_OP=0x47 & RXb_M1=0xD & RXb_X2 & RXb_B2 & RXb_D2
+:BNH dxb_RXb_D2_RXb_X2_RXb_B2 is RXb_OP=0x47 & RXb_M1=0xD & RXb_X2 & RXb_B2 & RXb_D2 & dxb_RXb_D2_RXb_X2_RXb_B2
 {
     local ea:8;
     local _b_m:1;
@@ -352,7 +357,7 @@ attach variables [ RIEd_R3c ] [ r1 r1 r3 r3 r5 r5 r7 r7 r9 r9 r11 r11 r13 r13 r1
     <br2_skip_13>
 }
 
-:bno "bno " RXb_D2 "(" RXb_X2 "," RXb_B2 ")" is RXb_OP=0x47 & RXb_M1=0xE & RXb_X2 & RXb_B2 & RXb_D2
+:BNO dxb_RXb_D2_RXb_X2_RXb_B2 is RXb_OP=0x47 & RXb_M1=0xE & RXb_X2 & RXb_B2 & RXb_D2 & dxb_RXb_D2_RXb_X2_RXb_B2
 {
     local ea:8;
     local _b_m:1;
@@ -367,7 +372,7 @@ attach variables [ RIEd_R3c ] [ r1 r1 r3 r3 r5 r5 r7 r7 r9 r9 r11 r11 r13 r13 r1
     <br2_skip_14>
 }
 
-:b "b " RXb_D2 "(" RXb_X2 "," RXb_B2 ")" is RXb_OP=0x47 & RXb_M1=0xF & RXb_X2 & RXb_B2 & RXb_D2
+:B dxb_RXb_D2_RXb_X2_RXb_B2 is RXb_OP=0x47 & RXb_M1=0xF & RXb_X2 & RXb_B2 & RXb_D2 & dxb_RXb_D2_RXb_X2_RXb_B2
 {
     local ea:8;
     ea_D12(ea, RXb_B2, RXb_X2, RXb_D2);
@@ -381,7 +386,7 @@ attach variables [ RIEd_R3c ] [ r1 r1 r3 r3 r5 r5 r7 r7 r9 r9 r11 r11 r13 r13 r1
 # result is nonzero. Condition code unchanged.
 # ---------------------------------------------------------------------------
 
-:bct "bct " RXa_R1 "," RXa_D2 "(" RXa_X2 "," RXa_B2 ")" is RXa_OP=0x46 & RXa_R1 & RXa_X2 & RXa_B2 & RXa_D2
+:BCT RXa_R1 "," dxb_RXa_D2_RXa_X2_RXa_B2 is RXa_OP=0x46 & RXa_R1 & RXa_X2 & RXa_B2 & RXa_D2 & dxb_RXa_D2_RXa_X2_RXa_B2
 {
     local ea:8;
     local cnt:8;
@@ -399,7 +404,12 @@ attach variables [ RIEd_R3c ] [ r1 r1 r3 r3 r5 r5 r7 r7 r9 r9 r11 r11 r13 r13 r1
 # existed yet). Full 64-bit subtract-1; branch iff result nonzero.
 # ---------------------------------------------------------------------------
 
-:bctg "bctg " RXYc_R1 "," RXYc_DXL2 "(" RXYc_X2 "," RXYc_B2 ")" is RXYc_OP=0xE3 & RXYc_OP2=0x46 & RXYc_R1 & RXYc_X2 & RXYc_B2 & RXYc_DXL2 & RXYc_DXH2
+# display-only address operand (tools/fix_display.py)
+dxb_RXYc_DXL2_RXYc_X2_RXYc_B2: dispRXYc_DXL2 is RXYc_DXL2 & RXYc_DXH2 & RXYc_X2=0 & RXYc_B2=0 [ dispRXYc_DXL2 = ((RXYc_DXH2 << 12) | RXYc_DXL2) - (((RXYc_DXH2 >> 7) & 1) << 20); ] { }
+dxb_RXYc_DXL2_RXYc_X2_RXYc_B2: dispRXYc_DXL2(RXYc_B2) is RXYc_DXL2 & RXYc_DXH2 & RXYc_X2=0 & RXYc_B2 [ dispRXYc_DXL2 = ((RXYc_DXH2 << 12) | RXYc_DXL2) - (((RXYc_DXH2 >> 7) & 1) << 20); ] { }
+dxb_RXYc_DXL2_RXYc_X2_RXYc_B2: dispRXYc_DXL2(RXYc_X2,0) is RXYc_DXL2 & RXYc_DXH2 & RXYc_X2 & RXYc_B2=0 [ dispRXYc_DXL2 = ((RXYc_DXH2 << 12) | RXYc_DXL2) - (((RXYc_DXH2 >> 7) & 1) << 20); ] { }
+dxb_RXYc_DXL2_RXYc_X2_RXYc_B2: dispRXYc_DXL2(RXYc_X2,RXYc_B2) is RXYc_DXL2 & RXYc_DXH2 & RXYc_X2 & RXYc_B2 [ dispRXYc_DXL2 = ((RXYc_DXH2 << 12) | RXYc_DXL2) - (((RXYc_DXH2 >> 7) & 1) << 20); ] { }
+:BCTG RXYc_R1 "," dxb_RXYc_DXL2_RXYc_X2_RXYc_B2 is RXYc_OP=0xE3 & RXYc_OP2=0x46 & RXYc_R1 & RXYc_X2 & RXYc_B2 & RXYc_DXL2 & RXYc_DXH2 & dxb_RXYc_DXL2_RXYc_X2_RXYc_B2
 {
     local ea:8;
     ea_D20(ea, RXYc_B2, RXYc_X2, RXYc_DXH2, RXYc_DXL2);
@@ -417,7 +427,7 @@ attach variables [ RIEd_R3c ] [ r1 r1 r3 r3 r5 r5 r7 r7 r9 r9 r11 r11 r13 r13 r1
 # Two constructors: :bctr for R2 field != 0, :bctr_nobr for R2 field = 0.
 # ---------------------------------------------------------------------------
 
-:bctr "bctr " RRd_R1 "," RRd_R2 is RRd_OP=0x06 & RRd_R1 & RRd_R2 & RRd_R2n != 0
+:BCTR RRd_R1 "," RRd_R2 is RRd_OP=0x06 & RRd_R1 & RRd_R2 & RRd_R2n != 0
 {
     # RRd_R2n is the numeric shadow of the R2 field; R2 field != 0 here.
     local cnt:8;
@@ -428,7 +438,7 @@ attach variables [ RIEd_R3c ] [ r1 r1 r3 r3 r5 r5 r7 r7 r9 r9 r11 r11 r13 r13 r1
     <bctr_skip>
 }
 
-:bctr_nobr "bctr " RRd_R1 "," RRd_R2 is RRd_OP=0x06 & RRd_R1 & RRd_R2 & RRd_R2n=0
+:BCTR RRd_R1 "," RRd_R2 is RRd_OP=0x06 & RRd_R1 & RRd_R2 & RRd_R2n=0
 {
     # R2 field = 0: count without branching (PoP 7-41, note 4).
     local cnt:8;
@@ -441,7 +451,7 @@ attach variables [ RIEd_R3c ] [ r1 r1 r3 r3 r5 r5 r7 r7 r9 r9 r11 r11 r13 r13 r1
 # PoP 7-41. Opcode 0xB9/0x46. Same R2-field-zero split as BCTR.
 # ---------------------------------------------------------------------------
 
-:bctgr "bctgr " RREd_R1 "," RREd_R2 is RREd_OP=0xB946 & RREd_IGN & RREd_R1 & RREd_R2 & RREd_R2n != 0
+:BCTGR RREd_R1 "," RREd_R2 is RREd_OP=0xB946 & RREd_IGN & RREd_R1 & RREd_R2 & RREd_R2n != 0
 {
     # R2 field != 0: decrement, branch to R2 iff result nonzero.
     RREd_R1 = RREd_R1 - 1;
@@ -450,7 +460,7 @@ attach variables [ RIEd_R3c ] [ r1 r1 r3 r3 r5 r5 r7 r7 r9 r9 r11 r11 r13 r13 r1
     <bctgr_skip>
 }
 
-:bctgr_nobr "bctgr " RREd_R1 "," RREd_R2 is RREd_OP=0xB946 & RREd_IGN & RREd_R1 & RREd_R2 & RREd_R2n=0
+:BCTGR RREd_R1 "," RREd_R2 is RREd_OP=0xB946 & RREd_IGN & RREd_R1 & RREd_R2 & RREd_R2n=0
 {
     # R2 field = 0: count without branching (PoP 7-41, note 4).
     RREd_R1 = RREd_R1 - 1;
@@ -476,7 +486,7 @@ RSId_Target: RSId_TargetLoc is RSId_TargetLoc { export *:8 RSId_TargetLoc; }
 RIEd_TargetLoc: tgt is RIEd_RI2 [ tgt = inst_start + RIEd_RI2 * 2; ] { export *[const]:8 tgt; }
 RIEd_Target: RIEd_TargetLoc is RIEd_TargetLoc { export *:8 RIEd_TargetLoc; }
 
-:brct "brct " RIb_R1 "," RIb_Target is RIb_OP=0xA7 & RIb_OP2=0x6 & RIb_R1 & RIb_Target
+:BRCT RIb_R1 "," RIb_Target is RIb_OP=0xA7 & RIb_OP2=0x6 & RIb_R1 & RIb_Target
 {
     local cnt:8;
     cnt = (RIb_R1 - 1) & 0xffffffff;
@@ -484,7 +494,7 @@ RIEd_Target: RIEd_TargetLoc is RIEd_TargetLoc { export *:8 RIEd_TargetLoc; }
     if (cnt != 0) goto RIb_Target;
 }
 
-:brctg "brctg " RIb_R1 "," RIb_Target is RIb_OP=0xA7 & RIb_OP2=0x7 & RIb_R1 & RIb_Target
+:BRCTG RIb_R1 "," RIb_Target is RIb_OP=0xA7 & RIb_OP2=0x7 & RIb_R1 & RIb_Target
 {
     RIb_R1 = RIb_R1 - 1;
     if (RIb_R1 != 0) goto RIb_Target;
@@ -502,7 +512,10 @@ RIEd_Target: RIEd_TargetLoc is RIEd_TargetLoc { export *:8 RIEd_TargetLoc; }
 # a local before the write-back).
 # ---------------------------------------------------------------------------
 
-:bxh "bxh " RSd_R1 "," RSd_R3 "," RSd_D2 "(" RSd_B2 ")" is RSd_OP=0x86 & RSd_R1 & RSd_R3 & RSd_R3c & RSd_B2 & RSd_D2
+# display-only address operand (tools/fix_display.py)
+db_RSd_D2_RSd_B2: RSd_D2 is RSd_D2 & RSd_B2=0  { }
+db_RSd_D2_RSd_B2: RSd_D2(RSd_B2) is RSd_D2 & RSd_B2  { }
+:BXH RSd_R1 "," RSd_R3 "," db_RSd_D2_RSd_B2 is RSd_OP=0x86 & RSd_R1 & RSd_R3 & RSd_R3c & RSd_B2 & RSd_D2 & db_RSd_D2_RSd_B2
 {
     local ea:8;
     local inc:8;
@@ -518,7 +531,7 @@ RIEd_Target: RIEd_TargetLoc is RIEd_TargetLoc { export *:8 RIEd_TargetLoc; }
     <bxh_skip>
 }
 
-:bxle "bxle " RSd_R1 "," RSd_R3 "," RSd_D2 "(" RSd_B2 ")" is RSd_OP=0x87 & RSd_R1 & RSd_R3 & RSd_R3c & RSd_B2 & RSd_D2
+:BXLE RSd_R1 "," RSd_R3 "," db_RSd_D2_RSd_B2 is RSd_OP=0x87 & RSd_R1 & RSd_R3 & RSd_R3c & RSd_B2 & RSd_D2 & db_RSd_D2_RSd_B2
 {
     local ea:8;
     local inc:8;
@@ -540,7 +553,10 @@ RIEd_Target: RIEd_TargetLoc is RIEd_TargetLoc { export *:8 RIEd_TargetLoc; }
 # 64-bit operands and a 20-bit displacement EA.
 # ---------------------------------------------------------------------------
 
-:bxhg "bxhg " RSYd_R1 "," RSYd_R3 "," RSYd_DL2 "(" RSYd_B2 ")" is RSYd_OP=0xEB & RSYd_OP2=0x44 & RSYd_R1 & RSYd_R3 & RSYd_R3c & RSYd_B2 & RSYd_DL2 & RSYd_DH2
+# display-only address operand (tools/fix_display.py)
+db_RSYd_DL2_RSYd_B2: dispRSYd_DL2 is RSYd_DL2 & RSYd_DH2 & RSYd_B2=0 [ dispRSYd_DL2 = ((RSYd_DH2 << 12) | RSYd_DL2) - (((RSYd_DH2 >> 7) & 1) << 20); ] { }
+db_RSYd_DL2_RSYd_B2: dispRSYd_DL2(RSYd_B2) is RSYd_DL2 & RSYd_DH2 & RSYd_B2 [ dispRSYd_DL2 = ((RSYd_DH2 << 12) | RSYd_DL2) - (((RSYd_DH2 >> 7) & 1) << 20); ] { }
+:BXHG RSYd_R1 "," RSYd_R3 "," db_RSYd_DL2_RSYd_B2 is RSYd_OP=0xEB & RSYd_OP2=0x44 & RSYd_R1 & RSYd_R3 & RSYd_R3c & RSYd_B2 & RSYd_DL2 & RSYd_DH2 & db_RSYd_DL2_RSYd_B2
 {
     local ea:8;
     local inc:8;
@@ -554,7 +570,7 @@ RIEd_Target: RIEd_TargetLoc is RIEd_TargetLoc { export *:8 RIEd_TargetLoc; }
     <bxhg_skip>
 }
 
-:bxleg "bxleg " RSYd_R1 "," RSYd_R3 "," RSYd_DL2 "(" RSYd_B2 ")" is RSYd_OP=0xEB & RSYd_OP2=0x45 & RSYd_R1 & RSYd_R3 & RSYd_R3c & RSYd_B2 & RSYd_DL2 & RSYd_DH2
+:BXLEG RSYd_R1 "," RSYd_R3 "," db_RSYd_DL2_RSYd_B2 is RSYd_OP=0xEB & RSYd_OP2=0x45 & RSYd_R1 & RSYd_R3 & RSYd_R3c & RSYd_B2 & RSYd_DL2 & RSYd_DH2 & db_RSYd_DL2_RSYd_B2
 {
     local ea:8;
     local inc:8;
@@ -574,7 +590,7 @@ RIEd_Target: RIEd_TargetLoc is RIEd_TargetLoc { export *:8 RIEd_TargetLoc; }
 # target is inst_addr + 2*I2 (signed halfword count) via rel_RI16.
 # ---------------------------------------------------------------------------
 
-:brxh "brxh " RSId_R1 "," RSId_R3 "," RSId_Target is RSId_OP=0x84 & RSId_R1 & RSId_R3 & RSId_R3c & RSId_Target
+:BRXH RSId_R1 "," RSId_R3 "," RSId_Target is RSId_OP=0x84 & RSId_R1 & RSId_R3 & RSId_R3c & RSId_Target
 {
     local inc:8;
     local cmp:8;
@@ -586,7 +602,7 @@ RIEd_Target: RIEd_TargetLoc is RIEd_TargetLoc { export *:8 RIEd_TargetLoc; }
     if (sum s> cmp) goto RSId_Target;
 }
 
-:brxle "brxle " RSId_R1 "," RSId_R3 "," RSId_Target is RSId_OP=0x85 & RSId_R1 & RSId_R3 & RSId_R3c & RSId_Target
+:BRXLE RSId_R1 "," RSId_R3 "," RSId_Target is RSId_OP=0x85 & RSId_R1 & RSId_R3 & RSId_R3c & RSId_Target
 {
     local inc:8;
     local cmp:8;
@@ -604,7 +620,7 @@ RIEd_Target: RIEd_TargetLoc is RIEd_TargetLoc { export *:8 RIEd_TargetLoc; }
 # BXHG/BXLEG; the target is inst_addr + 2*RI2 via rel_RI16.
 # ---------------------------------------------------------------------------
 
-:brxhg "brxhg " RIEd_R1 "," RIEd_R3 "," RIEd_Target is RIEd_OP=0xEC & RIEd_OP2=0x44 & RIEd_R1 & RIEd_R3 & RIEd_R3c & RIEd_Target & RIEd_IGN
+:BRXHG RIEd_R1 "," RIEd_R3 "," RIEd_Target is RIEd_OP=0xEC & RIEd_OP2=0x44 & RIEd_R1 & RIEd_R3 & RIEd_R3c & RIEd_Target & RIEd_IGN
 {
     local inc:8;
     local cmp:8;
@@ -614,7 +630,7 @@ RIEd_Target: RIEd_TargetLoc is RIEd_TargetLoc { export *:8 RIEd_TargetLoc; }
     if (RIEd_R1 s> cmp) goto RIEd_Target;
 }
 
-:brxlg "brxlg " RIEd_R1 "," RIEd_R3 "," RIEd_Target is RIEd_OP=0xEC & RIEd_OP2=0x45 & RIEd_R1 & RIEd_R3 & RIEd_R3c & RIEd_Target & RIEd_IGN
+:BRXLG RIEd_R1 "," RIEd_R3 "," RIEd_Target is RIEd_OP=0xEC & RIEd_OP2=0x45 & RIEd_R1 & RIEd_R3 & RIEd_R3c & RIEd_Target & RIEd_IGN
 {
     local inc:8;
     local cmp:8;

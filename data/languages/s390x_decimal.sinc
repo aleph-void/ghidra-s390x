@@ -340,7 +340,13 @@ macro ed_digit(ea2, sb, ul, d, hs, sgn, sb2, ul2) {
 
 # AP: ADD DECIMAL. op1 = op1 + op2 (packed). CC: 0=zero, 1=negative,
 # 2=positive, 3=overflow.
-:AP "AP " SSb_D1 "(" SSb_L1 "," SSb_B1 ")," SSb_D2 "(" SSb_L2 "," SSb_B2 ")" is SSb_OP=0xFA & SSb_L1 & SSb_L2 & SSb_B1 & SSb_D1 & SSb_B2 & SSb_D2
+# display-only address operand (tools/fix_display.py)
+dlb_SSb_D1_SSb_L1_SSb_B1: SSb_D1(lenSSb_L1,0) is SSb_D1 & SSb_L1 & SSb_B1=0 [  lenSSb_L1 = SSb_L1 + 1; ] { }
+dlb_SSb_D1_SSb_L1_SSb_B1: SSb_D1(lenSSb_L1,SSb_B1) is SSb_D1 & SSb_L1 & SSb_B1 [  lenSSb_L1 = SSb_L1 + 1; ] { }
+# display-only address operand (tools/fix_display.py)
+dlb_SSb_D2_SSb_L2_SSb_B2: SSb_D2(lenSSb_L2,0) is SSb_D2 & SSb_L2 & SSb_B2=0 [  lenSSb_L2 = SSb_L2 + 1; ] { }
+dlb_SSb_D2_SSb_L2_SSb_B2: SSb_D2(lenSSb_L2,SSb_B2) is SSb_D2 & SSb_L2 & SSb_B2 [  lenSSb_L2 = SSb_L2 + 1; ] { }
+:AP dlb_SSb_D1_SSb_L1_SSb_B1 "," dlb_SSb_D2_SSb_L2_SSb_B2 is SSb_OP=0xFA & SSb_L1 & SSb_L2 & SSb_B1 & SSb_D1 & SSb_B2 & SSb_D2 & dlb_SSb_D1_SSb_L1_SSb_B1 & dlb_SSb_D2_SSb_L2_SSb_B2
 {
     local ea1:8; local ea2:8;
     local n1:8; local n2:8;
@@ -363,7 +369,7 @@ macro ed_digit(ea2, sb, ul, d, hs, sgn, sb2, ul2) {
 }
 
 # SP: SUBTRACT DECIMAL. op1 = op1 - op2 (packed). CC as AP.
-:SP "SP " SSb_D1 "(" SSb_L1 "," SSb_B1 ")," SSb_D2 "(" SSb_L2 "," SSb_B2 ")" is SSb_OP=0xFB & SSb_L1 & SSb_L2 & SSb_B1 & SSb_D1 & SSb_B2 & SSb_D2
+:SP dlb_SSb_D1_SSb_L1_SSb_B1 "," dlb_SSb_D2_SSb_L2_SSb_B2 is SSb_OP=0xFB & SSb_L1 & SSb_L2 & SSb_B1 & SSb_D1 & SSb_B2 & SSb_D2 & dlb_SSb_D1_SSb_L1_SSb_B1 & dlb_SSb_D2_SSb_L2_SSb_B2
 {
     local ea1:8; local ea2:8;
     local n1:8; local n2:8;
@@ -388,7 +394,7 @@ macro ed_digit(ea2, sb, ul, d, hs, sgn, sb2, ul2) {
 # ZAP: ZERO AND ADD. op1 = op2 (packed move, right-aligned, zero-extended).
 # Result sign = source sign; a zero result is forced positive. CC: 0=zero,
 # 1=negative, 2=positive, 3=overflow (nonzero source digits beyond op1).
-:ZAP "ZAP " SSb_D1 "(" SSb_L1 "," SSb_B1 ")," SSb_D2 "(" SSb_L2 "," SSb_B2 ")" is SSb_OP=0xF8 & SSb_L1 & SSb_L2 & SSb_B1 & SSb_D1 & SSb_B2 & SSb_D2
+:ZAP dlb_SSb_D1_SSb_L1_SSb_B1 "," dlb_SSb_D2_SSb_L2_SSb_B2 is SSb_OP=0xF8 & SSb_L1 & SSb_L2 & SSb_B1 & SSb_D1 & SSb_B2 & SSb_D2 & dlb_SSb_D1_SSb_L1_SSb_B1 & dlb_SSb_D2_SSb_L2_SSb_B2
 {
     local ea1:8; local ea2:8;
     local n1:8; local n2:8;
@@ -434,7 +440,7 @@ macro ed_digit(ea2, sb, ul, d, hs, sgn, sb2, ul2) {
 
 # CP: COMPARE DECIMAL. Compare packed op1 vs op2. CC: 0=equal, 1=op1 low,
 # 2=op1 high. Operands are not stored.
-:CP "CP " SSb_D1 "(" SSb_L1 "," SSb_B1 ")," SSb_D2 "(" SSb_L2 "," SSb_B2 ")" is SSb_OP=0xF9 & SSb_L1 & SSb_L2 & SSb_B1 & SSb_D1 & SSb_B2 & SSb_D2
+:CP dlb_SSb_D1_SSb_L1_SSb_B1 "," dlb_SSb_D2_SSb_L2_SSb_B2 is SSb_OP=0xF9 & SSb_L1 & SSb_L2 & SSb_B1 & SSb_D1 & SSb_B2 & SSb_D2 & dlb_SSb_D1_SSb_L1_SSb_B1 & dlb_SSb_D2_SSb_L2_SSb_B2
 {
     local ea1:8; local ea2:8;
     local n1:8; local n2:8;
@@ -493,7 +499,13 @@ macro ed_digit(ea2, sb, ul, d, hs, sgn, sb2, ul2) {
 # Right shifts round: I3 is added at the highest shifted-out digit position.
 # Zeros fill vacated positions. CC: 0=zero, 1=negative, 2=positive,
 # 3=overflow (nonzero digits shifted out to the left).
-:SRP "SRP " SSc_D1 "(" SSc_L1 "," SSc_B1 ")," SSc_D2 "(" SSc_B2 ")," SSc_I3 is SSc_OP=0xF0 & SSc_L1 & SSc_I3 & SSc_B1 & SSc_D1 & SSc_B2 & SSc_D2
+# display-only address operand (tools/fix_display.py)
+dlb_SSc_D1_SSc_L1_SSc_B1: SSc_D1(lenSSc_L1,0) is SSc_D1 & SSc_L1 & SSc_B1=0 [  lenSSc_L1 = SSc_L1 + 1; ] { }
+dlb_SSc_D1_SSc_L1_SSc_B1: SSc_D1(lenSSc_L1,SSc_B1) is SSc_D1 & SSc_L1 & SSc_B1 [  lenSSc_L1 = SSc_L1 + 1; ] { }
+# display-only address operand (tools/fix_display.py)
+db_SSc_D2_SSc_B2: SSc_D2 is SSc_D2 & SSc_B2=0  { }
+db_SSc_D2_SSc_B2: SSc_D2(SSc_B2) is SSc_D2 & SSc_B2  { }
+:SRP dlb_SSc_D1_SSc_L1_SSc_B1 "," db_SSc_D2_SSc_B2 "," SSc_I3 is SSc_OP=0xF0 & SSc_L1 & SSc_I3 & SSc_B1 & SSc_D1 & SSc_B2 & SSc_D2 & dlb_SSc_D1_SSc_L1_SSc_B1 & db_SSc_D2_SSc_B2
 {
     local ea1:8; local ea2:8;
     local n1:8; local nd1:8; local nd1p:8;
@@ -618,7 +630,7 @@ macro ed_digit(ea2, sb, ul, d, hs, sgn, sb2, ul2) {
 # CC is UNCHANGED (PoP). The L2<=7 / L2<L1 specification check and the
 # "n2 leading zero bytes" data exception are not enforced (TODO); a product
 # that does not fit the field is truncated.
-:MP "MP " SSb_D1 "(" SSb_L1 "," SSb_B1 ")," SSb_D2 "(" SSb_L2 "," SSb_B2 ")" is SSb_OP=0xFC & SSb_L1 & SSb_L2 & SSb_B1 & SSb_D1 & SSb_B2 & SSb_D2
+:MP dlb_SSb_D1_SSb_L1_SSb_B1 "," dlb_SSb_D2_SSb_L2_SSb_B2 is SSb_OP=0xFC & SSb_L1 & SSb_L2 & SSb_B1 & SSb_D1 & SSb_B2 & SSb_D2 & dlb_SSb_D1_SSb_L1_SSb_B1 & dlb_SSb_D2_SSb_L2_SSb_B2
 {
     local ea1:8; local ea2:8;
     local n1:8; local n2:8; local nd1:8; local nd2:8;
@@ -691,7 +703,7 @@ macro ed_digit(ea2, sb, ul, d, hs, sgn, sb2, ul2) {
 # sign follows the dividend. CC is UNCHANGED (PoP). Divide-by-zero,
 # quotient-too-large and the L2<L1 specification check are TODO (the
 # operation is skipped gracefully when detected).
-:DP "DP " SSb_D1 "(" SSb_L1 "," SSb_B1 ")," SSb_D2 "(" SSb_L2 "," SSb_B2 ")" is SSb_OP=0xFD & SSb_L1 & SSb_L2 & SSb_B1 & SSb_D1 & SSb_B2 & SSb_D2
+:DP dlb_SSb_D1_SSb_L1_SSb_B1 "," dlb_SSb_D2_SSb_L2_SSb_B2 is SSb_OP=0xFD & SSb_L1 & SSb_L2 & SSb_B1 & SSb_D1 & SSb_B2 & SSb_D2 & dlb_SSb_D1_SSb_L1_SSb_B1 & dlb_SSb_D2_SSb_L2_SSb_B2
 {
     local ea1:8; local ea2:8;
     local n1:8; local n2:8; local nq:8; local nr:8;
@@ -793,7 +805,7 @@ macro ed_digit(ea2, sb, ul, d, hs, sgn, sb2, ul2) {
 # PACK: second operand (zoned) -> packed at first operand. Each source byte's
 # low nibble becomes a packed digit; the sign comes from the HIGH (zone)
 # nibble of the rightmost source byte (PoP). CC unchanged.
-:PACK "PACK " SSb_D1 "(" SSb_L1 "," SSb_B1 ")," SSb_D2 "(" SSb_L2 "," SSb_B2 ")" is SSb_OP=0xF2 & SSb_L1 & SSb_L2 & SSb_B1 & SSb_D1 & SSb_B2 & SSb_D2
+:PACK dlb_SSb_D1_SSb_L1_SSb_B1 "," dlb_SSb_D2_SSb_L2_SSb_B2 is SSb_OP=0xF2 & SSb_L1 & SSb_L2 & SSb_B1 & SSb_D1 & SSb_B2 & SSb_D2 & dlb_SSb_D1_SSb_L1_SSb_B1 & dlb_SSb_D2_SSb_L2_SSb_B2
 {
     local ea1:8; local ea2:8;
     local n1:8; local n2:8;
@@ -833,7 +845,7 @@ macro ed_digit(ea2, sb, ul, d, hs, sgn, sb2, ul2) {
 # UNPK: UNPACK. Packed second operand -> zoned at first operand. Each packed
 # digit becomes a byte; the zone is 0xF for every byte except the rightmost,
 # whose zone receives the packed sign (PoP). CC unchanged.
-:UNPK "UNPK " SSb_D1 "(" SSb_L1 "," SSb_B1 ")," SSb_D2 "(" SSb_L2 "," SSb_B2 ")" is SSb_OP=0xF3 & SSb_L1 & SSb_L2 & SSb_B1 & SSb_D1 & SSb_B2 & SSb_D2
+:UNPK dlb_SSb_D1_SSb_L1_SSb_B1 "," dlb_SSb_D2_SSb_L2_SSb_B2 is SSb_OP=0xF3 & SSb_L1 & SSb_L2 & SSb_B1 & SSb_D1 & SSb_B2 & SSb_D2 & dlb_SSb_D1_SSb_L1_SSb_B1 & dlb_SSb_D2_SSb_L2_SSb_B2
 {
     local ea1:8; local ea2:8;
     local n1:8; local n2:8;
@@ -868,7 +880,7 @@ macro ed_digit(ea2, sb, ul, d, hs, sgn, sb2, ul2) {
 # MVO: MOVE WITH OFFSET. The second operand's nibbles are placed at the first
 # operand starting one nibble left of the rightmost (nibble 0 of the first
 # operand is unchanged, as are nibbles beyond the moved field). CC unchanged.
-:MVO "MVO " SSb_D1 "(" SSb_L1 "," SSb_B1 ")," SSb_D2 "(" SSb_L2 "," SSb_B2 ")" is SSb_OP=0xF1 & SSb_L1 & SSb_L2 & SSb_B1 & SSb_D1 & SSb_B2 & SSb_D2
+:MVO dlb_SSb_D1_SSb_L1_SSb_B1 "," dlb_SSb_D2_SSb_L2_SSb_B2 is SSb_OP=0xF1 & SSb_L1 & SSb_L2 & SSb_B1 & SSb_D1 & SSb_B2 & SSb_D2 & dlb_SSb_D1_SSb_L1_SSb_B1 & dlb_SSb_D2_SSb_L2_SSb_B2
 {
     local ea1:8; local ea2:8;
     local n1:8; local n2:8;
@@ -897,7 +909,13 @@ macro ed_digit(ea2, sb, ul, d, hs, sgn, sb2, ul2) {
 # PKA: PACK ASCII. The L2+1-byte ASCII second operand (low nibble = digit) is
 # packed into the 16-byte first operand; the sign is forced to positive
 # (0xC). The source is logically left-extended with zeros. CC unchanged.
-:PKA "PKA " SSf_D1 "(" SSf_B1 ")," SSf_D2 "(" SSf_L2 "," SSf_B2 ")" is SSf_OP=0xE9 & SSf_L2 & SSf_B1 & SSf_D1 & SSf_B2 & SSf_D2
+# display-only address operand (tools/fix_display.py)
+db_SSf_D1_SSf_B1: SSf_D1 is SSf_D1 & SSf_B1=0  { }
+db_SSf_D1_SSf_B1: SSf_D1(SSf_B1) is SSf_D1 & SSf_B1  { }
+# display-only address operand (tools/fix_display.py)
+dlb_SSf_D2_SSf_L2_SSf_B2: SSf_D2(lenSSf_L2,0) is SSf_D2 & SSf_L2 & SSf_B2=0 [  lenSSf_L2 = SSf_L2 + 1; ] { }
+dlb_SSf_D2_SSf_L2_SSf_B2: SSf_D2(lenSSf_L2,SSf_B2) is SSf_D2 & SSf_L2 & SSf_B2 [  lenSSf_L2 = SSf_L2 + 1; ] { }
+:PKA db_SSf_D1_SSf_B1 "," dlb_SSf_D2_SSf_L2_SSf_B2 is SSf_OP=0xE9 & SSf_L2 & SSf_B1 & SSf_D1 & SSf_B2 & SSf_D2 & db_SSf_D1_SSf_B1 & dlb_SSf_D2_SSf_L2_SSf_B2
 {
     local ea1:8; local ea2:8;
     local n1:8; local n2:8;
@@ -927,7 +945,7 @@ macro ed_digit(ea2, sb, ul, d, hs, sgn, sb2, ul2) {
 # PKU: PACK UNICODE. Like PKA but the second operand holds 2-byte big-endian
 # characters (length L2+1 must be even); the low byte's low nibble is the
 # digit. Sign forced positive. CC unchanged.
-:PKU "PKU " SSf_D1 "(" SSf_B1 ")," SSf_D2 "(" SSf_L2 "," SSf_B2 ")" is SSf_OP=0xE1 & SSf_L2 & SSf_B1 & SSf_D1 & SSf_B2 & SSf_D2
+:PKU db_SSf_D1_SSf_B1 "," dlb_SSf_D2_SSf_L2_SSf_B2 is SSf_OP=0xE1 & SSf_L2 & SSf_B1 & SSf_D1 & SSf_B2 & SSf_D2 & db_SSf_D1_SSf_B1 & dlb_SSf_D2_SSf_L2_SSf_B2
 {
     local ea1:8; local ea2:8;
     local n1:8; local n2:8; local nc:8;
@@ -966,7 +984,7 @@ macro ed_digit(ea2, sb, ul, d, hs, sgn, sb2, ul2) {
 # byte copied when significant, else replaced by fill. Source digits get zone
 # 0xF. CC: 0 = last field zero/empty, 1 = negative, 2 = positive.
 # The significance state and "field was nonzero" are carried in locals.
-:ED "ED " SSa_D1 "(" SSa_L "," SSa_B1 ")," SSa_D2 "(" SSa_B2 ")" is SSa_OP=0xDE & SSa_L & SSa_B1 & SSa_D1 & SSa_B2 & SSa_D2
+:ED dlb_SSa_D1_SSa_L_SSa_B1 "," db_SSa_D2_SSa_B2 is SSa_OP=0xDE & SSa_L & SSa_B1 & SSa_D1 & SSa_B2 & SSa_D2 & dlb_SSa_D1_SSa_L_SSa_B1 & db_SSa_D2_SSa_B2
 {
     local ea1:8; local ea2:8;
     local n:8;
@@ -1035,7 +1053,7 @@ macro ed_digit(ea2, sb, ul, d, hs, sgn, sb2, ul2) {
 
 # EDMK: EDIT AND MARK. Like ED, but the address of the first significant
 # result byte is also placed in general register 1.
-:EDMK "EDMK " SSa_D1 "(" SSa_L "," SSa_B1 ")," SSa_D2 "(" SSa_B2 ")" is SSa_OP=0xDF & SSa_L & SSa_B1 & SSa_D1 & SSa_B2 & SSa_D2
+:EDMK dlb_SSa_D1_SSa_L_SSa_B1 "," db_SSa_D2_SSa_B2 is SSa_OP=0xDF & SSa_L & SSa_B1 & SSa_D1 & SSa_B2 & SSa_D2 & dlb_SSa_D1_SSa_L_SSa_B1 & db_SSa_D2_SSa_B2
 {
     local ea1:8; local ea2:8;
     local n:8;
@@ -1103,7 +1121,7 @@ macro ed_digit(ea2, sb, ul, d, hs, sgn, sb2, ul2) {
 # ---------------------------------------------------------------------------
 
 # TR: TRANSLATE. dest[i] = table[src[i]] for i in 0..L. CC unchanged.
-:TR "TR " SSa_D1 "(" SSa_L "," SSa_B1 ")," SSa_D2 "(" SSa_B2 ")" is SSa_OP=0xDC & SSa_L & SSa_B1 & SSa_D1 & SSa_B2 & SSa_D2
+:TR dlb_SSa_D1_SSa_L_SSa_B1 "," db_SSa_D2_SSa_B2 is SSa_OP=0xDC & SSa_L & SSa_B1 & SSa_D1 & SSa_B2 & SSa_D2 & dlb_SSa_D1_SSa_L_SSa_B1 & db_SSa_D2_SSa_B2
 {
     local ea1:8; local ea2:8;
     local n:8; local i:8;
@@ -1125,7 +1143,7 @@ macro ed_digit(ea2, sb, ul, d, hs, sgn, sb2, ul2) {
 # TRT: TRANSLATE AND TEST. Scan dest left-to-right; t = table[byte]; on the
 # first nonzero t: R1 = address of that byte, R2.low = t, CC = 1 (bytes
 # remain) or 2 (last byte). No nonzero found: CC = 0.
-:TRT "TRT " SSa_D1 "(" SSa_L "," SSa_B1 ")," SSa_D2 "(" SSa_B2 ")" is SSa_OP=0xDD & SSa_L & SSa_B1 & SSa_D1 & SSa_B2 & SSa_D2
+:TRT dlb_SSa_D1_SSa_L_SSa_B1 "," db_SSa_D2_SSa_B2 is SSa_OP=0xDD & SSa_L & SSa_B1 & SSa_D1 & SSa_B2 & SSa_D2 & dlb_SSa_D1_SSa_L_SSa_B1 & db_SSa_D2_SSa_B2
 {
     local ea1:8; local ea2:8;
     local n:8; local i:8; local last:8;
@@ -1154,7 +1172,7 @@ macro ed_digit(ea2, sb, ul, d, hs, sgn, sb2, ul2) {
 
 # TRTR: TRANSLATE AND TEST REVERSE. Like TRT but the first-operand address
 # designates the RIGHTMOST byte and the scan goes right-to-left.
-:TRTR "TRTR " SSa_D1 "(" SSa_L "," SSa_B1 ")," SSa_D2 "(" SSa_B2 ")" is SSa_OP=0xD0 & SSa_L & SSa_B1 & SSa_D1 & SSa_B2 & SSa_D2
+:TRTR dlb_SSa_D1_SSa_L_SSa_B1 "," db_SSa_D2_SSa_B2 is SSa_OP=0xD0 & SSa_L & SSa_B1 & SSa_D1 & SSa_B2 & SSa_D2 & dlb_SSa_D1_SSa_L_SSa_B1 & db_SSa_D2_SSa_B2
 {
     local ea1:8; local ea2:8;
     local n:8; local i:8;
@@ -1182,7 +1200,7 @@ macro ed_digit(ea2, sb, ul, d, hs, sgn, sb2, ul2) {
 
 # MVN: MOVE NUMERICS. dest[i].low-nibble = src[i].low-nibble; zone nibbles of
 # dest unchanged. CC unchanged.
-:MVN "MVN " SSa_D1 "(" SSa_L "," SSa_B1 ")," SSa_D2 "(" SSa_B2 ")" is SSa_OP=0xD1 & SSa_L & SSa_B1 & SSa_D1 & SSa_B2 & SSa_D2
+:MVN dlb_SSa_D1_SSa_L_SSa_B1 "," db_SSa_D2_SSa_B2 is SSa_OP=0xD1 & SSa_L & SSa_B1 & SSa_D1 & SSa_B2 & SSa_D2 & dlb_SSa_D1_SSa_L_SSa_B1 & db_SSa_D2_SSa_B2
 {
     local ea1:8; local ea2:8;
     local n:8; local i:8;
@@ -1203,7 +1221,7 @@ macro ed_digit(ea2, sb, ul, d, hs, sgn, sb2, ul2) {
 
 # MVZ: MOVE ZONES. dest[i].high-nibble = src[i].high-nibble; numeric nibbles
 # of dest unchanged. CC unchanged.
-:MVZ "MVZ " SSa_D1 "(" SSa_L "," SSa_B1 ")," SSa_D2 "(" SSa_B2 ")" is SSa_OP=0xD3 & SSa_L & SSa_B1 & SSa_D1 & SSa_B2 & SSa_D2
+:MVZ dlb_SSa_D1_SSa_L_SSa_B1 "," db_SSa_D2_SSa_B2 is SSa_OP=0xD3 & SSa_L & SSa_B1 & SSa_D1 & SSa_B2 & SSa_D2 & dlb_SSa_D1_SSa_L_SSa_B1 & db_SSa_D2_SSa_B2
 {
     local ea1:8; local ea2:8;
     local n:8; local i:8;
@@ -1226,7 +1244,7 @@ macro ed_digit(ea2, sb, ul, d, hs, sgn, sb2, ul2) {
 # (0x30|digit) at the first operand, processed right-to-left; the sign comes
 # from the low nibble of the last source byte used. Digits are not checked.
 # CC unchanged.
-:UNPKA "UNPKA " SSa_D1 "(" SSa_L "," SSa_B1 ")," SSa_D2 "(" SSa_B2 ")" is SSa_OP=0xEA & SSa_L & SSa_B1 & SSa_D1 & SSa_B2 & SSa_D2
+:UNPKA dlb_SSa_D1_SSa_L_SSa_B1 "," db_SSa_D2_SSa_B2 is SSa_OP=0xEA & SSa_L & SSa_B1 & SSa_D1 & SSa_B2 & SSa_D2 & dlb_SSa_D1_SSa_L_SSa_B1 & db_SSa_D2_SSa_B2
 {
     local ea1:8; local ea2:8;
     local n1:8; local ns:8;
@@ -1258,7 +1276,10 @@ macro ed_digit(ea2, sb, ul, d, hs, sgn, sb2, ul2) {
 # TP: TEST DECIMAL. Check the packed first operand for valid digit and sign
 # codes. CC: 0 = all valid; 1 = digits valid, sign invalid; 2 = a digit
 # invalid, sign valid; 3 = a digit invalid and sign invalid.
-:TP "TP " RSLa_D1 "(" RSLa_L1 "," RSLa_B1 ")" is RSLa_OP=0xEB & RSLa_L1 & RSLa_B1 & RSLa_D1 & RSLa_OP2=0xC0
+# display-only address operand (tools/fix_display.py)
+dlb_RSLa_D1_RSLa_L1_RSLa_B1: RSLa_D1(lenRSLa_L1,0) is RSLa_D1 & RSLa_L1 & RSLa_B1=0 [  lenRSLa_L1 = RSLa_L1 + 1; ] { }
+dlb_RSLa_D1_RSLa_L1_RSLa_B1: RSLa_D1(lenRSLa_L1,RSLa_B1) is RSLa_D1 & RSLa_L1 & RSLa_B1 [  lenRSLa_L1 = RSLa_L1 + 1; ] { }
+:TP dlb_RSLa_D1_RSLa_L1_RSLa_B1 is RSLa_OP=0xEB & RSLa_L1 & RSLa_B1 & RSLa_D1 & RSLa_OP2=0xC0 & dlb_RSLa_D1_RSLa_L1_RSLa_B1
 {
     local ea1:8;
     local n1:8; local nd1:8;
@@ -1296,7 +1317,7 @@ macro ed_digit(ea2, sb, ul, d, hs, sgn, sb2, ul2) {
 
 # MVST: MOVE STRING. Move bytes from (R2) to (R1) until the R0 terminator
 # byte is moved. R1/R2 are left pointing past the terminator. CC=1 complete.
-:MVST "MVST " RRE_R1 "," RRE_R2 is RRE_OP=0xB255 & RRE_R1 & RRE_R2
+:MVST RRE_R1 "," RRE_R2 is RRE_OP=0xB255 & RRE_R1 & RRE_R2
 {
     local ea1:8; local ea2:8;
     local term:8;
@@ -1334,7 +1355,7 @@ macro ed_digit(ea2, sb, ul, d, hs, sgn, sb2, ul2) {
 # terminator is found in either operand. The terminator participates as a
 # byte value. CC: 0=equal endings, 1=first low, 2=first high, 3=partial.
 # R1/R2 point at the deciding bytes on exit.
-:CLST "CLST " RRE_R1 "," RRE_R2 is RRE_OP=0xB25D & RRE_R1 & RRE_R2
+:CLST RRE_R1 "," RRE_R2 is RRE_OP=0xB25D & RRE_R1 & RRE_R2
 {
     local ea1:8; local ea2:8;
     local term:8;
@@ -1369,7 +1390,7 @@ macro ed_digit(ea2, sb, ul, d, hs, sgn, sb2, ul2) {
 
 # SRST: SEARCH STRING. Search [R1,R2) for the R0 character. Found: R1 =
 # address, CC=1. Not found: R1 = R2, CC=2. CC=3 on partial (bound hit).
-:SRST "SRST " RRE_R1 "," RRE_R2 is RRE_OP=0xB25E & RRE_R1 & RRE_R2
+:SRST RRE_R1 "," RRE_R2 is RRE_OP=0xB25E & RRE_R1 & RRE_R2
 {
     local ea1:8; local ea2:8;
     local ch:8;
@@ -1411,7 +1432,7 @@ macro ed_digit(ea2, sb, ul, d, hs, sgn, sb2, ul2) {
 # CC 0 = operand exhausted, 1 = test byte encountered. CPU partial
 # completion (CC=3) is approximated as run-to-completion. An odd R1 is a
 # specification exception (TODO: modeled as a no-op).
-:TRE "TRE " RREn_R1 "," RREn_R2 is RREn_OP=0xB2A5 & RREn_R1 & RREn_R2 & RREn_R1N & RREn_R2N
+:TRE RREn_R1 "," RREn_R2 is RREn_OP=0xB2A5 & RREn_R1 & RREn_R2 & RREn_R1N & RREn_R2N
 {
     local r1v:8; local r2v:8;
     local ea:8; local len:8; local tbl:8; local tbc:8;
@@ -1577,7 +1598,7 @@ macro ed_digit(ea2, sb, ul, d, hs, sgn, sb2, ul2) {
 # CC=3 (CPU-determined partial completion) is approximated as
 # run-to-completion, as for TRE. Odd R1: specification exception, modeled
 # as a no-op. M3!=0 (ETF2) not covered.
-:TRTE "TRTE " RRFcn_R1 "," RRFcn_R2 is RRFcn_OP=0xB9BF & RRFcn_M3=0 & RRFcn_R1 & RRFcn_R2 & RRFcn_R1N & RRFcn_R2N
+:TRTE RRFcn_R1 "," RRFcn_R2 is RRFcn_OP=0xB9BF & RRFcn_M3=0 & RRFcn_R1 & RRFcn_R2 & RRFcn_R1N & RRFcn_R2N
 {
     local r1v:8; local r2v:8;
     local ea:8; local len:8; local tbl:8;
@@ -1750,7 +1771,7 @@ macro ed_digit(ea2, sb, ul, d, hs, sgn, sb2, ul2) {
 # modeled as a no-op. R1/R2 overlap: results unpredictable per PoP.
 # (An earlier SS-format TRTT at opcode 0xD9 was bogus -- 0xD9 is MVCK --
 # and has been removed.)
-:TRTT "TRTT " RRFcn_R1 "," RRFcn_R2 is RRFcn_OP=0xB990 & RRFcn_M3=0 & RRFcn_R1 & RRFcn_R2 & RRFcn_R1N & RRFcn_R2N
+:TRTT RRFcn_R1 "," RRFcn_R2 is RRFcn_OP=0xB990 & RRFcn_M3=0 & RRFcn_R1 & RRFcn_R2 & RRFcn_R1N & RRFcn_R2N
 {
     # TRANSLATE TWO TO TWO (PoP 7-478): 2-byte 2nd-operand chars select
     # 2-byte function chars from table at GR1.
@@ -2001,7 +2022,7 @@ macro ed_digit(ea2, sb, ul, d, hs, sgn, sb2, ul2) {
 # completion) approximated as run-to-completion. Odd R1 or odd length:
 # specification exception, modeled as a no-op. R1/R2 overlap: results
 # unpredictable per PoP.
-:TRTO "TRTO " RRFcn_R1 "," RRFcn_R2 is RRFcn_OP=0xB991 & RRFcn_M3=0 & RRFcn_R1 & RRFcn_R2 & RRFcn_R1N & RRFcn_R2N
+:TRTO RRFcn_R1 "," RRFcn_R2 is RRFcn_OP=0xB991 & RRFcn_M3=0 & RRFcn_R1 & RRFcn_R2 & RRFcn_R1N & RRFcn_R2N
 {
     # TRANSLATE TWO TO ONE (PoP 7-476): 2-byte 2nd-operand chars select
     # 1-byte function chars from table at GR1.
@@ -2251,7 +2272,7 @@ macro ed_digit(ea2, sb, ul, d, hs, sgn, sb2, ul2) {
 # by 2 per argument byte. CC=3 approximated as run-to-completion. Odd R1:
 # specification exception, modeled as a no-op. R1/R2 overlap: results
 # unpredictable per PoP.
-:TROT "TROT " RRFcn_R1 "," RRFcn_R2 is RRFcn_OP=0xB992 & RRFcn_M3=0 & RRFcn_R1 & RRFcn_R2 & RRFcn_R1N & RRFcn_R2N
+:TROT RRFcn_R1 "," RRFcn_R2 is RRFcn_OP=0xB992 & RRFcn_M3=0 & RRFcn_R1 & RRFcn_R2 & RRFcn_R1N & RRFcn_R2N
 {
     # TRANSLATE ONE TO TWO (PoP 7-476): 1-byte 2nd-operand chars select
     # 2-byte function chars from table at GR1.
@@ -2499,7 +2520,7 @@ macro ed_digit(ea2, sb, ul, d, hs, sgn, sb2, ul2) {
 # past the processed bytes. CC=3 (CPU-determined partial completion)
 # approximated as run-to-completion. Odd R1: specification exception,
 # modeled as a no-op. R1/R2 overlap: results unpredictable per PoP.
-:TROO "TROO " RRFcn_R1 "," RRFcn_R2 is RRFcn_OP=0xB993 & RRFcn_M3=0 & RRFcn_R1 & RRFcn_R2 & RRFcn_R1N & RRFcn_R2N
+:TROO RRFcn_R1 "," RRFcn_R2 is RRFcn_OP=0xB993 & RRFcn_M3=0 & RRFcn_R1 & RRFcn_R2 & RRFcn_R1N & RRFcn_R2N
 {
     # TRANSLATE ONE TO ONE (PoP 7-476): 1-byte 2nd-operand chars select
     # 1-byte function chars from table at GR1.
@@ -2743,7 +2764,10 @@ macro ed_digit(ea2, sb, ul, d, hs, sgn, sb2, ul2) {
 # partial completion) is approximated as run-to-completion, as for TRE.
 # Odd R1/R3: specification exception, modeled as a no-op. R1=R3: the
 # pair is updated once (PoP programming note).
-:CLCLE "CLCLE " RSan_R1 "," RSan_R3 "," RSan_D2 "(" RSan_B2 ")" is RSan_OP=0xA9 & RSan_R1 & RSan_R3 & RSan_B2 & RSan_D2 & RSan_R1N & RSan_R3N
+# display-only address operand (tools/fix_display.py)
+db_RSan_D2_RSan_B2: RSan_D2 is RSan_D2 & RSan_B2=0  { }
+db_RSan_D2_RSan_B2: RSan_D2(RSan_B2) is RSan_D2 & RSan_B2  { }
+:CLCLE RSan_R1 "," RSan_R3 "," db_RSan_D2_RSan_B2 is RSan_OP=0xA9 & RSan_R1 & RSan_R3 & RSan_B2 & RSan_D2 & RSan_R1N & RSan_R3N & db_RSan_D2_RSan_B2
 {
     local r1v:8; local r3v:8;
     local ad1:8; local n1:8; local ad2:8; local n2:8;
@@ -2965,7 +2989,10 @@ macro ed_digit(ea2, sb, ul, d, hs, sgn, sb2, ul2) {
 # the pair is updated once (PoP programming note).
 # Display shows DL2 only (core RSY convention); the harness maps it to
 # the full 20-bit displacement when comparing against Capstone.
-:CLCLU "CLCLU " RSYan_R1 "," RSYan_R3 "," RSYan_DL2 "(" RSYan_B2 ")" is RSYan_OP=0xEB & RSYan_R1 & RSYan_R3 & RSYan_B2 & RSYan_DL2 & RSYan_DH2 & RSYan_OP2=0x8F & RSYan_R1N & RSYan_R3N
+# display-only address operand (tools/fix_display.py)
+db_RSYan_DL2_RSYan_B2: dispRSYan_DL2 is RSYan_DL2 & RSYan_DH2 & RSYan_B2=0 [ dispRSYan_DL2 = ((RSYan_DH2 << 12) | RSYan_DL2) - (((RSYan_DH2 >> 7) & 1) << 20); ] { }
+db_RSYan_DL2_RSYan_B2: dispRSYan_DL2(RSYan_B2) is RSYan_DL2 & RSYan_DH2 & RSYan_B2 [ dispRSYan_DL2 = ((RSYan_DH2 << 12) | RSYan_DL2) - (((RSYan_DH2 >> 7) & 1) << 20); ] { }
+:CLCLU RSYan_R1 "," RSYan_R3 "," db_RSYan_DL2_RSYan_B2 is RSYan_OP=0xEB & RSYan_R1 & RSYan_R3 & RSYan_B2 & RSYan_DL2 & RSYan_DH2 & RSYan_OP2=0x8F & RSYan_R1N & RSYan_R3N & db_RSYan_DL2_RSYan_B2
 {
     local r1v:8; local r3v:8;
     local ad1:8; local n1:8; local ad2:8; local n2:8;
