@@ -286,7 +286,7 @@ define pcodeop unkval;
 # moves PSW bits into the register (PoP 7-437, 7-302).
 # ---------------------------------------------------------------------------
 
-:SPM RR_R1 is RR_OP=0x04 & RR_R1
+:SPM RR_R1 is RR_OP=0x04 & RR_R2=0 & RR_R1
 {
     # SET PROGRAM MASK (PoP 7-437): bits 34-35 of general register
     # R1 replace the condition code, and bits 36-39 replace the

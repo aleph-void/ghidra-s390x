@@ -446,3 +446,4 @@ macro rel_RI32(dest, RI) {
 @include "s390x_gaps.sinc"
 @include "s390x_gaps2.sinc"
 @include "s390x_cond.sinc"
+@include "s390x_table_gen.sinc"

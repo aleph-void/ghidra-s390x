@@ -1138,7 +1138,7 @@ macro sra_core64(a, amt, r, ncc) {
 # CC: SLL/SRL unchanged; SLA 0/1/2/3; SRA 0/1/2 (PoP 7-438..7-442).
 # ===========================================================================
 
-:SLL RSa_R1 "," db_RSa_D2_RSa_B2 is RSa_OP=0x89 & RSa_R1 & RSa_B2 & RSa_D2 & db_RSa_D2_RSa_B2
+:SLL RSa_R1 "," db_RSa_D2_RSa_B2 is RSa_OP=0x89 & RSa_R3=0 & RSa_R1 & RSa_B2 & RSa_D2 & db_RSa_D2_RSa_B2
 {
     local sh:8;
     local amt:8;
@@ -1151,7 +1151,7 @@ macro sra_core64(a, amt, r, ncc) {
     RSa_R1 = (RSa_R1 & (0xFFFFFFFF << 32)) | r;
 }
 
-:SRL RSa_R1 "," db_RSa_D2_RSa_B2 is RSa_OP=0x88 & RSa_R1 & RSa_B2 & RSa_D2 & db_RSa_D2_RSa_B2
+:SRL RSa_R1 "," db_RSa_D2_RSa_B2 is RSa_OP=0x88 & RSa_R3=0 & RSa_R1 & RSa_B2 & RSa_D2 & db_RSa_D2_RSa_B2
 {
     local sh:8;
     local amt:8;
@@ -1164,7 +1164,7 @@ macro sra_core64(a, amt, r, ncc) {
     RSa_R1 = (RSa_R1 & (0xFFFFFFFF << 32)) | r;
 }
 
-:SLA RSa_R1 "," db_RSa_D2_RSa_B2 is RSa_OP=0x8B & RSa_R1 & RSa_B2 & RSa_D2 & db_RSa_D2_RSa_B2
+:SLA RSa_R1 "," db_RSa_D2_RSa_B2 is RSa_OP=0x8B & RSa_R3=0 & RSa_R1 & RSa_B2 & RSa_D2 & db_RSa_D2_RSa_B2
 {
     local sh:8;
     local amt:8;
@@ -1179,7 +1179,7 @@ macro sra_core64(a, amt, r, ncc) {
     cc_set(ncc);
 }
 
-:SRA RSa_R1 "," db_RSa_D2_RSa_B2 is RSa_OP=0x8A & RSa_R1 & RSa_B2 & RSa_D2 & db_RSa_D2_RSa_B2
+:SRA RSa_R1 "," db_RSa_D2_RSa_B2 is RSa_OP=0x8A & RSa_R3=0 & RSa_R1 & RSa_B2 & RSa_D2 & db_RSa_D2_RSa_B2
 {
     local sh:8;
     local amt:8;

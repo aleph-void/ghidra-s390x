@@ -7,7 +7,7 @@
 # Shared macros (sla_core64, sra_core64) are in s390x_arith.sinc —
 # include it BEFORE this file.
 
-:SRDL "r0" "," db_RSa_D2_RSa_B2 is RSa_OP=0x8C & RSa_R1=0 & RSa_B2 & RSa_D2 & db_RSa_D2_RSa_B2
+:SRDL "r0" "," db_RSa_D2_RSa_B2 is RSa_OP=0x8C & RSa_R3=0 & RSa_R1=0 & RSa_B2 & RSa_D2 & db_RSa_D2_RSa_B2
     {
         local sh:8; local amt:8; local pair:8; local r:8;
         ea_D12(sh, RSa_B2, zero, RSa_D2);
@@ -19,7 +19,7 @@
         # CC unchanged (PoP 7-438/7-440).
     }
 
-:SRDL "r2" "," db_RSa_D2_RSa_B2 is RSa_OP=0x8C & RSa_R1=2 & RSa_B2 & RSa_D2 & db_RSa_D2_RSa_B2
+:SRDL "r2" "," db_RSa_D2_RSa_B2 is RSa_OP=0x8C & RSa_R3=0 & RSa_R1=2 & RSa_B2 & RSa_D2 & db_RSa_D2_RSa_B2
     {
         local sh:8; local amt:8; local pair:8; local r:8;
         ea_D12(sh, RSa_B2, zero, RSa_D2);
@@ -31,7 +31,7 @@
         # CC unchanged (PoP 7-438/7-440).
     }
 
-:SRDL "r4" "," db_RSa_D2_RSa_B2 is RSa_OP=0x8C & RSa_R1=4 & RSa_B2 & RSa_D2 & db_RSa_D2_RSa_B2
+:SRDL "r4" "," db_RSa_D2_RSa_B2 is RSa_OP=0x8C & RSa_R3=0 & RSa_R1=4 & RSa_B2 & RSa_D2 & db_RSa_D2_RSa_B2
     {
         local sh:8; local amt:8; local pair:8; local r:8;
         ea_D12(sh, RSa_B2, zero, RSa_D2);
@@ -43,7 +43,7 @@
         # CC unchanged (PoP 7-438/7-440).
     }
 
-:SRDL "r6" "," db_RSa_D2_RSa_B2 is RSa_OP=0x8C & RSa_R1=6 & RSa_B2 & RSa_D2 & db_RSa_D2_RSa_B2
+:SRDL "r6" "," db_RSa_D2_RSa_B2 is RSa_OP=0x8C & RSa_R3=0 & RSa_R1=6 & RSa_B2 & RSa_D2 & db_RSa_D2_RSa_B2
     {
         local sh:8; local amt:8; local pair:8; local r:8;
         ea_D12(sh, RSa_B2, zero, RSa_D2);
@@ -55,7 +55,7 @@
         # CC unchanged (PoP 7-438/7-440).
     }
 
-:SRDL "r8" "," db_RSa_D2_RSa_B2 is RSa_OP=0x8C & RSa_R1=8 & RSa_B2 & RSa_D2 & db_RSa_D2_RSa_B2
+:SRDL "r8" "," db_RSa_D2_RSa_B2 is RSa_OP=0x8C & RSa_R3=0 & RSa_R1=8 & RSa_B2 & RSa_D2 & db_RSa_D2_RSa_B2
     {
         local sh:8; local amt:8; local pair:8; local r:8;
         ea_D12(sh, RSa_B2, zero, RSa_D2);
@@ -67,7 +67,7 @@
         # CC unchanged (PoP 7-438/7-440).
     }
 
-:SRDL "r10" "," db_RSa_D2_RSa_B2 is RSa_OP=0x8C & RSa_R1=10 & RSa_B2 & RSa_D2 & db_RSa_D2_RSa_B2
+:SRDL "r10" "," db_RSa_D2_RSa_B2 is RSa_OP=0x8C & RSa_R3=0 & RSa_R1=10 & RSa_B2 & RSa_D2 & db_RSa_D2_RSa_B2
     {
         local sh:8; local amt:8; local pair:8; local r:8;
         ea_D12(sh, RSa_B2, zero, RSa_D2);
@@ -79,7 +79,7 @@
         # CC unchanged (PoP 7-438/7-440).
     }
 
-:SRDL "r12" "," db_RSa_D2_RSa_B2 is RSa_OP=0x8C & RSa_R1=12 & RSa_B2 & RSa_D2 & db_RSa_D2_RSa_B2
+:SRDL "r12" "," db_RSa_D2_RSa_B2 is RSa_OP=0x8C & RSa_R3=0 & RSa_R1=12 & RSa_B2 & RSa_D2 & db_RSa_D2_RSa_B2
     {
         local sh:8; local amt:8; local pair:8; local r:8;
         ea_D12(sh, RSa_B2, zero, RSa_D2);
@@ -91,7 +91,7 @@
         # CC unchanged (PoP 7-438/7-440).
     }
 
-:SRDL "r14" "," db_RSa_D2_RSa_B2 is RSa_OP=0x8C & RSa_R1=14 & RSa_B2 & RSa_D2 & db_RSa_D2_RSa_B2
+:SRDL "r14" "," db_RSa_D2_RSa_B2 is RSa_OP=0x8C & RSa_R3=0 & RSa_R1=14 & RSa_B2 & RSa_D2 & db_RSa_D2_RSa_B2
     {
         local sh:8; local amt:8; local pair:8; local r:8;
         ea_D12(sh, RSa_B2, zero, RSa_D2);
@@ -103,13 +103,13 @@
         # CC unchanged (PoP 7-438/7-440).
     }
 
-:SRDL RSa_R1 "," db_RSa_D2_RSa_B2 is RSa_OP=0x8C & RSa_R1 & RSa_B2 & RSa_D2 & db_RSa_D2_RSa_B2
+:SRDL RSa_R1 "," db_RSa_D2_RSa_B2 is RSa_OP=0x8C & RSa_R3=0 & RSa_R1 & RSa_B2 & RSa_D2 & db_RSa_D2_RSa_B2
     {
         # R1 is odd: the hardware raises a specification exception
         # (PoP 7-438..7-441). Decode only; not modeled.
     }
 
-:SLDL "r0" "," db_RSa_D2_RSa_B2 is RSa_OP=0x8D & RSa_R1=0 & RSa_B2 & RSa_D2 & db_RSa_D2_RSa_B2
+:SLDL "r0" "," db_RSa_D2_RSa_B2 is RSa_OP=0x8D & RSa_R3=0 & RSa_R1=0 & RSa_B2 & RSa_D2 & db_RSa_D2_RSa_B2
     {
         local sh:8; local amt:8; local pair:8; local r:8;
         ea_D12(sh, RSa_B2, zero, RSa_D2);
@@ -121,7 +121,7 @@
         # CC unchanged (PoP 7-438/7-440).
     }
 
-:SLDL "r2" "," db_RSa_D2_RSa_B2 is RSa_OP=0x8D & RSa_R1=2 & RSa_B2 & RSa_D2 & db_RSa_D2_RSa_B2
+:SLDL "r2" "," db_RSa_D2_RSa_B2 is RSa_OP=0x8D & RSa_R3=0 & RSa_R1=2 & RSa_B2 & RSa_D2 & db_RSa_D2_RSa_B2
     {
         local sh:8; local amt:8; local pair:8; local r:8;
         ea_D12(sh, RSa_B2, zero, RSa_D2);
@@ -133,7 +133,7 @@
         # CC unchanged (PoP 7-438/7-440).
     }
 
-:SLDL "r4" "," db_RSa_D2_RSa_B2 is RSa_OP=0x8D & RSa_R1=4 & RSa_B2 & RSa_D2 & db_RSa_D2_RSa_B2
+:SLDL "r4" "," db_RSa_D2_RSa_B2 is RSa_OP=0x8D & RSa_R3=0 & RSa_R1=4 & RSa_B2 & RSa_D2 & db_RSa_D2_RSa_B2
     {
         local sh:8; local amt:8; local pair:8; local r:8;
         ea_D12(sh, RSa_B2, zero, RSa_D2);
@@ -145,7 +145,7 @@
         # CC unchanged (PoP 7-438/7-440).
     }
 
-:SLDL "r6" "," db_RSa_D2_RSa_B2 is RSa_OP=0x8D & RSa_R1=6 & RSa_B2 & RSa_D2 & db_RSa_D2_RSa_B2
+:SLDL "r6" "," db_RSa_D2_RSa_B2 is RSa_OP=0x8D & RSa_R3=0 & RSa_R1=6 & RSa_B2 & RSa_D2 & db_RSa_D2_RSa_B2
     {
         local sh:8; local amt:8; local pair:8; local r:8;
         ea_D12(sh, RSa_B2, zero, RSa_D2);
@@ -157,7 +157,7 @@
         # CC unchanged (PoP 7-438/7-440).
     }
 
-:SLDL "r8" "," db_RSa_D2_RSa_B2 is RSa_OP=0x8D & RSa_R1=8 & RSa_B2 & RSa_D2 & db_RSa_D2_RSa_B2
+:SLDL "r8" "," db_RSa_D2_RSa_B2 is RSa_OP=0x8D & RSa_R3=0 & RSa_R1=8 & RSa_B2 & RSa_D2 & db_RSa_D2_RSa_B2
     {
         local sh:8; local amt:8; local pair:8; local r:8;
         ea_D12(sh, RSa_B2, zero, RSa_D2);
@@ -169,7 +169,7 @@
         # CC unchanged (PoP 7-438/7-440).
     }
 
-:SLDL "r10" "," db_RSa_D2_RSa_B2 is RSa_OP=0x8D & RSa_R1=10 & RSa_B2 & RSa_D2 & db_RSa_D2_RSa_B2
+:SLDL "r10" "," db_RSa_D2_RSa_B2 is RSa_OP=0x8D & RSa_R3=0 & RSa_R1=10 & RSa_B2 & RSa_D2 & db_RSa_D2_RSa_B2
     {
         local sh:8; local amt:8; local pair:8; local r:8;
         ea_D12(sh, RSa_B2, zero, RSa_D2);
@@ -181,7 +181,7 @@
         # CC unchanged (PoP 7-438/7-440).
     }
 
-:SLDL "r12" "," db_RSa_D2_RSa_B2 is RSa_OP=0x8D & RSa_R1=12 & RSa_B2 & RSa_D2 & db_RSa_D2_RSa_B2
+:SLDL "r12" "," db_RSa_D2_RSa_B2 is RSa_OP=0x8D & RSa_R3=0 & RSa_R1=12 & RSa_B2 & RSa_D2 & db_RSa_D2_RSa_B2
     {
         local sh:8; local amt:8; local pair:8; local r:8;
         ea_D12(sh, RSa_B2, zero, RSa_D2);
@@ -193,7 +193,7 @@
         # CC unchanged (PoP 7-438/7-440).
     }
 
-:SLDL "r14" "," db_RSa_D2_RSa_B2 is RSa_OP=0x8D & RSa_R1=14 & RSa_B2 & RSa_D2 & db_RSa_D2_RSa_B2
+:SLDL "r14" "," db_RSa_D2_RSa_B2 is RSa_OP=0x8D & RSa_R3=0 & RSa_R1=14 & RSa_B2 & RSa_D2 & db_RSa_D2_RSa_B2
     {
         local sh:8; local amt:8; local pair:8; local r:8;
         ea_D12(sh, RSa_B2, zero, RSa_D2);
@@ -205,13 +205,13 @@
         # CC unchanged (PoP 7-438/7-440).
     }
 
-:SLDL RSa_R1 "," db_RSa_D2_RSa_B2 is RSa_OP=0x8D & RSa_R1 & RSa_B2 & RSa_D2 & db_RSa_D2_RSa_B2
+:SLDL RSa_R1 "," db_RSa_D2_RSa_B2 is RSa_OP=0x8D & RSa_R3=0 & RSa_R1 & RSa_B2 & RSa_D2 & db_RSa_D2_RSa_B2
     {
         # R1 is odd: the hardware raises a specification exception
         # (PoP 7-438..7-441). Decode only; not modeled.
     }
 
-:SRDA "r0" "," db_RSa_D2_RSa_B2 is RSa_OP=0x8E & RSa_R1=0 & RSa_B2 & RSa_D2 & db_RSa_D2_RSa_B2
+:SRDA "r0" "," db_RSa_D2_RSa_B2 is RSa_OP=0x8E & RSa_R3=0 & RSa_R1=0 & RSa_B2 & RSa_D2 & db_RSa_D2_RSa_B2
     {
         local sh:8; local amt:8; local pair:8; local r:8;
         ea_D12(sh, RSa_B2, zero, RSa_D2);
@@ -224,7 +224,7 @@
         cc_set(ncc);
     }
 
-:SRDA "r2" "," db_RSa_D2_RSa_B2 is RSa_OP=0x8E & RSa_R1=2 & RSa_B2 & RSa_D2 & db_RSa_D2_RSa_B2
+:SRDA "r2" "," db_RSa_D2_RSa_B2 is RSa_OP=0x8E & RSa_R3=0 & RSa_R1=2 & RSa_B2 & RSa_D2 & db_RSa_D2_RSa_B2
     {
         local sh:8; local amt:8; local pair:8; local r:8;
         ea_D12(sh, RSa_B2, zero, RSa_D2);
@@ -237,7 +237,7 @@
         cc_set(ncc);
     }
 
-:SRDA "r4" "," db_RSa_D2_RSa_B2 is RSa_OP=0x8E & RSa_R1=4 & RSa_B2 & RSa_D2 & db_RSa_D2_RSa_B2
+:SRDA "r4" "," db_RSa_D2_RSa_B2 is RSa_OP=0x8E & RSa_R3=0 & RSa_R1=4 & RSa_B2 & RSa_D2 & db_RSa_D2_RSa_B2
     {
         local sh:8; local amt:8; local pair:8; local r:8;
         ea_D12(sh, RSa_B2, zero, RSa_D2);
@@ -250,7 +250,7 @@
         cc_set(ncc);
     }
 
-:SRDA "r6" "," db_RSa_D2_RSa_B2 is RSa_OP=0x8E & RSa_R1=6 & RSa_B2 & RSa_D2 & db_RSa_D2_RSa_B2
+:SRDA "r6" "," db_RSa_D2_RSa_B2 is RSa_OP=0x8E & RSa_R3=0 & RSa_R1=6 & RSa_B2 & RSa_D2 & db_RSa_D2_RSa_B2
     {
         local sh:8; local amt:8; local pair:8; local r:8;
         ea_D12(sh, RSa_B2, zero, RSa_D2);
@@ -263,7 +263,7 @@
         cc_set(ncc);
     }
 
-:SRDA "r8" "," db_RSa_D2_RSa_B2 is RSa_OP=0x8E & RSa_R1=8 & RSa_B2 & RSa_D2 & db_RSa_D2_RSa_B2
+:SRDA "r8" "," db_RSa_D2_RSa_B2 is RSa_OP=0x8E & RSa_R3=0 & RSa_R1=8 & RSa_B2 & RSa_D2 & db_RSa_D2_RSa_B2
     {
         local sh:8; local amt:8; local pair:8; local r:8;
         ea_D12(sh, RSa_B2, zero, RSa_D2);
@@ -276,7 +276,7 @@
         cc_set(ncc);
     }
 
-:SRDA "r10" "," db_RSa_D2_RSa_B2 is RSa_OP=0x8E & RSa_R1=10 & RSa_B2 & RSa_D2 & db_RSa_D2_RSa_B2
+:SRDA "r10" "," db_RSa_D2_RSa_B2 is RSa_OP=0x8E & RSa_R3=0 & RSa_R1=10 & RSa_B2 & RSa_D2 & db_RSa_D2_RSa_B2
     {
         local sh:8; local amt:8; local pair:8; local r:8;
         ea_D12(sh, RSa_B2, zero, RSa_D2);
@@ -289,7 +289,7 @@
         cc_set(ncc);
     }
 
-:SRDA "r12" "," db_RSa_D2_RSa_B2 is RSa_OP=0x8E & RSa_R1=12 & RSa_B2 & RSa_D2 & db_RSa_D2_RSa_B2
+:SRDA "r12" "," db_RSa_D2_RSa_B2 is RSa_OP=0x8E & RSa_R3=0 & RSa_R1=12 & RSa_B2 & RSa_D2 & db_RSa_D2_RSa_B2
     {
         local sh:8; local amt:8; local pair:8; local r:8;
         ea_D12(sh, RSa_B2, zero, RSa_D2);
@@ -302,7 +302,7 @@
         cc_set(ncc);
     }
 
-:SRDA "r14" "," db_RSa_D2_RSa_B2 is RSa_OP=0x8E & RSa_R1=14 & RSa_B2 & RSa_D2 & db_RSa_D2_RSa_B2
+:SRDA "r14" "," db_RSa_D2_RSa_B2 is RSa_OP=0x8E & RSa_R3=0 & RSa_R1=14 & RSa_B2 & RSa_D2 & db_RSa_D2_RSa_B2
     {
         local sh:8; local amt:8; local pair:8; local r:8;
         ea_D12(sh, RSa_B2, zero, RSa_D2);
@@ -315,13 +315,13 @@
         cc_set(ncc);
     }
 
-:SRDA RSa_R1 "," db_RSa_D2_RSa_B2 is RSa_OP=0x8E & RSa_R1 & RSa_B2 & RSa_D2 & db_RSa_D2_RSa_B2
+:SRDA RSa_R1 "," db_RSa_D2_RSa_B2 is RSa_OP=0x8E & RSa_R3=0 & RSa_R1 & RSa_B2 & RSa_D2 & db_RSa_D2_RSa_B2
     {
         # R1 is odd: the hardware raises a specification exception
         # (PoP 7-438..7-441). Decode only; not modeled.
     }
 
-:SLDA "r0" "," db_RSa_D2_RSa_B2 is RSa_OP=0x8F & RSa_R1=0 & RSa_B2 & RSa_D2 & db_RSa_D2_RSa_B2
+:SLDA "r0" "," db_RSa_D2_RSa_B2 is RSa_OP=0x8F & RSa_R3=0 & RSa_R1=0 & RSa_B2 & RSa_D2 & db_RSa_D2_RSa_B2
     {
         local sh:8; local amt:8; local pair:8; local r:8;
         ea_D12(sh, RSa_B2, zero, RSa_D2);
@@ -334,7 +334,7 @@
         cc_set(ncc);
     }
 
-:SLDA "r2" "," db_RSa_D2_RSa_B2 is RSa_OP=0x8F & RSa_R1=2 & RSa_B2 & RSa_D2 & db_RSa_D2_RSa_B2
+:SLDA "r2" "," db_RSa_D2_RSa_B2 is RSa_OP=0x8F & RSa_R3=0 & RSa_R1=2 & RSa_B2 & RSa_D2 & db_RSa_D2_RSa_B2
     {
         local sh:8; local amt:8; local pair:8; local r:8;
         ea_D12(sh, RSa_B2, zero, RSa_D2);
@@ -347,7 +347,7 @@
         cc_set(ncc);
     }
 
-:SLDA "r4" "," db_RSa_D2_RSa_B2 is RSa_OP=0x8F & RSa_R1=4 & RSa_B2 & RSa_D2 & db_RSa_D2_RSa_B2
+:SLDA "r4" "," db_RSa_D2_RSa_B2 is RSa_OP=0x8F & RSa_R3=0 & RSa_R1=4 & RSa_B2 & RSa_D2 & db_RSa_D2_RSa_B2
     {
         local sh:8; local amt:8; local pair:8; local r:8;
         ea_D12(sh, RSa_B2, zero, RSa_D2);
@@ -360,7 +360,7 @@
         cc_set(ncc);
     }
 
-:SLDA "r6" "," db_RSa_D2_RSa_B2 is RSa_OP=0x8F & RSa_R1=6 & RSa_B2 & RSa_D2 & db_RSa_D2_RSa_B2
+:SLDA "r6" "," db_RSa_D2_RSa_B2 is RSa_OP=0x8F & RSa_R3=0 & RSa_R1=6 & RSa_B2 & RSa_D2 & db_RSa_D2_RSa_B2
     {
         local sh:8; local amt:8; local pair:8; local r:8;
         ea_D12(sh, RSa_B2, zero, RSa_D2);
@@ -373,7 +373,7 @@
         cc_set(ncc);
     }
 
-:SLDA "r8" "," db_RSa_D2_RSa_B2 is RSa_OP=0x8F & RSa_R1=8 & RSa_B2 & RSa_D2 & db_RSa_D2_RSa_B2
+:SLDA "r8" "," db_RSa_D2_RSa_B2 is RSa_OP=0x8F & RSa_R3=0 & RSa_R1=8 & RSa_B2 & RSa_D2 & db_RSa_D2_RSa_B2
     {
         local sh:8; local amt:8; local pair:8; local r:8;
         ea_D12(sh, RSa_B2, zero, RSa_D2);
@@ -386,7 +386,7 @@
         cc_set(ncc);
     }
 
-:SLDA "r10" "," db_RSa_D2_RSa_B2 is RSa_OP=0x8F & RSa_R1=10 & RSa_B2 & RSa_D2 & db_RSa_D2_RSa_B2
+:SLDA "r10" "," db_RSa_D2_RSa_B2 is RSa_OP=0x8F & RSa_R3=0 & RSa_R1=10 & RSa_B2 & RSa_D2 & db_RSa_D2_RSa_B2
     {
         local sh:8; local amt:8; local pair:8; local r:8;
         ea_D12(sh, RSa_B2, zero, RSa_D2);
@@ -399,7 +399,7 @@
         cc_set(ncc);
     }
 
-:SLDA "r12" "," db_RSa_D2_RSa_B2 is RSa_OP=0x8F & RSa_R1=12 & RSa_B2 & RSa_D2 & db_RSa_D2_RSa_B2
+:SLDA "r12" "," db_RSa_D2_RSa_B2 is RSa_OP=0x8F & RSa_R3=0 & RSa_R1=12 & RSa_B2 & RSa_D2 & db_RSa_D2_RSa_B2
     {
         local sh:8; local amt:8; local pair:8; local r:8;
         ea_D12(sh, RSa_B2, zero, RSa_D2);
@@ -412,7 +412,7 @@
         cc_set(ncc);
     }
 
-:SLDA "r14" "," db_RSa_D2_RSa_B2 is RSa_OP=0x8F & RSa_R1=14 & RSa_B2 & RSa_D2 & db_RSa_D2_RSa_B2
+:SLDA "r14" "," db_RSa_D2_RSa_B2 is RSa_OP=0x8F & RSa_R3=0 & RSa_R1=14 & RSa_B2 & RSa_D2 & db_RSa_D2_RSa_B2
     {
         local sh:8; local amt:8; local pair:8; local r:8;
         ea_D12(sh, RSa_B2, zero, RSa_D2);
@@ -425,7 +425,7 @@
         cc_set(ncc);
     }
 
-:SLDA RSa_R1 "," db_RSa_D2_RSa_B2 is RSa_OP=0x8F & RSa_R1 & RSa_B2 & RSa_D2 & db_RSa_D2_RSa_B2
+:SLDA RSa_R1 "," db_RSa_D2_RSa_B2 is RSa_OP=0x8F & RSa_R3=0 & RSa_R1 & RSa_B2 & RSa_D2 & db_RSa_D2_RSa_B2
     {
         # R1 is odd: the hardware raises a specification exception
         # (PoP 7-438..7-441). Decode only; not modeled.
