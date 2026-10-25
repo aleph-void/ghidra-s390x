@@ -69,16 +69,10 @@ attach variables [ SIL_B1 ] [ zero r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r1
 # ---------------------------------------------------------------------------
 
 # LR — LOAD (register): R1 = R2 (64 bits in z/Architecture).
-:LR RR_R1 "," RR_R2 is RR_OP=0x18 & RR_R1 & RR_R2
-{
-    RR_R1 = RR_R2;
-}
+# LR: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # LGR — LOAD (register, 64-bit): R1 = R2.
-:LGR RRE_R1 "," RRE_R2 is RRE_OP=0xB904 & RRE_R1 & RRE_R2
-{
-    RRE_R1 = RRE_R2;
-}
+# LGR: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # ---------------------------------------------------------------------------
 # 32-bit loads (bits 32-63 replaced, bits 0-31 unchanged; CC unchanged)
@@ -90,14 +84,7 @@ dxb_RXa_D2_RXa_X2_RXa_B2: RXa_D2 is RXa_D2 & RXa_X2=0 & RXa_B2=0  { }
 dxb_RXa_D2_RXa_X2_RXa_B2: RXa_D2(RXa_B2) is RXa_D2 & RXa_X2=0 & RXa_B2  { }
 dxb_RXa_D2_RXa_X2_RXa_B2: RXa_D2(RXa_X2,0) is RXa_D2 & RXa_X2 & RXa_B2=0  { }
 dxb_RXa_D2_RXa_X2_RXa_B2: RXa_D2(RXa_X2,RXa_B2) is RXa_D2 & RXa_X2 & RXa_B2  { }
-:L RXa_R1 "," dxb_RXa_D2_RXa_X2_RXa_B2 is RXa_OP=0x58 & RXa_R1 & RXa_X2 & RXa_B2 & RXa_D2 & dxb_RXa_D2_RXa_X2_RXa_B2
-{
-    local ea:8;
-    local w:4;
-    ea_D12(ea, RXa_B2, RXa_X2, RXa_D2);
-    w = *:4 ea;
-    RXa_R1 = (RXa_R1 & (0xFFFFFFFF << 32)) | zext(w);
-}
+# L: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # LY — LOAD (long displacement).
 # display-only address operand (tools/fix_display.py)
@@ -105,128 +92,53 @@ dxb_RXYa_DL2_RXYa_X2_RXYa_B2: dispRXYa_DL2 is RXYa_DL2 & RXYa_DH2 & RXYa_X2=0 & 
 dxb_RXYa_DL2_RXYa_X2_RXYa_B2: dispRXYa_DL2(RXYa_B2) is RXYa_DL2 & RXYa_DH2 & RXYa_X2=0 & RXYa_B2 [ dispRXYa_DL2 = ((RXYa_DH2 << 12) | RXYa_DL2) - (((RXYa_DH2 >> 7) & 1) << 20); ] { }
 dxb_RXYa_DL2_RXYa_X2_RXYa_B2: dispRXYa_DL2(RXYa_X2,0) is RXYa_DL2 & RXYa_DH2 & RXYa_X2 & RXYa_B2=0 [ dispRXYa_DL2 = ((RXYa_DH2 << 12) | RXYa_DL2) - (((RXYa_DH2 >> 7) & 1) << 20); ] { }
 dxb_RXYa_DL2_RXYa_X2_RXYa_B2: dispRXYa_DL2(RXYa_X2,RXYa_B2) is RXYa_DL2 & RXYa_DH2 & RXYa_X2 & RXYa_B2 [ dispRXYa_DL2 = ((RXYa_DH2 << 12) | RXYa_DL2) - (((RXYa_DH2 >> 7) & 1) << 20); ] { }
-:LY RXYa_R1 "," dxb_RXYa_DL2_RXYa_X2_RXYa_B2 is RXYa_OP=0xE3 & RXYa_R1 & RXYa_X2 & RXYa_B2 & RXYa_DL2 & RXYa_DH2 & RXYa_OP2=0x58 & dxb_RXYa_DL2_RXYa_X2_RXYa_B2
-{
-    local ea:8;
-    local w:4;
-    ea_D20(ea, RXYa_B2, RXYa_X2, RXYa_DH2, RXYa_DL2);
-    w = *:4 ea;
-    RXYa_R1 = (RXYa_R1 & (0xFFFFFFFF << 32)) | zext(w);
-}
+# LY: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # ---------------------------------------------------------------------------
 # 64-bit loads (full register replaced; CC unchanged)
 # ---------------------------------------------------------------------------
 
 # LG — LOAD (64): 8-byte second operand -> bits 0-63.
-:LG RXYa_R1 "," dxb_RXYa_DL2_RXYa_X2_RXYa_B2 is RXYa_OP=0xE3 & RXYa_R1 & RXYa_X2 & RXYa_B2 & RXYa_DL2 & RXYa_DH2 & RXYa_OP2=0x04 & dxb_RXYa_DL2_RXYa_X2_RXYa_B2
-{
-    local ea:8;
-    ea_D20(ea, RXYa_B2, RXYa_X2, RXYa_DH2, RXYa_DL2);
-    RXYa_R1 = *:8 ea;
-}
+# LG: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # ---------------------------------------------------------------------------
 # Halfword / byte loads with sign extension (CC unchanged)
 # ---------------------------------------------------------------------------
 
 # LH — LOAD HALFWORD: 16-bit operand sign-extended to 32 bits -> bits 32-63.
-:LH RXa_R1 "," dxb_RXa_D2_RXa_X2_RXa_B2 is RXa_OP=0x48 & RXa_R1 & RXa_X2 & RXa_B2 & RXa_D2 & dxb_RXa_D2_RXa_X2_RXa_B2
-{
-    local ea:8;
-    local h:2;
-    local w:4;
-    ea_D12(ea, RXa_B2, RXa_X2, RXa_D2);
-    h = *:2 ea;
-    w = sext(h);
-    RXa_R1 = (RXa_R1 & (0xFFFFFFFF << 32)) | zext(w);
-}
+# LH: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # LHY — LOAD HALFWORD (long displacement).
-:LHY RXYa_R1 "," dxb_RXYa_DL2_RXYa_X2_RXYa_B2 is RXYa_OP=0xE3 & RXYa_R1 & RXYa_X2 & RXYa_B2 & RXYa_DL2 & RXYa_DH2 & RXYa_OP2=0x78 & dxb_RXYa_DL2_RXYa_X2_RXYa_B2
-{
-    local ea:8;
-    local h:2;
-    local w:4;
-    ea_D20(ea, RXYa_B2, RXYa_X2, RXYa_DH2, RXYa_DL2);
-    h = *:2 ea;
-    w = sext(h);
-    RXYa_R1 = (RXYa_R1 & (0xFFFFFFFF << 32)) | zext(w);
-}
+# LHY: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # LB — LOAD BYTE: 8-bit operand sign-extended to 32 bits -> bits 32-63.
-:LB RXYa_R1 "," dxb_RXYa_DL2_RXYa_X2_RXYa_B2 is RXYa_OP=0xE3 & RXYa_R1 & RXYa_X2 & RXYa_B2 & RXYa_DL2 & RXYa_DH2 & RXYa_OP2=0x76 & dxb_RXYa_DL2_RXYa_X2_RXYa_B2
-{
-    local ea:8;
-    local b:1;
-    local w:4;
-    ea_D20(ea, RXYa_B2, RXYa_X2, RXYa_DH2, RXYa_DL2);
-    b = *:1 ea;
-    w = sext(b);
-    RXYa_R1 = (RXYa_R1 & (0xFFFFFFFF << 32)) | zext(w);
-}
+# LB: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # LGB — LOAD BYTE (64): 8-bit operand sign-extended to 64 bits.
-:LGB RXYa_R1 "," dxb_RXYa_DL2_RXYa_X2_RXYa_B2 is RXYa_OP=0xE3 & RXYa_R1 & RXYa_X2 & RXYa_B2 & RXYa_DL2 & RXYa_DH2 & RXYa_OP2=0x77 & dxb_RXYa_DL2_RXYa_X2_RXYa_B2
-{
-    local ea:8;
-    local b:1;
-    ea_D20(ea, RXYa_B2, RXYa_X2, RXYa_DH2, RXYa_DL2);
-    b = *:1 ea;
-    RXYa_R1 = sext(b);
-}
+# LGB: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # LGH — LOAD HALFWORD (64): 16-bit operand sign-extended to 64 bits.
-:LGH RXYa_R1 "," dxb_RXYa_DL2_RXYa_X2_RXYa_B2 is RXYa_OP=0xE3 & RXYa_R1 & RXYa_X2 & RXYa_B2 & RXYa_DL2 & RXYa_DH2 & RXYa_OP2=0x15 & dxb_RXYa_DL2_RXYa_X2_RXYa_B2
-{
-    local ea:8;
-    local h:2;
-    ea_D20(ea, RXYa_B2, RXYa_X2, RXYa_DH2, RXYa_DL2);
-    h = *:2 ea;
-    RXYa_R1 = sext(h);
-}
+# LGH: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # ---------------------------------------------------------------------------
 # Immediate loads (CC unchanged)
 # ---------------------------------------------------------------------------
 
 # LHI — LOAD HALFWORD IMMEDIATE: I2 sign-extended to 32 bits -> bits 32-63.
-:LHI RIa_R1 "," RIa_I2 is RIa_OP=0xA7 & RIa_R1 & RIa_OPCD=0x8 & RIa_I2
-{
-    local w:4;
-    local _ext_ria_i2:2;
-    _ext_ria_i2 = RIa_I2;
-    w = sext(_ext_ria_i2);
-    RIa_R1 = (RIa_R1 & (0xFFFFFFFF << 32)) | zext(w);
-}
+# LHI: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # LGHI — LOAD HALFWORD IMMEDIATE (64): I2 sign-extended to 64 bits.
-:LGHI RIa_R1 "," RIa_I2 is RIa_OP=0xA7 & RIa_R1 & RIa_OPCD=0x9 & RIa_I2
-{
-    local _ext_ria_i2:2;
-    _ext_ria_i2 = RIa_I2;
-    RIa_R1 = sext(_ext_ria_i2);
-}
+# LGHI: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # ---------------------------------------------------------------------------
 # Address loads (CC unchanged; 64-bit addressing mode assumed)
 # ---------------------------------------------------------------------------
 
 # LA — LOAD ADDRESS: computed 64-bit address -> R1.
-:LA RXa_R1 "," dxb_RXa_D2_RXa_X2_RXa_B2 is RXa_OP=0x41 & RXa_R1 & RXa_X2 & RXa_B2 & RXa_D2 & dxb_RXa_D2_RXa_X2_RXa_B2
-{
-    local ea:8;
-    ea_D12(ea, RXa_B2, RXa_X2, RXa_D2);
-    RXa_R1 = ea;
-}
+# LA: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # LAY — LOAD ADDRESS (long displacement).
-:LAY RXYa_R1 "," dxb_RXYa_DL2_RXYa_X2_RXYa_B2 is RXYa_OP=0xE3 & RXYa_R1 & RXYa_X2 & RXYa_B2 & RXYa_DL2 & RXYa_DH2 & RXYa_OP2=0x71 & dxb_RXYa_DL2_RXYa_X2_RXYa_B2
-{
-    local ea:8;
-    ea_D20(ea, RXYa_B2, RXYa_X2, RXYa_DH2, RXYa_DL2);
-    RXYa_R1 = ea;
-}
+# LAY: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # LARL — LOAD ADDRESS RELATIVE LONG: R1 = inst_start + 2*sign_extend(RI2).
 LARL_Target: tgt is RILb_RI2 [ tgt = inst_start + RILb_RI2 * 2; ] { export *[const]:8 tgt; }
@@ -240,71 +152,29 @@ LARL_Target: tgt is RILb_RI2 [ tgt = inst_start + RILb_RI2 * 2; ] { export *[con
 # ---------------------------------------------------------------------------
 
 # ST — STORE: bits 32-63 of R1 -> 32-bit second operand.
-:ST RXa_R1 "," dxb_RXa_D2_RXa_X2_RXa_B2 is RXa_OP=0x50 & RXa_R1 & RXa_X2 & RXa_B2 & RXa_D2 & dxb_RXa_D2_RXa_X2_RXa_B2
-{
-    local ea:8;
-    local w:4;
-    ea_D12(ea, RXa_B2, RXa_X2, RXa_D2);    *:4 ea = RXa_R1;
-}
+# ST: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # STY — STORE (long displacement).
-:STY RXYa_R1 "," dxb_RXYa_DL2_RXYa_X2_RXYa_B2 is RXYa_OP=0xE3 & RXYa_R1 & RXYa_X2 & RXYa_B2 & RXYa_DL2 & RXYa_DH2 & RXYa_OP2=0x50 & dxb_RXYa_DL2_RXYa_X2_RXYa_B2
-{
-    local ea:8;
-    local w:4;
-    ea_D20(ea, RXYa_B2, RXYa_X2, RXYa_DH2, RXYa_DL2);    *:4 ea = RXYa_R1;
-}
+# STY: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # STG — STORE (64): bits 0-63 of R1 -> 8-byte second operand.
-:STG RXYa_R1 "," dxb_RXYa_DL2_RXYa_X2_RXYa_B2 is RXYa_OP=0xE3 & RXYa_R1 & RXYa_X2 & RXYa_B2 & RXYa_DL2 & RXYa_DH2 & RXYa_OP2=0x24 & dxb_RXYa_DL2_RXYa_X2_RXYa_B2
-{
-    local ea:8;
-    ea_D20(ea, RXYa_B2, RXYa_X2, RXYa_DH2, RXYa_DL2);
-    *:8 ea = RXYa_R1;
-}
+# STG: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # STH — STORE HALFWORD: bits 48-63 of R1 -> 16-bit second operand.
-:STH RXa_R1 "," dxb_RXa_D2_RXa_X2_RXa_B2 is RXa_OP=0x40 & RXa_R1 & RXa_X2 & RXa_B2 & RXa_D2 & dxb_RXa_D2_RXa_X2_RXa_B2
-{
-    local ea:8;
-    local h:2;
-    ea_D12(ea, RXa_B2, RXa_X2, RXa_D2);    *:2 ea = RXa_R1;
-}
+# STH: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # STHY — STORE HALFWORD (long displacement).
-:STHY RXYa_R1 "," dxb_RXYa_DL2_RXYa_X2_RXYa_B2 is RXYa_OP=0xE3 & RXYa_R1 & RXYa_X2 & RXYa_B2 & RXYa_DL2 & RXYa_DH2 & RXYa_OP2=0x70 & dxb_RXYa_DL2_RXYa_X2_RXYa_B2
-{
-    local ea:8;
-    local h:2;
-    ea_D20(ea, RXYa_B2, RXYa_X2, RXYa_DH2, RXYa_DL2);    *:2 ea = RXYa_R1;
-}
+# STHY: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # STC — STORE CHARACTER: bits 56-63 of R1 -> byte second operand.
-:STC RXa_R1 "," dxb_RXa_D2_RXa_X2_RXa_B2 is RXa_OP=0x42 & RXa_R1 & RXa_X2 & RXa_B2 & RXa_D2 & dxb_RXa_D2_RXa_X2_RXa_B2
-{
-    local ea:8;
-    local b:1;
-    ea_D12(ea, RXa_B2, RXa_X2, RXa_D2);    *:1 ea = RXa_R1;
-}
+# STC: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # IC — INSERT CHARACTER: byte second operand -> bits 56-63 of R1.
 # (Found missing by the differential fuzzer; STC's counterpart.)
-:IC RXa_R1 "," dxb_RXa_D2_RXa_X2_RXa_B2 is RXa_OP=0x43 & RXa_R1 & RXa_X2 & RXa_B2 & RXa_D2 & dxb_RXa_D2_RXa_X2_RXa_B2
-{
-    local ea:8;
-    local b:1;
-    ea_D12(ea, RXa_B2, RXa_X2, RXa_D2);
-    b = *:1 ea;
-    RXa_R1 = (RXa_R1 & 0xffffffffffffff00) | zext(b);
-}
+# IC: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # STCY — STORE CHARACTER (long displacement).
-:STCY RXYa_R1 "," dxb_RXYa_DL2_RXYa_X2_RXYa_B2 is RXYa_OP=0xE3 & RXYa_R1 & RXYa_X2 & RXYa_B2 & RXYa_DL2 & RXYa_DH2 & RXYa_OP2=0x72 & dxb_RXYa_DL2_RXYa_X2_RXYa_B2
-{
-    local ea:8;
-    local b:1;
-    ea_D20(ea, RXYa_B2, RXYa_X2, RXYa_DH2, RXYa_DL2);    *:1 ea = RXYa_R1;
-}
+# STCY: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # ---------------------------------------------------------------------------
 # Block / immediate moves (CC unchanged)
@@ -343,12 +213,7 @@ db_SSa_D2_SSa_B2: SSa_D2(SSa_B2) is SSa_D2 & SSa_B2  { }
 # display-only address operand (tools/fix_display.py)
 db_SI_D1_SI_B1: SI_D1 is SI_D1 & SI_B1=0  { }
 db_SI_D1_SI_B1: SI_D1(SI_B1) is SI_D1 & SI_B1  { }
-:MVI db_SI_D1_SI_B1 "," SI_I2 is SI_OP=0x92 & SI_I2 & SI_B1 & SI_D1 & db_SI_D1_SI_B1
-{
-    local ea:8;
-    ea_D12(ea, SI_B1, zero, SI_D1);
-    *:1 ea = SI_I2;
-}
+# MVI: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # MVHHI — MOVE (16<-16): I2 -> 2-byte first-operand location.
 # display-only address operand (tools/fix_display.py)
@@ -397,27 +262,12 @@ db_SIL_D1_SIL_B1: SIL_D1(SIL_B1) is SIL_D1 & SIL_B1  { }
 # display-only address operand (tools/fix_display.py)
 db_RSb_D2_RSb_B2: RSb_D2 is RSb_D2 & RSb_B2=0  { }
 db_RSb_D2_RSb_B2: RSb_D2(RSb_B2) is RSb_D2 & RSb_B2  { }
-:ICM RSb_R1 "," RSb_M3 "," db_RSb_D2_RSb_B2 is RSb_OP=0xBF & RSb_R1 & RSb_M3 & RSb_B2 & RSb_D2 & db_RSb_D2_RSb_B2
-{
-    local ea:8;
-    ea_D12(ea, RSb_B2, zero, RSb_D2);
-    # Simplified ICM: byte insertion under mask M3.
-    # Full semantics require per-byte mask handling; omitted for compilation.
-    # Disassembly (header) is correct for the 203-vector Capstone diff.
-    RSb_R1 = RSb_R1;
-}
+# ICM: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # STCM — STORE CHARACTERS UNDER MASK: selected bytes of bits 32-63 of R1
 # -> successive storage locations, left to right. Register unchanged,
 # CC unchanged. (PoP 7-444.)
-:STCM RSb_R1 "," RSb_M3 "," db_RSb_D2_RSb_B2 is RSb_OP=0xBE & RSb_R1 & RSb_M3 & RSb_B2 & RSb_D2 & db_RSb_D2_RSb_B2
-{
-    local ea:8;
-    ea_D12(ea, RSb_B2, zero, RSb_D2);
-    # Simplified STCM: store bytes from R1 under mask M3.
-    # Full semantics require per-byte mask handling; omitted for compilation.
-    RSb_R1 = RSb_R1;
-}
+# STCM: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # ---------------------------------------------------------------------------
 # Execute (conservative model)

@@ -316,7 +316,9 @@ define register offset=0x0c0 size=8 [
 define register offset=0x2c0 size=16 [ psw  ];
 define register offset=0x2c0 size=8  [ pswm ];   # PSW mask/flags half
 define register offset=0x2c8 size=8  [ pswia ];  # instruction address; the program counter
-define register offset=0x2c2 size=1  [ cc   ];   # byte containing the condition code
+# the condition code as a plain 0-3 value. Kept apart from pswm: SPM/SSM/LPSW writes to
+# pswm used to overwrite it when it overlaid PSW byte 2.
+define register offset=0x2e0 size=1  [ cc   ];
                                                 # (PSW bits 18-19 live in bits 4-5 of this byte)
 
 # Constant-zero pseudo-register. In address fields, B=0 / X=0 means

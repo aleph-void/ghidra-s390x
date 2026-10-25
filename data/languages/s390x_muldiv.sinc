@@ -252,70 +252,20 @@ macro sdiv64_exc(q, r, dvd, dvs, qp, rp) {
 # R1 bits 0-31 unchanged. CC unchanged. (PoP 7-346/7-347.)
 # ---------------------------------------------------------------------------
 
-:MH RXa_R1 "," dxb_RXa_D2_RXa_X2_RXa_B2 is RXa_OP=0x4C & RXa_R1 & RXa_X2 & RXa_B2 & RXa_D2 & dxb_RXa_D2_RXa_X2_RXa_B2
-{
-    local ea:8;
-    local mc:8; local mp:8; local p:8;
-    local w:2;
-    ea_D12(ea, RXa_B2, RXa_X2, RXa_D2);
-    w = *:2 ea;
-    mp = sext(w);
-    mc = RXa_R1 & 0xffffffff;
-    sx32(mc, mc);
-    p = mc * mp;
-    RXa_R1 = (RXa_R1 & (0xFFFFFFFF << 32)) | (p & 0xffffffff);
-}
+# MH: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:MHY RXYa_R1 "," dxb_RXYa_DL2_RXYa_X2_RXYa_B2 is RXYa_OP=0xE3 & RXYa_R1 & RXYa_X2 & RXYa_B2 & RXYa_DL2 & RXYa_DH2 & RXYa_OP2=0x7C & dxb_RXYa_DL2_RXYa_X2_RXYa_B2
-{
-    local ea:8;
-    local mc:8; local mp:8; local p:8;
-    local w:2;
-    ea_D20(ea, RXYa_B2, RXYa_X2, RXYa_DH2, RXYa_DL2);
-    w = *:2 ea;
-    mp = sext(w);
-    mc = RXYa_R1 & 0xffffffff;
-    sx32(mc, mc);
-    p = mc * mp;
-    RXYa_R1 = (RXYa_R1 & (0xFFFFFFFF << 32)) | (p & 0xffffffff);
-}
+# MHY: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:MHI RIa_R1 "," RIa_I2 is RIa_OP=0xA7 & RIa_R1 & RIa_OPCD=0xC & RIa_I2
-{
-    local mc:8; local mp:8; local p:8;
-    local iw:2;
-    iw = RIa_I2;
-    mp = sext(iw);
-    mc = RIa_R1 & 0xffffffff;
-    sx32(mc, mc);
-    p = mc * mp;
-    RIa_R1 = (RIa_R1 & (0xFFFFFFFF << 32)) | (p & 0xffffffff);
-}
+# MHI: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # ---------------------------------------------------------------------------
 # MULTIPLY HALFWORD (MGH, MGHI): R1 = R1 * (16-bit). CC unchanged.
 # (PoP 7-346/7-347.)
 # ---------------------------------------------------------------------------
 
-:MGH RXYa_R1 "," dxb_RXYa_DL2_RXYa_X2_RXYa_B2 is RXYa_OP=0xE3 & RXYa_R1 & RXYa_X2 & RXYa_B2 & RXYa_DL2 & RXYa_DH2 & RXYa_OP2=0x3C & dxb_RXYa_DL2_RXYa_X2_RXYa_B2
-{
-    local ea:8;
-    local mp:8;
-    local w:2;
-    ea_D20(ea, RXYa_B2, RXYa_X2, RXYa_DH2, RXYa_DL2);
-    w = *:2 ea;
-    mp = sext(w);
-    RXYa_R1 = RXYa_R1 * mp;
-}
+# MGH: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:MGHI RIa_R1 "," RIa_I2 is RIa_OP=0xA7 & RIa_R1 & RIa_OPCD=0xD & RIa_I2
-{
-    local mp:8;
-    local iw:2;
-    iw = RIa_I2;
-    mp = sext(iw);
-    RIa_R1 = RIa_R1 * mp;
-}
+# MGHI: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # ---------------------------------------------------------------------------
 # MULTIPLY SINGLE, 32-bit result (MS, MSY, MSR, MSFI):
@@ -323,98 +273,25 @@ macro sdiv64_exc(q, r, dvd, dvs, qp, rp) {
 # CC unchanged. (PoP 7-348/7-349.)
 # ---------------------------------------------------------------------------
 
-:MS RXa_R1 "," dxb_RXa_D2_RXa_X2_RXa_B2 is RXa_OP=0x71 & RXa_R1 & RXa_X2 & RXa_B2 & RXa_D2 & dxb_RXa_D2_RXa_X2_RXa_B2
-{
-    local ea:8;
-    local mc:8; local mp:8; local p:8;
-    local w:4;
-    ea_D12(ea, RXa_B2, RXa_X2, RXa_D2);
-    w = *:4 ea;
-    mp = sext(w);
-    mc = RXa_R1 & 0xffffffff;
-    sx32(mc, mc);
-    p = mc * mp;
-    RXa_R1 = (RXa_R1 & (0xFFFFFFFF << 32)) | (p & 0xffffffff);
-}
+# MS: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:MSY RXYa_R1 "," dxb_RXYa_DL2_RXYa_X2_RXYa_B2 is RXYa_OP=0xE3 & RXYa_R1 & RXYa_X2 & RXYa_B2 & RXYa_DL2 & RXYa_DH2 & RXYa_OP2=0x51 & dxb_RXYa_DL2_RXYa_X2_RXYa_B2
-{
-    local ea:8;
-    local mc:8; local mp:8; local p:8;
-    local w:4;
-    ea_D20(ea, RXYa_B2, RXYa_X2, RXYa_DH2, RXYa_DL2);
-    w = *:4 ea;
-    mp = sext(w);
-    mc = RXYa_R1 & 0xffffffff;
-    sx32(mc, mc);
-    p = mc * mp;
-    RXYa_R1 = (RXYa_R1 & (0xFFFFFFFF << 32)) | (p & 0xffffffff);
-}
+# MSY: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:MSR RRE_R1 "," RRE_R2 is RRE_OP=0xB252 & RRE_R1 & RRE_R2
-{
-    local mc:8; local mp:8; local p:8;
-    mp = RRE_R2 & 0xffffffff;
-    sx32(mp, mp);
-    mc = RRE_R1 & 0xffffffff;
-    sx32(mc, mc);
-    p = mc * mp;
-    RRE_R1 = (RRE_R1 & (0xFFFFFFFF << 32)) | (p & 0xffffffff);
-}
+# MSR: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:MSFI RILa_R1 "," RILa_I2 is RILa_OP=0xC2 & RILa_R1 & RILa_OPCD=0x1 & RILa_I2
-{
-    local mc:8; local mp:8; local p:8;
-    local iw:4;
-    iw = RILa_I2;
-    mp = sext(iw);
-    mc = RILa_R1 & 0xffffffff;
-    sx32(mc, mc);
-    p = mc * mp;
-    RILa_R1 = (RILa_R1 & (0xFFFFFFFF << 32)) | (p & 0xffffffff);
-}
+# MSFI: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # ---------------------------------------------------------------------------
 # MULTIPLY SINGLE, 64-bit result (MSG, MSGR, MSGF, MSGFR, MSGFI):
 # R1 = low 64 bits of (R1 * multiplier). CC unchanged. (PoP 7-348/7-349.)
 # ---------------------------------------------------------------------------
 
-:MSG RXYa_R1 "," dxb_RXYa_DL2_RXYa_X2_RXYa_B2 is RXYa_OP=0xE3 & RXYa_R1 & RXYa_X2 & RXYa_B2 & RXYa_DL2 & RXYa_DH2 & RXYa_OP2=0x0C & dxb_RXYa_DL2_RXYa_X2_RXYa_B2
-{
-    local ea:8;
-    ea_D20(ea, RXYa_B2, RXYa_X2, RXYa_DH2, RXYa_DL2);
-    RXYa_R1 = RXYa_R1 * (*:8 ea);
-}
+# MSG: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:MSGR RRE_R1 "," RRE_R2 is RRE_OP=0xB90C & RRE_R1 & RRE_R2
-{
-    RRE_R1 = RRE_R1 * RRE_R2;
-}
+# MSGR: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:MSGF RXYa_R1 "," dxb_RXYa_DL2_RXYa_X2_RXYa_B2 is RXYa_OP=0xE3 & RXYa_R1 & RXYa_X2 & RXYa_B2 & RXYa_DL2 & RXYa_DH2 & RXYa_OP2=0x1C & dxb_RXYa_DL2_RXYa_X2_RXYa_B2
-{
-    local ea:8;
-    local mp:8;
-    local w:4;
-    ea_D20(ea, RXYa_B2, RXYa_X2, RXYa_DH2, RXYa_DL2);
-    w = *:4 ea;
-    mp = sext(w);
-    RXYa_R1 = RXYa_R1 * mp;
-}
+# MSGF: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:MSGFR RRE_R1 "," RRE_R2 is RRE_OP=0xB91C & RRE_R1 & RRE_R2
-{
-    local mp:8;
-    mp = RRE_R2 & 0xffffffff;
-    sx32(mp, mp);
-    RRE_R1 = RRE_R1 * mp;
-}
+# MSGFR: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:MSGFI RILa_R1 "," RILa_I2 is RILa_OP=0xC2 & RILa_R1 & RILa_OPCD=0x0 & RILa_I2
-{
-    local mp:8;
-    local iw:4;
-    iw = RILa_I2;
-    mp = sext(iw);
-    RILa_R1 = RILa_R1 * mp;
-}
+# MSGFI: generated in s390x_table_gen.sinc (tools/gen_semantics.py)

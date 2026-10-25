@@ -115,106 +115,28 @@ macro cc_lttest(v, signbit) {
 # LPR: LOAD POSITIVE (32). R1[32:63] = abs(R2[32:63]).
 # Overflow iff R2[32:63]==0x80000000 (result unchanged 0x80000000, CC=3).
 # CC: 0=zero, 2=positive, 3=overflow (PoP 7-308).
-:LPR RR_R1 "," RR_R2 is RR_OP=0x10 & RR_R1 & RR_R2
-{
-    local a:8;
-    local r:8;
-    local ov:1;
-    local ncc:1;
-    a = RR_R2 & 0xffffffff;
-    ov = (a == 0x80000000);
-    r = a;
-    if ((a & 0x80000000) == 0) goto <lpr_done>;
-    r = (0 - a) & 0xffffffff;
-<lpr_done>
-    RR_R1 = (RR_R1 & 0xffffffff00000000) | r;
-    ncc = 2;
-    if (r == 0) goto <lpr_cc>;
-    if (ov == 0) goto <lpr_cc>;
-    ncc = 3;
-    goto <lpr_cc>;
-<lpr_cc>
-    # ncc=2 (positive) unless r==0 or overflow; fix zero case:
-    if (r != 0) goto <lpr_set>;
-    ncc = 0;
-    if (ov == 0) goto <lpr_set>;
-    ncc = 3;
-<lpr_set>
-    cc_set(ncc);
-}
+# LPR: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # LNR: LOAD NEGATIVE (32). R1[32:63] = -abs(R2[32:63]).
 # CC: 0=zero, 1=negative (PoP 7-309). No overflow possible.
-:LNR RR_R1 "," RR_R2 is RR_OP=0x11 & RR_R1 & RR_R2
-{
-    local a:8;
-    local r:8;
-    a = RR_R2 & 0xffffffff;
-    r = a;
-    if ((a & 0x80000000) != 0) goto <lnr_done>;
-    r = (0 - a) & 0xffffffff;
-<lnr_done>
-    RR_R1 = (RR_R1 & 0xffffffff00000000) | r;
-    cc_lttest(r, 31);
-}
+# LNR: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # LTR: LOAD AND TEST (32). R1[32:63] = R2[32:63].
 # CC: 0=zero, 1=negative, 2=positive (PoP 7-310).
-:LTR RR_R1 "," RR_R2 is RR_OP=0x12 & RR_R1 & RR_R2
-{
-    local a:8;
-    a = RR_R2 & 0xffffffff;
-    RR_R1 = (RR_R1 & 0xffffffff00000000) | a;
-    cc_lttest(a, 31);
-}
+# LTR: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # LCR: LOAD COMPLEMENT (32). R1[32:63] = -R2[32:63] (two's complement).
 # Overflow iff R2[32:63]==0x80000000 (result unchanged, CC=3).
 # CC: 0=zero, 1=negative, 2=positive, 3=overflow (PoP 7-174).
-:LCR RR_R1 "," RR_R2 is RR_OP=0x13 & RR_R1 & RR_R2
-{
-    local a:8;
-    local r:8;
-    local ov:1;
-    a = RR_R2 & 0xffffffff;
-    ov = (a == 0x80000000);
-    r = (0 - a) & 0xffffffff;
-    RR_R1 = (RR_R1 & 0xffffffff00000000) | r;
-    if (ov == 0) goto <lcr_nov>;
-    cc_set(3);
-    goto <lcr_done>;
-<lcr_nov>
-    cc_lttest(r, 31);
-<lcr_done>
-}
+# LCR: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # ALR: ADD LOGICAL (32). R1[32:63] = R1[32:63] + R2[32:63] (unsigned).
 # CC: 0=zero,no carry; 1=nonzero,no carry; 2=zero,carry; 3=nonzero,carry.
-:ALR RR_R1 "," RR_R2 is RR_OP=0x1E & RR_R1 & RR_R2
-{
-    local a:8;
-    local b:8;
-    local r:8;
-    a = RR_R1 & 0xffffffff;
-    b = RR_R2 & 0xffffffff;
-    r = (a + b) & 0xffffffff;
-    RR_R1 = (RR_R1 & 0xffffffff00000000) | r;
-    cc_addlog32(r, a);
-}
+# ALR: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # SLR: SUBTRACT LOGICAL (32). R1[32:63] = R1[32:63] - R2[32:63] (unsigned).
 # CC encoding identical to ADD LOGICAL, carry = NOT borrow.
-:SLR RR_R1 "," RR_R2 is RR_OP=0x1F & RR_R1 & RR_R2
-{
-    local a:8;
-    local b:8;
-    local r:8;
-    a = RR_R1 & 0xffffffff;
-    b = RR_R2 & 0xffffffff;
-    r = (a - b) & 0xffffffff;
-    RR_R1 = (RR_R1 & 0xffffffff00000000) | r;
-    cc_sublog32(r, a, b);
-}
+# SLR: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # MVCL/CLCL are generated below (gen_mvcl/gen_clcl): 64 even-pair-unrolled
 # real-pcode constructors each. See the generator functions for the PoP
@@ -228,188 +150,44 @@ macro cc_lttest(v, signbit) {
 
 # LPGR: LOAD POSITIVE (64). R1 = abs(R2). Overflow iff R2==0x8000000000000000.
 # CC: 0=zero, 2=positive, 3=overflow.
-:LPGR RRE_R1 "," RRE_R2 is RRE_OP=0xB900 & RRE_R1 & RRE_R2
-{
-    local a:8;
-    local r:8;
-    local ov:1;
-    local ncc:1;
-    a = RRE_R2;
-    ov = (a == 0x8000000000000000);
-    r = a;
-    if ((a & 0x8000000000000000) == 0) goto <lpgr_done>;
-    r = 0 - a;
-<lpgr_done>
-    RRE_R1 = r;
-    ncc = 2;
-    if (r != 0) goto <lpgr_nz>;
-    ncc = 0;
-<lpgr_nz>
-    if (ov == 0) goto <lpgr_set>;
-    ncc = 3;
-<lpgr_set>
-    cc_set(ncc);
-}
+# LPGR: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # LNGR: LOAD NEGATIVE (64). R1 = -abs(R2). CC: 0=zero, 1=negative.
-:LNGR RRE_R1 "," RRE_R2 is RRE_OP=0xB901 & RRE_R1 & RRE_R2
-{
-    local a:8;
-    local r:8;
-    a = RRE_R2;
-    r = a;
-    if ((a & 0x8000000000000000) != 0) goto <lngr_done>;
-    r = 0 - a;
-<lngr_done>
-    RRE_R1 = r;
-    cc_lttest(r, 63);
-}
+# LNGR: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # LTGR: LOAD AND TEST (64). R1 = R2. CC: 0=zero, 1=negative, 2=positive.
-:LTGR RRE_R1 "," RRE_R2 is RRE_OP=0xB902 & RRE_R1 & RRE_R2
-{
-    local a:8;
-    a = RRE_R2;
-    RRE_R1 = a;
-    cc_lttest(a, 63);
-}
+# LTGR: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # LCGR: LOAD COMPLEMENT (64). R1 = -R2. Overflow iff R2==min (CC=3).
 # CC: 0=zero, 1=negative, 2=positive, 3=overflow.
-:LCGR RRE_R1 "," RRE_R2 is RRE_OP=0xB903 & RRE_R1 & RRE_R2
-{
-    local a:8;
-    local r:8;
-    local ov:1;
-    a = RRE_R2;
-    ov = (a == 0x8000000000000000);
-    r = 0 - a;
-    RRE_R1 = r;
-    if (ov == 0) goto <lcgr_nov>;
-    cc_set(3);
-    goto <lcgr_done>;
-<lcgr_nov>
-    cc_lttest(r, 63);
-<lcgr_done>
-}
+# LCGR: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # ALGR: ADD LOGICAL (64). R1 = R1 + R2 (unsigned). CC via cc_addlog64.
-:ALGR RRE_R1 "," RRE_R2 is RRE_OP=0xB90A & RRE_R1 & RRE_R2
-{
-    local a:8;
-    local b:8;
-    local r:8;
-    a = RRE_R1;
-    b = RRE_R2;
-    r = a + b;
-    RRE_R1 = r;
-    cc_addlog64(r, a);
-}
+# ALGR: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # SLGR: SUBTRACT LOGICAL (64). R1 = R1 - R2 (unsigned). CC via cc_sublog64.
-:SLGR RRE_R1 "," RRE_R2 is RRE_OP=0xB90B & RRE_R1 & RRE_R2
-{
-    local a:8;
-    local b:8;
-    local r:8;
-    a = RRE_R1;
-    b = RRE_R2;
-    r = a - b;
-    RRE_R1 = r;
-    cc_sublog64(r, a, b);
-}
+# SLGR: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # LPGFR: LOAD POSITIVE (64<-32). R1 = abs(sign_extend(R2[32:63])).
 # The maximum negative 32-bit number is complemented WITHOUT overflow
 # (result 2^31, CC=2). CC: 0=zero, 2=positive.
-:LPGFR RRE_R1 "," RRE_R2 is RRE_OP=0xB910 & RRE_R1 & RRE_R2
-{
-    local a32:8;
-    local sa:8;
-    local r:8;
-    a32 = RRE_R2 & 0xffffffff;
-    sa = a32;
-    if ((a32 & 0x80000000) == 0) goto <lpgfr_pos>;
-    sa = a32 | 0xffffffff00000000;
-<lpgfr_pos>
-    r = sa;
-    if ((sa & 0x8000000000000000) == 0) goto <lpgfr_done>;
-    r = 0 - sa;
-<lpgfr_done>
-    RRE_R1 = r;
-    cc_lttest(r, 63);
-}
+# LPGFR: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # LNGFR: LOAD NEGATIVE (64<-32). R1 = -abs(sign_extend(R2[32:63])).
 # CC: 0=zero, 1=negative. No overflow possible.
-:LNGFR RRE_R1 "," RRE_R2 is RRE_OP=0xB911 & RRE_R1 & RRE_R2
-{
-    local a32:8;
-    local sa:8;
-    local r:8;
-    a32 = RRE_R2 & 0xffffffff;
-    sa = a32;
-    if ((a32 & 0x80000000) == 0) goto <lngfr_pos>;
-    sa = a32 | 0xffffffff00000000;
-<lngfr_pos>
-    r = sa;
-    if ((sa & 0x8000000000000000) != 0) goto <lngfr_done>;
-    r = 0 - sa;
-<lngfr_done>
-    RRE_R1 = r;
-    cc_lttest(r, 63);
-}
+# LNGFR: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # LCGFR: LOAD COMPLEMENT (64<-32). R1 = -sign_extend(R2[32:63]).
 # Complementing -2^31 yields 2^31 with NO overflow. CC: 0/1/2.
-:LCGFR RRE_R1 "," RRE_R2 is RRE_OP=0xB913 & RRE_R1 & RRE_R2
-{
-    local a32:8;
-    local sa:8;
-    local r:8;
-    a32 = RRE_R2 & 0xffffffff;
-    sa = a32;
-    if ((a32 & 0x80000000) == 0) goto <lcgfr_pos>;
-    sa = a32 | 0xffffffff00000000;
-<lcgfr_pos>
-    r = 0 - sa;
-    RRE_R1 = r;
-    cc_lttest(r, 63);
-}
+# LCGFR: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # LGFR: LOAD WITH SIGN EXTENSION (32->64). R1 = sign_extend(R2[32:63]).
 # CC: 0=zero, 1=negative, 2=positive.
-:LGFR RRE_R1 "," RRE_R2 is RRE_OP=0xB914 & RRE_R1 & RRE_R2
-{
-    local b32:8;
-    local r:8;
-    b32 = RRE_R2 & 0xffffffff;
-    r = b32;
-    if ((b32 & 0x80000000) == 0) goto <lgfr_done>;
-    r = b32 | 0xffffffff00000000;
-<lgfr_done>
-    RRE_R1 = r;
-    cc_lttest(r, 63);
-}
+# LGFR: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # AGFR: ADD (64<-32). R1 = R1 + sign_extend(R2[32:63]) (signed).
 # CC via cc_add64 (signed overflow possible).
-:AGFR RRE_R1 "," RRE_R2 is RRE_OP=0xB918 & RRE_R1 & RRE_R2
-{
-    local a:8;
-    local b32:8;
-    local b:8;
-    local r:8;
-    a = RRE_R1;
-    b32 = RRE_R2 & 0xffffffff;
-    b = b32;
-    if ((b32 & 0x80000000) == 0) goto <agfr_pos>;
-    b = b32 | 0xffffffff00000000;
-<agfr_pos>
-    r = a + b;
-    RRE_R1 = r;
-    cc_add64(r, (a >> 63) & 1, (b >> 63) & 1);
-}
+# AGFR: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 
 # ===========================================================================
@@ -422,38 +200,10 @@ macro cc_lttest(v, signbit) {
 # (7-267/7-266).
 
 # AL: ADD LOGICAL (32). R1[32:63] = R1[32:63] + *(32-bit mem) (unsigned).
-:AL RXa_R1 "," dxb_RXa_D2_RXa_X2_RXa_B2 is RXa_OP=0x5E & RXa_R1 & RXa_X2 & RXa_B2 & RXa_D2 & dxb_RXa_D2_RXa_X2_RXa_B2
-{
-    local ea:8;
-    local m32:4;
-    local a:8;
-    local b:8;
-    local r:8;
-    ea_D12(ea, RXa_B2, RXa_X2, RXa_D2);
-    m32 = *:4 ea;
-    a = RXa_R1 & 0xffffffff;
-    b = zext(m32);
-    r = (a + b) & 0xffffffff;
-    RXa_R1 = (RXa_R1 & 0xffffffff00000000) | r;
-    cc_addlog32(r, a);
-}
+# AL: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # SL: SUBTRACT LOGICAL (32). R1[32:63] = R1[32:63] - *(32-bit mem).
-:SL RXa_R1 "," dxb_RXa_D2_RXa_X2_RXa_B2 is RXa_OP=0x5F & RXa_R1 & RXa_X2 & RXa_B2 & RXa_D2 & dxb_RXa_D2_RXa_X2_RXa_B2
-{
-    local ea:8;
-    local m32:4;
-    local a:8;
-    local b:8;
-    local r:8;
-    ea_D12(ea, RXa_B2, RXa_X2, RXa_D2);
-    m32 = *:4 ea;
-    a = RXa_R1 & 0xffffffff;
-    b = zext(m32);
-    r = (a - b) & 0xffffffff;
-    RXa_R1 = (RXa_R1 & 0xffffffff00000000) | r;
-    cc_sublog32(r, a, b);
-}
+# SL: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # STE: STORE (short, 70). 32-bit short FP datum = HIGH half of FPR
 # (fNh alias, PoP 9-8); stored unchanged. CC unchanged.
@@ -483,189 +233,75 @@ macro cc_lttest(v, signbit) {
 
 # IIHH: INSERT IMMEDIATE high-high (A5/0). Insert I2 into IBM bits 0-15
 # (SLEIGH high 16). CC unchanged.
-:IIHH RIa_R1 "," RIa_U2 is RIa_OP=0xA5 & RIa_R1 & RIa_OPCD=0x0 & RIa_I2 & RIa_U2
-{
-    local i2:8;
-    i2 = RIa_I2 & 0xffff;
-    RIa_R1 = (RIa_R1 & 0x0000ffffffffffff) | (i2 << 48);
-}
+# IIHH: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # NILH: AND IMMEDIATE low-high (A5/6). AND I2 into IBM bits 32-47
 # (SLEIGH bits 16-31). CC from the 16 ANDed bits: 0=zero, 1=not zero.
-:NILH RIa_R1 "," RIa_U2 is RIa_OP=0xA5 & RIa_R1 & RIa_OPCD=0x6 & RIa_I2 & RIa_U2
-{
-    local i2:8;
-    local r:8;
-    i2 = RIa_I2 & 0xffff;
-    r = ((RIa_R1 >> 16) & 0xffff) & i2;
-    RIa_R1 = (RIa_R1 & 0xffffffff0000ffff) | (r << 16);
-    cc_logic(r);
-}
+# NILH: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # NILL: AND IMMEDIATE low-low (A5/7). AND I2 into IBM bits 48-63
 # (SLEIGH low 16). CC from the 16 ANDed bits.
-:NILL RIa_R1 "," RIa_U2 is RIa_OP=0xA5 & RIa_R1 & RIa_OPCD=0x7 & RIa_I2 & RIa_U2
-{
-    local i2:8;
-    local r:8;
-    i2 = RIa_I2 & 0xffff;
-    r = (RIa_R1 & 0xffff) & i2;
-    RIa_R1 = (RIa_R1 & 0xffffffffffff0000) | r;
-    cc_logic(r);
-}
+# NILL: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # OILL: OR IMMEDIATE low-low (A5/B). OR I2 into IBM bits 48-63
 # (SLEIGH low 16). CC from the 16 ORed bits: 0=zero, 1=not zero.
-:OILL RIa_R1 "," RIa_U2 is RIa_OP=0xA5 & RIa_R1 & RIa_OPCD=0xB & RIa_I2 & RIa_U2
-{
-    local i2:8;
-    local r:8;
-    i2 = RIa_I2 & 0xffff;
-    r = (RIa_R1 & 0xffff) | i2;
-    RIa_R1 = (RIa_R1 & 0xffffffffffff0000) | r;
-    cc_logic(r);
-}
+# OILL: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # IIHL: INSERT IMMEDIATE high-low (A5/1). Insert I2 into IBM bits 16-31
 # (SLEIGH bits 32-47). CC unchanged. (Found missing by the fuzzer.)
-:IIHL RIa_R1 "," RIa_U2 is RIa_OP=0xA5 & RIa_R1 & RIa_OPCD=0x1 & RIa_I2 & RIa_U2
-{
-    local i2:8;
-    i2 = RIa_I2 & 0xffff;
-    RIa_R1 = (RIa_R1 & 0xffff0000ffffffff) | (i2 << 32);
-}
+# IIHL: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # IILH: INSERT IMMEDIATE low-high (A5/2). Insert I2 into IBM bits 32-47
 # (SLEIGH bits 16-31). CC unchanged.
-:IILH RIa_R1 "," RIa_U2 is RIa_OP=0xA5 & RIa_R1 & RIa_OPCD=0x2 & RIa_I2 & RIa_U2
-{
-    local i2:8;
-    i2 = RIa_I2 & 0xffff;
-    RIa_R1 = (RIa_R1 & 0xffffffff0000ffff) | (i2 << 16);
-}
+# IILH: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # IILL: INSERT IMMEDIATE low-low (A5/3). Insert I2 into IBM bits 48-63
 # (SLEIGH low 16). CC unchanged.
-:IILL RIa_R1 "," RIa_U2 is RIa_OP=0xA5 & RIa_R1 & RIa_OPCD=0x3 & RIa_I2 & RIa_U2
-{
-    local i2:8;
-    i2 = RIa_I2 & 0xffff;
-    RIa_R1 = (RIa_R1 & 0xffffffffffff0000) | i2;
-}
+# IILL: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # NIHH: AND IMMEDIATE high-high (A5/4). AND I2 into IBM bits 0-15
 # (SLEIGH high 16). CC from the 16 ANDed bits: 0=zero, 1=not zero.
-:NIHH RIa_R1 "," RIa_U2 is RIa_OP=0xA5 & RIa_R1 & RIa_OPCD=0x4 & RIa_I2 & RIa_U2
-{
-    local i2:8;
-    local r:8;
-    i2 = RIa_I2 & 0xffff;
-    r = ((RIa_R1 >> 48) & 0xffff) & i2;
-    RIa_R1 = (RIa_R1 & 0x0000ffffffffffff) | (r << 48);
-    cc_logic(r);
-}
+# NIHH: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # NIHL: AND IMMEDIATE high-low (A5/5). AND I2 into IBM bits 16-31
 # (SLEIGH bits 32-47). CC from the 16 ANDed bits.
-:NIHL RIa_R1 "," RIa_U2 is RIa_OP=0xA5 & RIa_R1 & RIa_OPCD=0x5 & RIa_I2 & RIa_U2
-{
-    local i2:8;
-    local r:8;
-    i2 = RIa_I2 & 0xffff;
-    r = ((RIa_R1 >> 32) & 0xffff) & i2;
-    RIa_R1 = (RIa_R1 & 0xffff0000ffffffff) | (r << 32);
-    cc_logic(r);
-}
+# NIHL: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # OIHH: OR IMMEDIATE high-high (A5/8). OR I2 into IBM bits 0-15
 # (SLEIGH high 16). CC from the 16 ORed bits: 0=zero, 1=not zero.
-:OIHH RIa_R1 "," RIa_U2 is RIa_OP=0xA5 & RIa_R1 & RIa_OPCD=0x8 & RIa_I2 & RIa_U2
-{
-    local i2:8;
-    local r:8;
-    i2 = RIa_I2 & 0xffff;
-    r = ((RIa_R1 >> 48) & 0xffff) | i2;
-    RIa_R1 = (RIa_R1 & 0x0000ffffffffffff) | (r << 48);
-    cc_logic(r);
-}
+# OIHH: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # OIHL: OR IMMEDIATE high-low (A5/9). OR I2 into IBM bits 16-31
 # (SLEIGH bits 32-47). CC from the 16 ORed bits.
-:OIHL RIa_R1 "," RIa_U2 is RIa_OP=0xA5 & RIa_R1 & RIa_OPCD=0x9 & RIa_I2 & RIa_U2
-{
-    local i2:8;
-    local r:8;
-    i2 = RIa_I2 & 0xffff;
-    r = ((RIa_R1 >> 32) & 0xffff) | i2;
-    RIa_R1 = (RIa_R1 & 0xffff0000ffffffff) | (r << 32);
-    cc_logic(r);
-}
+# OIHL: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # OILH: OR IMMEDIATE low-high (A5/A). OR I2 into IBM bits 32-47
 # (SLEIGH bits 16-31). CC from the 16 ORed bits.
-:OILH RIa_R1 "," RIa_U2 is RIa_OP=0xA5 & RIa_R1 & RIa_OPCD=0xA & RIa_I2 & RIa_U2
-{
-    local i2:8;
-    local r:8;
-    i2 = RIa_I2 & 0xffff;
-    r = ((RIa_R1 >> 16) & 0xffff) | i2;
-    RIa_R1 = (RIa_R1 & 0xffffffff0000ffff) | (r << 16);
-    cc_logic(r);
-}
+# OILH: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # LLIHH: LOAD LOGICAL IMMEDIATE high-high (A5/C). I2 -> IBM bits 0-15 (SLEIGH
 # high 16); remaining bits zeroed. CC unchanged.
-:LLIHH RIa_R1 "," RIa_U2 is RIa_OP=0xA5 & RIa_R1 & RIa_OPCD=0xC & RIa_I2 & RIa_U2
-{
-    local i2:8;
-    i2 = RIa_I2 & 0xffff;
-    RIa_R1 = i2 << 48;
-}
+# LLIHH: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # LLIHL: LOAD LOGICAL IMMEDIATE high-low (A5/D). I2 -> IBM bits 16-31 (SLEIGH
 # bits 32-47); remaining bits zeroed. CC unchanged.
-:LLIHL RIa_R1 "," RIa_U2 is RIa_OP=0xA5 & RIa_R1 & RIa_OPCD=0xD & RIa_I2 & RIa_U2
-{
-    local i2:8;
-    i2 = RIa_I2 & 0xffff;
-    RIa_R1 = i2 << 32;
-}
+# LLIHL: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # LLILH: LOAD LOGICAL IMMEDIATE low-high (A5/E). I2 -> IBM bits 32-47 (SLEIGH
 # bits 16-31); remaining bits zeroed. CC unchanged.
-:LLILH RIa_R1 "," RIa_U2 is RIa_OP=0xA5 & RIa_R1 & RIa_OPCD=0xE & RIa_I2 & RIa_U2
-{
-    local i2:8;
-    i2 = RIa_I2 & 0xffff;
-    RIa_R1 = i2 << 16;
-}
+# LLILH: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # LLILL: LOAD LOGICAL IMMEDIATE low-low (A5/F). I2 -> IBM bits 48-63 (SLEIGH
 # low 16); remaining bits zeroed. CC unchanged.
-:LLILL RIa_R1 "," RIa_U2 is RIa_OP=0xA5 & RIa_R1 & RIa_OPCD=0xF & RIa_I2 & RIa_U2
-{
-    local i2:8;
-    i2 = RIa_I2 & 0xffff;
-    RIa_R1 = i2;
-}
+# LLILL: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # IIHF: INSERT IMMEDIATE high-full (C0/8). Insert I2 into IBM bits 0-31
 # (SLEIGH high 32). CC unchanged.
-:IIHF RILa_R1 "," RILa_U2 is RILa_OP=0xC0 & RILa_R1 & RILa_OPCD=0x8 & RILa_I2 & RILa_U2
-{
-    local i2:8;
-    i2 = RILa_I2 & 0xffffffff;
-    RILa_R1 = (RILa_R1 & 0x00000000ffffffff) | (i2 << 32);
-}
+# IIHF: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # IILF: INSERT IMMEDIATE low-full (C0/9). Insert I2 into IBM bits 32-63
 # (SLEIGH low 32). CC unchanged.
-:IILF RILa_R1 "," RILa_U2 is RILa_OP=0xC0 & RILa_R1 & RILa_OPCD=0x9 & RILa_I2 & RILa_U2
-{
-    local i2:8;
-    i2 = RILa_I2 & 0xffffffff;
-    RILa_R1 = (RILa_R1 & 0xffffffff00000000) | i2;
-}
+# IILF: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # NIHF: AND IMMEDIATE high-full (C0/A). AND I2 into IBM bits 0-31
 # (SLEIGH high 32). CC from the 32 ANDed bits.
@@ -699,225 +335,54 @@ macro cc_lttest(v, signbit) {
 # ===========================================================================
 
 # LTG: LOAD AND TEST (64). R1 = *(64-bit mem). CC: 0/1/2 signed (PoP 7-310).
-:LTG RXYa_R1 "," dxb_RXYa_DL2_RXYa_X2_RXYa_B2 is RXYa_OP=0xE3 & RXYa_R1 & RXYa_X2 & RXYa_B2 & RXYa_DL2 & RXYa_DH2 & RXYa_OP2=0x02 & dxb_RXYa_DL2_RXYa_X2_RXYa_B2
-{
-    local ea:8;
-    local a:8;
-    ea_D20(ea, RXYa_B2, RXYa_X2, RXYa_DH2, RXYa_DL2);
-    a = *:8 ea;
-    RXYa_R1 = a;
-    cc_lttest(a, 63);
-}
+# LTG: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # ALG: ADD LOGICAL (64). R1 = R1 + *(64-bit mem) (unsigned).
-:ALG RXYa_R1 "," dxb_RXYa_DL2_RXYa_X2_RXYa_B2 is RXYa_OP=0xE3 & RXYa_R1 & RXYa_X2 & RXYa_B2 & RXYa_DL2 & RXYa_DH2 & RXYa_OP2=0x0A & dxb_RXYa_DL2_RXYa_X2_RXYa_B2
-{
-    local ea:8;
-    local a:8;
-    local b:8;
-    local r:8;
-    ea_D20(ea, RXYa_B2, RXYa_X2, RXYa_DH2, RXYa_DL2);
-    b = *:8 ea;
-    a = RXYa_R1;
-    r = a + b;
-    RXYa_R1 = r;
-    cc_addlog64(r, a);
-}
+# ALG: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # SLG: SUBTRACT LOGICAL (64). R1 = R1 - *(64-bit mem) (unsigned).
-:SLG RXYa_R1 "," dxb_RXYa_DL2_RXYa_X2_RXYa_B2 is RXYa_OP=0xE3 & RXYa_R1 & RXYa_X2 & RXYa_B2 & RXYa_DL2 & RXYa_DH2 & RXYa_OP2=0x0B & dxb_RXYa_DL2_RXYa_X2_RXYa_B2
-{
-    local ea:8;
-    local a:8;
-    local b:8;
-    local r:8;
-    ea_D20(ea, RXYa_B2, RXYa_X2, RXYa_DH2, RXYa_DL2);
-    b = *:8 ea;
-    a = RXYa_R1;
-    r = a - b;
-    RXYa_R1 = r;
-    cc_sublog64(r, a, b);
-}
+# SLG: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # LT: LOAD AND TEST (32). R1[32:63] = *(32-bit mem); high 32 preserved.
 # CC: 0/1/2 from signed 32-bit value (PoP 7-310).
-:LT RXYa_R1 "," dxb_RXYa_DL2_RXYa_X2_RXYa_B2 is RXYa_OP=0xE3 & RXYa_R1 & RXYa_X2 & RXYa_B2 & RXYa_DL2 & RXYa_DH2 & RXYa_OP2=0x12 & dxb_RXYa_DL2_RXYa_X2_RXYa_B2
-{
-    local ea:8;
-    local m32:4;
-    local a:8;
-    ea_D20(ea, RXYa_B2, RXYa_X2, RXYa_DH2, RXYa_DL2);
-    m32 = *:4 ea;
-    a = zext(m32);
-    RXYa_R1 = (RXYa_R1 & 0xffffffff00000000) | a;
-    cc_lttest(a, 31);
-}
+# LT: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # AGF: ADD (64<-32). R1 = R1 + sign_extend(*(32-bit mem)) (signed).
-:AGF RXYa_R1 "," dxb_RXYa_DL2_RXYa_X2_RXYa_B2 is RXYa_OP=0xE3 & RXYa_R1 & RXYa_X2 & RXYa_B2 & RXYa_DL2 & RXYa_DH2 & RXYa_OP2=0x18 & dxb_RXYa_DL2_RXYa_X2_RXYa_B2
-{
-    local ea:8;
-    local m32:4;
-    local a:8;
-    local b:8;
-    local r:8;
-    ea_D20(ea, RXYa_B2, RXYa_X2, RXYa_DH2, RXYa_DL2);
-    m32 = *:4 ea;
-    b = zext(m32);
-    if ((b & 0x80000000) == 0) goto <agf_pos>;
-    b = b | 0xffffffff00000000;
-<agf_pos>
-    a = RXYa_R1;
-    r = a + b;
-    RXYa_R1 = r;
-    cc_add64(r, (a >> 63) & 1, (b >> 63) & 1);
-}
+# AGF: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # SGF: SUBTRACT (64<-32). R1 = R1 - sign_extend(*(32-bit mem)) (signed).
-:SGF RXYa_R1 "," dxb_RXYa_DL2_RXYa_X2_RXYa_B2 is RXYa_OP=0xE3 & RXYa_R1 & RXYa_X2 & RXYa_B2 & RXYa_DL2 & RXYa_DH2 & RXYa_OP2=0x19 & dxb_RXYa_DL2_RXYa_X2_RXYa_B2
-{
-    local ea:8;
-    local m32:4;
-    local a:8;
-    local b:8;
-    local r:8;
-    ea_D20(ea, RXYa_B2, RXYa_X2, RXYa_DH2, RXYa_DL2);
-    m32 = *:4 ea;
-    b = zext(m32);
-    if ((b & 0x80000000) == 0) goto <sgf_pos>;
-    b = b | 0xffffffff00000000;
-<sgf_pos>
-    a = RXYa_R1;
-    r = a - b;
-    RXYa_R1 = r;
-    cc_sub64(r, (a >> 63) & 1, (b >> 63) & 1);
-}
+# SGF: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # ALGF: ADD LOGICAL (64<-32). R1 = R1 + zero_extend(*(32-bit mem)).
-:ALGF RXYa_R1 "," dxb_RXYa_DL2_RXYa_X2_RXYa_B2 is RXYa_OP=0xE3 & RXYa_R1 & RXYa_X2 & RXYa_B2 & RXYa_DL2 & RXYa_DH2 & RXYa_OP2=0x1A & dxb_RXYa_DL2_RXYa_X2_RXYa_B2
-{
-    local ea:8;
-    local m32:4;
-    local a:8;
-    local b:8;
-    local r:8;
-    ea_D20(ea, RXYa_B2, RXYa_X2, RXYa_DH2, RXYa_DL2);
-    m32 = *:4 ea;
-    b = zext(m32);
-    a = RXYa_R1;
-    r = a + b;
-    RXYa_R1 = r;
-    cc_addlog64(r, a);
-}
+# ALGF: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # SLGF: SUBTRACT LOGICAL (64<-32). R1 = R1 - zero_extend(*(32-bit mem)).
-:SLGF RXYa_R1 "," dxb_RXYa_DL2_RXYa_X2_RXYa_B2 is RXYa_OP=0xE3 & RXYa_R1 & RXYa_X2 & RXYa_B2 & RXYa_DL2 & RXYa_DH2 & RXYa_OP2=0x1B & dxb_RXYa_DL2_RXYa_X2_RXYa_B2
-{
-    local ea:8;
-    local m32:4;
-    local a:8;
-    local b:8;
-    local r:8;
-    ea_D20(ea, RXYa_B2, RXYa_X2, RXYa_DH2, RXYa_DL2);
-    m32 = *:4 ea;
-    b = zext(m32);
-    a = RXYa_R1;
-    r = a - b;
-    RXYa_R1 = r;
-    cc_sublog64(r, a, b);
-}
+# SLGF: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # CGF: COMPARE (64<-32). Signed compare R1 vs sign_extend(*(32-bit mem)).
 # CC: 0=equal, 1=first low, 2=first high.
-:CGF RXYa_R1 "," dxb_RXYa_DL2_RXYa_X2_RXYa_B2 is RXYa_OP=0xE3 & RXYa_R1 & RXYa_X2 & RXYa_B2 & RXYa_DL2 & RXYa_DH2 & RXYa_OP2=0x30 & dxb_RXYa_DL2_RXYa_X2_RXYa_B2
-{
-    local ea:8;
-    local m32:4;
-    local b:8;
-    ea_D20(ea, RXYa_B2, RXYa_X2, RXYa_DH2, RXYa_DL2);
-    m32 = *:4 ea;
-    b = zext(m32);
-    if ((b & 0x80000000) == 0) goto <cgf_pos>;
-    b = b | 0xffffffff00000000;
-<cgf_pos>
-    cc_scmp64(RXYa_R1, b);
-}
+# CGF: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # CLGF: COMPARE LOGICAL (64<-32). Unsigned R1 vs zero_extend(*(32-bit)).
-:CLGF RXYa_R1 "," dxb_RXYa_DL2_RXYa_X2_RXYa_B2 is RXYa_OP=0xE3 & RXYa_R1 & RXYa_X2 & RXYa_B2 & RXYa_DL2 & RXYa_DH2 & RXYa_OP2=0x31 & dxb_RXYa_DL2_RXYa_X2_RXYa_B2
-{
-    local ea:8;
-    local m32:4;
-    local b:8;
-    ea_D20(ea, RXYa_B2, RXYa_X2, RXYa_DH2, RXYa_DL2);
-    m32 = *:4 ea;
-    b = zext(m32);
-    cc_ucmp(RXYa_R1, b);
-}
+# CLGF: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # LTGF: LOAD AND TEST (64<-32). R1 = sign_extend(*(32-bit mem)).
 # CC: 0/1/2 from signed 64-bit result (PoP 7-310).
-:LTGF RXYa_R1 "," dxb_RXYa_DL2_RXYa_X2_RXYa_B2 is RXYa_OP=0xE3 & RXYa_R1 & RXYa_X2 & RXYa_B2 & RXYa_DL2 & RXYa_DH2 & RXYa_OP2=0x32 & dxb_RXYa_DL2_RXYa_X2_RXYa_B2
-{
-    local ea:8;
-    local m32:4;
-    local b:8;
-    ea_D20(ea, RXYa_B2, RXYa_X2, RXYa_DH2, RXYa_DL2);
-    m32 = *:4 ea;
-    b = zext(m32);
-    if ((b & 0x80000000) == 0) goto <ltgf_pos>;
-    b = b | 0xffffffff00000000;
-<ltgf_pos>
-    RXYa_R1 = b;
-    cc_lttest(b, 63);
-}
+# LTGF: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # LGF: LOAD (64<-32). R1 = sign_extend(*(32-bit mem)). CC unchanged.
-:LGF RXYa_R1 "," dxb_RXYa_DL2_RXYa_X2_RXYa_B2 is RXYa_OP=0xE3 & RXYa_R1 & RXYa_X2 & RXYa_B2 & RXYa_DL2 & RXYa_DH2 & RXYa_OP2=0x14 & dxb_RXYa_DL2_RXYa_X2_RXYa_B2
-{
-    local ea:8;
-    local m32:4;
-    local b:8;
-    ea_D20(ea, RXYa_B2, RXYa_X2, RXYa_DH2, RXYa_DL2);
-    m32 = *:4 ea;
-    b = zext(m32);
-    if ((b & 0x80000000) == 0) goto <lgf_pos>;
-    b = b | 0xffffffff00000000;
-<lgf_pos>
-    RXYa_R1 = b;
-}
+# LGF: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # LLGF: LOAD LOGICAL (64<-32). R1 = zero_extend(*(32-bit mem)). CC unchanged.
-:LLGF RXYa_R1 "," dxb_RXYa_DL2_RXYa_X2_RXYa_B2 is RXYa_OP=0xE3 & RXYa_R1 & RXYa_X2 & RXYa_B2 & RXYa_DL2 & RXYa_DH2 & RXYa_OP2=0x16 & dxb_RXYa_DL2_RXYa_X2_RXYa_B2
-{
-    local ea:8;
-    local m32:4;
-    ea_D20(ea, RXYa_B2, RXYa_X2, RXYa_DH2, RXYa_DL2);
-    m32 = *:4 ea;
-    RXYa_R1 = zext(m32);
-}
+# LLGF: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # LLGC: LOAD LOGICAL CHARACTER (E3/90). R1 = zero_extend(*(8-bit mem)).
 # CC unchanged (PoP 7-318).
-:LLGC RXYa_R1 "," dxb_RXYa_DL2_RXYa_X2_RXYa_B2 is RXYa_OP=0xE3 & RXYa_R1 & RXYa_X2 & RXYa_B2 & RXYa_DL2 & RXYa_DH2 & RXYa_OP2=0x90 & dxb_RXYa_DL2_RXYa_X2_RXYa_B2
-{
-    local ea:8;
-    local m8:1;
-    ea_D20(ea, RXYa_B2, RXYa_X2, RXYa_DH2, RXYa_DL2);
-    m8 = *:1 ea;
-    RXYa_R1 = zext(m8);
-}
+# LLGC: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # LLGH: LOAD LOGICAL HALFWORD (E3/91). R1 = zero_extend(*(16-bit mem)).
 # CC unchanged.
-:LLGH RXYa_R1 "," dxb_RXYa_DL2_RXYa_X2_RXYa_B2 is RXYa_OP=0xE3 & RXYa_R1 & RXYa_X2 & RXYa_B2 & RXYa_DL2 & RXYa_DH2 & RXYa_OP2=0x91 & dxb_RXYa_DL2_RXYa_X2_RXYa_B2
-{
-    local ea:8;
-    local m16:2;
-    ea_D20(ea, RXYa_B2, RXYa_X2, RXYa_DH2, RXYa_DL2);
-    m16 = *:2 ea;
-    RXYa_R1 = zext(m16);
-}
+# LLGH: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 
 # ===========================================================================

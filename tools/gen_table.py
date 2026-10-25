@@ -38,13 +38,12 @@ for line in open(operand_file):
 # skip-list lines: "<name>" (every entry of that name) or "<name> <opcode> <mask>"
 SKIP = set(tuple(l.split()) for l in open(skip_file) if l.strip() and not l.startswith("#"))
 
-try:
-    import gen_semantics
-    TEMPLATES = gen_semantics.TEMPLATES
-except ImportError:
-    TEMPLATES = {}
+import os
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import gen_semantics
 
 fields = OrderedDict()      # name -> (token bits, lo, hi, signed)
+pairs = {}                  # operand index -> field naming the odd register of its pair
 attaches = OrderedDict()    # field -> register list name
 subtables = OrderedDict()   # name -> text
 pcodeops = set()
@@ -55,6 +54,7 @@ REGS = {
     "cr": [f"c{i}" for i in range(16)],
     "vlo": [f"v{i}" for i in range(16)],
     "vhi": [f"v{i}" for i in range(16, 32)],
+    "gpro": [f"r{i + 1}" for i in range(15)] + ["r0"],   # odd register of an even/odd pair
 }
 
 def field(L, shift, bits, kind="u"):
@@ -179,6 +179,7 @@ def build(e):
     cons = mask_constraints(L, opcode, mask)
     # group operands; each item: (kind, display, symbol-or-None, raw field, value-expression)
     items = []
+    pairs.clear()
     i = 0
     lenfld = None
     while i < len(operands):
@@ -206,6 +207,8 @@ def build(e):
             kind = "gpr" if fl & GPR else "fpr" if fl & FPR else "ar" if fl & AR else "cr"
             f = field(L, shift, bits, kind)
             items.append((kind, f, f, [f"{field(L, shift, bits, 'u')}=0"]))
+            if fl & GPR and fl & PAIR:
+                pairs[len(items) - 1] = field(L, shift, bits, "gpro")
         elif fl & LENGTH:
             f = field(L, shift, bits, "u")
             st = f"len{L}_{shift}_{bits}"
@@ -252,7 +255,8 @@ def build(e):
             continue
         emitted.add((m, v & m))
         disp = ",".join(it[1] for it in its)
-        pat = " & ".join(cons + extra + [it[1] for it in its if it[1] not in cons])
+        pat = " & ".join(cons + extra + [it[1] for it in its if it[1] not in cons] +
+                         [pf for pi, pf in pairs.items() if items[pi] in its])
         out.append(f":{mn} {disp} is {pat} {{\n{semantics(e, its, items, lenfld)}\n}}\n")
     return out
 
@@ -260,14 +264,21 @@ def semantics(e, its, items, lenfld):
     name, flags = e["name"], e["flags"]
     syms = [it[2] for it in items]
     kinds = [it[0] for it in items]
-    t = TEMPLATES.get(name)
+    fixed = {}
+    for oid in e["ops"]:
+        bits, shift, fl = OPS[oid]
+        fm, fv = fixed_bits(e["opcode"], e["mask"], bits, shift)
+        if fm == (1 << bits) - 1 and not fl & (DISP | BASE | INDEX):
+            fixed[shift] = fv
+    ctx = dict(name=name, kinds=kinds, fixed=fixed, pairs=dict(pairs),
+               ops=[it[2] if it in its else "0" for it in items])
+    try:
+        t = gen_semantics.semantics(ctx)
+    except Exception as ex:
+        import traceback; traceback.print_exc()
+        t = None
     if t is not None:
-        env = {f"op{k + 1}": s for k, s in enumerate(syms)}
-        env["len"] = (lenfld + " + 1") if lenfld else "0"
-        try:
-            return "  " + t.format(**env).replace("\n", "\n  ")
-        except (KeyError, IndexError):
-            pass
+        return "  " + t.replace("\n", "\n  ")
     op = "s390_" + ident(name)
     pcodeops.add(op)
     vals, pre = [], ""
@@ -355,6 +366,7 @@ with open(out_file, "w") as fh:
         fh.write(f"attach variables [ {f} ] [ {' '.join(REGS[kind])} ];\n")
     for op in sorted(pcodeops):
         fh.write(f"define pcodeop {op};\n")
+    fh.write(gen_semantics.PRELUDE)
     fh.write("\n")
     for st in subtables.values():
         fh.write(st)

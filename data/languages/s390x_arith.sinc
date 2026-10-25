@@ -296,309 +296,62 @@ macro cc_tm16(field, r, mask) {
 # CC: 0 = zero, 1 = <0, 2 = >0, 3 = overflow (PoP 7-26).
 # ===========================================================================
 
-:AR RR_R1 "," RR_R2 is RR_OP=0x1A & RR_R1 & RR_R2
-{
-    local a:8;
-    local b:8;
-    local r:8;
-    a = RR_R1 & 0xffffffff;
-    b = RR_R2 & 0xffffffff;
-    r = (a + b) & 0xffffffff;
-    RR_R1 = (RR_R1 & (0xFFFFFFFF << 32)) | r;
-    cc_add32(r, (a >> 31) & 1, (b >> 31) & 1);
-}
+# AR: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:A RXa_R1 "," dxb_RXa_D2_RXa_X2_RXa_B2 is RXa_OP=0x5A & RXa_R1 & RXa_X2 & RXa_B2 & RXa_D2 & dxb_RXa_D2_RXa_X2_RXa_B2
-{
-    local ea:8;
-    local m32:4;
-    local a:8;
-    local b:8;
-    local r:8;
-    ea_D12(ea, RXa_B2, RXa_X2, RXa_D2);
-    m32 = *:4 ea;
-    a = RXa_R1 & 0xffffffff;
-    b = zext(m32);
-    r = (a + b) & 0xffffffff;
-    RXa_R1 = (RXa_R1 & (0xFFFFFFFF << 32)) | r;
-    cc_add32(r, (a >> 31) & 1, (b >> 31) & 1);
-}
+# A: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:AH RXa_R1 "," dxb_RXa_D2_RXa_X2_RXa_B2 is RXa_OP=0x4A & RXa_R1 & RXa_X2 & RXa_B2 & RXa_D2 & dxb_RXa_D2_RXa_X2_RXa_B2
-{
-    local ea:8;
-    local m16:2;
-    local a:8;
-    local b:8;
-    local r:8;
-    ea_D12(ea, RXa_B2, RXa_X2, RXa_D2);
-    m16 = *:2 ea;
-    a = RXa_R1 & 0xffffffff;
-    b = sext(m16);
-    r = (a + b) & 0xffffffff;
-    RXa_R1 = (RXa_R1 & (0xFFFFFFFF << 32)) | r;
-    cc_add32(r, (a >> 31) & 1, (b >> 31) & 1);
-}
+# AH: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:AHY RXYa_R1 "," dxb_RXYa_DL2_RXYa_X2_RXYa_B2 is RXYa_OP=0xE3 & RXYa_R1 & RXYa_X2 & RXYa_B2 & RXYa_DL2 & RXYa_DH2 & RXYa_OP2=0x7A & dxb_RXYa_DL2_RXYa_X2_RXYa_B2
-{
-    local ea:8;
-    local m16:2;
-    local a:8;
-    local b:8;
-    local r:8;
-    ea_D20(ea, RXYa_B2, RXYa_X2, RXYa_DH2, RXYa_DL2);
-    m16 = *:2 ea;
-    a = RXYa_R1 & 0xffffffff;
-    b = sext(m16);
-    r = (a + b) & 0xffffffff;
-    RXYa_R1 = (RXYa_R1 & (0xFFFFFFFF << 32)) | r;
-    cc_add32(r, (a >> 31) & 1, (b >> 31) & 1);
-}
+# AHY: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:AHI RIa_R1 "," RIa_I2 is RIa_OP=0xA7 & RIa_R1 & RIa_OPCD=0xA & RIa_I2
-{
-    local a:8;
-    local b:8;
-    local r:8;
-    a = RIa_R1 & 0xffffffff;
-    local _ext_ria_i2:2;
-    _ext_ria_i2 = RIa_I2;
-    b = sext(_ext_ria_i2);
-    r = (a + b) & 0xffffffff;
-    RIa_R1 = (RIa_R1 & (0xFFFFFFFF << 32)) | r;
-    cc_add32(r, (a >> 31) & 1, (b >> 31) & 1);
-}
+# AHI: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:AFI RILa_R1 "," RILa_I2 is RILa_OP=0xC2 & RILa_R1 & RILa_OPCD=0x9 & RILa_I2
-{
-    local a:8;
-    local b:8;
-    local r:8;
-    a = RILa_R1 & 0xffffffff;
-    local _ext_rila_i2:4;
-    _ext_rila_i2 = RILa_I2;
-    b = sext(_ext_rila_i2);
-    r = (a + b) & 0xffffffff;
-    RILa_R1 = (RILa_R1 & (0xFFFFFFFF << 32)) | r;
-    cc_add32(r, (a >> 31) & 1, (b >> 31) & 1);
-}
+# AFI: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # ===========================================================================
 # ADD, 64-bit. Full-register result. CC as above (PoP 7-26).
 # ===========================================================================
 
-:AGR RRE_R1 "," RRE_R2 is RRE_OP=0xB908 & RRE_R1 & RRE_R2
-{
-    local a:8;
-    local b:8;
-    local r:8;
-    a = RRE_R1;
-    b = RRE_R2;
-    r = a + b;
-    RRE_R1 = r;
-    cc_add64(r, (a >> 63) & 1, (b >> 63) & 1);
-}
+# AGR: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:AG RXYa_R1 "," dxb_RXYa_DL2_RXYa_X2_RXYa_B2 is RXYa_OP=0xE3 & RXYa_R1 & RXYa_X2 & RXYa_B2 & RXYa_DL2 & RXYa_DH2 & RXYa_OP2=0x08 & dxb_RXYa_DL2_RXYa_X2_RXYa_B2
-{
-    local ea:8;
-    local m64:8;
-    local a:8;
-    local b:8;
-    local r:8;
-    ea_D20(ea, RXYa_B2, RXYa_X2, RXYa_DH2, RXYa_DL2);
-    m64 = *:8 ea;
-    a = RXYa_R1;
-    b = m64;
-    r = a + b;
-    RXYa_R1 = r;
-    cc_add64(r, (a >> 63) & 1, (b >> 63) & 1);
-}
+# AG: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:AGHI RIa_R1 "," RIa_I2 is RIa_OP=0xA7 & RIa_R1 & RIa_OPCD=0xB & RIa_I2
-{
-    local a:8;
-    local b:8;
-    local r:8;
-    a = RIa_R1;
-    local _ext_ria_i2:2;
-    _ext_ria_i2 = RIa_I2;
-    b = sext(_ext_ria_i2);
-    r = a + b;
-    RIa_R1 = r;
-    cc_add64(r, (a >> 63) & 1, (b >> 63) & 1);
-}
+# AGHI: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:AGFI RILa_R1 "," RILa_I2 is RILa_OP=0xC2 & RILa_R1 & RILa_OPCD=0x8 & RILa_I2
-{
-    local a:8;
-    local b:8;
-    local r:8;
-    a = RILa_R1;
-    local _ext_rila_i2:4;
-    _ext_rila_i2 = RILa_I2;
-    b = sext(_ext_rila_i2);
-    r = a + b;
-    RILa_R1 = r;
-    cc_add64(r, (a >> 63) & 1, (b >> 63) & 1);
-}
+# AGFI: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # ===========================================================================
 # SUBTRACT, 32-bit and 64-bit. CC: 0 = zero, 1 = <0, 2 = >0, 3 = overflow
 # (PoP 7-453/7-454).
 # ===========================================================================
 
-:SR RR_R1 "," RR_R2 is RR_OP=0x1B & RR_R1 & RR_R2
-{
-    local a:8;
-    local b:8;
-    local r:8;
-    a = RR_R1 & 0xffffffff;
-    b = RR_R2 & 0xffffffff;
-    r = (a - b) & 0xffffffff;
-    RR_R1 = (RR_R1 & (0xFFFFFFFF << 32)) | r;
-    cc_sub32(r, (a >> 31) & 1, (b >> 31) & 1);
-}
+# SR: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:S RXa_R1 "," dxb_RXa_D2_RXa_X2_RXa_B2 is RXa_OP=0x5B & RXa_R1 & RXa_X2 & RXa_B2 & RXa_D2 & dxb_RXa_D2_RXa_X2_RXa_B2
-{
-    local ea:8;
-    local m32:4;
-    local a:8;
-    local b:8;
-    local r:8;
-    ea_D12(ea, RXa_B2, RXa_X2, RXa_D2);
-    m32 = *:4 ea;
-    a = RXa_R1 & 0xffffffff;
-    b = zext(m32);
-    r = (a - b) & 0xffffffff;
-    RXa_R1 = (RXa_R1 & (0xFFFFFFFF << 32)) | r;
-    cc_sub32(r, (a >> 31) & 1, (b >> 31) & 1);
-}
+# S: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:SH RXa_R1 "," dxb_RXa_D2_RXa_X2_RXa_B2 is RXa_OP=0x4B & RXa_R1 & RXa_X2 & RXa_B2 & RXa_D2 & dxb_RXa_D2_RXa_X2_RXa_B2
-{
-    local ea:8;
-    local m16:2;
-    local a:8;
-    local b:8;
-    local r:8;
-    ea_D12(ea, RXa_B2, RXa_X2, RXa_D2);
-    m16 = *:2 ea;
-    a = RXa_R1 & 0xffffffff;
-    b = sext(m16);
-    r = (a - b) & 0xffffffff;
-    RXa_R1 = (RXa_R1 & (0xFFFFFFFF << 32)) | r;
-    cc_sub32(r, (a >> 31) & 1, (b >> 31) & 1);
-}
+# SH: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:SHY RXYa_R1 "," dxb_RXYa_DL2_RXYa_X2_RXYa_B2 is RXYa_OP=0xE3 & RXYa_R1 & RXYa_X2 & RXYa_B2 & RXYa_DL2 & RXYa_DH2 & RXYa_OP2=0x7B & dxb_RXYa_DL2_RXYa_X2_RXYa_B2
-{
-    local ea:8;
-    local m16:2;
-    local a:8;
-    local b:8;
-    local r:8;
-    ea_D20(ea, RXYa_B2, RXYa_X2, RXYa_DH2, RXYa_DL2);
-    m16 = *:2 ea;
-    a = RXYa_R1 & 0xffffffff;
-    b = sext(m16);
-    r = (a - b) & 0xffffffff;
-    RXYa_R1 = (RXYa_R1 & (0xFFFFFFFF << 32)) | r;
-    cc_sub32(r, (a >> 31) & 1, (b >> 31) & 1);
-}
+# SHY: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:SGR RRE_R1 "," RRE_R2 is RRE_OP=0xB909 & RRE_R1 & RRE_R2
-{
-    local a:8;
-    local b:8;
-    local r:8;
-    a = RRE_R1;
-    b = RRE_R2;
-    r = a - b;
-    RRE_R1 = r;
-    cc_sub64(r, (a >> 63) & 1, (b >> 63) & 1);
-}
+# SGR: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:SG RXYa_R1 "," dxb_RXYa_DL2_RXYa_X2_RXYa_B2 is RXYa_OP=0xE3 & RXYa_R1 & RXYa_X2 & RXYa_B2 & RXYa_DL2 & RXYa_DH2 & RXYa_OP2=0x09 & dxb_RXYa_DL2_RXYa_X2_RXYa_B2
-{
-    local ea:8;
-    local m64:8;
-    local a:8;
-    local b:8;
-    local r:8;
-    ea_D20(ea, RXYa_B2, RXYa_X2, RXYa_DH2, RXYa_DL2);
-    m64 = *:8 ea;
-    a = RXYa_R1;
-    b = m64;
-    r = a - b;
-    RXYa_R1 = r;
-    cc_sub64(r, (a >> 63) & 1, (b >> 63) & 1);
-}
+# SG: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # ===========================================================================
 # AND. CC: 0 = result zero, 1 = result not zero (PoP 7-33).
 # ===========================================================================
 
-:NR RR_R1 "," RR_R2 is RR_OP=0x14 & RR_R1 & RR_R2
-{
-    local r:8;
-    r = (RR_R1 & RR_R2) & 0xffffffff;
-    RR_R1 = (RR_R1 & (0xFFFFFFFF << 32)) | r;
-    cc_logic(r);
-}
+# NR: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:N RXa_R1 "," dxb_RXa_D2_RXa_X2_RXa_B2 is RXa_OP=0x54 & RXa_R1 & RXa_X2 & RXa_B2 & RXa_D2 & dxb_RXa_D2_RXa_X2_RXa_B2
-{
-    local ea:8;
-    local m32:4;
-    local r:8;
-    ea_D12(ea, RXa_B2, RXa_X2, RXa_D2);
-    m32 = *:4 ea;
-    r = (RXa_R1 & zext(m32)) & 0xffffffff;
-    RXa_R1 = (RXa_R1 & (0xFFFFFFFF << 32)) | r;
-    cc_logic(r);
-}
+# N: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:NY RXYa_R1 "," dxb_RXYa_DL2_RXYa_X2_RXYa_B2 is RXYa_OP=0xE3 & RXYa_R1 & RXYa_X2 & RXYa_B2 & RXYa_DL2 & RXYa_DH2 & RXYa_OP2=0x54 & dxb_RXYa_DL2_RXYa_X2_RXYa_B2
-{
-    local ea:8;
-    local m32:4;
-    local r:8;
-    ea_D20(ea, RXYa_B2, RXYa_X2, RXYa_DH2, RXYa_DL2);
-    m32 = *:4 ea;
-    r = (RXYa_R1 & zext(m32)) & 0xffffffff;
-    RXYa_R1 = (RXYa_R1 & (0xFFFFFFFF << 32)) | r;
-    cc_logic(r);
-}
+# NY: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:NGR RRE_R1 "," RRE_R2 is RRE_OP=0xB980 & RRE_R1 & RRE_R2
-{
-    RRE_R1 = RRE_R1 & RRE_R2;
-    cc_logic(RRE_R1);
-}
+# NGR: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:NG RXYa_R1 "," dxb_RXYa_DL2_RXYa_X2_RXYa_B2 is RXYa_OP=0xE3 & RXYa_R1 & RXYa_X2 & RXYa_B2 & RXYa_DL2 & RXYa_DH2 & RXYa_OP2=0x80 & dxb_RXYa_DL2_RXYa_X2_RXYa_B2
-{
-    local ea:8;
-    local m64:8;
-    ea_D20(ea, RXYa_B2, RXYa_X2, RXYa_DH2, RXYa_DL2);
-    m64 = *:8 ea;
-    RXYa_R1 = RXYa_R1 & m64;
-    cc_logic(RXYa_R1);
-}
+# NG: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:NI db_SI_D1_SI_B1 "," SI_I2 is SI_OP=0x94 & SI_I2 & SI_B1 & SI_D1 & db_SI_D1_SI_B1
-{
-    local ea:8;
-    local m1:1;
-    local r:1;
-    ea_D12(ea, SI_B1, zero, SI_D1);
-    m1 = *:1 ea;
-    r = m1 & SI_I2;
-    *:1 ea = r;    cc_logic(r);
-}
+# NI: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 :NC dlb_SSa_D1_SSa_L_SSa_B1 "," db_SSa_D2_SSa_B2 is SSa_OP=0xD4 & SSa_L & SSa_B1 & SSa_D1 & SSa_B2 & SSa_D2 & dlb_SSa_D1_SSa_L_SSa_B1 & db_SSa_D2_SSa_B2
 {
@@ -644,64 +397,17 @@ macro cc_tm16(field, r, mask) {
 # OR. CC: 0 = result zero, 1 = result not zero (PoP 7-353).
 # ===========================================================================
 
-:OR RR_R1 "," RR_R2 is RR_OP=0x16 & RR_R1 & RR_R2
-{
-    local r:8;
-    r = (RR_R1 | RR_R2) & 0xffffffff;
-    RR_R1 = (RR_R1 & (0xFFFFFFFF << 32)) | r;
-    cc_logic(r);
-}
+# OR: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:O RXa_R1 "," dxb_RXa_D2_RXa_X2_RXa_B2 is RXa_OP=0x56 & RXa_R1 & RXa_X2 & RXa_B2 & RXa_D2 & dxb_RXa_D2_RXa_X2_RXa_B2
-{
-    local ea:8;
-    local m32:4;
-    local r:8;
-    ea_D12(ea, RXa_B2, RXa_X2, RXa_D2);
-    m32 = *:4 ea;
-    r = (RXa_R1 | zext(m32)) & 0xffffffff;
-    RXa_R1 = (RXa_R1 & (0xFFFFFFFF << 32)) | r;
-    cc_logic(r);
-}
+# O: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:OY RXYa_R1 "," dxb_RXYa_DL2_RXYa_X2_RXYa_B2 is RXYa_OP=0xE3 & RXYa_R1 & RXYa_X2 & RXYa_B2 & RXYa_DL2 & RXYa_DH2 & RXYa_OP2=0x56 & dxb_RXYa_DL2_RXYa_X2_RXYa_B2
-{
-    local ea:8;
-    local m32:4;
-    local r:8;
-    ea_D20(ea, RXYa_B2, RXYa_X2, RXYa_DH2, RXYa_DL2);
-    m32 = *:4 ea;
-    r = (RXYa_R1 | zext(m32)) & 0xffffffff;
-    RXYa_R1 = (RXYa_R1 & (0xFFFFFFFF << 32)) | r;
-    cc_logic(r);
-}
+# OY: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:OGR RRE_R1 "," RRE_R2 is RRE_OP=0xB981 & RRE_R1 & RRE_R2
-{
-    RRE_R1 = RRE_R1 | RRE_R2;
-    cc_logic(RRE_R1);
-}
+# OGR: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:OG RXYa_R1 "," dxb_RXYa_DL2_RXYa_X2_RXYa_B2 is RXYa_OP=0xE3 & RXYa_R1 & RXYa_X2 & RXYa_B2 & RXYa_DL2 & RXYa_DH2 & RXYa_OP2=0x81 & dxb_RXYa_DL2_RXYa_X2_RXYa_B2
-{
-    local ea:8;
-    local m64:8;
-    ea_D20(ea, RXYa_B2, RXYa_X2, RXYa_DH2, RXYa_DL2);
-    m64 = *:8 ea;
-    RXYa_R1 = RXYa_R1 | m64;
-    cc_logic(RXYa_R1);
-}
+# OG: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:OI db_SI_D1_SI_B1 "," SI_I2 is SI_OP=0x96 & SI_I2 & SI_B1 & SI_D1 & db_SI_D1_SI_B1
-{
-    local ea:8;
-    local m1:1;
-    local r:1;
-    ea_D12(ea, SI_B1, zero, SI_D1);
-    m1 = *:1 ea;
-    r = m1 | SI_I2;
-    *:1 ea = r;    cc_logic(r);
-}
+# OI: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 :OC dlb_SSa_D1_SSa_L_SSa_B1 "," db_SSa_D2_SSa_B2 is SSa_OP=0xD6 & SSa_L & SSa_B1 & SSa_D1 & SSa_B2 & SSa_D2 & dlb_SSa_D1_SSa_L_SSa_B1 & db_SSa_D2_SSa_B2
 {
@@ -747,64 +453,17 @@ macro cc_tm16(field, r, mask) {
 # EXCLUSIVE OR. CC: 0 = result zero, 1 = result not zero (PoP 7-292).
 # ===========================================================================
 
-:XR RR_R1 "," RR_R2 is RR_OP=0x17 & RR_R1 & RR_R2
-{
-    local r:8;
-    r = (RR_R1 ^ RR_R2) & 0xffffffff;
-    RR_R1 = (RR_R1 & (0xFFFFFFFF << 32)) | r;
-    cc_logic(r);
-}
+# XR: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:X RXa_R1 "," dxb_RXa_D2_RXa_X2_RXa_B2 is RXa_OP=0x57 & RXa_R1 & RXa_X2 & RXa_B2 & RXa_D2 & dxb_RXa_D2_RXa_X2_RXa_B2
-{
-    local ea:8;
-    local m32:4;
-    local r:8;
-    ea_D12(ea, RXa_B2, RXa_X2, RXa_D2);
-    m32 = *:4 ea;
-    r = (RXa_R1 ^ zext(m32)) & 0xffffffff;
-    RXa_R1 = (RXa_R1 & (0xFFFFFFFF << 32)) | r;
-    cc_logic(r);
-}
+# X: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:XY RXYa_R1 "," dxb_RXYa_DL2_RXYa_X2_RXYa_B2 is RXYa_OP=0xE3 & RXYa_R1 & RXYa_X2 & RXYa_B2 & RXYa_DL2 & RXYa_DH2 & RXYa_OP2=0x57 & dxb_RXYa_DL2_RXYa_X2_RXYa_B2
-{
-    local ea:8;
-    local m32:4;
-    local r:8;
-    ea_D20(ea, RXYa_B2, RXYa_X2, RXYa_DH2, RXYa_DL2);
-    m32 = *:4 ea;
-    r = (RXYa_R1 ^ zext(m32)) & 0xffffffff;
-    RXYa_R1 = (RXYa_R1 & (0xFFFFFFFF << 32)) | r;
-    cc_logic(r);
-}
+# XY: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:XGR RRE_R1 "," RRE_R2 is RRE_OP=0xB982 & RRE_R1 & RRE_R2
-{
-    RRE_R1 = RRE_R1 ^ RRE_R2;
-    cc_logic(RRE_R1);
-}
+# XGR: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:XG RXYa_R1 "," dxb_RXYa_DL2_RXYa_X2_RXYa_B2 is RXYa_OP=0xE3 & RXYa_R1 & RXYa_X2 & RXYa_B2 & RXYa_DL2 & RXYa_DH2 & RXYa_OP2=0x82 & dxb_RXYa_DL2_RXYa_X2_RXYa_B2
-{
-    local ea:8;
-    local m64:8;
-    ea_D20(ea, RXYa_B2, RXYa_X2, RXYa_DH2, RXYa_DL2);
-    m64 = *:8 ea;
-    RXYa_R1 = RXYa_R1 ^ m64;
-    cc_logic(RXYa_R1);
-}
+# XG: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:XI db_SI_D1_SI_B1 "," SI_I2 is SI_OP=0x97 & SI_I2 & SI_B1 & SI_D1 & db_SI_D1_SI_B1
-{
-    local ea:8;
-    local m1:1;
-    local r:1;
-    ea_D12(ea, SI_B1, zero, SI_D1);
-    m1 = *:1 ea;
-    r = m1 ^ SI_I2;
-    *:1 ea = r;    cc_logic(r);
-}
+# XI: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 :XC dlb_SSa_D1_SSa_L_SSa_B1 "," db_SSa_D2_SSa_B2 is SSa_OP=0xD7 & SSa_L & SSa_B1 & SSa_D1 & SSa_B2 & SSa_D2 & dlb_SSa_D1_SSa_L_SSa_B1 & db_SSa_D2_SSa_B2
 {
@@ -1138,61 +797,13 @@ macro sra_core64(a, amt, r, ncc) {
 # CC: SLL/SRL unchanged; SLA 0/1/2/3; SRA 0/1/2 (PoP 7-438..7-442).
 # ===========================================================================
 
-:SLL RSa_R1 "," db_RSa_D2_RSa_B2 is RSa_OP=0x89 & RSa_R3=0 & RSa_R1 & RSa_B2 & RSa_D2 & db_RSa_D2_RSa_B2
-{
-    local sh:8;
-    local amt:8;
-    local a:8;
-    local r:8;
-    ea_D12(sh, RSa_B2, zero, RSa_D2);
-    amt = sh & 63;
-    a = RSa_R1 & 0xffffffff;
-    r = (a << amt) & 0xffffffff;
-    RSa_R1 = (RSa_R1 & (0xFFFFFFFF << 32)) | r;
-}
+# SLL: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:SRL RSa_R1 "," db_RSa_D2_RSa_B2 is RSa_OP=0x88 & RSa_R3=0 & RSa_R1 & RSa_B2 & RSa_D2 & db_RSa_D2_RSa_B2
-{
-    local sh:8;
-    local amt:8;
-    local a:8;
-    local r:8;
-    ea_D12(sh, RSa_B2, zero, RSa_D2);
-    amt = sh & 63;
-    a = RSa_R1 & 0xffffffff;
-    r = (a >> amt) & 0xffffffff;
-    RSa_R1 = (RSa_R1 & (0xFFFFFFFF << 32)) | r;
-}
+# SRL: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:SLA RSa_R1 "," db_RSa_D2_RSa_B2 is RSa_OP=0x8B & RSa_R3=0 & RSa_R1 & RSa_B2 & RSa_D2 & db_RSa_D2_RSa_B2
-{
-    local sh:8;
-    local amt:8;
-    local a:8;
-    local r:8;
-    local ncc:1;
-    ea_D12(sh, RSa_B2, zero, RSa_D2);
-    amt = sh & 63;
-    a = RSa_R1 & 0xffffffff;
-    sla_core32(a, amt, r, ncc);
-    RSa_R1 = (RSa_R1 & (0xFFFFFFFF << 32)) | r;
-    cc_set(ncc);
-}
+# SLA: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:SRA RSa_R1 "," db_RSa_D2_RSa_B2 is RSa_OP=0x8A & RSa_R3=0 & RSa_R1 & RSa_B2 & RSa_D2 & db_RSa_D2_RSa_B2
-{
-    local sh:8;
-    local amt:8;
-    local a:8;
-    local r:8;
-    local ncc:1;
-    ea_D12(sh, RSa_B2, zero, RSa_D2);
-    amt = sh & 63;
-    a = RSa_R1 & 0xffffffff;
-    sra_core32(a, amt, r, ncc);
-    RSa_R1 = (RSa_R1 & (0xFFFFFFFF << 32)) | r;
-    cc_set(ncc);
-}
+# SRA: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # ===========================================================================
 # SHIFTS, 32-bit, RSY-a "distinct operands" K-variants (PoP 7-438..7-442).
@@ -1200,317 +811,74 @@ macro sra_core64(a, amt, r, ncc) {
 # facility; assemblers also accept the classic mnemonics for these encodings.
 # ===========================================================================
 
-:SLLK RSYa_R1 "," RSYa_R3 "," db_RSYa_DL2_RSYa_B2 is RSYa_OP=0xEB & RSYa_R1 & RSYa_R3 & RSYa_B2 & RSYa_DL2 & RSYa_DH2 & RSYa_OP2=0xDF & db_RSYa_DL2_RSYa_B2
-{
-    local sh:8;
-    local amt:8;
-    local a:8;
-    local r:8;
-    ea_D20(sh, RSYa_B2, zero, RSYa_DH2, RSYa_DL2);
-    amt = sh & 63;
-    a = RSYa_R3 & 0xffffffff;
-    r = (a << amt) & 0xffffffff;
-    RSYa_R1 = (RSYa_R1 & (0xFFFFFFFF << 32)) | r;
-}
+# SLLK: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:SRLK RSYa_R1 "," RSYa_R3 "," db_RSYa_DL2_RSYa_B2 is RSYa_OP=0xEB & RSYa_R1 & RSYa_R3 & RSYa_B2 & RSYa_DL2 & RSYa_DH2 & RSYa_OP2=0xDE & db_RSYa_DL2_RSYa_B2
-{
-    local sh:8;
-    local amt:8;
-    local a:8;
-    local r:8;
-    ea_D20(sh, RSYa_B2, zero, RSYa_DH2, RSYa_DL2);
-    amt = sh & 63;
-    a = RSYa_R3 & 0xffffffff;
-    r = (a >> amt) & 0xffffffff;
-    RSYa_R1 = (RSYa_R1 & (0xFFFFFFFF << 32)) | r;
-}
+# SRLK: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:SLAK RSYa_R1 "," RSYa_R3 "," db_RSYa_DL2_RSYa_B2 is RSYa_OP=0xEB & RSYa_R1 & RSYa_R3 & RSYa_B2 & RSYa_DL2 & RSYa_DH2 & RSYa_OP2=0xDD & db_RSYa_DL2_RSYa_B2
-{
-    local sh:8;
-    local amt:8;
-    local a:8;
-    local r:8;
-    local ncc:1;
-    ea_D20(sh, RSYa_B2, zero, RSYa_DH2, RSYa_DL2);
-    amt = sh & 63;
-    a = RSYa_R3 & 0xffffffff;
-    sla_core32(a, amt, r, ncc);
-    RSYa_R1 = (RSYa_R1 & (0xFFFFFFFF << 32)) | r;
-    cc_set(ncc);
-}
+# SLAK: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:SRAK RSYa_R1 "," RSYa_R3 "," db_RSYa_DL2_RSYa_B2 is RSYa_OP=0xEB & RSYa_R1 & RSYa_R3 & RSYa_B2 & RSYa_DL2 & RSYa_DH2 & RSYa_OP2=0xDC & db_RSYa_DL2_RSYa_B2
-{
-    local sh:8;
-    local amt:8;
-    local a:8;
-    local r:8;
-    local ncc:1;
-    ea_D20(sh, RSYa_B2, zero, RSYa_DH2, RSYa_DL2);
-    amt = sh & 63;
-    a = RSYa_R3 & 0xffffffff;
-    sra_core32(a, amt, r, ncc);
-    RSYa_R1 = (RSYa_R1 & (0xFFFFFFFF << 32)) | r;
-    cc_set(ncc);
-}
+# SRAK: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # ===========================================================================
 # SHIFTS, 64-bit, RSY-a. R3 = source, R1 = destination.
 # CC: SLLG/SRLG unchanged; SLAG 0/1/2/3; SRAG 0/1/2 (PoP 7-438..7-442).
 # ===========================================================================
 
-:SLLG RSYa_R1 "," RSYa_R3 "," db_RSYa_DL2_RSYa_B2 is RSYa_OP=0xEB & RSYa_R1 & RSYa_R3 & RSYa_B2 & RSYa_DL2 & RSYa_DH2 & RSYa_OP2=0x0D & db_RSYa_DL2_RSYa_B2
-{
-    local sh:8;
-    local amt:8;
-    ea_D20(sh, RSYa_B2, zero, RSYa_DH2, RSYa_DL2);
-    amt = sh & 63;
-    RSYa_R1 = RSYa_R3 << amt;
-}
+# SLLG: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:SRLG RSYa_R1 "," RSYa_R3 "," db_RSYa_DL2_RSYa_B2 is RSYa_OP=0xEB & RSYa_R1 & RSYa_R3 & RSYa_B2 & RSYa_DL2 & RSYa_DH2 & RSYa_OP2=0x0C & db_RSYa_DL2_RSYa_B2
-{
-    local sh:8;
-    local amt:8;
-    ea_D20(sh, RSYa_B2, zero, RSYa_DH2, RSYa_DL2);
-    amt = sh & 63;
-    RSYa_R1 = RSYa_R3 >> amt;
-}
+# SRLG: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:SLAG RSYa_R1 "," RSYa_R3 "," db_RSYa_DL2_RSYa_B2 is RSYa_OP=0xEB & RSYa_R1 & RSYa_R3 & RSYa_B2 & RSYa_DL2 & RSYa_DH2 & RSYa_OP2=0x0B & db_RSYa_DL2_RSYa_B2
-{
-    local sh:8;
-    local amt:8;
-    local r:8;
-    local ncc:1;
-    ea_D20(sh, RSYa_B2, zero, RSYa_DH2, RSYa_DL2);
-    amt = sh & 63;
-    sla_core64(RSYa_R3, amt, r, ncc);
-    RSYa_R1 = r;
-    cc_set(ncc);
-}
+# SLAG: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:SRAG RSYa_R1 "," RSYa_R3 "," db_RSYa_DL2_RSYa_B2 is RSYa_OP=0xEB & RSYa_R1 & RSYa_R3 & RSYa_B2 & RSYa_DL2 & RSYa_DH2 & RSYa_OP2=0x0A & db_RSYa_DL2_RSYa_B2
-{
-    local sh:8;
-    local amt:8;
-    local r:8;
-    local ncc:1;
-    ea_D20(sh, RSYa_B2, zero, RSYa_DH2, RSYa_DL2);
-    amt = sh & 63;
-    sra_core64(RSYa_R3, amt, r, ncc);
-    RSYa_R1 = r;
-    cc_set(ncc);
-}
+# SRAG: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # ===========================================================================
 # ROTATE LEFT SINGLE LOGICAL (PoP 7-426). R3 = source, R1 = destination.
 # CC unchanged.
 # ===========================================================================
 
-:RLL RSYa_R1 "," RSYa_R3 "," db_RSYa_DL2_RSYa_B2 is RSYa_OP=0xEB & RSYa_R1 & RSYa_R3 & RSYa_B2 & RSYa_DL2 & RSYa_DH2 & RSYa_OP2=0x1D & db_RSYa_DL2_RSYa_B2
-{
-    local sh:8;
-    local amt:8;
-    local a:8;
-    local r:8;
-    ea_D20(sh, RSYa_B2, zero, RSYa_DH2, RSYa_DL2);
-    amt = (sh & 63) & 31;
-    a = RSYa_R3 & 0xffffffff;
-        if (amt != 0) goto <if_65_else>;
+# RLL: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-        r = a;
-    
-    goto <if_65_end>;
-    <if_65_else>
-
-        r = ((a << amt) | (a >> (32 - amt))) & 0xffffffff;
-    
-    <if_65_end>
-    RSYa_R1 = (RSYa_R1 & (0xFFFFFFFF << 32)) | r;
-}
-
-:RLLG RSYa_R1 "," RSYa_R3 "," db_RSYa_DL2_RSYa_B2 is RSYa_OP=0xEB & RSYa_R1 & RSYa_R3 & RSYa_B2 & RSYa_DL2 & RSYa_DH2 & RSYa_OP2=0x1C & db_RSYa_DL2_RSYa_B2
-{
-    local sh:8;
-    local amt:8;
-    local a:8;
-    ea_D20(sh, RSYa_B2, zero, RSYa_DH2, RSYa_DL2);
-    amt = sh & 63;
-    a = RSYa_R3;
-        if (amt != 0) goto <if_66_else>;
-
-        RSYa_R1 = a;
-    
-    goto <if_66_end>;
-    <if_66_else>
-
-        RSYa_R1 = (a << amt) | (a >> (64 - amt));
-    
-    <if_66_end>
-}
+# RLLG: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # ===========================================================================
 # COMPARE signed. CC: 0 = equal, 1 = first low, 2 = first high (PoP 7-141).
 # ===========================================================================
 
-:CR RR_R1 "," RR_R2 is RR_OP=0x19 & RR_R1 & RR_R2
-{
-    local a:8;
-    local b:8;
-    a = RR_R1 & 0xffffffff;
-    b = RR_R2 & 0xffffffff;
-    cc_scmp32(a, b);
-}
+# CR: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:C RXa_R1 "," dxb_RXa_D2_RXa_X2_RXa_B2 is RXa_OP=0x59 & RXa_R1 & RXa_X2 & RXa_B2 & RXa_D2 & dxb_RXa_D2_RXa_X2_RXa_B2
-{
-    local ea:8;
-    local m32:4;
-    local a:8;
-    local b:8;
-    ea_D12(ea, RXa_B2, RXa_X2, RXa_D2);
-    m32 = *:4 ea;
-    a = RXa_R1 & 0xffffffff;
-    b = zext(m32);
-    cc_scmp32(a, b);
-}
+# C: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:CH RXa_R1 "," dxb_RXa_D2_RXa_X2_RXa_B2 is RXa_OP=0x49 & RXa_R1 & RXa_X2 & RXa_B2 & RXa_D2 & dxb_RXa_D2_RXa_X2_RXa_B2
-{
-    local ea:8;
-    local m16:2;
-    local a:8;
-    local b:8;
-    ea_D12(ea, RXa_B2, RXa_X2, RXa_D2);
-    m16 = *:2 ea;
-    a = RXa_R1 & 0xffffffff;
-    b = sext(m16) & 0xffffffff;
-    cc_scmp32(a, b);
-}
+# CH: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:CHY RXYa_R1 "," dxb_RXYa_DL2_RXYa_X2_RXYa_B2 is RXYa_OP=0xE3 & RXYa_R1 & RXYa_X2 & RXYa_B2 & RXYa_DL2 & RXYa_DH2 & RXYa_OP2=0x79 & dxb_RXYa_DL2_RXYa_X2_RXYa_B2
-{
-    local ea:8;
-    local m16:2;
-    local a:8;
-    local b:8;
-    ea_D20(ea, RXYa_B2, RXYa_X2, RXYa_DH2, RXYa_DL2);
-    m16 = *:2 ea;
-    a = RXYa_R1 & 0xffffffff;
-    b = sext(m16) & 0xffffffff;
-    cc_scmp32(a, b);
-}
+# CHY: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:CGR RRE_R1 "," RRE_R2 is RRE_OP=0xB920 & RRE_R1 & RRE_R2
-{
-    cc_scmp64(RRE_R1, RRE_R2);
-}
+# CGR: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:CG RXYa_R1 "," dxb_RXYa_DL2_RXYa_X2_RXYa_B2 is RXYa_OP=0xE3 & RXYa_R1 & RXYa_X2 & RXYa_B2 & RXYa_DL2 & RXYa_DH2 & RXYa_OP2=0x20 & dxb_RXYa_DL2_RXYa_X2_RXYa_B2
-{
-    local ea:8;
-    local m64:8;
-    ea_D20(ea, RXYa_B2, RXYa_X2, RXYa_DH2, RXYa_DL2);
-    m64 = *:8 ea;
-    cc_scmp64(RXYa_R1, m64);
-}
+# CG: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:CHI RIa_R1 "," RIa_I2 is RIa_OP=0xA7 & RIa_R1 & RIa_OPCD=0xE & RIa_I2
-{
-    local a:8;
-    local b:8;
-    a = RIa_R1 & 0xffffffff;
-    local _ext4_ria_i2:2; _ext4_ria_i2 = RIa_I2;
-    b = sext(_ext4_ria_i2) & 0xffffffff;
-    cc_scmp32(a, b);
-}
+# CHI: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:CGHI RIa_R1 "," RIa_I2 is RIa_OP=0xA7 & RIa_R1 & RIa_OPCD=0xF & RIa_I2
-{
-    local b:8;
-    local _ext_ria_i2:2;
-    _ext_ria_i2 = RIa_I2;
-    b = sext(_ext_ria_i2);
-    cc_scmp64(RIa_R1, b);
-}
+# CGHI: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:CFI RILa_R1 "," RILa_I2 is RILa_OP=0xC2 & RILa_R1 & RILa_OPCD=0xD & RILa_I2
-{
-    local a:8;
-    local b:8;
-    a = RILa_R1 & 0xffffffff;
-    local _ext5_rila_i2:4; _ext5_rila_i2 = RILa_I2;
-    b = sext(_ext5_rila_i2) & 0xffffffff;
-    cc_scmp32(a, b);
-}
+# CFI: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:CGFI RILa_R1 "," RILa_I2 is RILa_OP=0xC2 & RILa_R1 & RILa_OPCD=0xC & RILa_I2
-{
-    local b:8;
-    local _ext_rila_i2:4;
-    _ext_rila_i2 = RILa_I2;
-    b = sext(_ext_rila_i2);
-    cc_scmp64(RILa_R1, b);
-}
+# CGFI: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # ===========================================================================
 # COMPARE LOGICAL (unsigned). CC: 0 = equal, 1 = first low, 2 = first high
 # (PoP 7-146).
 # ===========================================================================
 
-:CLR RR_R1 "," RR_R2 is RR_OP=0x15 & RR_R1 & RR_R2
-{
-    local a:8;
-    local b:8;
-    a = RR_R1 & 0xffffffff;
-    b = RR_R2 & 0xffffffff;
-    cc_ucmp(a, b);
-}
+# CLR: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:CL RXa_R1 "," dxb_RXa_D2_RXa_X2_RXa_B2 is RXa_OP=0x55 & RXa_R1 & RXa_X2 & RXa_B2 & RXa_D2 & dxb_RXa_D2_RXa_X2_RXa_B2
-{
-    local ea:8;
-    local m32:4;
-    local a:8;
-    local b:8;
-    ea_D12(ea, RXa_B2, RXa_X2, RXa_D2);
-    m32 = *:4 ea;
-    a = RXa_R1 & 0xffffffff;
-    b = zext(m32);
-    cc_ucmp(a, b);
-}
+# CL: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:CLG RXYa_R1 "," dxb_RXYa_DL2_RXYa_X2_RXYa_B2 is RXYa_OP=0xE3 & RXYa_R1 & RXYa_X2 & RXYa_B2 & RXYa_DL2 & RXYa_DH2 & RXYa_OP2=0x21 & dxb_RXYa_DL2_RXYa_X2_RXYa_B2
-{
-    local ea:8;
-    local m64:8;
-    ea_D20(ea, RXYa_B2, RXYa_X2, RXYa_DH2, RXYa_DL2);
-    m64 = *:8 ea;
-    cc_ucmp(RXYa_R1, m64);
-}
+# CLG: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:CLGR RRE_R1 "," RRE_R2 is RRE_OP=0xB921 & RRE_R1 & RRE_R2
-{
-    cc_ucmp(RRE_R1, RRE_R2);
-}
+# CLGR: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:CLI db_SI_D1_SI_B1 "," SI_I2 is SI_OP=0x95 & SI_I2 & SI_B1 & SI_D1 & db_SI_D1_SI_B1
-{
-    local ea:8;
-    local m1:1;
-    local a:8;
-    local b:8;
-    ea_D12(ea, SI_B1, zero, SI_D1);
-    m1 = *:1 ea;
-    a = zext(m1);
-    local _ext_si_i2:1;
-    _ext_si_i2 = SI_I2;
-    b = zext(_ext_si_i2);
-    cc_ucmp(a, b);
-}
+# CLI: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 :CLC dlb_SSa_D1_SSa_L_SSa_B1 "," db_SSa_D2_SSa_B2 is SSa_OP=0xD5 & SSa_L & SSa_B1 & SSa_D1 & SSa_B2 & SSa_D2 & dlb_SSa_D1_SSa_L_SSa_B1 & db_SSa_D2_SSa_B2
 {
@@ -1572,83 +940,17 @@ define token RIM(32)
 ;
 attach variables [ RIM_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14 r15 ];
 
-:TMHH RIM_R1 "," RIM_I2 is RIM_OP=0xA7 & RIM_R1 & RIM_M3=0x2 & RIM_I2
-{
-    local f:8;
-    local mask:8;
-    local r:8;
-    f = (RIM_R1 >> 48) & 0xffff;
-    mask = RIM_I2 & 0xffff;
-    r = f & mask;
-    cc_tm16(f, r, mask);
-}
+# TMHH: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:TMHL RIM_R1 "," RIM_I2 is RIM_OP=0xA7 & RIM_R1 & RIM_M3=0x3 & RIM_I2
-{
-    local f:8;
-    local mask:8;
-    local r:8;
-    f = (RIM_R1 >> 32) & 0xffff;
-    mask = RIM_I2 & 0xffff;
-    r = f & mask;
-    cc_tm16(f, r, mask);
-}
+# TMHL: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:TMLH RIM_R1 "," RIM_I2 is RIM_OP=0xA7 & RIM_R1 & RIM_M3=0x0 & RIM_I2
-{
-    local f:8;
-    local mask:8;
-    local r:8;
-    f = (RIM_R1 >> 16) & 0xffff;
-    mask = RIM_I2 & 0xffff;
-    r = f & mask;
-    cc_tm16(f, r, mask);
-}
+# TMLH: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:TMLL RIM_R1 "," RIM_I2 is RIM_OP=0xA7 & RIM_R1 & RIM_M3=0x1 & RIM_I2
-{
-    local f:8;
-    local mask:8;
-    local r:8;
-    f = RIM_R1 & 0xffff;
-    mask = RIM_I2 & 0xffff;
-    r = f & mask;
-    cc_tm16(f, r, mask);
-}
+# TMLL: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:TM db_SI_D1_SI_B1 "," SI_I2 is SI_OP=0x91 & SI_I2 & SI_B1 & SI_D1 & db_SI_D1_SI_B1
-{
-    local ea:8;
-    local m1:1;
-    local m:8;
-    local mask:8;
-    local r:8;
-    ea_D12(ea, SI_B1, zero, SI_D1);
-    m1 = *:1 ea;
-    m = zext(m1);
-    local _ext_si_i2:1;
-    _ext_si_i2 = SI_I2;
-    mask = zext(_ext_si_i2);
-    r = m & mask;
-    cc_tm(r, mask);
-}
+# TM: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # display-only address operand (tools/fix_display.py)
 db_SIYd_DL1_SIYd_B1: dispSIYd_DL1 is SIYd_DL1 & SIYd_DH1 & SIYd_B1=0 [ dispSIYd_DL1 = ((SIYd_DH1 << 12) | SIYd_DL1) - (((SIYd_DH1 >> 7) & 1) << 20); ] { }
 db_SIYd_DL1_SIYd_B1: dispSIYd_DL1(SIYd_B1) is SIYd_DL1 & SIYd_DH1 & SIYd_B1 [ dispSIYd_DL1 = ((SIYd_DH1 << 12) | SIYd_DL1) - (((SIYd_DH1 >> 7) & 1) << 20); ] { }
-:TMY db_SIYd_DL1_SIYd_B1 "," SIYd_I2 is SIYd_OP=0xEB & SIYd_I2 & SIYd_B1 & SIYd_DL1 & SIYd_DH1 & SIYd_OP2=0x51 & db_SIYd_DL1_SIYd_B1
-{
-    local ea:8;
-    local m1:1;
-    local m:8;
-    local mask:8;
-    local r:8;
-    ea_D20(ea, SIYd_B1, zero, SIYd_DH1, SIYd_DL1);
-    m1 = *:1 ea;
-    m = zext(m1);
-    local _ext_siyd_i2:1;
-    _ext_siyd_i2 = SIYd_I2;
-    mask = zext(_ext_siyd_i2);
-    r = m & mask;
-    cc_tm(r, mask);
-}
+# TMY: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
