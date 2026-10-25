@@ -13,3 +13,7 @@ tests/ghidra_smoke_decompile.c
 # Ghidra decompiler build outputs (never commit)
 libsla.a
 sleigh_opt
+lib/
+build/
+dist/
+.gradle/

@@ -105,7 +105,7 @@ objects imported with the stock `ElfLoader` kept their RELA relocations
 unapplied. Added (extension auto-discovered by `ClassSearcher`; no factory or
 registration file needed):
 
-- `loaders/src/ghidra/app/util/bin/format/elf/relocation/S390_ElfRelocationType.java`
+- `src/main/java/ghidra/app/util/bin/format/elf/relocation/S390_ElfRelocationType.java`
   — all `R_390_*` type IDs (0–65, 250–251) with ABI formulas in comments.
 - `.../S390_ElfRelocationContext.java` — extends `ElfGotRelocationContext`
   (must live in `ghidra.app.util.bin.format.elf.relocation`: the base ctor is
@@ -250,7 +250,7 @@ modeled. Select it in the GUI via the language/compiler pair
 
 ## 4. Classic MVS load-module loader (`ZosLoadModuleLoader`)
 
-**Source:** `loaders/src/s390x/loaders/ZosLoadModuleLoader.java`
+**Source:** `src/main/java/s390x/loaders/ZosLoadModuleLoader.java`
 (+ `ZosUtil.java`), built by `tools/build_zos_loaders.sh` into
 `Ghidra/Processors/s390x/lib/s390x-zos-loaders.jar`. Discovered by Ghidra's
 `ClassSearcher` with no `.opinion` file; headless selection is by class
@@ -317,7 +317,7 @@ defaults to the first LR item (else offset 0).
 
 ## 5. GOFF object loader (`ZosGoffLoader`)
 
-**Source:** `loaders/src/s390x/loaders/ZosGoffLoader.java`, same jar;
+**Source:** `src/main/java/s390x/loaders/ZosGoffLoader.java`, same jar;
 headless: `-loader ZosGoffLoader`.
 
 Parses the documented subset of SA22-7644 Appendix C ("Generalized

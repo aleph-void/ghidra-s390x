@@ -9,7 +9,7 @@ CP=$(ls "$G"/Ghidra/Framework/*/lib/*.jar "$G"/Ghidra/Features/*/lib/*.jar | tr 
 rm -rf "$PROJ"/loaders/build
 mkdir -p "$PROJ"/loaders/build
 javac -nowarn -cp "$CP" -d "$PROJ"/loaders/build \
-    "$PROJ"/loaders/src/s390x/loaders/*.java
+    "$PROJ"/src/main/java/s390x/loaders/*.java
 mkdir -p "$G"/Ghidra/Processors/s390x/lib
 jar cf "$G"/Ghidra/Processors/s390x/lib/s390x-zos-loaders.jar \
     -C "$PROJ"/loaders/build .

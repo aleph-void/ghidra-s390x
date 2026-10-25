@@ -11,7 +11,7 @@ CP=$(ls "$G"/Ghidra/Framework/*/lib/*.jar "$G"/Ghidra/Features/*/lib/*.jar | tr 
 rm -rf "$PROJ"/loaders/build-elfreloc
 mkdir -p "$PROJ"/loaders/build-elfreloc
 javac -nowarn -cp "$CP" -d "$PROJ"/loaders/build-elfreloc \
-    "$PROJ"/loaders/src/ghidra/app/util/bin/format/elf/relocation/*.java
+    "$PROJ"/src/main/java/ghidra/app/util/bin/format/elf/relocation/*.java
 mkdir -p "$G"/Ghidra/Processors/s390x/lib
 jar cf "$G"/Ghidra/Processors/s390x/lib/s390x-elf-reloc.jar \
     -C "$PROJ"/loaders/build-elfreloc .
