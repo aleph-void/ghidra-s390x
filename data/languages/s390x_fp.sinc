@@ -50,8 +50,8 @@
 # the most-significant end, so offset+0 is the high 32 bits where short
 # FP data lives). Low 32 bits are never touched through these aliases.
 define register offset=0x0c0 size=4 [
-    f0h f1h f2h f3h f4h f5h f6h f7h
-    f8h f9h f10h f11h f12h f13h f14h f15h
+    f0h  _ _ _ f1h  _ _ _ f2h  _ _ _ f3h  _ _ _ f4h  _ _ _ f5h  _ _ _ f6h  _ _ _ f7h  _ _ _
+    f8h  _ _ _ f9h  _ _ _ f10h _ _ _ f11h _ _ _ f12h _ _ _ f13h _ _ _ f14h _ _ _ f15h _ _ _
 ];
 
 # ---------------------------------------------------------------------------
@@ -465,9 +465,9 @@ attach variables [ RREl_R1 ] [ f0 f1 f2 f3 f4 f5 f6 f7 f8 f9 f10 f11 f12 f13 f14
 attach variables [ RREl_R2 ] [ f0 f1 f2 f3 f4 f5 f6 f7 f8 f9 f10 f11 f12 f13 f14 f15 ];
 attach variables [ RREg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14 r15 ];
 attach variables [ RREsg_R1 ] [ f0h f1h f2h f3h f4h f5h f6h f7h f8h f9h f10h f11h f12h f13h f14h f15h ];
-attach variables [ RREsg_R2 ] [ zero r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14 r15 ];
+attach variables [ RREsg_R2 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14 r15 ];
 attach variables [ RRElg_R1 ] [ f0 f1 f2 f3 f4 f5 f6 f7 f8 f9 f10 f11 f12 f13 f14 f15 ];
-attach variables [ RRElg_R2 ] [ zero r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14 r15 ];
+attach variables [ RRElg_R2 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14 r15 ];
 attach variables [ RREfg_R1 ] [ f0 f1 f2 f3 f4 f5 f6 f7 f8 f9 f10 f11 f12 f13 f14 f15 ];
 attach variables [ RREfg_R2 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14 r15 ];
 attach variables [ RREgf_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14 r15 ];
@@ -477,9 +477,9 @@ attach variables [ RRFs_R2 ] [ f0h f1h f2h f3h f4h f5h f6h f7h f8h f9h f10h f11h
 attach variables [ RRFl_R1 ] [ f0 f1 f2 f3 f4 f5 f6 f7 f8 f9 f10 f11 f12 f13 f14 f15 ];
 attach variables [ RRFl_R2 ] [ f0 f1 f2 f3 f4 f5 f6 f7 f8 f9 f10 f11 f12 f13 f14 f15 ];
 attach variables [ RRFsg_R1 ] [ f0h f1h f2h f3h f4h f5h f6h f7h f8h f9h f10h f11h f12h f13h f14h f15h ];
-attach variables [ RRFsg_R2 ] [ zero r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14 r15 ];
+attach variables [ RRFsg_R2 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14 r15 ];
 attach variables [ RRFlg_R1 ] [ f0 f1 f2 f3 f4 f5 f6 f7 f8 f9 f10 f11 f12 f13 f14 f15 ];
-attach variables [ RRFlg_R2 ] [ zero r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14 r15 ];
+attach variables [ RRFlg_R2 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14 r15 ];
 
 # Additional FP attachments.
 attach variables [ RRDs_R1 RRDs_R3 RRDs_R2 ] [ f0h f1h f2h f3h f4h f5h f6h f7h f8h f9h f10h f11h f12h f13h f14h f15h ];

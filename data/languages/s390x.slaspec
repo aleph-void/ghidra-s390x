@@ -303,9 +303,11 @@ define register offset=0x0c0 size=16 [
 # 16 x 64-bit floating-point registers: the leftmost (most significant)
 # 64 bits of v0-v15, i.e. they overlap the low-address half of v0-v15
 # (big-endian: most significant bytes live at the lowest address).
+# FPR n is the leftmost 64 bits of VR n (big-endian register space: the low offsets of a
+# 16-byte vector register are its most significant bytes).
 define register offset=0x0c0 size=8 [
-    f0  f1  f2  f3  f4  f5  f6  f7
-    f8  f9  f10 f11 f12 f13 f14 f15
+    f0  _ f1  _ f2  _ f3  _ f4  _ f5  _ f6  _ f7  _
+    f8  _ f9  _ f10 _ f11 _ f12 _ f13 _ f14 _ f15 _
 ];
 
 # PSW pieces. The PSW is 128 bits: bits 0-63 hold masks/flags (including the
@@ -324,6 +326,11 @@ define register offset=0x2d0 size=8 [ zero ];
 # Floating-point-control register (32 bits), written by LFPC. Lives at a
 # free offset after the constant-zero pseudo-register.
 define register offset=0x2d8 size=4 [ fpc ];
+# control registers
+define register offset=0x300 size=8 [
+    c0  c1  c2  c3  c4  c5  c6  c7
+    c8  c9  c10 c11 c12 c13 c14 c15
+];
 
 # ---------------------------------------------------------------------------
 # Field -> register attachments
