@@ -263,3 +263,12 @@ llzrgf
 laey
 flogr
 popcnt
+brxh
+brxhg
+brxle
+brxlg
+bxh
+bxhg
+bxle
+bxleg
+brcth

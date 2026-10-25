@@ -601,8 +601,32 @@ _c("cl clr cly clfi", 4, 4, "z", True); _c("clg clgr", 8, 8, "z", True); _c("clg
 _c("chf", "h", 4, "s", False); _c("clhf", "h", 4, "z", True); _c("cih", "h", 4, "s", False); _c("clih", "h", 4, "z", True)
 _c("chhr", "h", 4, "s", False); _c("clhhr", "h", 4, "z", True); _c("chlr", "hl", 4, "s", False); _c("clhlr", "hl", 4, "z", True)
 
+NEEDS_OR = {"brxh", "brxhg", "brxle", "brxlg", "bxh", "bxhg", "bxle", "bxleg"}
+
 def core(ctx):
     n, o, k = ctx["name"], ctx["ops"], ctx["kinds"]
+    if n in NEEDS_OR:
+        w = 8 if n.endswith(("g",)) else 4
+        cmpreg = ctx["ors"][1]
+        sel = (lambda r: r) if w == 8 else (lambda r: f"{r}:4")
+        tgt = o[2]
+        t = [f"local inc:{w} = {sel(o[1])}; local lim:{w} = {sel(cmpreg)}; local sum:{w} = {sel(o[0])} + inc;",
+             put(o[0], w, "sum"),
+             f"local take:1 = sum {'s>' if 'h' in n[1:4] else 's<='} lim;"]
+        if k[2] == "rel":
+            t.append(f"if (take) goto {tgt};")
+        else:
+            t.append(f"if (!take) goto <nt>;\ngoto [{tgt}];\n<nt>")
+        return "\n".join(t)
+    if n == "brcth":
+        return f"local v:4 = {o[0]}(4) - 1; gs_seth32({o[0]}, v);\nif (v != 0) goto {o[1]};"
+    if n in ("bi", "bic") or re.fullmatch(r"bi(o|h|p|nle|l|m|nhe|lh|ne|nz|e|z|nlh|he|nl|nm|le|nh|np|no)", n):
+        tgt = o[-1]
+        if n == "bi":
+            return f"local t:8 = *:8 {tgt}; goto [t];"
+        mexpr = o[0] if n == "bic" else str(BC_NAMES[n[2:]])
+        return (f"local mk:8 = {mexpr}; local take:1; gs_mask(mk, take); local t:8 = *:8 {tgt};\n"
+                f"if (!take) goto <nt>;\ngoto [t];\n<nt>")
     if n in ARITH:
         op, w, s, ext, cc, form = ARITH[n]
         vw = 4 if w in (4, "h") else w

@@ -44,6 +44,7 @@ import gen_semantics
 
 fields = OrderedDict()      # name -> (token bits, lo, hi, signed)
 pairs = {}                  # operand index -> field naming the odd register of its pair
+ors = {}                    # operand index -> field naming register R|1
 attaches = OrderedDict()    # field -> register list name
 subtables = OrderedDict()   # name -> text
 pcodeops = set()
@@ -55,6 +56,7 @@ REGS = {
     "vlo": [f"v{i}" for i in range(16)],
     "vhi": [f"v{i}" for i in range(16, 32)],
     "gpro": [f"r{i + 1}" for i in range(15)] + ["r0"],   # odd register of an even/odd pair
+    "gpror": [f"r{i | 1}" for i in range(16)],           # R|1 (BXH/BXLE comparand)
 }
 
 def field(L, shift, bits, kind="u"):
@@ -180,6 +182,7 @@ def build(e):
     # group operands; each item: (kind, display, symbol-or-None, raw field, value-expression)
     items = []
     pairs.clear()
+    ors.clear()
     i = 0
     lenfld = None
     while i < len(operands):
@@ -209,6 +212,8 @@ def build(e):
             items.append((kind, f, f, [f"{field(L, shift, bits, 'u')}=0"]))
             if fl & GPR and fl & PAIR:
                 pairs[len(items) - 1] = field(L, shift, bits, "gpro")
+            if fl & GPR and name in gen_semantics.NEEDS_OR:
+                ors[len(items) - 1] = field(L, shift, bits, "gpror")
         elif fl & LENGTH:
             f = field(L, shift, bits, "u")
             st = f"len{L}_{shift}_{bits}"
@@ -256,7 +261,8 @@ def build(e):
         emitted.add((m, v & m))
         disp = ",".join(it[1] for it in its)
         pat = " & ".join(cons + extra + [it[1] for it in its if it[1] not in cons] +
-                         [pf for pi, pf in pairs.items() if items[pi] in its])
+                         [pf for pi, pf in pairs.items() if items[pi] in its] +
+                         [of for oi, of in ors.items() if items[oi] in its])
         out.append(f":{mn} {disp} is {pat} {{\n{semantics(e, its, items, lenfld)}\n}}\n")
     return out
 
@@ -270,7 +276,7 @@ def semantics(e, its, items, lenfld):
         fm, fv = fixed_bits(e["opcode"], e["mask"], bits, shift)
         if fm == (1 << bits) - 1 and not fl & (DISP | BASE | INDEX):
             fixed[shift] = fv
-    ctx = dict(name=name, kinds=kinds, fixed=fixed, pairs=dict(pairs),
+    ctx = dict(name=name, kinds=kinds, fixed=fixed, pairs=dict(pairs), ors=dict(ors),
                ops=[it[2] if it in its else "0" for it in items])
     try:
         t = gen_semantics.semantics(ctx)

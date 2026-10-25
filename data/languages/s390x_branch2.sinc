@@ -515,37 +515,9 @@ RIEd_Target: RIEd_TargetLoc is RIEd_TargetLoc { export *:8 RIEd_TargetLoc; }
 # display-only address operand (tools/fix_display.py)
 db_RSd_D2_RSd_B2: RSd_D2 is RSd_D2 & RSd_B2=0  { }
 db_RSd_D2_RSd_B2: RSd_D2(RSd_B2) is RSd_D2 & RSd_B2  { }
-:BXH RSd_R1 "," RSd_R3 "," db_RSd_D2_RSd_B2 is RSd_OP=0x86 & RSd_R1 & RSd_R3 & RSd_R3c & RSd_B2 & RSd_D2 & db_RSd_D2_RSd_B2
-{
-    local ea:8;
-    local inc:8;
-    local cmp:8;
-    local sum:8;
-    ea_D12(ea, RSd_B2, zero, RSd_D2);
-    inc = RSd_R3 & 0xffffffff;
-    cmp = RSd_R3c & 0xffffffff;
-    sum = ((RSd_R1 & 0xffffffff) + inc) & 0xffffffff;
-    RSd_R1 = (RSd_R1 & (0xFFFFFFFF << 32)) | sum;
-    if (sum s<= cmp) goto <bxh_skip>;
-    goto [ea];
-    <bxh_skip>
-}
+# BXH: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:BXLE RSd_R1 "," RSd_R3 "," db_RSd_D2_RSd_B2 is RSd_OP=0x87 & RSd_R1 & RSd_R3 & RSd_R3c & RSd_B2 & RSd_D2 & db_RSd_D2_RSd_B2
-{
-    local ea:8;
-    local inc:8;
-    local cmp:8;
-    local sum:8;
-    ea_D12(ea, RSd_B2, zero, RSd_D2);
-    inc = RSd_R3 & 0xffffffff;
-    cmp = RSd_R3c & 0xffffffff;
-    sum = ((RSd_R1 & 0xffffffff) + inc) & 0xffffffff;
-    RSd_R1 = (RSd_R1 & (0xFFFFFFFF << 32)) | sum;
-    if (sum s> cmp) goto <bxle_skip>;
-    goto [ea];
-    <bxle_skip>
-}
+# BXLE: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # ---------------------------------------------------------------------------
 # BRANCH ON INDEX HIGH (BXHG) / LOW OR EQUAL (BXLEG) — RSY format, 64-bit
@@ -556,33 +528,9 @@ db_RSd_D2_RSd_B2: RSd_D2(RSd_B2) is RSd_D2 & RSd_B2  { }
 # display-only address operand (tools/fix_display.py)
 db_RSYd_DL2_RSYd_B2: dispRSYd_DL2 is RSYd_DL2 & RSYd_DH2 & RSYd_B2=0 [ dispRSYd_DL2 = ((RSYd_DH2 << 12) | RSYd_DL2) - (((RSYd_DH2 >> 7) & 1) << 20); ] { }
 db_RSYd_DL2_RSYd_B2: dispRSYd_DL2(RSYd_B2) is RSYd_DL2 & RSYd_DH2 & RSYd_B2 [ dispRSYd_DL2 = ((RSYd_DH2 << 12) | RSYd_DL2) - (((RSYd_DH2 >> 7) & 1) << 20); ] { }
-:BXHG RSYd_R1 "," RSYd_R3 "," db_RSYd_DL2_RSYd_B2 is RSYd_OP=0xEB & RSYd_OP2=0x44 & RSYd_R1 & RSYd_R3 & RSYd_R3c & RSYd_B2 & RSYd_DL2 & RSYd_DH2 & db_RSYd_DL2_RSYd_B2
-{
-    local ea:8;
-    local inc:8;
-    local cmp:8;
-    ea_D20(ea, RSYd_B2, zero, RSYd_DH2, RSYd_DL2);
-    inc = RSYd_R3;
-    cmp = RSYd_R3c;
-    RSYd_R1 = RSYd_R1 + inc;
-    if (RSYd_R1 s<= cmp) goto <bxhg_skip>;
-    goto [ea];
-    <bxhg_skip>
-}
+# BXHG: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:BXLEG RSYd_R1 "," RSYd_R3 "," db_RSYd_DL2_RSYd_B2 is RSYd_OP=0xEB & RSYd_OP2=0x45 & RSYd_R1 & RSYd_R3 & RSYd_R3c & RSYd_B2 & RSYd_DL2 & RSYd_DH2 & db_RSYd_DL2_RSYd_B2
-{
-    local ea:8;
-    local inc:8;
-    local cmp:8;
-    ea_D20(ea, RSYd_B2, zero, RSYd_DH2, RSYd_DL2);
-    inc = RSYd_R3;
-    cmp = RSYd_R3c;
-    RSYd_R1 = RSYd_R1 + inc;
-    if (RSYd_R1 s> cmp) goto <bxleg_skip>;
-    goto [ea];
-    <bxleg_skip>
-}
+# BXLEG: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # ---------------------------------------------------------------------------
 # BRANCH RELATIVE ON INDEX HIGH (BRXH) / LOW OR EQUAL (BRXLE) — RSI, 32-bit
@@ -590,29 +538,9 @@ db_RSYd_DL2_RSYd_B2: dispRSYd_DL2(RSYd_B2) is RSYd_DL2 & RSYd_DH2 & RSYd_B2 [ di
 # target is inst_addr + 2*I2 (signed halfword count) via rel_RI16.
 # ---------------------------------------------------------------------------
 
-:BRXH RSId_R1 "," RSId_R3 "," RSId_Target is RSId_OP=0x84 & RSId_R1 & RSId_R3 & RSId_R3c & RSId_Target
-{
-    local inc:8;
-    local cmp:8;
-    local sum:8;
-    inc = RSId_R3 & 0xffffffff;
-    cmp = RSId_R3c & 0xffffffff;
-    sum = ((RSId_R1 & 0xffffffff) + inc) & 0xffffffff;
-    RSId_R1 = (RSId_R1 & (0xFFFFFFFF << 32)) | sum;
-    if (sum s> cmp) goto RSId_Target;
-}
+# BRXH: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:BRXLE RSId_R1 "," RSId_R3 "," RSId_Target is RSId_OP=0x85 & RSId_R1 & RSId_R3 & RSId_R3c & RSId_Target
-{
-    local inc:8;
-    local cmp:8;
-    local sum:8;
-    inc = RSId_R3 & 0xffffffff;
-    cmp = RSId_R3c & 0xffffffff;
-    sum = ((RSId_R1 & 0xffffffff) + inc) & 0xffffffff;
-    RSId_R1 = (RSId_R1 & (0xFFFFFFFF << 32)) | sum;
-    if (sum s<= cmp) goto RSId_Target;
-}
+# BRXLE: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # ---------------------------------------------------------------------------
 # BRANCH RELATIVE ON INDEX HIGH (BRXHG) / LOW OR EQUAL (BRXLG) — RIEe, 64
@@ -620,25 +548,9 @@ db_RSYd_DL2_RSYd_B2: dispRSYd_DL2(RSYd_B2) is RSYd_DL2 & RSYd_DH2 & RSYd_B2 [ di
 # BXHG/BXLEG; the target is inst_addr + 2*RI2 via rel_RI16.
 # ---------------------------------------------------------------------------
 
-:BRXHG RIEd_R1 "," RIEd_R3 "," RIEd_Target is RIEd_OP=0xEC & RIEd_OP2=0x44 & RIEd_R1 & RIEd_R3 & RIEd_R3c & RIEd_Target & RIEd_IGN
-{
-    local inc:8;
-    local cmp:8;
-    inc = RIEd_R3;
-    cmp = RIEd_R3c;
-    RIEd_R1 = RIEd_R1 + inc;
-    if (RIEd_R1 s> cmp) goto RIEd_Target;
-}
+# BRXHG: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:BRXLG RIEd_R1 "," RIEd_R3 "," RIEd_Target is RIEd_OP=0xEC & RIEd_OP2=0x45 & RIEd_R1 & RIEd_R3 & RIEd_R3c & RIEd_Target & RIEd_IGN
-{
-    local inc:8;
-    local cmp:8;
-    inc = RIEd_R3;
-    cmp = RIEd_R3c;
-    RIEd_R1 = RIEd_R1 + inc;
-    if (RIEd_R1 s<= cmp) goto RIEd_Target;
-}
+# BRXLG: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # ---------------------------------------------------------------------------
 # Omissions (verified 2026-09-17 against PoP SA22-7832-14 and Capstone):
