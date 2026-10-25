@@ -855,6 +855,10 @@ def icm(ctx):
     return "\n".join(t)
 
 _semantics_tables = semantics
+import gen_vector
+
 def semantics(ctx):
     r = core(ctx)
+    if r is None and ctx["name"][0] in "vw":
+        r = gen_vector.semantics(ctx)
     return r if r is not None else _semantics_tables(ctx)
