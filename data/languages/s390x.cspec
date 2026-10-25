@@ -13,8 +13,9 @@
          argument register; the callee must still restore it.)
        * Stack-passed arguments start at offset 160 from the stack pointer
          (the 160-byte register save area mandated by the ABI).
-       * OMITTED in this simple proto: floating-point args (f0,f2,f4,f6),
-         vector args (v24-v31), vector return (v24), _Float16/_Decimal and
+       * Floating-point args f0,f2,f4,f6 (in order, independent of the
+         integer registers), floating-point return in f0.
+       * OMITTED in this simple proto: vector args (v24-v31), vector return (v24), _Float16/_Decimal and
          struct-return conventions. Add as separate prototypes if needed.
      Data sizes follow LP64: long and pointers are 8 bytes; long double is
      the 16-byte IBM extended format; wchar_t is 4 bytes. -->
@@ -54,8 +55,20 @@
   </global>
 
   <default_proto>
-    <prototype name="default" extrapop="unknown" stackshift="0">
+    <prototype name="default" extrapop="0" stackshift="0">
       <input>
+        <pentry minsize="1" maxsize="8" metatype="float">
+          <register name="f0"/>
+        </pentry>
+        <pentry minsize="1" maxsize="8" metatype="float">
+          <register name="f2"/>
+        </pentry>
+        <pentry minsize="1" maxsize="8" metatype="float">
+          <register name="f4"/>
+        </pentry>
+        <pentry minsize="1" maxsize="8" metatype="float">
+          <register name="f6"/>
+        </pentry>
         <pentry minsize="1" maxsize="8">
           <register name="r2"/>
         </pentry>
@@ -76,6 +89,9 @@
         </pentry>
       </input>
       <output>
+        <pentry minsize="1" maxsize="8" metatype="float">
+          <register name="f0"/>
+        </pentry>
         <pentry minsize="1" maxsize="8">
           <register name="r2"/>
         </pentry>
@@ -99,6 +115,21 @@
         <register name="f15"/>
         <register name="r15"/>
       </unaffected>
+      <killedbycall>
+        <register name="r0"/>
+        <register name="r1"/>
+        <register name="r3"/>
+        <register name="r4"/>
+        <register name="r5"/>
+        <register name="r14"/>
+        <register name="f1"/>
+        <register name="f2"/>
+        <register name="f3"/>
+        <register name="f4"/>
+        <register name="f5"/>
+        <register name="f6"/>
+        <register name="f7"/>
+      </killedbycall>
     </prototype>
   </default_proto>
 

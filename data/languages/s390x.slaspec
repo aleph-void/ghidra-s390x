@@ -185,6 +185,7 @@ define token RILa(48)
     RILa_R1 = (36,39)
     RILa_OPCD = (32,35)
     RILa_I2 = (0,31) signed
+    RILa_U2 = (0,31)
 ;
 
 # RILb: 6 bytes. OP(0-7), R1(8-11), OPCD(12-15), RI2(16-47).

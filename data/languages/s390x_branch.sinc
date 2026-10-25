@@ -128,7 +128,9 @@ macro rel_RI16(dest, RI) {
     _b_ccval = cc;
     _b_bit = 8 >> _b_ccval;
     _b_r2n = RRb_R2n;
-    if (((_b_m & _b_bit) != 0) && (_b_r2n != 0)) goto RRb_R2;
+    if (!(((_b_m & _b_bit) != 0) && (_b_r2n != 0))) goto <bcr_nt>;
+    goto [RRb_R2];
+    <bcr_nt>
 }
 
 :BHR RRb_R2 is RRb_OP=0x07 & RRb_M1=0x2 & RRb_R2 & RRb_R2n
@@ -147,7 +149,9 @@ macro rel_RI16(dest, RI) {
     _b_ccval = cc;
     _b_bit = 8 >> _b_ccval;
     _b_r2n = RRb_R2n;
-    if (((_b_m & _b_bit) != 0) && (_b_r2n != 0)) goto RRb_R2;
+    if (!(((_b_m & _b_bit) != 0) && (_b_r2n != 0))) goto <bcr_nt>;
+    goto [RRb_R2];
+    <bcr_nt>
 }
 
 :BNLER RRb_R2 is RRb_OP=0x07 & RRb_M1=0x3 & RRb_R2 & RRb_R2n
@@ -166,7 +170,9 @@ macro rel_RI16(dest, RI) {
     _b_ccval = cc;
     _b_bit = 8 >> _b_ccval;
     _b_r2n = RRb_R2n;
-    if (((_b_m & _b_bit) != 0) && (_b_r2n != 0)) goto RRb_R2;
+    if (!(((_b_m & _b_bit) != 0) && (_b_r2n != 0))) goto <bcr_nt>;
+    goto [RRb_R2];
+    <bcr_nt>
 }
 
 :BLR RRb_R2 is RRb_OP=0x07 & RRb_M1=0x4 & RRb_R2 & RRb_R2n
@@ -185,7 +191,9 @@ macro rel_RI16(dest, RI) {
     _b_ccval = cc;
     _b_bit = 8 >> _b_ccval;
     _b_r2n = RRb_R2n;
-    if (((_b_m & _b_bit) != 0) && (_b_r2n != 0)) goto RRb_R2;
+    if (!(((_b_m & _b_bit) != 0) && (_b_r2n != 0))) goto <bcr_nt>;
+    goto [RRb_R2];
+    <bcr_nt>
 }
 
 :BNHER RRb_R2 is RRb_OP=0x07 & RRb_M1=0x5 & RRb_R2 & RRb_R2n
@@ -204,7 +212,9 @@ macro rel_RI16(dest, RI) {
     _b_ccval = cc;
     _b_bit = 8 >> _b_ccval;
     _b_r2n = RRb_R2n;
-    if (((_b_m & _b_bit) != 0) && (_b_r2n != 0)) goto RRb_R2;
+    if (!(((_b_m & _b_bit) != 0) && (_b_r2n != 0))) goto <bcr_nt>;
+    goto [RRb_R2];
+    <bcr_nt>
 }
 
 :BLHR RRb_R2 is RRb_OP=0x07 & RRb_M1=0x6 & RRb_R2 & RRb_R2n
@@ -223,7 +233,9 @@ macro rel_RI16(dest, RI) {
     _b_ccval = cc;
     _b_bit = 8 >> _b_ccval;
     _b_r2n = RRb_R2n;
-    if (((_b_m & _b_bit) != 0) && (_b_r2n != 0)) goto RRb_R2;
+    if (!(((_b_m & _b_bit) != 0) && (_b_r2n != 0))) goto <bcr_nt>;
+    goto [RRb_R2];
+    <bcr_nt>
 }
 
 :BNER RRb_R2 is RRb_OP=0x07 & RRb_M1=0x7 & RRb_R2 & RRb_R2n
@@ -242,7 +254,9 @@ macro rel_RI16(dest, RI) {
     _b_ccval = cc;
     _b_bit = 8 >> _b_ccval;
     _b_r2n = RRb_R2n;
-    if (((_b_m & _b_bit) != 0) && (_b_r2n != 0)) goto RRb_R2;
+    if (!(((_b_m & _b_bit) != 0) && (_b_r2n != 0))) goto <bcr_nt>;
+    goto [RRb_R2];
+    <bcr_nt>
 }
 
 :BER RRb_R2 is RRb_OP=0x07 & RRb_M1=0x8 & RRb_R2 & RRb_R2n
@@ -261,7 +275,9 @@ macro rel_RI16(dest, RI) {
     _b_ccval = cc;
     _b_bit = 8 >> _b_ccval;
     _b_r2n = RRb_R2n;
-    if (((_b_m & _b_bit) != 0) && (_b_r2n != 0)) goto RRb_R2;
+    if (!(((_b_m & _b_bit) != 0) && (_b_r2n != 0))) goto <bcr_nt>;
+    goto [RRb_R2];
+    <bcr_nt>
 }
 
 :BNLHR RRb_R2 is RRb_OP=0x07 & RRb_M1=0x9 & RRb_R2 & RRb_R2n
@@ -280,7 +296,9 @@ macro rel_RI16(dest, RI) {
     _b_ccval = cc;
     _b_bit = 8 >> _b_ccval;
     _b_r2n = RRb_R2n;
-    if (((_b_m & _b_bit) != 0) && (_b_r2n != 0)) goto RRb_R2;
+    if (!(((_b_m & _b_bit) != 0) && (_b_r2n != 0))) goto <bcr_nt>;
+    goto [RRb_R2];
+    <bcr_nt>
 }
 
 :BHER RRb_R2 is RRb_OP=0x07 & RRb_M1=0xA & RRb_R2 & RRb_R2n
@@ -299,7 +317,9 @@ macro rel_RI16(dest, RI) {
     _b_ccval = cc;
     _b_bit = 8 >> _b_ccval;
     _b_r2n = RRb_R2n;
-    if (((_b_m & _b_bit) != 0) && (_b_r2n != 0)) goto RRb_R2;
+    if (!(((_b_m & _b_bit) != 0) && (_b_r2n != 0))) goto <bcr_nt>;
+    goto [RRb_R2];
+    <bcr_nt>
 }
 
 :BNLR RRb_R2 is RRb_OP=0x07 & RRb_M1=0xB & RRb_R2 & RRb_R2n
@@ -318,7 +338,9 @@ macro rel_RI16(dest, RI) {
     _b_ccval = cc;
     _b_bit = 8 >> _b_ccval;
     _b_r2n = RRb_R2n;
-    if (((_b_m & _b_bit) != 0) && (_b_r2n != 0)) goto RRb_R2;
+    if (!(((_b_m & _b_bit) != 0) && (_b_r2n != 0))) goto <bcr_nt>;
+    goto [RRb_R2];
+    <bcr_nt>
 }
 
 :BLER RRb_R2 is RRb_OP=0x07 & RRb_M1=0xC & RRb_R2 & RRb_R2n
@@ -337,7 +359,9 @@ macro rel_RI16(dest, RI) {
     _b_ccval = cc;
     _b_bit = 8 >> _b_ccval;
     _b_r2n = RRb_R2n;
-    if (((_b_m & _b_bit) != 0) && (_b_r2n != 0)) goto RRb_R2;
+    if (!(((_b_m & _b_bit) != 0) && (_b_r2n != 0))) goto <bcr_nt>;
+    goto [RRb_R2];
+    <bcr_nt>
 }
 
 :BNHR RRb_R2 is RRb_OP=0x07 & RRb_M1=0xD & RRb_R2 & RRb_R2n
@@ -356,7 +380,9 @@ macro rel_RI16(dest, RI) {
     _b_ccval = cc;
     _b_bit = 8 >> _b_ccval;
     _b_r2n = RRb_R2n;
-    if (((_b_m & _b_bit) != 0) && (_b_r2n != 0)) goto RRb_R2;
+    if (!(((_b_m & _b_bit) != 0) && (_b_r2n != 0))) goto <bcr_nt>;
+    goto [RRb_R2];
+    <bcr_nt>
 }
 
 :BNOR RRb_R2 is RRb_OP=0x07 & RRb_M1=0xE & RRb_R2 & RRb_R2n
@@ -375,7 +401,9 @@ macro rel_RI16(dest, RI) {
     _b_ccval = cc;
     _b_bit = 8 >> _b_ccval;
     _b_r2n = RRb_R2n;
-    if (((_b_m & _b_bit) != 0) && (_b_r2n != 0)) goto RRb_R2;
+    if (!(((_b_m & _b_bit) != 0) && (_b_r2n != 0))) goto <bcr_nt>;
+    goto [RRb_R2];
+    <bcr_nt>
 }
 
 :BR RRb_R2 is RRb_OP=0x07 & RRb_M1=0xF & RRb_R2 & RRb_R2n=14
@@ -394,7 +422,7 @@ macro rel_RI16(dest, RI) {
     # programming note 3). The condition is on the mask FIELD (=15), not
     # on the register value — the old "if (RRb_R2 != 0)" p-code tested
     # the register contents, which is wrong.
-    goto RRb_R2;
+    goto [RRb_R2];
 }
 
 :BR RRb_R2 is RRb_OP=0x07 & RRb_M1=0xF & RRb_R2 & RRb_R2n=0
@@ -418,7 +446,9 @@ macro rel_RI16(dest, RI) {
     _b_ccval = cc;
     _b_bit = 8 >> _b_ccval;
     _b_r2n = RRb_R2n;
-    if (((_b_m & _b_bit) != 0) && (_b_r2n != 0)) goto RRb_R2;
+    if (!(((_b_m & _b_bit) != 0) && (_b_r2n != 0))) goto <bcr_nt>;
+    goto [RRb_R2];
+    <bcr_nt>
 }
 
 # ---------------------------------------------------------------------------
@@ -754,22 +784,34 @@ RILb_Target: RILb_TargetLoc is RILb_TargetLoc { export *:8 RILb_TargetLoc; }
     call RILb_Target;
 }
 
-:BASR RR_R1 "," RR_R2 is RR_OP=0x0D & RR_R1 & RR_R2
+:BASR RR_R1 "," RR_R2 is RR_OP=0x0D & RR_R1 & RR_R2 & RR_R2=0
 {
     # PoP 7-37: link always stored; when RR_R2=0 no branch occurs.
+    # R2 field 0: the link is stored and no branch occurs.
     RR_R1 = inst_next;
-    if (RR_R2 == 0) goto <call_skip_1>;
-    call RR_R2;
-    <call_skip_1>
+}
+
+:BASR RR_R1 "," RR_R2 is RR_OP=0x0D & RR_R1 & RR_R2
+{
+    # The target is read before the link is stored (R1 may equal R2).
+    local t:8 = RR_R2;
+    RR_R1 = inst_next;
+    call [t];
+}
+
+:BALR RR_R1 "," RR_R2 is RR_OP=0x05 & RR_R1 & RR_R2 & RR_R2=0
+{
+    # PoP 7-36: as BASR (compatibility instruction; prefer BASR/BRASL).
+    # R2 field 0: the link is stored and no branch occurs.
+    RR_R1 = inst_next;
 }
 
 :BALR RR_R1 "," RR_R2 is RR_OP=0x05 & RR_R1 & RR_R2
 {
-    # PoP 7-36: as BASR (compatibility instruction; prefer BASR/BRASL).
+    # The target is read before the link is stored (R1 may equal R2).
+    local t:8 = RR_R2;
     RR_R1 = inst_next;
-    if (RR_R2 == 0) goto <call_skip_2>;
-    call RR_R2;
-    <call_skip_2>
+    call [t];
 }
 
 :BAL RXa_R1 "," dxb_RXa_D2_RXa_X2_RXa_B2 is RXa_OP=0x45 & RXa_R1 & RXa_X2 & RXa_B2 & RXa_D2 & dxb_RXa_D2_RXa_X2_RXa_B2
@@ -800,7 +842,7 @@ RILb_Target: RILb_TargetLoc is RILb_TargetLoc { export *:8 RILb_TargetLoc; }
     # stacked entry, so no link register is written here. When RRE_R2=0 no
     # branch occurs.
     if (RRE_R2 == 0) goto <call_skip_3>;
-    call RRE_R2;
+    call [RRE_R2];
     <call_skip_3>
 }
 

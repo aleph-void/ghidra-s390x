@@ -139,37 +139,16 @@ attach variables [ g16_gpr12_4 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13
 define pcodeop s390_adtr;
 define pcodeop s390_adtra;
 define pcodeop s390_agh;
-define pcodeop s390_aghik;
-define pcodeop s390_agrk;
-define pcodeop s390_agsi;
 define pcodeop s390_ahhhr;
 define pcodeop s390_ahhlr;
-define pcodeop s390_ahik;
 define pcodeop s390_aih;
-define pcodeop s390_alc;
-define pcodeop s390_alcg;
-define pcodeop s390_alcgr;
-define pcodeop s390_alcr;
-define pcodeop s390_alfi;
-define pcodeop s390_algfi;
-define pcodeop s390_algfr;
-define pcodeop s390_alghsik;
-define pcodeop s390_algrk;
-define pcodeop s390_algsi;
 define pcodeop s390_alhhhr;
 define pcodeop s390_alhhlr;
-define pcodeop s390_alhsik;
-define pcodeop s390_alrk;
-define pcodeop s390_alsi;
 define pcodeop s390_alsih;
 define pcodeop s390_alsihn;
-define pcodeop s390_aly;
-define pcodeop s390_ark;
-define pcodeop s390_asi;
 define pcodeop s390_axbr;
 define pcodeop s390_axtr;
 define pcodeop s390_axtra;
-define pcodeop s390_ay;
 define pcodeop s390_bdepg;
 define pcodeop s390_bextg;
 define pcodeop s390_bi;
@@ -188,8 +167,6 @@ define pcodeop s390_binle;
 define pcodeop s390_binlh;
 define pcodeop s390_bino;
 define pcodeop s390_bio;
-define pcodeop s390_bpp;
-define pcodeop s390_bprp;
 define pcodeop s390_brcth;
 define pcodeop s390_brcth_taken;
 define pcodeop s390_bsa;
@@ -224,54 +201,7 @@ define pcodeop s390_cfxr;
 define pcodeop s390_cfxtr;
 define pcodeop s390_cgdtr;
 define pcodeop s390_cgdtra;
-define pcodeop s390_cgfr;
-define pcodeop s390_cgfrl;
 define pcodeop s390_cgh;
-define pcodeop s390_cghrl;
-define pcodeop s390_cghsi;
-define pcodeop s390_cgib;
-define pcodeop s390_cgibe;
-define pcodeop s390_cgibh;
-define pcodeop s390_cgibl;
-define pcodeop s390_cgibne;
-define pcodeop s390_cgibnh;
-define pcodeop s390_cgibnl;
-define pcodeop s390_cgij;
-define pcodeop s390_cgij_taken;
-define pcodeop s390_cgije;
-define pcodeop s390_cgije_taken;
-define pcodeop s390_cgijh;
-define pcodeop s390_cgijh_taken;
-define pcodeop s390_cgijl;
-define pcodeop s390_cgijl_taken;
-define pcodeop s390_cgijne;
-define pcodeop s390_cgijne_taken;
-define pcodeop s390_cgijnh;
-define pcodeop s390_cgijnh_taken;
-define pcodeop s390_cgijnl;
-define pcodeop s390_cgijnl_taken;
-define pcodeop s390_cgrb;
-define pcodeop s390_cgrbe;
-define pcodeop s390_cgrbh;
-define pcodeop s390_cgrbl;
-define pcodeop s390_cgrbne;
-define pcodeop s390_cgrbnh;
-define pcodeop s390_cgrbnl;
-define pcodeop s390_cgrj;
-define pcodeop s390_cgrj_taken;
-define pcodeop s390_cgrje;
-define pcodeop s390_cgrje_taken;
-define pcodeop s390_cgrjh;
-define pcodeop s390_cgrjh_taken;
-define pcodeop s390_cgrjl;
-define pcodeop s390_cgrjl_taken;
-define pcodeop s390_cgrjne;
-define pcodeop s390_cgrjne_taken;
-define pcodeop s390_cgrjnh;
-define pcodeop s390_cgrjnh_taken;
-define pcodeop s390_cgrjnl;
-define pcodeop s390_cgrjnl_taken;
-define pcodeop s390_cgrl;
 define pcodeop s390_cgxbr;
 define pcodeop s390_cgxbra;
 define pcodeop s390_cgxr;
@@ -279,183 +209,37 @@ define pcodeop s390_cgxtr;
 define pcodeop s390_cgxtra;
 define pcodeop s390_chf;
 define pcodeop s390_chhr;
-define pcodeop s390_chhsi;
 define pcodeop s390_chlr;
-define pcodeop s390_chrl;
-define pcodeop s390_chsi;
-define pcodeop s390_cib;
-define pcodeop s390_cibe;
-define pcodeop s390_cibh;
-define pcodeop s390_cibl;
-define pcodeop s390_cibne;
-define pcodeop s390_cibnh;
-define pcodeop s390_cibnl;
 define pcodeop s390_cih;
-define pcodeop s390_cij;
-define pcodeop s390_cij_taken;
-define pcodeop s390_cije;
-define pcodeop s390_cije_taken;
-define pcodeop s390_cijh;
-define pcodeop s390_cijh_taken;
-define pcodeop s390_cijl;
-define pcodeop s390_cijl_taken;
-define pcodeop s390_cijne;
-define pcodeop s390_cijne_taken;
-define pcodeop s390_cijnh;
-define pcodeop s390_cijnh_taken;
-define pcodeop s390_cijnl;
-define pcodeop s390_cijnl_taken;
 define pcodeop s390_cksm;
 define pcodeop s390_clcl;
 define pcodeop s390_clfdbr;
 define pcodeop s390_clfdtr;
 define pcodeop s390_clfebr;
-define pcodeop s390_clfhsi;
-define pcodeop s390_clfi;
 define pcodeop s390_clfxbr;
 define pcodeop s390_clfxtr;
 define pcodeop s390_clgdbr;
 define pcodeop s390_clgdtr;
 define pcodeop s390_clgebr;
-define pcodeop s390_clgfi;
-define pcodeop s390_clgfr;
-define pcodeop s390_clgfrl;
-define pcodeop s390_clghrl;
-define pcodeop s390_clghsi;
-define pcodeop s390_clgib;
-define pcodeop s390_clgibe;
-define pcodeop s390_clgibh;
-define pcodeop s390_clgibl;
-define pcodeop s390_clgibne;
-define pcodeop s390_clgibnh;
-define pcodeop s390_clgibnl;
-define pcodeop s390_clgij;
-define pcodeop s390_clgij_taken;
-define pcodeop s390_clgije;
-define pcodeop s390_clgije_taken;
-define pcodeop s390_clgijh;
-define pcodeop s390_clgijh_taken;
-define pcodeop s390_clgijl;
-define pcodeop s390_clgijl_taken;
-define pcodeop s390_clgijne;
-define pcodeop s390_clgijne_taken;
-define pcodeop s390_clgijnh;
-define pcodeop s390_clgijnh_taken;
-define pcodeop s390_clgijnl;
-define pcodeop s390_clgijnl_taken;
-define pcodeop s390_clgrb;
-define pcodeop s390_clgrbe;
-define pcodeop s390_clgrbh;
-define pcodeop s390_clgrbl;
-define pcodeop s390_clgrbne;
-define pcodeop s390_clgrbnh;
-define pcodeop s390_clgrbnl;
-define pcodeop s390_clgrj;
-define pcodeop s390_clgrj_taken;
-define pcodeop s390_clgrje;
-define pcodeop s390_clgrje_taken;
-define pcodeop s390_clgrjh;
-define pcodeop s390_clgrjh_taken;
-define pcodeop s390_clgrjl;
-define pcodeop s390_clgrjl_taken;
-define pcodeop s390_clgrjne;
-define pcodeop s390_clgrjne_taken;
-define pcodeop s390_clgrjnh;
-define pcodeop s390_clgrjnh_taken;
-define pcodeop s390_clgrjnl;
-define pcodeop s390_clgrjnl_taken;
-define pcodeop s390_clgrl;
 define pcodeop s390_clgxbr;
 define pcodeop s390_clgxtr;
 define pcodeop s390_clhf;
 define pcodeop s390_clhhr;
-define pcodeop s390_clhhsi;
 define pcodeop s390_clhlr;
-define pcodeop s390_clhrl;
-define pcodeop s390_clib;
-define pcodeop s390_clibe;
-define pcodeop s390_clibh;
-define pcodeop s390_clibl;
-define pcodeop s390_clibne;
-define pcodeop s390_clibnh;
-define pcodeop s390_clibnl;
 define pcodeop s390_clih;
-define pcodeop s390_clij;
-define pcodeop s390_clij_taken;
-define pcodeop s390_clije;
-define pcodeop s390_clije_taken;
-define pcodeop s390_clijh;
-define pcodeop s390_clijh_taken;
-define pcodeop s390_clijl;
-define pcodeop s390_clijl_taken;
-define pcodeop s390_clijne;
-define pcodeop s390_clijne_taken;
-define pcodeop s390_clijnh;
-define pcodeop s390_clijnh_taken;
-define pcodeop s390_clijnl;
-define pcodeop s390_clijnl_taken;
-define pcodeop s390_cliy;
 define pcodeop s390_clmh;
-define pcodeop s390_clrb;
-define pcodeop s390_clrbe;
-define pcodeop s390_clrbh;
-define pcodeop s390_clrbl;
-define pcodeop s390_clrbne;
-define pcodeop s390_clrbnh;
-define pcodeop s390_clrbnl;
-define pcodeop s390_clrj;
-define pcodeop s390_clrj_taken;
-define pcodeop s390_clrje;
-define pcodeop s390_clrje_taken;
-define pcodeop s390_clrjh;
-define pcodeop s390_clrjh_taken;
-define pcodeop s390_clrjl;
-define pcodeop s390_clrjl_taken;
-define pcodeop s390_clrjne;
-define pcodeop s390_clrjne_taken;
-define pcodeop s390_clrjnh;
-define pcodeop s390_clrjnh_taken;
-define pcodeop s390_clrjnl;
-define pcodeop s390_clrjnl_taken;
-define pcodeop s390_clrl;
-define pcodeop s390_cly;
 define pcodeop s390_clzg;
 define pcodeop s390_cmpsc;
 define pcodeop s390_cpdt;
 define pcodeop s390_cpxt;
 define pcodeop s390_cpya;
-define pcodeop s390_crb;
-define pcodeop s390_crbe;
-define pcodeop s390_crbh;
-define pcodeop s390_crbl;
-define pcodeop s390_crbne;
-define pcodeop s390_crbnh;
-define pcodeop s390_crbnl;
 define pcodeop s390_crdte;
-define pcodeop s390_crj;
-define pcodeop s390_crj_taken;
-define pcodeop s390_crje;
-define pcodeop s390_crje_taken;
-define pcodeop s390_crjh;
-define pcodeop s390_crjh_taken;
-define pcodeop s390_crjl;
-define pcodeop s390_crjl_taken;
-define pcodeop s390_crjne;
-define pcodeop s390_crjne_taken;
-define pcodeop s390_crjnh;
-define pcodeop s390_crjnh_taken;
-define pcodeop s390_crjnl;
-define pcodeop s390_crjnl_taken;
-define pcodeop s390_crl;
-define pcodeop s390_cs;
 define pcodeop s390_csch;
 define pcodeop s390_csdtr;
-define pcodeop s390_csg;
 define pcodeop s390_csp;
 define pcodeop s390_cspg;
 define pcodeop s390_csst;
 define pcodeop s390_csxtr;
-define pcodeop s390_csy;
 define pcodeop s390_ctzg;
 define pcodeop s390_cu12;
 define pcodeop s390_cu14;
@@ -485,7 +269,6 @@ define pcodeop s390_cxstr;
 define pcodeop s390_cxtr;
 define pcodeop s390_cxutr;
 define pcodeop s390_cxzt;
-define pcodeop s390_cy;
 define pcodeop s390_czdt;
 define pcodeop s390_czxt;
 define pcodeop s390_ddtr;
@@ -495,7 +278,6 @@ define pcodeop s390_dxbr;
 define pcodeop s390_dxr;
 define pcodeop s390_dxtr;
 define pcodeop s390_dxtra;
-define pcodeop s390_ear;
 define pcodeop s390_ecag;
 define pcodeop s390_ecctr;
 define pcodeop s390_ecpga;
@@ -515,7 +297,6 @@ define pcodeop s390_esea;
 define pcodeop s390_esta;
 define pcodeop s390_esxtr;
 define pcodeop s390_etnd;
-define pcodeop s390_exrl;
 define pcodeop s390_fidtr;
 define pcodeop s390_fixtr;
 define pcodeop s390_flogr;
@@ -523,7 +304,6 @@ define pcodeop s390_hsch;
 define pcodeop s390_iac;
 define pcodeop s390_icmh;
 define pcodeop s390_icmy;
-define pcodeop s390_icy;
 define pcodeop s390_idte;
 define pcodeop s390_iedtr;
 define pcodeop s390_iextr;
@@ -538,24 +318,12 @@ define pcodeop s390_kimd;
 define pcodeop s390_klmd;
 define pcodeop s390_kxbr;
 define pcodeop s390_kxtr;
-define pcodeop s390_laa;
-define pcodeop s390_laag;
-define pcodeop s390_laal;
-define pcodeop s390_laalg;
 define pcodeop s390_lae;
 define pcodeop s390_laey;
 define pcodeop s390_lamy;
-define pcodeop s390_lan;
-define pcodeop s390_lang;
-define pcodeop s390_lao;
-define pcodeop s390_laog;
 define pcodeop s390_lasp;
-define pcodeop s390_lax;
-define pcodeop s390_laxg;
 define pcodeop s390_lbear;
 define pcodeop s390_lbh;
-define pcodeop s390_lbr;
-define pcodeop s390_lcbb;
 define pcodeop s390_lcctl;
 define pcodeop s390_lctl;
 define pcodeop s390_lctlg;
@@ -571,34 +339,12 @@ define pcodeop s390_lexbr;
 define pcodeop s390_lexbra;
 define pcodeop s390_lfas;
 define pcodeop s390_lfh;
-define pcodeop s390_lgbr;
-define pcodeop s390_lgfi;
-define pcodeop s390_lgfrl;
 define pcodeop s390_lgg;
-define pcodeop s390_lghr;
-define pcodeop s390_lghrl;
-define pcodeop s390_lgrl;
 define pcodeop s390_lgsc;
 define pcodeop s390_lhh;
-define pcodeop s390_lhr;
-define pcodeop s390_lhrl;
-define pcodeop s390_llc;
 define pcodeop s390_llch;
-define pcodeop s390_llcr;
-define pcodeop s390_llgcr;
-define pcodeop s390_llgfr;
-define pcodeop s390_llgfrl;
 define pcodeop s390_llgfsg;
-define pcodeop s390_llghr;
-define pcodeop s390_llghrl;
-define pcodeop s390_llgt;
-define pcodeop s390_llgtr;
-define pcodeop s390_llh;
 define pcodeop s390_llhh;
-define pcodeop s390_llhr;
-define pcodeop s390_llhrl;
-define pcodeop s390_llihf;
-define pcodeop s390_llilf;
 define pcodeop s390_llxab;
 define pcodeop s390_llxaf;
 define pcodeop s390_llxag;
@@ -619,12 +365,6 @@ define pcodeop s390_lpxbr;
 define pcodeop s390_lra;
 define pcodeop s390_lrag;
 define pcodeop s390_lray;
-define pcodeop s390_lrl;
-define pcodeop s390_lrv;
-define pcodeop s390_lrvg;
-define pcodeop s390_lrvgr;
-define pcodeop s390_lrvh;
-define pcodeop s390_lrvr;
 define pcodeop s390_lsctl;
 define pcodeop s390_ltdtr;
 define pcodeop s390_ltgfr;
@@ -663,42 +403,28 @@ define pcodeop s390_mvcp;
 define pcodeop s390_mvcrl;
 define pcodeop s390_mvcs;
 define pcodeop s390_mvcsk;
-define pcodeop s390_mviy;
 define pcodeop s390_mxbr;
 define pcodeop s390_mxtr;
 define pcodeop s390_mxtra;
 define pcodeop s390_ncgrk;
 define pcodeop s390_ncrk;
-define pcodeop s390_ngrk;
-define pcodeop s390_niai;
-define pcodeop s390_nilf;
-define pcodeop s390_niy;
 define pcodeop s390_nngrk;
 define pcodeop s390_nnpa;
 define pcodeop s390_nnrk;
 define pcodeop s390_nogrk;
 define pcodeop s390_nork;
-define pcodeop s390_nrk;
 define pcodeop s390_ntstg;
 define pcodeop s390_nxgrk;
 define pcodeop s390_nxrk;
 define pcodeop s390_ocgrk;
 define pcodeop s390_ocrk;
-define pcodeop s390_ogrk;
-define pcodeop s390_oihf;
-define pcodeop s390_oiy;
-define pcodeop s390_ork;
 define pcodeop s390_palb;
 define pcodeop s390_pfcr;
-define pcodeop s390_pfd;
-define pcodeop s390_pfdrl;
 define pcodeop s390_pfmf;
 define pcodeop s390_pfpo;
 define pcodeop s390_pgin;
 define pcodeop s390_pgout;
 define pcodeop s390_plo;
-define pcodeop s390_popcnt;
-define pcodeop s390_ppa;
 define pcodeop s390_pt;
 define pcodeop s390_ptf;
 define pcodeop s390_ptff;
@@ -711,67 +437,39 @@ define pcodeop s390_qpaci;
 define pcodeop s390_qsi;
 define pcodeop s390_rchp;
 define pcodeop s390_rdp;
-define pcodeop s390_risbg;
-define pcodeop s390_risbgn;
-define pcodeop s390_risbgnz;
-define pcodeop s390_risbgz;
-define pcodeop s390_risbhg;
-define pcodeop s390_risbhgz;
-define pcodeop s390_risblg;
-define pcodeop s390_risblgz;
-define pcodeop s390_rnsbg;
-define pcodeop s390_rnsbgt;
-define pcodeop s390_rosbg;
-define pcodeop s390_rosbgt;
 define pcodeop s390_rp;
 define pcodeop s390_rrbe;
 define pcodeop s390_rrbm;
 define pcodeop s390_rrdtr;
 define pcodeop s390_rrxtr;
 define pcodeop s390_rsch;
-define pcodeop s390_rxsbg;
-define pcodeop s390_rxsbgt;
 define pcodeop s390_sac;
 define pcodeop s390_sal;
 define pcodeop s390_sam24;
 define pcodeop s390_sam31;
 define pcodeop s390_sam64;
-define pcodeop s390_sar;
 define pcodeop s390_scctr;
 define pcodeop s390_schm;
 define pcodeop s390_sckpf;
 define pcodeop s390_sdtr;
 define pcodeop s390_sdtra;
 define pcodeop s390_sfasr;
-define pcodeop s390_sgfr;
 define pcodeop s390_sgh;
-define pcodeop s390_sgrk;
 define pcodeop s390_shhhr;
 define pcodeop s390_shhlr;
 define pcodeop s390_sie;
 define pcodeop s390_siga;
 define pcodeop s390_sigp;
-define pcodeop s390_slb;
-define pcodeop s390_slbg;
-define pcodeop s390_slbgr;
-define pcodeop s390_slbr;
 define pcodeop s390_sldt;
-define pcodeop s390_slfi;
-define pcodeop s390_slgfi;
-define pcodeop s390_slgfr;
-define pcodeop s390_slgrk;
 define pcodeop s390_slhhhr;
 define pcodeop s390_slhhlr;
-define pcodeop s390_slrk;
 define pcodeop s390_slxt;
-define pcodeop s390_sly;
 define pcodeop s390_sortl;
 define pcodeop s390_spctr;
 define pcodeop s390_spx;
 define pcodeop s390_sqxbr;
 define pcodeop s390_sqxr;
 define pcodeop s390_srdt;
-define pcodeop s390_srk;
 define pcodeop s390_srnm;
 define pcodeop s390_srnmb;
 define pcodeop s390_srnmt;
@@ -796,23 +494,17 @@ define pcodeop s390_stfh;
 define pcodeop s390_stfl;
 define pcodeop s390_stfle;
 define pcodeop s390_stfpc;
-define pcodeop s390_stgrl;
 define pcodeop s390_stgsc;
 define pcodeop s390_sthh;
-define pcodeop s390_sthrl;
 define pcodeop s390_stpq;
 define pcodeop s390_stpx;
 define pcodeop s390_strag;
-define pcodeop s390_strv;
-define pcodeop s390_strvg;
-define pcodeop s390_strvh;
 define pcodeop s390_stsch;
 define pcodeop s390_stura;
 define pcodeop s390_sturg;
 define pcodeop s390_sxbr;
 define pcodeop s390_sxtr;
 define pcodeop s390_sxtra;
-define pcodeop s390_sy;
 define pcodeop s390_tabort;
 define pcodeop s390_tam;
 define pcodeop s390_tar;
@@ -1161,7 +853,6 @@ define pcodeop s390_vistrf;
 define pcodeop s390_vistrfs;
 define pcodeop s390_vistrh;
 define pcodeop s390_vistrhs;
-define pcodeop s390_vl;
 define pcodeop s390_vlbb;
 define pcodeop s390_vlbr;
 define pcodeop s390_vlbrf;
@@ -1434,7 +1125,6 @@ define pcodeop s390_vsrl;
 define pcodeop s390_vsrlb;
 define pcodeop s390_vsrp;
 define pcodeop s390_vsrpr;
-define pcodeop s390_vst;
 define pcodeop s390_vstbr;
 define pcodeop s390_vstbrf;
 define pcodeop s390_vstbrg;
@@ -1618,12 +1308,31 @@ define pcodeop s390_wfsxb;
 define pcodeop s390_wftcidb;
 define pcodeop s390_wftcisb;
 define pcodeop s390_wftcixb;
-define pcodeop s390_xgrk;
-define pcodeop s390_xihf;
-define pcodeop s390_xilf;
-define pcodeop s390_xiy;
-define pcodeop s390_xrk;
 define pcodeop s390_xsch;
+
+# ---- helpers for generated semantics (tools/gen_semantics.py) ----
+# signed result: 0 zero, 1 negative, 2 positive, 3 overflow
+macro gs_cc_arith(r, ov) {
+  local n:1 = zext(r s< 0) + zext(r s> 0) * 2;
+  cc = n + zext(ov != 0) * (3 - n);
+}
+# logical add: bit 1 carry, bit 0 nonzero
+macro gs_cc_addl(r, carry) { cc = zext(r != 0) | (zext(carry != 0) << 1); }
+# logical subtract: bit 1 no borrow, bit 0 nonzero
+macro gs_cc_subl(r, borrow) { cc = zext(r != 0) | (zext(borrow == 0) << 1); }
+# compare: 0 equal, 1 low, 2 high
+macro gs_cc_cmps(a, b) { cc = zext(a s< b) + zext(a s> b) * 2; }
+macro gs_cc_cmpu(a, b) { cc = zext(a < b) + zext(a > b) * 2; }
+# 0 zero, 1 nonzero
+macro gs_cc_nz(r) { cc = zext(r != 0); }
+# condition mask test: bit (8 >> cc) of mask
+macro gs_mask(m, out) { out = ((m >> (3 - cc)) & 1) != 0; }
+macro gs_set32(reg, v) { reg = (reg & 0xffffffff00000000) | zext(v); }
+macro gs_seth32(reg, v) { reg = (reg & 0xffffffff) | (zext(v) << 32); }
+define pcodeop s390_trap;
+define pcodeop s390_execute;
+define pcodeop s390_svc;
+define pcodeop s390_vector;
 
 a48_20_12_16: g48_u20_12 is g48_u20_12 & g48_u16_4=0  { local ea:8 = 0:8 + g48_u20_12; export ea; }
 a48_20_12_16: g48_u20_12(g48_gpr16_4) is g48_u20_12 & g48_u16_4!=0 & g48_gpr16_4  { local ea:8 = g48_gpr16_4 + g48_u20_12; export ea; }
@@ -1740,668 +1449,1040 @@ a32_20_12_41_12_4_16: g32_u20_12(g32_gpr12_4,g32_gpr16_4) is g32_u20_12 & g32_u1
   g48_fpr32_4 = s390_sldt(g48_fpr8_4, a48_20_12_41_12_4_16);
 }
 :CLIBNH g48_gpr8_4,g48_u32_8,a48_20_12_16 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u12_4=0xc & g48_u40_4=0xf & g48_u44_4=0xf & g48_gpr8_4 & g48_u32_8 & a48_20_12_16 {
-  local i1:8 = g48_u32_8;
-  s390_clibnh(g48_gpr8_4, i1, a48_20_12_16);
+  local iv:8 = g48_u32_8; local x:4 = g48_gpr8_4:4; local y:4 = iv:4; local mk:8 = 12;
+  local take:1 = ((mk & 8) != 0 && x == y) || ((mk & 4) != 0 && x < y) || ((mk & 2) != 0 && x > y);
+  if (!take) goto <nt>;
+  goto [a48_20_12_16];
+  <nt>
 }
 :CIBNH g48_gpr8_4,g48_s32_8,a48_20_12_16 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u12_4=0xc & g48_u40_4=0xf & g48_u44_4=0xe & g48_gpr8_4 & g48_s32_8 & a48_20_12_16 {
-  local i1:8 = g48_s32_8;
-  s390_cibnh(g48_gpr8_4, i1, a48_20_12_16);
+  local iv:8 = g48_s32_8; local x:4 = g48_gpr8_4:4; local y:4 = iv:4; local mk:8 = 12;
+  local take:1 = ((mk & 8) != 0 && x == y) || ((mk & 4) != 0 && x s< y) || ((mk & 2) != 0 && x s> y);
+  if (!take) goto <nt>;
+  goto [a48_20_12_16];
+  <nt>
 }
 :CLGIBNH g48_gpr8_4,g48_u32_8,a48_20_12_16 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u12_4=0xc & g48_u40_4=0xf & g48_u44_4=0xd & g48_gpr8_4 & g48_u32_8 & a48_20_12_16 {
-  local i1:8 = g48_u32_8;
-  s390_clgibnh(g48_gpr8_4, i1, a48_20_12_16);
+  local iv:8 = g48_u32_8; local x:8 = g48_gpr8_4; local y:8 = iv; local mk:8 = 12;
+  local take:1 = ((mk & 8) != 0 && x == y) || ((mk & 4) != 0 && x < y) || ((mk & 2) != 0 && x > y);
+  if (!take) goto <nt>;
+  goto [a48_20_12_16];
+  <nt>
 }
 :CGIBNH g48_gpr8_4,g48_s32_8,a48_20_12_16 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u12_4=0xc & g48_u40_4=0xf & g48_u44_4=0xc & g48_gpr8_4 & g48_s32_8 & a48_20_12_16 {
-  local i1:8 = g48_s32_8;
-  s390_cgibnh(g48_gpr8_4, i1, a48_20_12_16);
+  local iv:8 = g48_s32_8; local x:8 = g48_gpr8_4; local y:8 = iv; local mk:8 = 12;
+  local take:1 = ((mk & 8) != 0 && x == y) || ((mk & 4) != 0 && x s< y) || ((mk & 2) != 0 && x s> y);
+  if (!take) goto <nt>;
+  goto [a48_20_12_16];
+  <nt>
 }
 :CLIJNH g48_gpr8_4,g48_u32_8,rel48_16_16 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u12_4=0xc & g48_u40_4=0x7 & g48_u44_4=0xf & g48_gpr8_4 & g48_u32_8 & rel48_16_16 {
-  local i1:8 = g48_u32_8;
-  local taken:1 = s390_clijnh_taken(g48_gpr8_4, i1);
-  if (taken != 0) goto rel48_16_16;
+  local iv:8 = g48_u32_8; local x:4 = g48_gpr8_4:4; local y:4 = iv:4; local mk:8 = 12;
+  local take:1 = ((mk & 8) != 0 && x == y) || ((mk & 4) != 0 && x < y) || ((mk & 2) != 0 && x > y);
+  if (take) goto rel48_16_16;
 }
 :CIJNH g48_gpr8_4,g48_s32_8,rel48_16_16 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u12_4=0xc & g48_u40_4=0x7 & g48_u44_4=0xe & g48_gpr8_4 & g48_s32_8 & rel48_16_16 {
-  local i1:8 = g48_s32_8;
-  local taken:1 = s390_cijnh_taken(g48_gpr8_4, i1);
-  if (taken != 0) goto rel48_16_16;
+  local iv:8 = g48_s32_8; local x:4 = g48_gpr8_4:4; local y:4 = iv:4; local mk:8 = 12;
+  local take:1 = ((mk & 8) != 0 && x == y) || ((mk & 4) != 0 && x s< y) || ((mk & 2) != 0 && x s> y);
+  if (take) goto rel48_16_16;
 }
 :CLGIJNH g48_gpr8_4,g48_u32_8,rel48_16_16 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u12_4=0xc & g48_u40_4=0x7 & g48_u44_4=0xd & g48_gpr8_4 & g48_u32_8 & rel48_16_16 {
-  local i1:8 = g48_u32_8;
-  local taken:1 = s390_clgijnh_taken(g48_gpr8_4, i1);
-  if (taken != 0) goto rel48_16_16;
+  local iv:8 = g48_u32_8; local x:8 = g48_gpr8_4; local y:8 = iv; local mk:8 = 12;
+  local take:1 = ((mk & 8) != 0 && x == y) || ((mk & 4) != 0 && x < y) || ((mk & 2) != 0 && x > y);
+  if (take) goto rel48_16_16;
 }
 :CGIJNH g48_gpr8_4,g48_s32_8,rel48_16_16 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u12_4=0xc & g48_u40_4=0x7 & g48_u44_4=0xc & g48_gpr8_4 & g48_s32_8 & rel48_16_16 {
-  local i1:8 = g48_s32_8;
-  local taken:1 = s390_cgijnh_taken(g48_gpr8_4, i1);
-  if (taken != 0) goto rel48_16_16;
+  local iv:8 = g48_s32_8; local x:8 = g48_gpr8_4; local y:8 = iv; local mk:8 = 12;
+  local take:1 = ((mk & 8) != 0 && x == y) || ((mk & 4) != 0 && x s< y) || ((mk & 2) != 0 && x s> y);
+  if (take) goto rel48_16_16;
 }
 :CLIBNL g48_gpr8_4,g48_u32_8,a48_20_12_16 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u12_4=0xa & g48_u40_4=0xf & g48_u44_4=0xf & g48_gpr8_4 & g48_u32_8 & a48_20_12_16 {
-  local i1:8 = g48_u32_8;
-  s390_clibnl(g48_gpr8_4, i1, a48_20_12_16);
+  local iv:8 = g48_u32_8; local x:4 = g48_gpr8_4:4; local y:4 = iv:4; local mk:8 = 10;
+  local take:1 = ((mk & 8) != 0 && x == y) || ((mk & 4) != 0 && x < y) || ((mk & 2) != 0 && x > y);
+  if (!take) goto <nt>;
+  goto [a48_20_12_16];
+  <nt>
 }
 :CIBNL g48_gpr8_4,g48_s32_8,a48_20_12_16 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u12_4=0xa & g48_u40_4=0xf & g48_u44_4=0xe & g48_gpr8_4 & g48_s32_8 & a48_20_12_16 {
-  local i1:8 = g48_s32_8;
-  s390_cibnl(g48_gpr8_4, i1, a48_20_12_16);
+  local iv:8 = g48_s32_8; local x:4 = g48_gpr8_4:4; local y:4 = iv:4; local mk:8 = 10;
+  local take:1 = ((mk & 8) != 0 && x == y) || ((mk & 4) != 0 && x s< y) || ((mk & 2) != 0 && x s> y);
+  if (!take) goto <nt>;
+  goto [a48_20_12_16];
+  <nt>
 }
 :CLGIBNL g48_gpr8_4,g48_u32_8,a48_20_12_16 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u12_4=0xa & g48_u40_4=0xf & g48_u44_4=0xd & g48_gpr8_4 & g48_u32_8 & a48_20_12_16 {
-  local i1:8 = g48_u32_8;
-  s390_clgibnl(g48_gpr8_4, i1, a48_20_12_16);
+  local iv:8 = g48_u32_8; local x:8 = g48_gpr8_4; local y:8 = iv; local mk:8 = 10;
+  local take:1 = ((mk & 8) != 0 && x == y) || ((mk & 4) != 0 && x < y) || ((mk & 2) != 0 && x > y);
+  if (!take) goto <nt>;
+  goto [a48_20_12_16];
+  <nt>
 }
 :CGIBNL g48_gpr8_4,g48_s32_8,a48_20_12_16 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u12_4=0xa & g48_u40_4=0xf & g48_u44_4=0xc & g48_gpr8_4 & g48_s32_8 & a48_20_12_16 {
-  local i1:8 = g48_s32_8;
-  s390_cgibnl(g48_gpr8_4, i1, a48_20_12_16);
+  local iv:8 = g48_s32_8; local x:8 = g48_gpr8_4; local y:8 = iv; local mk:8 = 10;
+  local take:1 = ((mk & 8) != 0 && x == y) || ((mk & 4) != 0 && x s< y) || ((mk & 2) != 0 && x s> y);
+  if (!take) goto <nt>;
+  goto [a48_20_12_16];
+  <nt>
 }
 :CLIJNL g48_gpr8_4,g48_u32_8,rel48_16_16 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u12_4=0xa & g48_u40_4=0x7 & g48_u44_4=0xf & g48_gpr8_4 & g48_u32_8 & rel48_16_16 {
-  local i1:8 = g48_u32_8;
-  local taken:1 = s390_clijnl_taken(g48_gpr8_4, i1);
-  if (taken != 0) goto rel48_16_16;
+  local iv:8 = g48_u32_8; local x:4 = g48_gpr8_4:4; local y:4 = iv:4; local mk:8 = 10;
+  local take:1 = ((mk & 8) != 0 && x == y) || ((mk & 4) != 0 && x < y) || ((mk & 2) != 0 && x > y);
+  if (take) goto rel48_16_16;
 }
 :CIJNL g48_gpr8_4,g48_s32_8,rel48_16_16 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u12_4=0xa & g48_u40_4=0x7 & g48_u44_4=0xe & g48_gpr8_4 & g48_s32_8 & rel48_16_16 {
-  local i1:8 = g48_s32_8;
-  local taken:1 = s390_cijnl_taken(g48_gpr8_4, i1);
-  if (taken != 0) goto rel48_16_16;
+  local iv:8 = g48_s32_8; local x:4 = g48_gpr8_4:4; local y:4 = iv:4; local mk:8 = 10;
+  local take:1 = ((mk & 8) != 0 && x == y) || ((mk & 4) != 0 && x s< y) || ((mk & 2) != 0 && x s> y);
+  if (take) goto rel48_16_16;
 }
 :CLGIJNL g48_gpr8_4,g48_u32_8,rel48_16_16 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u12_4=0xa & g48_u40_4=0x7 & g48_u44_4=0xd & g48_gpr8_4 & g48_u32_8 & rel48_16_16 {
-  local i1:8 = g48_u32_8;
-  local taken:1 = s390_clgijnl_taken(g48_gpr8_4, i1);
-  if (taken != 0) goto rel48_16_16;
+  local iv:8 = g48_u32_8; local x:8 = g48_gpr8_4; local y:8 = iv; local mk:8 = 10;
+  local take:1 = ((mk & 8) != 0 && x == y) || ((mk & 4) != 0 && x < y) || ((mk & 2) != 0 && x > y);
+  if (take) goto rel48_16_16;
 }
 :CGIJNL g48_gpr8_4,g48_s32_8,rel48_16_16 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u12_4=0xa & g48_u40_4=0x7 & g48_u44_4=0xc & g48_gpr8_4 & g48_s32_8 & rel48_16_16 {
-  local i1:8 = g48_s32_8;
-  local taken:1 = s390_cgijnl_taken(g48_gpr8_4, i1);
-  if (taken != 0) goto rel48_16_16;
+  local iv:8 = g48_s32_8; local x:8 = g48_gpr8_4; local y:8 = iv; local mk:8 = 10;
+  local take:1 = ((mk & 8) != 0 && x == y) || ((mk & 4) != 0 && x s< y) || ((mk & 2) != 0 && x s> y);
+  if (take) goto rel48_16_16;
 }
 :CLIBE g48_gpr8_4,g48_u32_8,a48_20_12_16 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u12_4=0x8 & g48_u40_4=0xf & g48_u44_4=0xf & g48_gpr8_4 & g48_u32_8 & a48_20_12_16 {
-  local i1:8 = g48_u32_8;
-  s390_clibe(g48_gpr8_4, i1, a48_20_12_16);
+  local iv:8 = g48_u32_8; local x:4 = g48_gpr8_4:4; local y:4 = iv:4; local mk:8 = 8;
+  local take:1 = ((mk & 8) != 0 && x == y) || ((mk & 4) != 0 && x < y) || ((mk & 2) != 0 && x > y);
+  if (!take) goto <nt>;
+  goto [a48_20_12_16];
+  <nt>
 }
 :CIBE g48_gpr8_4,g48_s32_8,a48_20_12_16 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u12_4=0x8 & g48_u40_4=0xf & g48_u44_4=0xe & g48_gpr8_4 & g48_s32_8 & a48_20_12_16 {
-  local i1:8 = g48_s32_8;
-  s390_cibe(g48_gpr8_4, i1, a48_20_12_16);
+  local iv:8 = g48_s32_8; local x:4 = g48_gpr8_4:4; local y:4 = iv:4; local mk:8 = 8;
+  local take:1 = ((mk & 8) != 0 && x == y) || ((mk & 4) != 0 && x s< y) || ((mk & 2) != 0 && x s> y);
+  if (!take) goto <nt>;
+  goto [a48_20_12_16];
+  <nt>
 }
 :CLGIBE g48_gpr8_4,g48_u32_8,a48_20_12_16 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u12_4=0x8 & g48_u40_4=0xf & g48_u44_4=0xd & g48_gpr8_4 & g48_u32_8 & a48_20_12_16 {
-  local i1:8 = g48_u32_8;
-  s390_clgibe(g48_gpr8_4, i1, a48_20_12_16);
+  local iv:8 = g48_u32_8; local x:8 = g48_gpr8_4; local y:8 = iv; local mk:8 = 8;
+  local take:1 = ((mk & 8) != 0 && x == y) || ((mk & 4) != 0 && x < y) || ((mk & 2) != 0 && x > y);
+  if (!take) goto <nt>;
+  goto [a48_20_12_16];
+  <nt>
 }
 :CGIBE g48_gpr8_4,g48_s32_8,a48_20_12_16 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u12_4=0x8 & g48_u40_4=0xf & g48_u44_4=0xc & g48_gpr8_4 & g48_s32_8 & a48_20_12_16 {
-  local i1:8 = g48_s32_8;
-  s390_cgibe(g48_gpr8_4, i1, a48_20_12_16);
+  local iv:8 = g48_s32_8; local x:8 = g48_gpr8_4; local y:8 = iv; local mk:8 = 8;
+  local take:1 = ((mk & 8) != 0 && x == y) || ((mk & 4) != 0 && x s< y) || ((mk & 2) != 0 && x s> y);
+  if (!take) goto <nt>;
+  goto [a48_20_12_16];
+  <nt>
 }
 :CLIJE g48_gpr8_4,g48_u32_8,rel48_16_16 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u12_4=0x8 & g48_u40_4=0x7 & g48_u44_4=0xf & g48_gpr8_4 & g48_u32_8 & rel48_16_16 {
-  local i1:8 = g48_u32_8;
-  local taken:1 = s390_clije_taken(g48_gpr8_4, i1);
-  if (taken != 0) goto rel48_16_16;
+  local iv:8 = g48_u32_8; local x:4 = g48_gpr8_4:4; local y:4 = iv:4; local mk:8 = 8;
+  local take:1 = ((mk & 8) != 0 && x == y) || ((mk & 4) != 0 && x < y) || ((mk & 2) != 0 && x > y);
+  if (take) goto rel48_16_16;
 }
 :CIJE g48_gpr8_4,g48_s32_8,rel48_16_16 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u12_4=0x8 & g48_u40_4=0x7 & g48_u44_4=0xe & g48_gpr8_4 & g48_s32_8 & rel48_16_16 {
-  local i1:8 = g48_s32_8;
-  local taken:1 = s390_cije_taken(g48_gpr8_4, i1);
-  if (taken != 0) goto rel48_16_16;
+  local iv:8 = g48_s32_8; local x:4 = g48_gpr8_4:4; local y:4 = iv:4; local mk:8 = 8;
+  local take:1 = ((mk & 8) != 0 && x == y) || ((mk & 4) != 0 && x s< y) || ((mk & 2) != 0 && x s> y);
+  if (take) goto rel48_16_16;
 }
 :CLGIJE g48_gpr8_4,g48_u32_8,rel48_16_16 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u12_4=0x8 & g48_u40_4=0x7 & g48_u44_4=0xd & g48_gpr8_4 & g48_u32_8 & rel48_16_16 {
-  local i1:8 = g48_u32_8;
-  local taken:1 = s390_clgije_taken(g48_gpr8_4, i1);
-  if (taken != 0) goto rel48_16_16;
+  local iv:8 = g48_u32_8; local x:8 = g48_gpr8_4; local y:8 = iv; local mk:8 = 8;
+  local take:1 = ((mk & 8) != 0 && x == y) || ((mk & 4) != 0 && x < y) || ((mk & 2) != 0 && x > y);
+  if (take) goto rel48_16_16;
 }
 :CGIJE g48_gpr8_4,g48_s32_8,rel48_16_16 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u12_4=0x8 & g48_u40_4=0x7 & g48_u44_4=0xc & g48_gpr8_4 & g48_s32_8 & rel48_16_16 {
-  local i1:8 = g48_s32_8;
-  local taken:1 = s390_cgije_taken(g48_gpr8_4, i1);
-  if (taken != 0) goto rel48_16_16;
+  local iv:8 = g48_s32_8; local x:8 = g48_gpr8_4; local y:8 = iv; local mk:8 = 8;
+  local take:1 = ((mk & 8) != 0 && x == y) || ((mk & 4) != 0 && x s< y) || ((mk & 2) != 0 && x s> y);
+  if (take) goto rel48_16_16;
 }
 :CLIBNE g48_gpr8_4,g48_u32_8,a48_20_12_16 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u12_4=0x6 & g48_u40_4=0xf & g48_u44_4=0xf & g48_gpr8_4 & g48_u32_8 & a48_20_12_16 {
-  local i1:8 = g48_u32_8;
-  s390_clibne(g48_gpr8_4, i1, a48_20_12_16);
+  local iv:8 = g48_u32_8; local x:4 = g48_gpr8_4:4; local y:4 = iv:4; local mk:8 = 6;
+  local take:1 = ((mk & 8) != 0 && x == y) || ((mk & 4) != 0 && x < y) || ((mk & 2) != 0 && x > y);
+  if (!take) goto <nt>;
+  goto [a48_20_12_16];
+  <nt>
 }
 :CIBNE g48_gpr8_4,g48_s32_8,a48_20_12_16 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u12_4=0x6 & g48_u40_4=0xf & g48_u44_4=0xe & g48_gpr8_4 & g48_s32_8 & a48_20_12_16 {
-  local i1:8 = g48_s32_8;
-  s390_cibne(g48_gpr8_4, i1, a48_20_12_16);
+  local iv:8 = g48_s32_8; local x:4 = g48_gpr8_4:4; local y:4 = iv:4; local mk:8 = 6;
+  local take:1 = ((mk & 8) != 0 && x == y) || ((mk & 4) != 0 && x s< y) || ((mk & 2) != 0 && x s> y);
+  if (!take) goto <nt>;
+  goto [a48_20_12_16];
+  <nt>
 }
 :CLGIBNE g48_gpr8_4,g48_u32_8,a48_20_12_16 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u12_4=0x6 & g48_u40_4=0xf & g48_u44_4=0xd & g48_gpr8_4 & g48_u32_8 & a48_20_12_16 {
-  local i1:8 = g48_u32_8;
-  s390_clgibne(g48_gpr8_4, i1, a48_20_12_16);
+  local iv:8 = g48_u32_8; local x:8 = g48_gpr8_4; local y:8 = iv; local mk:8 = 6;
+  local take:1 = ((mk & 8) != 0 && x == y) || ((mk & 4) != 0 && x < y) || ((mk & 2) != 0 && x > y);
+  if (!take) goto <nt>;
+  goto [a48_20_12_16];
+  <nt>
 }
 :CGIBNE g48_gpr8_4,g48_s32_8,a48_20_12_16 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u12_4=0x6 & g48_u40_4=0xf & g48_u44_4=0xc & g48_gpr8_4 & g48_s32_8 & a48_20_12_16 {
-  local i1:8 = g48_s32_8;
-  s390_cgibne(g48_gpr8_4, i1, a48_20_12_16);
+  local iv:8 = g48_s32_8; local x:8 = g48_gpr8_4; local y:8 = iv; local mk:8 = 6;
+  local take:1 = ((mk & 8) != 0 && x == y) || ((mk & 4) != 0 && x s< y) || ((mk & 2) != 0 && x s> y);
+  if (!take) goto <nt>;
+  goto [a48_20_12_16];
+  <nt>
 }
 :CLIJNE g48_gpr8_4,g48_u32_8,rel48_16_16 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u12_4=0x6 & g48_u40_4=0x7 & g48_u44_4=0xf & g48_gpr8_4 & g48_u32_8 & rel48_16_16 {
-  local i1:8 = g48_u32_8;
-  local taken:1 = s390_clijne_taken(g48_gpr8_4, i1);
-  if (taken != 0) goto rel48_16_16;
+  local iv:8 = g48_u32_8; local x:4 = g48_gpr8_4:4; local y:4 = iv:4; local mk:8 = 6;
+  local take:1 = ((mk & 8) != 0 && x == y) || ((mk & 4) != 0 && x < y) || ((mk & 2) != 0 && x > y);
+  if (take) goto rel48_16_16;
 }
 :CIJNE g48_gpr8_4,g48_s32_8,rel48_16_16 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u12_4=0x6 & g48_u40_4=0x7 & g48_u44_4=0xe & g48_gpr8_4 & g48_s32_8 & rel48_16_16 {
-  local i1:8 = g48_s32_8;
-  local taken:1 = s390_cijne_taken(g48_gpr8_4, i1);
-  if (taken != 0) goto rel48_16_16;
+  local iv:8 = g48_s32_8; local x:4 = g48_gpr8_4:4; local y:4 = iv:4; local mk:8 = 6;
+  local take:1 = ((mk & 8) != 0 && x == y) || ((mk & 4) != 0 && x s< y) || ((mk & 2) != 0 && x s> y);
+  if (take) goto rel48_16_16;
 }
 :CLGIJNE g48_gpr8_4,g48_u32_8,rel48_16_16 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u12_4=0x6 & g48_u40_4=0x7 & g48_u44_4=0xd & g48_gpr8_4 & g48_u32_8 & rel48_16_16 {
-  local i1:8 = g48_u32_8;
-  local taken:1 = s390_clgijne_taken(g48_gpr8_4, i1);
-  if (taken != 0) goto rel48_16_16;
+  local iv:8 = g48_u32_8; local x:8 = g48_gpr8_4; local y:8 = iv; local mk:8 = 6;
+  local take:1 = ((mk & 8) != 0 && x == y) || ((mk & 4) != 0 && x < y) || ((mk & 2) != 0 && x > y);
+  if (take) goto rel48_16_16;
 }
 :CGIJNE g48_gpr8_4,g48_s32_8,rel48_16_16 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u12_4=0x6 & g48_u40_4=0x7 & g48_u44_4=0xc & g48_gpr8_4 & g48_s32_8 & rel48_16_16 {
-  local i1:8 = g48_s32_8;
-  local taken:1 = s390_cgijne_taken(g48_gpr8_4, i1);
-  if (taken != 0) goto rel48_16_16;
+  local iv:8 = g48_s32_8; local x:8 = g48_gpr8_4; local y:8 = iv; local mk:8 = 6;
+  local take:1 = ((mk & 8) != 0 && x == y) || ((mk & 4) != 0 && x s< y) || ((mk & 2) != 0 && x s> y);
+  if (take) goto rel48_16_16;
 }
 :CLIBL g48_gpr8_4,g48_u32_8,a48_20_12_16 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u12_4=0x4 & g48_u40_4=0xf & g48_u44_4=0xf & g48_gpr8_4 & g48_u32_8 & a48_20_12_16 {
-  local i1:8 = g48_u32_8;
-  s390_clibl(g48_gpr8_4, i1, a48_20_12_16);
+  local iv:8 = g48_u32_8; local x:4 = g48_gpr8_4:4; local y:4 = iv:4; local mk:8 = 4;
+  local take:1 = ((mk & 8) != 0 && x == y) || ((mk & 4) != 0 && x < y) || ((mk & 2) != 0 && x > y);
+  if (!take) goto <nt>;
+  goto [a48_20_12_16];
+  <nt>
 }
 :CIBL g48_gpr8_4,g48_s32_8,a48_20_12_16 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u12_4=0x4 & g48_u40_4=0xf & g48_u44_4=0xe & g48_gpr8_4 & g48_s32_8 & a48_20_12_16 {
-  local i1:8 = g48_s32_8;
-  s390_cibl(g48_gpr8_4, i1, a48_20_12_16);
+  local iv:8 = g48_s32_8; local x:4 = g48_gpr8_4:4; local y:4 = iv:4; local mk:8 = 4;
+  local take:1 = ((mk & 8) != 0 && x == y) || ((mk & 4) != 0 && x s< y) || ((mk & 2) != 0 && x s> y);
+  if (!take) goto <nt>;
+  goto [a48_20_12_16];
+  <nt>
 }
 :CLGIBL g48_gpr8_4,g48_u32_8,a48_20_12_16 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u12_4=0x4 & g48_u40_4=0xf & g48_u44_4=0xd & g48_gpr8_4 & g48_u32_8 & a48_20_12_16 {
-  local i1:8 = g48_u32_8;
-  s390_clgibl(g48_gpr8_4, i1, a48_20_12_16);
+  local iv:8 = g48_u32_8; local x:8 = g48_gpr8_4; local y:8 = iv; local mk:8 = 4;
+  local take:1 = ((mk & 8) != 0 && x == y) || ((mk & 4) != 0 && x < y) || ((mk & 2) != 0 && x > y);
+  if (!take) goto <nt>;
+  goto [a48_20_12_16];
+  <nt>
 }
 :CGIBL g48_gpr8_4,g48_s32_8,a48_20_12_16 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u12_4=0x4 & g48_u40_4=0xf & g48_u44_4=0xc & g48_gpr8_4 & g48_s32_8 & a48_20_12_16 {
-  local i1:8 = g48_s32_8;
-  s390_cgibl(g48_gpr8_4, i1, a48_20_12_16);
+  local iv:8 = g48_s32_8; local x:8 = g48_gpr8_4; local y:8 = iv; local mk:8 = 4;
+  local take:1 = ((mk & 8) != 0 && x == y) || ((mk & 4) != 0 && x s< y) || ((mk & 2) != 0 && x s> y);
+  if (!take) goto <nt>;
+  goto [a48_20_12_16];
+  <nt>
 }
 :CLIJL g48_gpr8_4,g48_u32_8,rel48_16_16 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u12_4=0x4 & g48_u40_4=0x7 & g48_u44_4=0xf & g48_gpr8_4 & g48_u32_8 & rel48_16_16 {
-  local i1:8 = g48_u32_8;
-  local taken:1 = s390_clijl_taken(g48_gpr8_4, i1);
-  if (taken != 0) goto rel48_16_16;
+  local iv:8 = g48_u32_8; local x:4 = g48_gpr8_4:4; local y:4 = iv:4; local mk:8 = 4;
+  local take:1 = ((mk & 8) != 0 && x == y) || ((mk & 4) != 0 && x < y) || ((mk & 2) != 0 && x > y);
+  if (take) goto rel48_16_16;
 }
 :CIJL g48_gpr8_4,g48_s32_8,rel48_16_16 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u12_4=0x4 & g48_u40_4=0x7 & g48_u44_4=0xe & g48_gpr8_4 & g48_s32_8 & rel48_16_16 {
-  local i1:8 = g48_s32_8;
-  local taken:1 = s390_cijl_taken(g48_gpr8_4, i1);
-  if (taken != 0) goto rel48_16_16;
+  local iv:8 = g48_s32_8; local x:4 = g48_gpr8_4:4; local y:4 = iv:4; local mk:8 = 4;
+  local take:1 = ((mk & 8) != 0 && x == y) || ((mk & 4) != 0 && x s< y) || ((mk & 2) != 0 && x s> y);
+  if (take) goto rel48_16_16;
 }
 :CLGIJL g48_gpr8_4,g48_u32_8,rel48_16_16 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u12_4=0x4 & g48_u40_4=0x7 & g48_u44_4=0xd & g48_gpr8_4 & g48_u32_8 & rel48_16_16 {
-  local i1:8 = g48_u32_8;
-  local taken:1 = s390_clgijl_taken(g48_gpr8_4, i1);
-  if (taken != 0) goto rel48_16_16;
+  local iv:8 = g48_u32_8; local x:8 = g48_gpr8_4; local y:8 = iv; local mk:8 = 4;
+  local take:1 = ((mk & 8) != 0 && x == y) || ((mk & 4) != 0 && x < y) || ((mk & 2) != 0 && x > y);
+  if (take) goto rel48_16_16;
 }
 :CGIJL g48_gpr8_4,g48_s32_8,rel48_16_16 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u12_4=0x4 & g48_u40_4=0x7 & g48_u44_4=0xc & g48_gpr8_4 & g48_s32_8 & rel48_16_16 {
-  local i1:8 = g48_s32_8;
-  local taken:1 = s390_cgijl_taken(g48_gpr8_4, i1);
-  if (taken != 0) goto rel48_16_16;
+  local iv:8 = g48_s32_8; local x:8 = g48_gpr8_4; local y:8 = iv; local mk:8 = 4;
+  local take:1 = ((mk & 8) != 0 && x == y) || ((mk & 4) != 0 && x s< y) || ((mk & 2) != 0 && x s> y);
+  if (take) goto rel48_16_16;
 }
 :CLIBH g48_gpr8_4,g48_u32_8,a48_20_12_16 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u12_4=0x2 & g48_u40_4=0xf & g48_u44_4=0xf & g48_gpr8_4 & g48_u32_8 & a48_20_12_16 {
-  local i1:8 = g48_u32_8;
-  s390_clibh(g48_gpr8_4, i1, a48_20_12_16);
+  local iv:8 = g48_u32_8; local x:4 = g48_gpr8_4:4; local y:4 = iv:4; local mk:8 = 2;
+  local take:1 = ((mk & 8) != 0 && x == y) || ((mk & 4) != 0 && x < y) || ((mk & 2) != 0 && x > y);
+  if (!take) goto <nt>;
+  goto [a48_20_12_16];
+  <nt>
 }
 :CIBH g48_gpr8_4,g48_s32_8,a48_20_12_16 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u12_4=0x2 & g48_u40_4=0xf & g48_u44_4=0xe & g48_gpr8_4 & g48_s32_8 & a48_20_12_16 {
-  local i1:8 = g48_s32_8;
-  s390_cibh(g48_gpr8_4, i1, a48_20_12_16);
+  local iv:8 = g48_s32_8; local x:4 = g48_gpr8_4:4; local y:4 = iv:4; local mk:8 = 2;
+  local take:1 = ((mk & 8) != 0 && x == y) || ((mk & 4) != 0 && x s< y) || ((mk & 2) != 0 && x s> y);
+  if (!take) goto <nt>;
+  goto [a48_20_12_16];
+  <nt>
 }
 :CLGIBH g48_gpr8_4,g48_u32_8,a48_20_12_16 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u12_4=0x2 & g48_u40_4=0xf & g48_u44_4=0xd & g48_gpr8_4 & g48_u32_8 & a48_20_12_16 {
-  local i1:8 = g48_u32_8;
-  s390_clgibh(g48_gpr8_4, i1, a48_20_12_16);
+  local iv:8 = g48_u32_8; local x:8 = g48_gpr8_4; local y:8 = iv; local mk:8 = 2;
+  local take:1 = ((mk & 8) != 0 && x == y) || ((mk & 4) != 0 && x < y) || ((mk & 2) != 0 && x > y);
+  if (!take) goto <nt>;
+  goto [a48_20_12_16];
+  <nt>
 }
 :CGIBH g48_gpr8_4,g48_s32_8,a48_20_12_16 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u12_4=0x2 & g48_u40_4=0xf & g48_u44_4=0xc & g48_gpr8_4 & g48_s32_8 & a48_20_12_16 {
-  local i1:8 = g48_s32_8;
-  s390_cgibh(g48_gpr8_4, i1, a48_20_12_16);
+  local iv:8 = g48_s32_8; local x:8 = g48_gpr8_4; local y:8 = iv; local mk:8 = 2;
+  local take:1 = ((mk & 8) != 0 && x == y) || ((mk & 4) != 0 && x s< y) || ((mk & 2) != 0 && x s> y);
+  if (!take) goto <nt>;
+  goto [a48_20_12_16];
+  <nt>
 }
 :CLIJH g48_gpr8_4,g48_u32_8,rel48_16_16 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u12_4=0x2 & g48_u40_4=0x7 & g48_u44_4=0xf & g48_gpr8_4 & g48_u32_8 & rel48_16_16 {
-  local i1:8 = g48_u32_8;
-  local taken:1 = s390_clijh_taken(g48_gpr8_4, i1);
-  if (taken != 0) goto rel48_16_16;
+  local iv:8 = g48_u32_8; local x:4 = g48_gpr8_4:4; local y:4 = iv:4; local mk:8 = 2;
+  local take:1 = ((mk & 8) != 0 && x == y) || ((mk & 4) != 0 && x < y) || ((mk & 2) != 0 && x > y);
+  if (take) goto rel48_16_16;
 }
 :CIJH g48_gpr8_4,g48_s32_8,rel48_16_16 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u12_4=0x2 & g48_u40_4=0x7 & g48_u44_4=0xe & g48_gpr8_4 & g48_s32_8 & rel48_16_16 {
-  local i1:8 = g48_s32_8;
-  local taken:1 = s390_cijh_taken(g48_gpr8_4, i1);
-  if (taken != 0) goto rel48_16_16;
+  local iv:8 = g48_s32_8; local x:4 = g48_gpr8_4:4; local y:4 = iv:4; local mk:8 = 2;
+  local take:1 = ((mk & 8) != 0 && x == y) || ((mk & 4) != 0 && x s< y) || ((mk & 2) != 0 && x s> y);
+  if (take) goto rel48_16_16;
 }
 :CLGIJH g48_gpr8_4,g48_u32_8,rel48_16_16 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u12_4=0x2 & g48_u40_4=0x7 & g48_u44_4=0xd & g48_gpr8_4 & g48_u32_8 & rel48_16_16 {
-  local i1:8 = g48_u32_8;
-  local taken:1 = s390_clgijh_taken(g48_gpr8_4, i1);
-  if (taken != 0) goto rel48_16_16;
+  local iv:8 = g48_u32_8; local x:8 = g48_gpr8_4; local y:8 = iv; local mk:8 = 2;
+  local take:1 = ((mk & 8) != 0 && x == y) || ((mk & 4) != 0 && x < y) || ((mk & 2) != 0 && x > y);
+  if (take) goto rel48_16_16;
 }
 :CGIJH g48_gpr8_4,g48_s32_8,rel48_16_16 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u12_4=0x2 & g48_u40_4=0x7 & g48_u44_4=0xc & g48_gpr8_4 & g48_s32_8 & rel48_16_16 {
-  local i1:8 = g48_s32_8;
-  local taken:1 = s390_cgijh_taken(g48_gpr8_4, i1);
-  if (taken != 0) goto rel48_16_16;
+  local iv:8 = g48_s32_8; local x:8 = g48_gpr8_4; local y:8 = iv; local mk:8 = 2;
+  local take:1 = ((mk & 8) != 0 && x == y) || ((mk & 4) != 0 && x s< y) || ((mk & 2) != 0 && x s> y);
+  if (take) goto rel48_16_16;
 }
 :RXSBGT g48_gpr8_4,g48_gpr12_4,imm48_16_8_m80,g48_u24_8 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u16_1=1 & g48_u40_4=0x5 & g48_u44_4=0x7 & g48_u32_8=0 & g48_gpr8_4 & g48_gpr12_4 & imm48_16_8_m80 & g48_u24_8 {
-  local i3:8 = g48_u24_8;
-  local i4:8 = 0;
-  g48_gpr8_4 = s390_rxsbgt(g48_gpr12_4, imm48_16_8_m80, i3, i4);
+  local s:8 = imm48_16_8_m80; local e:8 = g48_u24_8; local rot:8 = 0;
+  s = s & 63; e = e & 63;
+  local src:8 = g48_gpr12_4; local rs:8 = rot & 63;
+  local rv:8 = (src << rs) | (src >> ((64 - rs) & 63)); rv = zext(rs != 0) * rv + zext(rs == 0) * src;
+  local ms:8 = 0xffffffffffffffff >> s; local me:8 = 0xffffffffffffffff << (63 - e);
+  local wrap:1 = s > e; local m:8 = zext(!wrap) * (ms & me) + zext(wrap) * (ms | me);
+  local t:8 = (g48_gpr8_4 ^ rv) & m; local r:8 = (g48_gpr8_4 & ~m) | t; gs_cc_nz(t);
 }
 :RXSBGT g48_gpr8_4,g48_gpr12_4,imm48_16_8_m80,g48_u24_8,g48_u32_8 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u16_1=1 & g48_u40_4=0x5 & g48_u44_4=0x7 & g48_gpr8_4 & g48_gpr12_4 & imm48_16_8_m80 & g48_u24_8 & g48_u32_8 {
-  local i3:8 = g48_u24_8;
-  local i4:8 = g48_u32_8;
-  g48_gpr8_4 = s390_rxsbgt(g48_gpr12_4, imm48_16_8_m80, i3, i4);
+  local s:8 = imm48_16_8_m80; local e:8 = g48_u24_8; local rot:8 = g48_u32_8;
+  s = s & 63; e = e & 63;
+  local src:8 = g48_gpr12_4; local rs:8 = rot & 63;
+  local rv:8 = (src << rs) | (src >> ((64 - rs) & 63)); rv = zext(rs != 0) * rv + zext(rs == 0) * src;
+  local ms:8 = 0xffffffffffffffff >> s; local me:8 = 0xffffffffffffffff << (63 - e);
+  local wrap:1 = s > e; local m:8 = zext(!wrap) * (ms & me) + zext(wrap) * (ms | me);
+  local t:8 = (g48_gpr8_4 ^ rv) & m; local r:8 = (g48_gpr8_4 & ~m) | t; gs_cc_nz(t);
 }
 :ROSBGT g48_gpr8_4,g48_gpr12_4,imm48_16_8_m80,g48_u24_8 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u16_1=1 & g48_u40_4=0x5 & g48_u44_4=0x6 & g48_u32_8=0 & g48_gpr8_4 & g48_gpr12_4 & imm48_16_8_m80 & g48_u24_8 {
-  local i3:8 = g48_u24_8;
-  local i4:8 = 0;
-  g48_gpr8_4 = s390_rosbgt(g48_gpr12_4, imm48_16_8_m80, i3, i4);
+  local s:8 = imm48_16_8_m80; local e:8 = g48_u24_8; local rot:8 = 0;
+  s = s & 63; e = e & 63;
+  local src:8 = g48_gpr12_4; local rs:8 = rot & 63;
+  local rv:8 = (src << rs) | (src >> ((64 - rs) & 63)); rv = zext(rs != 0) * rv + zext(rs == 0) * src;
+  local ms:8 = 0xffffffffffffffff >> s; local me:8 = 0xffffffffffffffff << (63 - e);
+  local wrap:1 = s > e; local m:8 = zext(!wrap) * (ms & me) + zext(wrap) * (ms | me);
+  local t:8 = (g48_gpr8_4 | rv) & m; local r:8 = (g48_gpr8_4 & ~m) | t; gs_cc_nz(t);
 }
 :ROSBGT g48_gpr8_4,g48_gpr12_4,imm48_16_8_m80,g48_u24_8,g48_u32_8 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u16_1=1 & g48_u40_4=0x5 & g48_u44_4=0x6 & g48_gpr8_4 & g48_gpr12_4 & imm48_16_8_m80 & g48_u24_8 & g48_u32_8 {
-  local i3:8 = g48_u24_8;
-  local i4:8 = g48_u32_8;
-  g48_gpr8_4 = s390_rosbgt(g48_gpr12_4, imm48_16_8_m80, i3, i4);
+  local s:8 = imm48_16_8_m80; local e:8 = g48_u24_8; local rot:8 = g48_u32_8;
+  s = s & 63; e = e & 63;
+  local src:8 = g48_gpr12_4; local rs:8 = rot & 63;
+  local rv:8 = (src << rs) | (src >> ((64 - rs) & 63)); rv = zext(rs != 0) * rv + zext(rs == 0) * src;
+  local ms:8 = 0xffffffffffffffff >> s; local me:8 = 0xffffffffffffffff << (63 - e);
+  local wrap:1 = s > e; local m:8 = zext(!wrap) * (ms & me) + zext(wrap) * (ms | me);
+  local t:8 = (g48_gpr8_4 | rv) & m; local r:8 = (g48_gpr8_4 & ~m) | t; gs_cc_nz(t);
 }
 :RNSBGT g48_gpr8_4,g48_gpr12_4,imm48_16_8_m80,g48_u24_8 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u16_1=1 & g48_u40_4=0x5 & g48_u44_4=0x4 & g48_u32_8=0 & g48_gpr8_4 & g48_gpr12_4 & imm48_16_8_m80 & g48_u24_8 {
-  local i3:8 = g48_u24_8;
-  local i4:8 = 0;
-  g48_gpr8_4 = s390_rnsbgt(g48_gpr12_4, imm48_16_8_m80, i3, i4);
+  local s:8 = imm48_16_8_m80; local e:8 = g48_u24_8; local rot:8 = 0;
+  s = s & 63; e = e & 63;
+  local src:8 = g48_gpr12_4; local rs:8 = rot & 63;
+  local rv:8 = (src << rs) | (src >> ((64 - rs) & 63)); rv = zext(rs != 0) * rv + zext(rs == 0) * src;
+  local ms:8 = 0xffffffffffffffff >> s; local me:8 = 0xffffffffffffffff << (63 - e);
+  local wrap:1 = s > e; local m:8 = zext(!wrap) * (ms & me) + zext(wrap) * (ms | me);
+  local t:8 = (g48_gpr8_4 & rv) & m; local r:8 = (g48_gpr8_4 & ~m) | t; gs_cc_nz(t);
 }
 :RNSBGT g48_gpr8_4,g48_gpr12_4,imm48_16_8_m80,g48_u24_8,g48_u32_8 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u16_1=1 & g48_u40_4=0x5 & g48_u44_4=0x4 & g48_gpr8_4 & g48_gpr12_4 & imm48_16_8_m80 & g48_u24_8 & g48_u32_8 {
-  local i3:8 = g48_u24_8;
-  local i4:8 = g48_u32_8;
-  g48_gpr8_4 = s390_rnsbgt(g48_gpr12_4, imm48_16_8_m80, i3, i4);
+  local s:8 = imm48_16_8_m80; local e:8 = g48_u24_8; local rot:8 = g48_u32_8;
+  s = s & 63; e = e & 63;
+  local src:8 = g48_gpr12_4; local rs:8 = rot & 63;
+  local rv:8 = (src << rs) | (src >> ((64 - rs) & 63)); rv = zext(rs != 0) * rv + zext(rs == 0) * src;
+  local ms:8 = 0xffffffffffffffff >> s; local me:8 = 0xffffffffffffffff << (63 - e);
+  local wrap:1 = s > e; local m:8 = zext(!wrap) * (ms & me) + zext(wrap) * (ms | me);
+  local t:8 = (g48_gpr8_4 & rv) & m; local r:8 = (g48_gpr8_4 & ~m) | t; gs_cc_nz(t);
 }
 :RISBHGZ g48_gpr8_4,g48_gpr12_4,g48_u16_8,imm48_24_8_m80 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u24_1=1 & g48_u40_4=0x5 & g48_u44_4=0xd & g48_u32_8=0 & g48_gpr8_4 & g48_gpr12_4 & g48_u16_8 & imm48_24_8_m80 {
-  local i2:8 = g48_u16_8;
-  local i4:8 = 0;
-  g48_gpr8_4 = s390_risbhgz(g48_gpr12_4, i2, imm48_24_8_m80, i4);
+  local s:8 = g48_u16_8; local e:8 = imm48_24_8_m80; local rot:8 = 0;
+  s = s & 31; e = e & 31;
+  local src:8 = g48_gpr12_4; local rs:8 = rot & 63;
+  local rv:8 = (src << rs) | (src >> ((64 - rs) & 63)); rv = zext(rs != 0) * rv + zext(rs == 0) * src;
+  local ms:8 = 0xffffffffffffffff >> s; local me:8 = 0xffffffffffffffff << (63 - e);
+  local wrap:1 = s > e; local m:8 = zext(!wrap) * (ms & me) + zext(wrap) * (ms | me);
+  local r:8 = rv & m;
+  g48_gpr8_4 = (g48_gpr8_4 & 0xffffffff) | (r & 0xffffffff00000000);
 }
 :RISBHGZ g48_gpr8_4,g48_gpr12_4,g48_u16_8,imm48_24_8_m80,g48_u32_8 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u24_1=1 & g48_u40_4=0x5 & g48_u44_4=0xd & g48_gpr8_4 & g48_gpr12_4 & g48_u16_8 & imm48_24_8_m80 & g48_u32_8 {
-  local i2:8 = g48_u16_8;
-  local i4:8 = g48_u32_8;
-  g48_gpr8_4 = s390_risbhgz(g48_gpr12_4, i2, imm48_24_8_m80, i4);
+  local s:8 = g48_u16_8; local e:8 = imm48_24_8_m80; local rot:8 = g48_u32_8;
+  s = s & 31; e = e & 31;
+  local src:8 = g48_gpr12_4; local rs:8 = rot & 63;
+  local rv:8 = (src << rs) | (src >> ((64 - rs) & 63)); rv = zext(rs != 0) * rv + zext(rs == 0) * src;
+  local ms:8 = 0xffffffffffffffff >> s; local me:8 = 0xffffffffffffffff << (63 - e);
+  local wrap:1 = s > e; local m:8 = zext(!wrap) * (ms & me) + zext(wrap) * (ms | me);
+  local r:8 = rv & m;
+  g48_gpr8_4 = (g48_gpr8_4 & 0xffffffff) | (r & 0xffffffff00000000);
 }
 :RISBGNZ g48_gpr8_4,g48_gpr12_4,g48_u16_8,imm48_24_8_m80 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u24_1=1 & g48_u40_4=0x5 & g48_u44_4=0x9 & g48_u32_8=0 & g48_gpr8_4 & g48_gpr12_4 & g48_u16_8 & imm48_24_8_m80 {
-  local i2:8 = g48_u16_8;
-  local i4:8 = 0;
-  g48_gpr8_4 = s390_risbgnz(g48_gpr12_4, i2, imm48_24_8_m80, i4);
+  local s:8 = g48_u16_8; local e:8 = imm48_24_8_m80; local rot:8 = 0;
+  s = s & 63; e = e & 63;
+  local src:8 = g48_gpr12_4; local rs:8 = rot & 63;
+  local rv:8 = (src << rs) | (src >> ((64 - rs) & 63)); rv = zext(rs != 0) * rv + zext(rs == 0) * src;
+  local ms:8 = 0xffffffffffffffff >> s; local me:8 = 0xffffffffffffffff << (63 - e);
+  local wrap:1 = s > e; local m:8 = zext(!wrap) * (ms & me) + zext(wrap) * (ms | me);
+  local r:8 = rv & m;
+  g48_gpr8_4 = r;
 }
 :RISBGNZ g48_gpr8_4,g48_gpr12_4,g48_u16_8,imm48_24_8_m80,g48_u32_8 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u24_1=1 & g48_u40_4=0x5 & g48_u44_4=0x9 & g48_gpr8_4 & g48_gpr12_4 & g48_u16_8 & imm48_24_8_m80 & g48_u32_8 {
-  local i2:8 = g48_u16_8;
-  local i4:8 = g48_u32_8;
-  g48_gpr8_4 = s390_risbgnz(g48_gpr12_4, i2, imm48_24_8_m80, i4);
+  local s:8 = g48_u16_8; local e:8 = imm48_24_8_m80; local rot:8 = g48_u32_8;
+  s = s & 63; e = e & 63;
+  local src:8 = g48_gpr12_4; local rs:8 = rot & 63;
+  local rv:8 = (src << rs) | (src >> ((64 - rs) & 63)); rv = zext(rs != 0) * rv + zext(rs == 0) * src;
+  local ms:8 = 0xffffffffffffffff >> s; local me:8 = 0xffffffffffffffff << (63 - e);
+  local wrap:1 = s > e; local m:8 = zext(!wrap) * (ms & me) + zext(wrap) * (ms | me);
+  local r:8 = rv & m;
+  g48_gpr8_4 = r;
 }
 :RISBGZ g48_gpr8_4,g48_gpr12_4,g48_u16_8,imm48_24_8_m80 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u24_1=1 & g48_u40_4=0x5 & g48_u44_4=0x5 & g48_u32_8=0 & g48_gpr8_4 & g48_gpr12_4 & g48_u16_8 & imm48_24_8_m80 {
-  local i2:8 = g48_u16_8;
-  local i4:8 = 0;
-  g48_gpr8_4 = s390_risbgz(g48_gpr12_4, i2, imm48_24_8_m80, i4);
+  local s:8 = g48_u16_8; local e:8 = imm48_24_8_m80; local rot:8 = 0;
+  s = s & 63; e = e & 63;
+  local src:8 = g48_gpr12_4; local rs:8 = rot & 63;
+  local rv:8 = (src << rs) | (src >> ((64 - rs) & 63)); rv = zext(rs != 0) * rv + zext(rs == 0) * src;
+  local ms:8 = 0xffffffffffffffff >> s; local me:8 = 0xffffffffffffffff << (63 - e);
+  local wrap:1 = s > e; local m:8 = zext(!wrap) * (ms & me) + zext(wrap) * (ms | me);
+  local r:8 = rv & m;
+  g48_gpr8_4 = r;
+  local sr:8 = r; gs_cc_arith(sr, 0:1);
 }
 :RISBGZ g48_gpr8_4,g48_gpr12_4,g48_u16_8,imm48_24_8_m80,g48_u32_8 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u24_1=1 & g48_u40_4=0x5 & g48_u44_4=0x5 & g48_gpr8_4 & g48_gpr12_4 & g48_u16_8 & imm48_24_8_m80 & g48_u32_8 {
-  local i2:8 = g48_u16_8;
-  local i4:8 = g48_u32_8;
-  g48_gpr8_4 = s390_risbgz(g48_gpr12_4, i2, imm48_24_8_m80, i4);
+  local s:8 = g48_u16_8; local e:8 = imm48_24_8_m80; local rot:8 = g48_u32_8;
+  s = s & 63; e = e & 63;
+  local src:8 = g48_gpr12_4; local rs:8 = rot & 63;
+  local rv:8 = (src << rs) | (src >> ((64 - rs) & 63)); rv = zext(rs != 0) * rv + zext(rs == 0) * src;
+  local ms:8 = 0xffffffffffffffff >> s; local me:8 = 0xffffffffffffffff << (63 - e);
+  local wrap:1 = s > e; local m:8 = zext(!wrap) * (ms & me) + zext(wrap) * (ms | me);
+  local r:8 = rv & m;
+  g48_gpr8_4 = r;
+  local sr:8 = r; gs_cc_arith(sr, 0:1);
 }
 :RISBLGZ g48_gpr8_4,g48_gpr12_4,g48_u16_8,imm48_24_8_m80 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u24_1=1 & g48_u40_4=0x5 & g48_u44_4=0x1 & g48_u32_8=0 & g48_gpr8_4 & g48_gpr12_4 & g48_u16_8 & imm48_24_8_m80 {
-  local i2:8 = g48_u16_8;
-  local i4:8 = 0;
-  g48_gpr8_4 = s390_risblgz(g48_gpr12_4, i2, imm48_24_8_m80, i4);
+  local s:8 = g48_u16_8; local e:8 = imm48_24_8_m80; local rot:8 = 0;
+  s = (s & 31) + 32; e = (e & 31) + 32;
+  local src:8 = g48_gpr12_4; local rs:8 = rot & 63;
+  local rv:8 = (src << rs) | (src >> ((64 - rs) & 63)); rv = zext(rs != 0) * rv + zext(rs == 0) * src;
+  local ms:8 = 0xffffffffffffffff >> s; local me:8 = 0xffffffffffffffff << (63 - e);
+  local wrap:1 = s > e; local m:8 = zext(!wrap) * (ms & me) + zext(wrap) * (ms | me);
+  local r:8 = rv & m;
+  g48_gpr8_4 = (g48_gpr8_4 & 0xffffffff00000000) | (r & 0xffffffff);
 }
 :RISBLGZ g48_gpr8_4,g48_gpr12_4,g48_u16_8,imm48_24_8_m80,g48_u32_8 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u24_1=1 & g48_u40_4=0x5 & g48_u44_4=0x1 & g48_gpr8_4 & g48_gpr12_4 & g48_u16_8 & imm48_24_8_m80 & g48_u32_8 {
-  local i2:8 = g48_u16_8;
-  local i4:8 = g48_u32_8;
-  g48_gpr8_4 = s390_risblgz(g48_gpr12_4, i2, imm48_24_8_m80, i4);
+  local s:8 = g48_u16_8; local e:8 = imm48_24_8_m80; local rot:8 = g48_u32_8;
+  s = (s & 31) + 32; e = (e & 31) + 32;
+  local src:8 = g48_gpr12_4; local rs:8 = rot & 63;
+  local rv:8 = (src << rs) | (src >> ((64 - rs) & 63)); rv = zext(rs != 0) * rv + zext(rs == 0) * src;
+  local ms:8 = 0xffffffffffffffff >> s; local me:8 = 0xffffffffffffffff << (63 - e);
+  local wrap:1 = s > e; local m:8 = zext(!wrap) * (ms & me) + zext(wrap) * (ms | me);
+  local r:8 = rv & m;
+  g48_gpr8_4 = (g48_gpr8_4 & 0xffffffff00000000) | (r & 0xffffffff);
 }
 :CLRBNH g48_gpr8_4,g48_gpr12_4,a48_20_12_16 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u32_4=0xc & g48_u36_4=0x0 & g48_u40_4=0xf & g48_u44_4=0x7 & g48_gpr8_4 & g48_gpr12_4 & a48_20_12_16 {
-  s390_clrbnh(g48_gpr8_4, g48_gpr12_4, a48_20_12_16);
+  local x:4 = g48_gpr8_4:4; local y:4 = g48_gpr12_4:4; local mk:8 = 12;
+  local take:1 = ((mk & 8) != 0 && x == y) || ((mk & 4) != 0 && x < y) || ((mk & 2) != 0 && x > y);
+  if (!take) goto <nt>;
+  goto [a48_20_12_16];
+  <nt>
 }
 :CRBNH g48_gpr8_4,g48_gpr12_4,a48_20_12_16 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u32_4=0xc & g48_u36_4=0x0 & g48_u40_4=0xf & g48_u44_4=0x6 & g48_gpr8_4 & g48_gpr12_4 & a48_20_12_16 {
-  s390_crbnh(g48_gpr8_4, g48_gpr12_4, a48_20_12_16);
+  local x:4 = g48_gpr8_4:4; local y:4 = g48_gpr12_4:4; local mk:8 = 12;
+  local take:1 = ((mk & 8) != 0 && x == y) || ((mk & 4) != 0 && x s< y) || ((mk & 2) != 0 && x s> y);
+  if (!take) goto <nt>;
+  goto [a48_20_12_16];
+  <nt>
 }
 :CLGRBNH g48_gpr8_4,g48_gpr12_4,a48_20_12_16 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u32_4=0xc & g48_u36_4=0x0 & g48_u40_4=0xe & g48_u44_4=0x5 & g48_gpr8_4 & g48_gpr12_4 & a48_20_12_16 {
-  s390_clgrbnh(g48_gpr8_4, g48_gpr12_4, a48_20_12_16);
+  local x:8 = g48_gpr8_4; local y:8 = g48_gpr12_4; local mk:8 = 12;
+  local take:1 = ((mk & 8) != 0 && x == y) || ((mk & 4) != 0 && x < y) || ((mk & 2) != 0 && x > y);
+  if (!take) goto <nt>;
+  goto [a48_20_12_16];
+  <nt>
 }
 :CGRBNH g48_gpr8_4,g48_gpr12_4,a48_20_12_16 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u32_4=0xc & g48_u36_4=0x0 & g48_u40_4=0xe & g48_u44_4=0x4 & g48_gpr8_4 & g48_gpr12_4 & a48_20_12_16 {
-  s390_cgrbnh(g48_gpr8_4, g48_gpr12_4, a48_20_12_16);
+  local x:8 = g48_gpr8_4; local y:8 = g48_gpr12_4; local mk:8 = 12;
+  local take:1 = ((mk & 8) != 0 && x == y) || ((mk & 4) != 0 && x s< y) || ((mk & 2) != 0 && x s> y);
+  if (!take) goto <nt>;
+  goto [a48_20_12_16];
+  <nt>
 }
 :CLRJNH g48_gpr8_4,g48_gpr12_4,rel48_16_16 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u32_4=0xc & g48_u40_4=0x7 & g48_u44_4=0x7 & g48_gpr8_4 & g48_gpr12_4 & rel48_16_16 {
-  local taken:1 = s390_clrjnh_taken(g48_gpr8_4, g48_gpr12_4);
-  if (taken != 0) goto rel48_16_16;
+  local x:4 = g48_gpr8_4:4; local y:4 = g48_gpr12_4:4; local mk:8 = 12;
+  local take:1 = ((mk & 8) != 0 && x == y) || ((mk & 4) != 0 && x < y) || ((mk & 2) != 0 && x > y);
+  if (take) goto rel48_16_16;
 }
 :CRJNH g48_gpr8_4,g48_gpr12_4,rel48_16_16 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u32_4=0xc & g48_u40_4=0x7 & g48_u44_4=0x6 & g48_gpr8_4 & g48_gpr12_4 & rel48_16_16 {
-  local taken:1 = s390_crjnh_taken(g48_gpr8_4, g48_gpr12_4);
-  if (taken != 0) goto rel48_16_16;
+  local x:4 = g48_gpr8_4:4; local y:4 = g48_gpr12_4:4; local mk:8 = 12;
+  local take:1 = ((mk & 8) != 0 && x == y) || ((mk & 4) != 0 && x s< y) || ((mk & 2) != 0 && x s> y);
+  if (take) goto rel48_16_16;
 }
 :CLGRJNH g48_gpr8_4,g48_gpr12_4,rel48_16_16 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u32_4=0xc & g48_u40_4=0x6 & g48_u44_4=0x5 & g48_gpr8_4 & g48_gpr12_4 & rel48_16_16 {
-  local taken:1 = s390_clgrjnh_taken(g48_gpr8_4, g48_gpr12_4);
-  if (taken != 0) goto rel48_16_16;
+  local x:8 = g48_gpr8_4; local y:8 = g48_gpr12_4; local mk:8 = 12;
+  local take:1 = ((mk & 8) != 0 && x == y) || ((mk & 4) != 0 && x < y) || ((mk & 2) != 0 && x > y);
+  if (take) goto rel48_16_16;
 }
 :CGRJNH g48_gpr8_4,g48_gpr12_4,rel48_16_16 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u32_4=0xc & g48_u40_4=0x6 & g48_u44_4=0x4 & g48_gpr8_4 & g48_gpr12_4 & rel48_16_16 {
-  local taken:1 = s390_cgrjnh_taken(g48_gpr8_4, g48_gpr12_4);
-  if (taken != 0) goto rel48_16_16;
+  local x:8 = g48_gpr8_4; local y:8 = g48_gpr12_4; local mk:8 = 12;
+  local take:1 = ((mk & 8) != 0 && x == y) || ((mk & 4) != 0 && x s< y) || ((mk & 2) != 0 && x s> y);
+  if (take) goto rel48_16_16;
 }
 :CLRBNL g48_gpr8_4,g48_gpr12_4,a48_20_12_16 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u32_4=0xa & g48_u36_4=0x0 & g48_u40_4=0xf & g48_u44_4=0x7 & g48_gpr8_4 & g48_gpr12_4 & a48_20_12_16 {
-  s390_clrbnl(g48_gpr8_4, g48_gpr12_4, a48_20_12_16);
+  local x:4 = g48_gpr8_4:4; local y:4 = g48_gpr12_4:4; local mk:8 = 10;
+  local take:1 = ((mk & 8) != 0 && x == y) || ((mk & 4) != 0 && x < y) || ((mk & 2) != 0 && x > y);
+  if (!take) goto <nt>;
+  goto [a48_20_12_16];
+  <nt>
 }
 :CRBNL g48_gpr8_4,g48_gpr12_4,a48_20_12_16 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u32_4=0xa & g48_u36_4=0x0 & g48_u40_4=0xf & g48_u44_4=0x6 & g48_gpr8_4 & g48_gpr12_4 & a48_20_12_16 {
-  s390_crbnl(g48_gpr8_4, g48_gpr12_4, a48_20_12_16);
+  local x:4 = g48_gpr8_4:4; local y:4 = g48_gpr12_4:4; local mk:8 = 10;
+  local take:1 = ((mk & 8) != 0 && x == y) || ((mk & 4) != 0 && x s< y) || ((mk & 2) != 0 && x s> y);
+  if (!take) goto <nt>;
+  goto [a48_20_12_16];
+  <nt>
 }
 :CLGRBNL g48_gpr8_4,g48_gpr12_4,a48_20_12_16 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u32_4=0xa & g48_u36_4=0x0 & g48_u40_4=0xe & g48_u44_4=0x5 & g48_gpr8_4 & g48_gpr12_4 & a48_20_12_16 {
-  s390_clgrbnl(g48_gpr8_4, g48_gpr12_4, a48_20_12_16);
+  local x:8 = g48_gpr8_4; local y:8 = g48_gpr12_4; local mk:8 = 10;
+  local take:1 = ((mk & 8) != 0 && x == y) || ((mk & 4) != 0 && x < y) || ((mk & 2) != 0 && x > y);
+  if (!take) goto <nt>;
+  goto [a48_20_12_16];
+  <nt>
 }
 :CGRBNL g48_gpr8_4,g48_gpr12_4,a48_20_12_16 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u32_4=0xa & g48_u36_4=0x0 & g48_u40_4=0xe & g48_u44_4=0x4 & g48_gpr8_4 & g48_gpr12_4 & a48_20_12_16 {
-  s390_cgrbnl(g48_gpr8_4, g48_gpr12_4, a48_20_12_16);
+  local x:8 = g48_gpr8_4; local y:8 = g48_gpr12_4; local mk:8 = 10;
+  local take:1 = ((mk & 8) != 0 && x == y) || ((mk & 4) != 0 && x s< y) || ((mk & 2) != 0 && x s> y);
+  if (!take) goto <nt>;
+  goto [a48_20_12_16];
+  <nt>
 }
 :CLRJNL g48_gpr8_4,g48_gpr12_4,rel48_16_16 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u32_4=0xa & g48_u40_4=0x7 & g48_u44_4=0x7 & g48_gpr8_4 & g48_gpr12_4 & rel48_16_16 {
-  local taken:1 = s390_clrjnl_taken(g48_gpr8_4, g48_gpr12_4);
-  if (taken != 0) goto rel48_16_16;
+  local x:4 = g48_gpr8_4:4; local y:4 = g48_gpr12_4:4; local mk:8 = 10;
+  local take:1 = ((mk & 8) != 0 && x == y) || ((mk & 4) != 0 && x < y) || ((mk & 2) != 0 && x > y);
+  if (take) goto rel48_16_16;
 }
 :CRJNL g48_gpr8_4,g48_gpr12_4,rel48_16_16 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u32_4=0xa & g48_u40_4=0x7 & g48_u44_4=0x6 & g48_gpr8_4 & g48_gpr12_4 & rel48_16_16 {
-  local taken:1 = s390_crjnl_taken(g48_gpr8_4, g48_gpr12_4);
-  if (taken != 0) goto rel48_16_16;
+  local x:4 = g48_gpr8_4:4; local y:4 = g48_gpr12_4:4; local mk:8 = 10;
+  local take:1 = ((mk & 8) != 0 && x == y) || ((mk & 4) != 0 && x s< y) || ((mk & 2) != 0 && x s> y);
+  if (take) goto rel48_16_16;
 }
 :CLGRJNL g48_gpr8_4,g48_gpr12_4,rel48_16_16 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u32_4=0xa & g48_u40_4=0x6 & g48_u44_4=0x5 & g48_gpr8_4 & g48_gpr12_4 & rel48_16_16 {
-  local taken:1 = s390_clgrjnl_taken(g48_gpr8_4, g48_gpr12_4);
-  if (taken != 0) goto rel48_16_16;
+  local x:8 = g48_gpr8_4; local y:8 = g48_gpr12_4; local mk:8 = 10;
+  local take:1 = ((mk & 8) != 0 && x == y) || ((mk & 4) != 0 && x < y) || ((mk & 2) != 0 && x > y);
+  if (take) goto rel48_16_16;
 }
 :CGRJNL g48_gpr8_4,g48_gpr12_4,rel48_16_16 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u32_4=0xa & g48_u40_4=0x6 & g48_u44_4=0x4 & g48_gpr8_4 & g48_gpr12_4 & rel48_16_16 {
-  local taken:1 = s390_cgrjnl_taken(g48_gpr8_4, g48_gpr12_4);
-  if (taken != 0) goto rel48_16_16;
+  local x:8 = g48_gpr8_4; local y:8 = g48_gpr12_4; local mk:8 = 10;
+  local take:1 = ((mk & 8) != 0 && x == y) || ((mk & 4) != 0 && x s< y) || ((mk & 2) != 0 && x s> y);
+  if (take) goto rel48_16_16;
 }
 :CLRBE g48_gpr8_4,g48_gpr12_4,a48_20_12_16 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u32_4=0x8 & g48_u36_4=0x0 & g48_u40_4=0xf & g48_u44_4=0x7 & g48_gpr8_4 & g48_gpr12_4 & a48_20_12_16 {
-  s390_clrbe(g48_gpr8_4, g48_gpr12_4, a48_20_12_16);
+  local x:4 = g48_gpr8_4:4; local y:4 = g48_gpr12_4:4; local mk:8 = 8;
+  local take:1 = ((mk & 8) != 0 && x == y) || ((mk & 4) != 0 && x < y) || ((mk & 2) != 0 && x > y);
+  if (!take) goto <nt>;
+  goto [a48_20_12_16];
+  <nt>
 }
 :CRBE g48_gpr8_4,g48_gpr12_4,a48_20_12_16 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u32_4=0x8 & g48_u36_4=0x0 & g48_u40_4=0xf & g48_u44_4=0x6 & g48_gpr8_4 & g48_gpr12_4 & a48_20_12_16 {
-  s390_crbe(g48_gpr8_4, g48_gpr12_4, a48_20_12_16);
+  local x:4 = g48_gpr8_4:4; local y:4 = g48_gpr12_4:4; local mk:8 = 8;
+  local take:1 = ((mk & 8) != 0 && x == y) || ((mk & 4) != 0 && x s< y) || ((mk & 2) != 0 && x s> y);
+  if (!take) goto <nt>;
+  goto [a48_20_12_16];
+  <nt>
 }
 :CLGRBE g48_gpr8_4,g48_gpr12_4,a48_20_12_16 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u32_4=0x8 & g48_u36_4=0x0 & g48_u40_4=0xe & g48_u44_4=0x5 & g48_gpr8_4 & g48_gpr12_4 & a48_20_12_16 {
-  s390_clgrbe(g48_gpr8_4, g48_gpr12_4, a48_20_12_16);
+  local x:8 = g48_gpr8_4; local y:8 = g48_gpr12_4; local mk:8 = 8;
+  local take:1 = ((mk & 8) != 0 && x == y) || ((mk & 4) != 0 && x < y) || ((mk & 2) != 0 && x > y);
+  if (!take) goto <nt>;
+  goto [a48_20_12_16];
+  <nt>
 }
 :CGRBE g48_gpr8_4,g48_gpr12_4,a48_20_12_16 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u32_4=0x8 & g48_u36_4=0x0 & g48_u40_4=0xe & g48_u44_4=0x4 & g48_gpr8_4 & g48_gpr12_4 & a48_20_12_16 {
-  s390_cgrbe(g48_gpr8_4, g48_gpr12_4, a48_20_12_16);
+  local x:8 = g48_gpr8_4; local y:8 = g48_gpr12_4; local mk:8 = 8;
+  local take:1 = ((mk & 8) != 0 && x == y) || ((mk & 4) != 0 && x s< y) || ((mk & 2) != 0 && x s> y);
+  if (!take) goto <nt>;
+  goto [a48_20_12_16];
+  <nt>
 }
 :CLRJE g48_gpr8_4,g48_gpr12_4,rel48_16_16 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u32_4=0x8 & g48_u40_4=0x7 & g48_u44_4=0x7 & g48_gpr8_4 & g48_gpr12_4 & rel48_16_16 {
-  local taken:1 = s390_clrje_taken(g48_gpr8_4, g48_gpr12_4);
-  if (taken != 0) goto rel48_16_16;
+  local x:4 = g48_gpr8_4:4; local y:4 = g48_gpr12_4:4; local mk:8 = 8;
+  local take:1 = ((mk & 8) != 0 && x == y) || ((mk & 4) != 0 && x < y) || ((mk & 2) != 0 && x > y);
+  if (take) goto rel48_16_16;
 }
 :CRJE g48_gpr8_4,g48_gpr12_4,rel48_16_16 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u32_4=0x8 & g48_u40_4=0x7 & g48_u44_4=0x6 & g48_gpr8_4 & g48_gpr12_4 & rel48_16_16 {
-  local taken:1 = s390_crje_taken(g48_gpr8_4, g48_gpr12_4);
-  if (taken != 0) goto rel48_16_16;
+  local x:4 = g48_gpr8_4:4; local y:4 = g48_gpr12_4:4; local mk:8 = 8;
+  local take:1 = ((mk & 8) != 0 && x == y) || ((mk & 4) != 0 && x s< y) || ((mk & 2) != 0 && x s> y);
+  if (take) goto rel48_16_16;
 }
 :CLGRJE g48_gpr8_4,g48_gpr12_4,rel48_16_16 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u32_4=0x8 & g48_u40_4=0x6 & g48_u44_4=0x5 & g48_gpr8_4 & g48_gpr12_4 & rel48_16_16 {
-  local taken:1 = s390_clgrje_taken(g48_gpr8_4, g48_gpr12_4);
-  if (taken != 0) goto rel48_16_16;
+  local x:8 = g48_gpr8_4; local y:8 = g48_gpr12_4; local mk:8 = 8;
+  local take:1 = ((mk & 8) != 0 && x == y) || ((mk & 4) != 0 && x < y) || ((mk & 2) != 0 && x > y);
+  if (take) goto rel48_16_16;
 }
 :CGRJE g48_gpr8_4,g48_gpr12_4,rel48_16_16 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u32_4=0x8 & g48_u40_4=0x6 & g48_u44_4=0x4 & g48_gpr8_4 & g48_gpr12_4 & rel48_16_16 {
-  local taken:1 = s390_cgrje_taken(g48_gpr8_4, g48_gpr12_4);
-  if (taken != 0) goto rel48_16_16;
+  local x:8 = g48_gpr8_4; local y:8 = g48_gpr12_4; local mk:8 = 8;
+  local take:1 = ((mk & 8) != 0 && x == y) || ((mk & 4) != 0 && x s< y) || ((mk & 2) != 0 && x s> y);
+  if (take) goto rel48_16_16;
 }
 :CLRBNE g48_gpr8_4,g48_gpr12_4,a48_20_12_16 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u32_4=0x6 & g48_u36_4=0x0 & g48_u40_4=0xf & g48_u44_4=0x7 & g48_gpr8_4 & g48_gpr12_4 & a48_20_12_16 {
-  s390_clrbne(g48_gpr8_4, g48_gpr12_4, a48_20_12_16);
+  local x:4 = g48_gpr8_4:4; local y:4 = g48_gpr12_4:4; local mk:8 = 6;
+  local take:1 = ((mk & 8) != 0 && x == y) || ((mk & 4) != 0 && x < y) || ((mk & 2) != 0 && x > y);
+  if (!take) goto <nt>;
+  goto [a48_20_12_16];
+  <nt>
 }
 :CRBNE g48_gpr8_4,g48_gpr12_4,a48_20_12_16 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u32_4=0x6 & g48_u36_4=0x0 & g48_u40_4=0xf & g48_u44_4=0x6 & g48_gpr8_4 & g48_gpr12_4 & a48_20_12_16 {
-  s390_crbne(g48_gpr8_4, g48_gpr12_4, a48_20_12_16);
+  local x:4 = g48_gpr8_4:4; local y:4 = g48_gpr12_4:4; local mk:8 = 6;
+  local take:1 = ((mk & 8) != 0 && x == y) || ((mk & 4) != 0 && x s< y) || ((mk & 2) != 0 && x s> y);
+  if (!take) goto <nt>;
+  goto [a48_20_12_16];
+  <nt>
 }
 :CLGRBNE g48_gpr8_4,g48_gpr12_4,a48_20_12_16 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u32_4=0x6 & g48_u36_4=0x0 & g48_u40_4=0xe & g48_u44_4=0x5 & g48_gpr8_4 & g48_gpr12_4 & a48_20_12_16 {
-  s390_clgrbne(g48_gpr8_4, g48_gpr12_4, a48_20_12_16);
+  local x:8 = g48_gpr8_4; local y:8 = g48_gpr12_4; local mk:8 = 6;
+  local take:1 = ((mk & 8) != 0 && x == y) || ((mk & 4) != 0 && x < y) || ((mk & 2) != 0 && x > y);
+  if (!take) goto <nt>;
+  goto [a48_20_12_16];
+  <nt>
 }
 :CGRBNE g48_gpr8_4,g48_gpr12_4,a48_20_12_16 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u32_4=0x6 & g48_u36_4=0x0 & g48_u40_4=0xe & g48_u44_4=0x4 & g48_gpr8_4 & g48_gpr12_4 & a48_20_12_16 {
-  s390_cgrbne(g48_gpr8_4, g48_gpr12_4, a48_20_12_16);
+  local x:8 = g48_gpr8_4; local y:8 = g48_gpr12_4; local mk:8 = 6;
+  local take:1 = ((mk & 8) != 0 && x == y) || ((mk & 4) != 0 && x s< y) || ((mk & 2) != 0 && x s> y);
+  if (!take) goto <nt>;
+  goto [a48_20_12_16];
+  <nt>
 }
 :CLRJNE g48_gpr8_4,g48_gpr12_4,rel48_16_16 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u32_4=0x6 & g48_u40_4=0x7 & g48_u44_4=0x7 & g48_gpr8_4 & g48_gpr12_4 & rel48_16_16 {
-  local taken:1 = s390_clrjne_taken(g48_gpr8_4, g48_gpr12_4);
-  if (taken != 0) goto rel48_16_16;
+  local x:4 = g48_gpr8_4:4; local y:4 = g48_gpr12_4:4; local mk:8 = 6;
+  local take:1 = ((mk & 8) != 0 && x == y) || ((mk & 4) != 0 && x < y) || ((mk & 2) != 0 && x > y);
+  if (take) goto rel48_16_16;
 }
 :CRJNE g48_gpr8_4,g48_gpr12_4,rel48_16_16 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u32_4=0x6 & g48_u40_4=0x7 & g48_u44_4=0x6 & g48_gpr8_4 & g48_gpr12_4 & rel48_16_16 {
-  local taken:1 = s390_crjne_taken(g48_gpr8_4, g48_gpr12_4);
-  if (taken != 0) goto rel48_16_16;
+  local x:4 = g48_gpr8_4:4; local y:4 = g48_gpr12_4:4; local mk:8 = 6;
+  local take:1 = ((mk & 8) != 0 && x == y) || ((mk & 4) != 0 && x s< y) || ((mk & 2) != 0 && x s> y);
+  if (take) goto rel48_16_16;
 }
 :CLGRJNE g48_gpr8_4,g48_gpr12_4,rel48_16_16 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u32_4=0x6 & g48_u40_4=0x6 & g48_u44_4=0x5 & g48_gpr8_4 & g48_gpr12_4 & rel48_16_16 {
-  local taken:1 = s390_clgrjne_taken(g48_gpr8_4, g48_gpr12_4);
-  if (taken != 0) goto rel48_16_16;
+  local x:8 = g48_gpr8_4; local y:8 = g48_gpr12_4; local mk:8 = 6;
+  local take:1 = ((mk & 8) != 0 && x == y) || ((mk & 4) != 0 && x < y) || ((mk & 2) != 0 && x > y);
+  if (take) goto rel48_16_16;
 }
 :CGRJNE g48_gpr8_4,g48_gpr12_4,rel48_16_16 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u32_4=0x6 & g48_u40_4=0x6 & g48_u44_4=0x4 & g48_gpr8_4 & g48_gpr12_4 & rel48_16_16 {
-  local taken:1 = s390_cgrjne_taken(g48_gpr8_4, g48_gpr12_4);
-  if (taken != 0) goto rel48_16_16;
+  local x:8 = g48_gpr8_4; local y:8 = g48_gpr12_4; local mk:8 = 6;
+  local take:1 = ((mk & 8) != 0 && x == y) || ((mk & 4) != 0 && x s< y) || ((mk & 2) != 0 && x s> y);
+  if (take) goto rel48_16_16;
 }
 :CLRBL g48_gpr8_4,g48_gpr12_4,a48_20_12_16 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u32_4=0x4 & g48_u36_4=0x0 & g48_u40_4=0xf & g48_u44_4=0x7 & g48_gpr8_4 & g48_gpr12_4 & a48_20_12_16 {
-  s390_clrbl(g48_gpr8_4, g48_gpr12_4, a48_20_12_16);
+  local x:4 = g48_gpr8_4:4; local y:4 = g48_gpr12_4:4; local mk:8 = 4;
+  local take:1 = ((mk & 8) != 0 && x == y) || ((mk & 4) != 0 && x < y) || ((mk & 2) != 0 && x > y);
+  if (!take) goto <nt>;
+  goto [a48_20_12_16];
+  <nt>
 }
 :CRBL g48_gpr8_4,g48_gpr12_4,a48_20_12_16 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u32_4=0x4 & g48_u36_4=0x0 & g48_u40_4=0xf & g48_u44_4=0x6 & g48_gpr8_4 & g48_gpr12_4 & a48_20_12_16 {
-  s390_crbl(g48_gpr8_4, g48_gpr12_4, a48_20_12_16);
+  local x:4 = g48_gpr8_4:4; local y:4 = g48_gpr12_4:4; local mk:8 = 4;
+  local take:1 = ((mk & 8) != 0 && x == y) || ((mk & 4) != 0 && x s< y) || ((mk & 2) != 0 && x s> y);
+  if (!take) goto <nt>;
+  goto [a48_20_12_16];
+  <nt>
 }
 :CLGRBL g48_gpr8_4,g48_gpr12_4,a48_20_12_16 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u32_4=0x4 & g48_u36_4=0x0 & g48_u40_4=0xe & g48_u44_4=0x5 & g48_gpr8_4 & g48_gpr12_4 & a48_20_12_16 {
-  s390_clgrbl(g48_gpr8_4, g48_gpr12_4, a48_20_12_16);
+  local x:8 = g48_gpr8_4; local y:8 = g48_gpr12_4; local mk:8 = 4;
+  local take:1 = ((mk & 8) != 0 && x == y) || ((mk & 4) != 0 && x < y) || ((mk & 2) != 0 && x > y);
+  if (!take) goto <nt>;
+  goto [a48_20_12_16];
+  <nt>
 }
 :CGRBL g48_gpr8_4,g48_gpr12_4,a48_20_12_16 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u32_4=0x4 & g48_u36_4=0x0 & g48_u40_4=0xe & g48_u44_4=0x4 & g48_gpr8_4 & g48_gpr12_4 & a48_20_12_16 {
-  s390_cgrbl(g48_gpr8_4, g48_gpr12_4, a48_20_12_16);
+  local x:8 = g48_gpr8_4; local y:8 = g48_gpr12_4; local mk:8 = 4;
+  local take:1 = ((mk & 8) != 0 && x == y) || ((mk & 4) != 0 && x s< y) || ((mk & 2) != 0 && x s> y);
+  if (!take) goto <nt>;
+  goto [a48_20_12_16];
+  <nt>
 }
 :CLRJL g48_gpr8_4,g48_gpr12_4,rel48_16_16 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u32_4=0x4 & g48_u40_4=0x7 & g48_u44_4=0x7 & g48_gpr8_4 & g48_gpr12_4 & rel48_16_16 {
-  local taken:1 = s390_clrjl_taken(g48_gpr8_4, g48_gpr12_4);
-  if (taken != 0) goto rel48_16_16;
+  local x:4 = g48_gpr8_4:4; local y:4 = g48_gpr12_4:4; local mk:8 = 4;
+  local take:1 = ((mk & 8) != 0 && x == y) || ((mk & 4) != 0 && x < y) || ((mk & 2) != 0 && x > y);
+  if (take) goto rel48_16_16;
 }
 :CRJL g48_gpr8_4,g48_gpr12_4,rel48_16_16 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u32_4=0x4 & g48_u40_4=0x7 & g48_u44_4=0x6 & g48_gpr8_4 & g48_gpr12_4 & rel48_16_16 {
-  local taken:1 = s390_crjl_taken(g48_gpr8_4, g48_gpr12_4);
-  if (taken != 0) goto rel48_16_16;
+  local x:4 = g48_gpr8_4:4; local y:4 = g48_gpr12_4:4; local mk:8 = 4;
+  local take:1 = ((mk & 8) != 0 && x == y) || ((mk & 4) != 0 && x s< y) || ((mk & 2) != 0 && x s> y);
+  if (take) goto rel48_16_16;
 }
 :CLGRJL g48_gpr8_4,g48_gpr12_4,rel48_16_16 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u32_4=0x4 & g48_u40_4=0x6 & g48_u44_4=0x5 & g48_gpr8_4 & g48_gpr12_4 & rel48_16_16 {
-  local taken:1 = s390_clgrjl_taken(g48_gpr8_4, g48_gpr12_4);
-  if (taken != 0) goto rel48_16_16;
+  local x:8 = g48_gpr8_4; local y:8 = g48_gpr12_4; local mk:8 = 4;
+  local take:1 = ((mk & 8) != 0 && x == y) || ((mk & 4) != 0 && x < y) || ((mk & 2) != 0 && x > y);
+  if (take) goto rel48_16_16;
 }
 :CGRJL g48_gpr8_4,g48_gpr12_4,rel48_16_16 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u32_4=0x4 & g48_u40_4=0x6 & g48_u44_4=0x4 & g48_gpr8_4 & g48_gpr12_4 & rel48_16_16 {
-  local taken:1 = s390_cgrjl_taken(g48_gpr8_4, g48_gpr12_4);
-  if (taken != 0) goto rel48_16_16;
+  local x:8 = g48_gpr8_4; local y:8 = g48_gpr12_4; local mk:8 = 4;
+  local take:1 = ((mk & 8) != 0 && x == y) || ((mk & 4) != 0 && x s< y) || ((mk & 2) != 0 && x s> y);
+  if (take) goto rel48_16_16;
 }
 :CLRBH g48_gpr8_4,g48_gpr12_4,a48_20_12_16 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u32_4=0x2 & g48_u36_4=0x0 & g48_u40_4=0xf & g48_u44_4=0x7 & g48_gpr8_4 & g48_gpr12_4 & a48_20_12_16 {
-  s390_clrbh(g48_gpr8_4, g48_gpr12_4, a48_20_12_16);
+  local x:4 = g48_gpr8_4:4; local y:4 = g48_gpr12_4:4; local mk:8 = 2;
+  local take:1 = ((mk & 8) != 0 && x == y) || ((mk & 4) != 0 && x < y) || ((mk & 2) != 0 && x > y);
+  if (!take) goto <nt>;
+  goto [a48_20_12_16];
+  <nt>
 }
 :CRBH g48_gpr8_4,g48_gpr12_4,a48_20_12_16 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u32_4=0x2 & g48_u36_4=0x0 & g48_u40_4=0xf & g48_u44_4=0x6 & g48_gpr8_4 & g48_gpr12_4 & a48_20_12_16 {
-  s390_crbh(g48_gpr8_4, g48_gpr12_4, a48_20_12_16);
+  local x:4 = g48_gpr8_4:4; local y:4 = g48_gpr12_4:4; local mk:8 = 2;
+  local take:1 = ((mk & 8) != 0 && x == y) || ((mk & 4) != 0 && x s< y) || ((mk & 2) != 0 && x s> y);
+  if (!take) goto <nt>;
+  goto [a48_20_12_16];
+  <nt>
 }
 :CLGRBH g48_gpr8_4,g48_gpr12_4,a48_20_12_16 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u32_4=0x2 & g48_u36_4=0x0 & g48_u40_4=0xe & g48_u44_4=0x5 & g48_gpr8_4 & g48_gpr12_4 & a48_20_12_16 {
-  s390_clgrbh(g48_gpr8_4, g48_gpr12_4, a48_20_12_16);
+  local x:8 = g48_gpr8_4; local y:8 = g48_gpr12_4; local mk:8 = 2;
+  local take:1 = ((mk & 8) != 0 && x == y) || ((mk & 4) != 0 && x < y) || ((mk & 2) != 0 && x > y);
+  if (!take) goto <nt>;
+  goto [a48_20_12_16];
+  <nt>
 }
 :CGRBH g48_gpr8_4,g48_gpr12_4,a48_20_12_16 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u32_4=0x2 & g48_u36_4=0x0 & g48_u40_4=0xe & g48_u44_4=0x4 & g48_gpr8_4 & g48_gpr12_4 & a48_20_12_16 {
-  s390_cgrbh(g48_gpr8_4, g48_gpr12_4, a48_20_12_16);
+  local x:8 = g48_gpr8_4; local y:8 = g48_gpr12_4; local mk:8 = 2;
+  local take:1 = ((mk & 8) != 0 && x == y) || ((mk & 4) != 0 && x s< y) || ((mk & 2) != 0 && x s> y);
+  if (!take) goto <nt>;
+  goto [a48_20_12_16];
+  <nt>
 }
 :CLRJH g48_gpr8_4,g48_gpr12_4,rel48_16_16 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u32_4=0x2 & g48_u40_4=0x7 & g48_u44_4=0x7 & g48_gpr8_4 & g48_gpr12_4 & rel48_16_16 {
-  local taken:1 = s390_clrjh_taken(g48_gpr8_4, g48_gpr12_4);
-  if (taken != 0) goto rel48_16_16;
+  local x:4 = g48_gpr8_4:4; local y:4 = g48_gpr12_4:4; local mk:8 = 2;
+  local take:1 = ((mk & 8) != 0 && x == y) || ((mk & 4) != 0 && x < y) || ((mk & 2) != 0 && x > y);
+  if (take) goto rel48_16_16;
 }
 :CRJH g48_gpr8_4,g48_gpr12_4,rel48_16_16 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u32_4=0x2 & g48_u40_4=0x7 & g48_u44_4=0x6 & g48_gpr8_4 & g48_gpr12_4 & rel48_16_16 {
-  local taken:1 = s390_crjh_taken(g48_gpr8_4, g48_gpr12_4);
-  if (taken != 0) goto rel48_16_16;
+  local x:4 = g48_gpr8_4:4; local y:4 = g48_gpr12_4:4; local mk:8 = 2;
+  local take:1 = ((mk & 8) != 0 && x == y) || ((mk & 4) != 0 && x s< y) || ((mk & 2) != 0 && x s> y);
+  if (take) goto rel48_16_16;
 }
 :CLGRJH g48_gpr8_4,g48_gpr12_4,rel48_16_16 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u32_4=0x2 & g48_u40_4=0x6 & g48_u44_4=0x5 & g48_gpr8_4 & g48_gpr12_4 & rel48_16_16 {
-  local taken:1 = s390_clgrjh_taken(g48_gpr8_4, g48_gpr12_4);
-  if (taken != 0) goto rel48_16_16;
+  local x:8 = g48_gpr8_4; local y:8 = g48_gpr12_4; local mk:8 = 2;
+  local take:1 = ((mk & 8) != 0 && x == y) || ((mk & 4) != 0 && x < y) || ((mk & 2) != 0 && x > y);
+  if (take) goto rel48_16_16;
 }
 :CGRJH g48_gpr8_4,g48_gpr12_4,rel48_16_16 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u32_4=0x2 & g48_u40_4=0x6 & g48_u44_4=0x4 & g48_gpr8_4 & g48_gpr12_4 & rel48_16_16 {
-  local taken:1 = s390_cgrjh_taken(g48_gpr8_4, g48_gpr12_4);
-  if (taken != 0) goto rel48_16_16;
+  local x:8 = g48_gpr8_4; local y:8 = g48_gpr12_4; local mk:8 = 2;
+  local take:1 = ((mk & 8) != 0 && x == y) || ((mk & 4) != 0 && x s< y) || ((mk & 2) != 0 && x s> y);
+  if (take) goto rel48_16_16;
 }
 :CLIB g48_gpr8_4,g48_u32_8,g48_u12_4,a48_20_12_16 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u40_4=0xf & g48_u44_4=0xf & g48_gpr8_4 & g48_u32_8 & g48_u12_4 & a48_20_12_16 {
-  local i1:8 = g48_u32_8;
-  local i2:8 = g48_u12_4;
-  s390_clib(g48_gpr8_4, i1, i2, a48_20_12_16);
+  local iv:8 = g48_u32_8; local x:4 = g48_gpr8_4:4; local y:4 = iv:4; local mk:8 = g48_u12_4;
+  local take:1 = ((mk & 8) != 0 && x == y) || ((mk & 4) != 0 && x < y) || ((mk & 2) != 0 && x > y);
+  if (!take) goto <nt>;
+  goto [a48_20_12_16];
+  <nt>
 }
 :CIB g48_gpr8_4,g48_s32_8,g48_u12_4,a48_20_12_16 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u40_4=0xf & g48_u44_4=0xe & g48_gpr8_4 & g48_s32_8 & g48_u12_4 & a48_20_12_16 {
-  local i1:8 = g48_s32_8;
-  local i2:8 = g48_u12_4;
-  s390_cib(g48_gpr8_4, i1, i2, a48_20_12_16);
+  local iv:8 = g48_s32_8; local x:4 = g48_gpr8_4:4; local y:4 = iv:4; local mk:8 = g48_u12_4;
+  local take:1 = ((mk & 8) != 0 && x == y) || ((mk & 4) != 0 && x s< y) || ((mk & 2) != 0 && x s> y);
+  if (!take) goto <nt>;
+  goto [a48_20_12_16];
+  <nt>
 }
 :CLGIB g48_gpr8_4,g48_u32_8,g48_u12_4,a48_20_12_16 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u40_4=0xf & g48_u44_4=0xd & g48_gpr8_4 & g48_u32_8 & g48_u12_4 & a48_20_12_16 {
-  local i1:8 = g48_u32_8;
-  local i2:8 = g48_u12_4;
-  s390_clgib(g48_gpr8_4, i1, i2, a48_20_12_16);
+  local iv:8 = g48_u32_8; local x:8 = g48_gpr8_4; local y:8 = iv; local mk:8 = g48_u12_4;
+  local take:1 = ((mk & 8) != 0 && x == y) || ((mk & 4) != 0 && x < y) || ((mk & 2) != 0 && x > y);
+  if (!take) goto <nt>;
+  goto [a48_20_12_16];
+  <nt>
 }
 :CGIB g48_gpr8_4,g48_s32_8,g48_u12_4,a48_20_12_16 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u40_4=0xf & g48_u44_4=0xc & g48_gpr8_4 & g48_s32_8 & g48_u12_4 & a48_20_12_16 {
-  local i1:8 = g48_s32_8;
-  local i2:8 = g48_u12_4;
-  s390_cgib(g48_gpr8_4, i1, i2, a48_20_12_16);
+  local iv:8 = g48_s32_8; local x:8 = g48_gpr8_4; local y:8 = iv; local mk:8 = g48_u12_4;
+  local take:1 = ((mk & 8) != 0 && x == y) || ((mk & 4) != 0 && x s< y) || ((mk & 2) != 0 && x s> y);
+  if (!take) goto <nt>;
+  goto [a48_20_12_16];
+  <nt>
 }
 :CLRB g48_gpr8_4,g48_gpr12_4,g48_u32_4,a48_20_12_16 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u36_4=0x0 & g48_u40_4=0xf & g48_u44_4=0x7 & g48_gpr8_4 & g48_gpr12_4 & g48_u32_4 & a48_20_12_16 {
-  local i2:8 = g48_u32_4;
-  s390_clrb(g48_gpr8_4, g48_gpr12_4, i2, a48_20_12_16);
+  local x:4 = g48_gpr8_4:4; local y:4 = g48_gpr12_4:4; local mk:8 = g48_u32_4;
+  local take:1 = ((mk & 8) != 0 && x == y) || ((mk & 4) != 0 && x < y) || ((mk & 2) != 0 && x > y);
+  if (!take) goto <nt>;
+  goto [a48_20_12_16];
+  <nt>
 }
 :CRB g48_gpr8_4,g48_gpr12_4,g48_u32_4,a48_20_12_16 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u36_4=0x0 & g48_u40_4=0xf & g48_u44_4=0x6 & g48_gpr8_4 & g48_gpr12_4 & g48_u32_4 & a48_20_12_16 {
-  local i2:8 = g48_u32_4;
-  s390_crb(g48_gpr8_4, g48_gpr12_4, i2, a48_20_12_16);
+  local x:4 = g48_gpr8_4:4; local y:4 = g48_gpr12_4:4; local mk:8 = g48_u32_4;
+  local take:1 = ((mk & 8) != 0 && x == y) || ((mk & 4) != 0 && x s< y) || ((mk & 2) != 0 && x s> y);
+  if (!take) goto <nt>;
+  goto [a48_20_12_16];
+  <nt>
 }
 :CLGRB g48_gpr8_4,g48_gpr12_4,g48_u32_4,a48_20_12_16 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u36_4=0x0 & g48_u40_4=0xe & g48_u44_4=0x5 & g48_gpr8_4 & g48_gpr12_4 & g48_u32_4 & a48_20_12_16 {
-  local i2:8 = g48_u32_4;
-  s390_clgrb(g48_gpr8_4, g48_gpr12_4, i2, a48_20_12_16);
+  local x:8 = g48_gpr8_4; local y:8 = g48_gpr12_4; local mk:8 = g48_u32_4;
+  local take:1 = ((mk & 8) != 0 && x == y) || ((mk & 4) != 0 && x < y) || ((mk & 2) != 0 && x > y);
+  if (!take) goto <nt>;
+  goto [a48_20_12_16];
+  <nt>
 }
 :CGRB g48_gpr8_4,g48_gpr12_4,g48_u32_4,a48_20_12_16 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u36_4=0x0 & g48_u40_4=0xe & g48_u44_4=0x4 & g48_gpr8_4 & g48_gpr12_4 & g48_u32_4 & a48_20_12_16 {
-  local i2:8 = g48_u32_4;
-  s390_cgrb(g48_gpr8_4, g48_gpr12_4, i2, a48_20_12_16);
+  local x:8 = g48_gpr8_4; local y:8 = g48_gpr12_4; local mk:8 = g48_u32_4;
+  local take:1 = ((mk & 8) != 0 && x == y) || ((mk & 4) != 0 && x s< y) || ((mk & 2) != 0 && x s> y);
+  if (!take) goto <nt>;
+  goto [a48_20_12_16];
+  <nt>
 }
 :ALGHSIK g48_gpr8_4,g48_gpr12_4,g48_s16_16 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u32_4=0x0 & g48_u40_4=0xd & g48_u44_4=0xb & g48_gpr8_4 & g48_gpr12_4 & g48_s16_16 {
-  local i2:8 = g48_s16_16;
-  g48_gpr8_4 = s390_alghsik(g48_gpr12_4, i2);
+  local i:8 = g48_s16_16;
+  local x:8 = g48_gpr12_4; local y:8 = i; local r:8 = x + y;
+  local c:1 = carry(x, y); gs_cc_addl(r, c);
+  g48_gpr8_4 = r;
 }
 :ALHSIK g48_gpr8_4,g48_gpr12_4,g48_s16_16 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u32_4=0x0 & g48_u40_4=0xd & g48_u44_4=0xa & g48_gpr8_4 & g48_gpr12_4 & g48_s16_16 {
-  local i2:8 = g48_s16_16;
-  g48_gpr8_4 = s390_alhsik(g48_gpr12_4, i2);
+  local i:8 = g48_s16_16;
+  local x:4 = g48_gpr12_4:4; local y:4 = i:4; local r:4 = x + y;
+  local c:1 = carry(x, y); gs_cc_addl(r, c);
+  local w32_1:4 = r; gs_set32(g48_gpr8_4, w32_1);
 }
 :AGHIK g48_gpr8_4,g48_gpr12_4,g48_s16_16 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u32_4=0x0 & g48_u40_4=0xd & g48_u44_4=0x9 & g48_gpr8_4 & g48_gpr12_4 & g48_s16_16 {
-  local i2:8 = g48_s16_16;
-  g48_gpr8_4 = s390_aghik(g48_gpr12_4, i2);
+  local i:8 = g48_s16_16;
+  local x:8 = g48_gpr12_4; local y:8 = i; local r:8 = x + y;
+  local ov:1 = scarry(x, y);
+  gs_cc_arith(r, ov);
+  g48_gpr8_4 = r;
 }
 :AHIK g48_gpr8_4,g48_gpr12_4,g48_s16_16 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u32_4=0x0 & g48_u40_4=0xd & g48_u44_4=0x8 & g48_gpr8_4 & g48_gpr12_4 & g48_s16_16 {
-  local i2:8 = g48_s16_16;
-  g48_gpr8_4 = s390_ahik(g48_gpr12_4, i2);
+  local i:8 = g48_s16_16;
+  local x:4 = g48_gpr12_4:4; local y:4 = i:4; local r:4 = x + y;
+  local ov:1 = scarry(x, y);
+  gs_cc_arith(r, ov);
+  local w32_2:4 = r; gs_set32(g48_gpr8_4, w32_2);
 }
 :CLIJ g48_gpr8_4,g48_u32_8,g48_u12_4,rel48_16_16 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u40_4=0x7 & g48_u44_4=0xf & g48_gpr8_4 & g48_u32_8 & g48_u12_4 & rel48_16_16 {
-  local i1:8 = g48_u32_8;
-  local i2:8 = g48_u12_4;
-  local taken:1 = s390_clij_taken(g48_gpr8_4, i1, i2);
-  if (taken != 0) goto rel48_16_16;
+  local iv:8 = g48_u32_8; local x:4 = g48_gpr8_4:4; local y:4 = iv:4; local mk:8 = g48_u12_4;
+  local take:1 = ((mk & 8) != 0 && x == y) || ((mk & 4) != 0 && x < y) || ((mk & 2) != 0 && x > y);
+  if (take) goto rel48_16_16;
 }
 :CIJ g48_gpr8_4,g48_s32_8,g48_u12_4,rel48_16_16 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u40_4=0x7 & g48_u44_4=0xe & g48_gpr8_4 & g48_s32_8 & g48_u12_4 & rel48_16_16 {
-  local i1:8 = g48_s32_8;
-  local i2:8 = g48_u12_4;
-  local taken:1 = s390_cij_taken(g48_gpr8_4, i1, i2);
-  if (taken != 0) goto rel48_16_16;
+  local iv:8 = g48_s32_8; local x:4 = g48_gpr8_4:4; local y:4 = iv:4; local mk:8 = g48_u12_4;
+  local take:1 = ((mk & 8) != 0 && x == y) || ((mk & 4) != 0 && x s< y) || ((mk & 2) != 0 && x s> y);
+  if (take) goto rel48_16_16;
 }
 :CLGIJ g48_gpr8_4,g48_u32_8,g48_u12_4,rel48_16_16 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u40_4=0x7 & g48_u44_4=0xd & g48_gpr8_4 & g48_u32_8 & g48_u12_4 & rel48_16_16 {
-  local i1:8 = g48_u32_8;
-  local i2:8 = g48_u12_4;
-  local taken:1 = s390_clgij_taken(g48_gpr8_4, i1, i2);
-  if (taken != 0) goto rel48_16_16;
+  local iv:8 = g48_u32_8; local x:8 = g48_gpr8_4; local y:8 = iv; local mk:8 = g48_u12_4;
+  local take:1 = ((mk & 8) != 0 && x == y) || ((mk & 4) != 0 && x < y) || ((mk & 2) != 0 && x > y);
+  if (take) goto rel48_16_16;
 }
 :CGIJ g48_gpr8_4,g48_s32_8,g48_u12_4,rel48_16_16 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u40_4=0x7 & g48_u44_4=0xc & g48_gpr8_4 & g48_s32_8 & g48_u12_4 & rel48_16_16 {
-  local i1:8 = g48_s32_8;
-  local i2:8 = g48_u12_4;
-  local taken:1 = s390_cgij_taken(g48_gpr8_4, i1, i2);
-  if (taken != 0) goto rel48_16_16;
+  local iv:8 = g48_s32_8; local x:8 = g48_gpr8_4; local y:8 = iv; local mk:8 = g48_u12_4;
+  local take:1 = ((mk & 8) != 0 && x == y) || ((mk & 4) != 0 && x s< y) || ((mk & 2) != 0 && x s> y);
+  if (take) goto rel48_16_16;
 }
 :CLRJ g48_gpr8_4,g48_gpr12_4,g48_u32_4,rel48_16_16 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u40_4=0x7 & g48_u44_4=0x7 & g48_gpr8_4 & g48_gpr12_4 & g48_u32_4 & rel48_16_16 {
-  local i2:8 = g48_u32_4;
-  local taken:1 = s390_clrj_taken(g48_gpr8_4, g48_gpr12_4, i2);
-  if (taken != 0) goto rel48_16_16;
+  local x:4 = g48_gpr8_4:4; local y:4 = g48_gpr12_4:4; local mk:8 = g48_u32_4;
+  local take:1 = ((mk & 8) != 0 && x == y) || ((mk & 4) != 0 && x < y) || ((mk & 2) != 0 && x > y);
+  if (take) goto rel48_16_16;
 }
 :CRJ g48_gpr8_4,g48_gpr12_4,g48_u32_4,rel48_16_16 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u40_4=0x7 & g48_u44_4=0x6 & g48_gpr8_4 & g48_gpr12_4 & g48_u32_4 & rel48_16_16 {
-  local i2:8 = g48_u32_4;
-  local taken:1 = s390_crj_taken(g48_gpr8_4, g48_gpr12_4, i2);
-  if (taken != 0) goto rel48_16_16;
+  local x:4 = g48_gpr8_4:4; local y:4 = g48_gpr12_4:4; local mk:8 = g48_u32_4;
+  local take:1 = ((mk & 8) != 0 && x == y) || ((mk & 4) != 0 && x s< y) || ((mk & 2) != 0 && x s> y);
+  if (take) goto rel48_16_16;
 }
 :CLGRJ g48_gpr8_4,g48_gpr12_4,g48_u32_4,rel48_16_16 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u40_4=0x6 & g48_u44_4=0x5 & g48_gpr8_4 & g48_gpr12_4 & g48_u32_4 & rel48_16_16 {
-  local i2:8 = g48_u32_4;
-  local taken:1 = s390_clgrj_taken(g48_gpr8_4, g48_gpr12_4, i2);
-  if (taken != 0) goto rel48_16_16;
+  local x:8 = g48_gpr8_4; local y:8 = g48_gpr12_4; local mk:8 = g48_u32_4;
+  local take:1 = ((mk & 8) != 0 && x == y) || ((mk & 4) != 0 && x < y) || ((mk & 2) != 0 && x > y);
+  if (take) goto rel48_16_16;
 }
 :CGRJ g48_gpr8_4,g48_gpr12_4,g48_u32_4,rel48_16_16 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u40_4=0x6 & g48_u44_4=0x4 & g48_gpr8_4 & g48_gpr12_4 & g48_u32_4 & rel48_16_16 {
-  local i2:8 = g48_u32_4;
-  local taken:1 = s390_cgrj_taken(g48_gpr8_4, g48_gpr12_4, i2);
-  if (taken != 0) goto rel48_16_16;
+  local x:8 = g48_gpr8_4; local y:8 = g48_gpr12_4; local mk:8 = g48_u32_4;
+  local take:1 = ((mk & 8) != 0 && x == y) || ((mk & 4) != 0 && x s< y) || ((mk & 2) != 0 && x s> y);
+  if (take) goto rel48_16_16;
 }
 :RISBHG g48_gpr8_4,g48_gpr12_4,g48_u16_8,g48_u24_8 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u40_4=0x5 & g48_u44_4=0xd & g48_u32_8=0 & g48_gpr8_4 & g48_gpr12_4 & g48_u16_8 & g48_u24_8 {
-  local i2:8 = g48_u16_8;
-  local i3:8 = g48_u24_8;
-  local i4:8 = 0;
-  g48_gpr8_4 = s390_risbhg(g48_gpr12_4, i2, i3, i4);
+  local s:8 = g48_u16_8; local e:8 = g48_u24_8; local rot:8 = 0;
+  s = s & 31; e = e & 31;
+  local src:8 = g48_gpr12_4; local rs:8 = rot & 63;
+  local rv:8 = (src << rs) | (src >> ((64 - rs) & 63)); rv = zext(rs != 0) * rv + zext(rs == 0) * src;
+  local ms:8 = 0xffffffffffffffff >> s; local me:8 = 0xffffffffffffffff << (63 - e);
+  local wrap:1 = s > e; local m:8 = zext(!wrap) * (ms & me) + zext(wrap) * (ms | me);
+  local r:8 = (g48_gpr8_4 & ~m) | (rv & m);
+  g48_gpr8_4 = (g48_gpr8_4 & 0xffffffff) | (r & 0xffffffff00000000);
 }
 :RISBHG g48_gpr8_4,g48_gpr12_4,g48_u16_8,g48_u24_8,g48_u32_8 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u40_4=0x5 & g48_u44_4=0xd & g48_gpr8_4 & g48_gpr12_4 & g48_u16_8 & g48_u24_8 & g48_u32_8 {
-  local i2:8 = g48_u16_8;
-  local i3:8 = g48_u24_8;
-  local i4:8 = g48_u32_8;
-  g48_gpr8_4 = s390_risbhg(g48_gpr12_4, i2, i3, i4);
+  local s:8 = g48_u16_8; local e:8 = g48_u24_8; local rot:8 = g48_u32_8;
+  s = s & 31; e = e & 31;
+  local src:8 = g48_gpr12_4; local rs:8 = rot & 63;
+  local rv:8 = (src << rs) | (src >> ((64 - rs) & 63)); rv = zext(rs != 0) * rv + zext(rs == 0) * src;
+  local ms:8 = 0xffffffffffffffff >> s; local me:8 = 0xffffffffffffffff << (63 - e);
+  local wrap:1 = s > e; local m:8 = zext(!wrap) * (ms & me) + zext(wrap) * (ms | me);
+  local r:8 = (g48_gpr8_4 & ~m) | (rv & m);
+  g48_gpr8_4 = (g48_gpr8_4 & 0xffffffff) | (r & 0xffffffff00000000);
 }
 :RISBGN g48_gpr8_4,g48_gpr12_4,g48_u16_8,g48_u24_8 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u40_4=0x5 & g48_u44_4=0x9 & g48_u32_8=0 & g48_gpr8_4 & g48_gpr12_4 & g48_u16_8 & g48_u24_8 {
-  local i2:8 = g48_u16_8;
-  local i3:8 = g48_u24_8;
-  local i4:8 = 0;
-  g48_gpr8_4 = s390_risbgn(g48_gpr12_4, i2, i3, i4);
+  local s:8 = g48_u16_8; local e:8 = g48_u24_8; local rot:8 = 0;
+  s = s & 63; e = e & 63;
+  local src:8 = g48_gpr12_4; local rs:8 = rot & 63;
+  local rv:8 = (src << rs) | (src >> ((64 - rs) & 63)); rv = zext(rs != 0) * rv + zext(rs == 0) * src;
+  local ms:8 = 0xffffffffffffffff >> s; local me:8 = 0xffffffffffffffff << (63 - e);
+  local wrap:1 = s > e; local m:8 = zext(!wrap) * (ms & me) + zext(wrap) * (ms | me);
+  local r:8 = (g48_gpr8_4 & ~m) | (rv & m);
+  g48_gpr8_4 = r;
 }
 :RISBGN g48_gpr8_4,g48_gpr12_4,g48_u16_8,g48_u24_8,g48_u32_8 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u40_4=0x5 & g48_u44_4=0x9 & g48_gpr8_4 & g48_gpr12_4 & g48_u16_8 & g48_u24_8 & g48_u32_8 {
-  local i2:8 = g48_u16_8;
-  local i3:8 = g48_u24_8;
-  local i4:8 = g48_u32_8;
-  g48_gpr8_4 = s390_risbgn(g48_gpr12_4, i2, i3, i4);
+  local s:8 = g48_u16_8; local e:8 = g48_u24_8; local rot:8 = g48_u32_8;
+  s = s & 63; e = e & 63;
+  local src:8 = g48_gpr12_4; local rs:8 = rot & 63;
+  local rv:8 = (src << rs) | (src >> ((64 - rs) & 63)); rv = zext(rs != 0) * rv + zext(rs == 0) * src;
+  local ms:8 = 0xffffffffffffffff >> s; local me:8 = 0xffffffffffffffff << (63 - e);
+  local wrap:1 = s > e; local m:8 = zext(!wrap) * (ms & me) + zext(wrap) * (ms | me);
+  local r:8 = (g48_gpr8_4 & ~m) | (rv & m);
+  g48_gpr8_4 = r;
 }
 :RXSBG g48_gpr8_4,g48_gpr12_4,g48_u16_8,g48_u24_8 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u40_4=0x5 & g48_u44_4=0x7 & g48_u32_8=0 & g48_gpr8_4 & g48_gpr12_4 & g48_u16_8 & g48_u24_8 {
-  local i2:8 = g48_u16_8;
-  local i3:8 = g48_u24_8;
-  local i4:8 = 0;
-  g48_gpr8_4 = s390_rxsbg(g48_gpr12_4, i2, i3, i4);
+  local s:8 = g48_u16_8; local e:8 = g48_u24_8; local rot:8 = 0;
+  s = s & 63; e = e & 63;
+  local src:8 = g48_gpr12_4; local rs:8 = rot & 63;
+  local rv:8 = (src << rs) | (src >> ((64 - rs) & 63)); rv = zext(rs != 0) * rv + zext(rs == 0) * src;
+  local ms:8 = 0xffffffffffffffff >> s; local me:8 = 0xffffffffffffffff << (63 - e);
+  local wrap:1 = s > e; local m:8 = zext(!wrap) * (ms & me) + zext(wrap) * (ms | me);
+  local t:8 = (g48_gpr8_4 ^ rv) & m; local r:8 = (g48_gpr8_4 & ~m) | t; gs_cc_nz(t);
+  g48_gpr8_4 = r;
 }
 :RXSBG g48_gpr8_4,g48_gpr12_4,g48_u16_8,g48_u24_8,g48_u32_8 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u40_4=0x5 & g48_u44_4=0x7 & g48_gpr8_4 & g48_gpr12_4 & g48_u16_8 & g48_u24_8 & g48_u32_8 {
-  local i2:8 = g48_u16_8;
-  local i3:8 = g48_u24_8;
-  local i4:8 = g48_u32_8;
-  g48_gpr8_4 = s390_rxsbg(g48_gpr12_4, i2, i3, i4);
+  local s:8 = g48_u16_8; local e:8 = g48_u24_8; local rot:8 = g48_u32_8;
+  s = s & 63; e = e & 63;
+  local src:8 = g48_gpr12_4; local rs:8 = rot & 63;
+  local rv:8 = (src << rs) | (src >> ((64 - rs) & 63)); rv = zext(rs != 0) * rv + zext(rs == 0) * src;
+  local ms:8 = 0xffffffffffffffff >> s; local me:8 = 0xffffffffffffffff << (63 - e);
+  local wrap:1 = s > e; local m:8 = zext(!wrap) * (ms & me) + zext(wrap) * (ms | me);
+  local t:8 = (g48_gpr8_4 ^ rv) & m; local r:8 = (g48_gpr8_4 & ~m) | t; gs_cc_nz(t);
+  g48_gpr8_4 = r;
 }
 :ROSBG g48_gpr8_4,g48_gpr12_4,g48_u16_8,g48_u24_8 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u40_4=0x5 & g48_u44_4=0x6 & g48_u32_8=0 & g48_gpr8_4 & g48_gpr12_4 & g48_u16_8 & g48_u24_8 {
-  local i2:8 = g48_u16_8;
-  local i3:8 = g48_u24_8;
-  local i4:8 = 0;
-  g48_gpr8_4 = s390_rosbg(g48_gpr12_4, i2, i3, i4);
+  local s:8 = g48_u16_8; local e:8 = g48_u24_8; local rot:8 = 0;
+  s = s & 63; e = e & 63;
+  local src:8 = g48_gpr12_4; local rs:8 = rot & 63;
+  local rv:8 = (src << rs) | (src >> ((64 - rs) & 63)); rv = zext(rs != 0) * rv + zext(rs == 0) * src;
+  local ms:8 = 0xffffffffffffffff >> s; local me:8 = 0xffffffffffffffff << (63 - e);
+  local wrap:1 = s > e; local m:8 = zext(!wrap) * (ms & me) + zext(wrap) * (ms | me);
+  local t:8 = (g48_gpr8_4 | rv) & m; local r:8 = (g48_gpr8_4 & ~m) | t; gs_cc_nz(t);
+  g48_gpr8_4 = r;
 }
 :ROSBG g48_gpr8_4,g48_gpr12_4,g48_u16_8,g48_u24_8,g48_u32_8 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u40_4=0x5 & g48_u44_4=0x6 & g48_gpr8_4 & g48_gpr12_4 & g48_u16_8 & g48_u24_8 & g48_u32_8 {
-  local i2:8 = g48_u16_8;
-  local i3:8 = g48_u24_8;
-  local i4:8 = g48_u32_8;
-  g48_gpr8_4 = s390_rosbg(g48_gpr12_4, i2, i3, i4);
+  local s:8 = g48_u16_8; local e:8 = g48_u24_8; local rot:8 = g48_u32_8;
+  s = s & 63; e = e & 63;
+  local src:8 = g48_gpr12_4; local rs:8 = rot & 63;
+  local rv:8 = (src << rs) | (src >> ((64 - rs) & 63)); rv = zext(rs != 0) * rv + zext(rs == 0) * src;
+  local ms:8 = 0xffffffffffffffff >> s; local me:8 = 0xffffffffffffffff << (63 - e);
+  local wrap:1 = s > e; local m:8 = zext(!wrap) * (ms & me) + zext(wrap) * (ms | me);
+  local t:8 = (g48_gpr8_4 | rv) & m; local r:8 = (g48_gpr8_4 & ~m) | t; gs_cc_nz(t);
+  g48_gpr8_4 = r;
 }
 :RISBG g48_gpr8_4,g48_gpr12_4,g48_u16_8,g48_u24_8 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u40_4=0x5 & g48_u44_4=0x5 & g48_u32_8=0 & g48_gpr8_4 & g48_gpr12_4 & g48_u16_8 & g48_u24_8 {
-  local i2:8 = g48_u16_8;
-  local i3:8 = g48_u24_8;
-  local i4:8 = 0;
-  g48_gpr8_4 = s390_risbg(g48_gpr12_4, i2, i3, i4);
+  local s:8 = g48_u16_8; local e:8 = g48_u24_8; local rot:8 = 0;
+  s = s & 63; e = e & 63;
+  local src:8 = g48_gpr12_4; local rs:8 = rot & 63;
+  local rv:8 = (src << rs) | (src >> ((64 - rs) & 63)); rv = zext(rs != 0) * rv + zext(rs == 0) * src;
+  local ms:8 = 0xffffffffffffffff >> s; local me:8 = 0xffffffffffffffff << (63 - e);
+  local wrap:1 = s > e; local m:8 = zext(!wrap) * (ms & me) + zext(wrap) * (ms | me);
+  local r:8 = (g48_gpr8_4 & ~m) | (rv & m);
+  g48_gpr8_4 = r;
+  local sr:8 = r; gs_cc_arith(sr, 0:1);
 }
 :RISBG g48_gpr8_4,g48_gpr12_4,g48_u16_8,g48_u24_8,g48_u32_8 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u40_4=0x5 & g48_u44_4=0x5 & g48_gpr8_4 & g48_gpr12_4 & g48_u16_8 & g48_u24_8 & g48_u32_8 {
-  local i2:8 = g48_u16_8;
-  local i3:8 = g48_u24_8;
-  local i4:8 = g48_u32_8;
-  g48_gpr8_4 = s390_risbg(g48_gpr12_4, i2, i3, i4);
+  local s:8 = g48_u16_8; local e:8 = g48_u24_8; local rot:8 = g48_u32_8;
+  s = s & 63; e = e & 63;
+  local src:8 = g48_gpr12_4; local rs:8 = rot & 63;
+  local rv:8 = (src << rs) | (src >> ((64 - rs) & 63)); rv = zext(rs != 0) * rv + zext(rs == 0) * src;
+  local ms:8 = 0xffffffffffffffff >> s; local me:8 = 0xffffffffffffffff << (63 - e);
+  local wrap:1 = s > e; local m:8 = zext(!wrap) * (ms & me) + zext(wrap) * (ms | me);
+  local r:8 = (g48_gpr8_4 & ~m) | (rv & m);
+  g48_gpr8_4 = r;
+  local sr:8 = r; gs_cc_arith(sr, 0:1);
 }
 :RNSBG g48_gpr8_4,g48_gpr12_4,g48_u16_8,g48_u24_8 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u40_4=0x5 & g48_u44_4=0x4 & g48_u32_8=0 & g48_gpr8_4 & g48_gpr12_4 & g48_u16_8 & g48_u24_8 {
-  local i2:8 = g48_u16_8;
-  local i3:8 = g48_u24_8;
-  local i4:8 = 0;
-  g48_gpr8_4 = s390_rnsbg(g48_gpr12_4, i2, i3, i4);
+  local s:8 = g48_u16_8; local e:8 = g48_u24_8; local rot:8 = 0;
+  s = s & 63; e = e & 63;
+  local src:8 = g48_gpr12_4; local rs:8 = rot & 63;
+  local rv:8 = (src << rs) | (src >> ((64 - rs) & 63)); rv = zext(rs != 0) * rv + zext(rs == 0) * src;
+  local ms:8 = 0xffffffffffffffff >> s; local me:8 = 0xffffffffffffffff << (63 - e);
+  local wrap:1 = s > e; local m:8 = zext(!wrap) * (ms & me) + zext(wrap) * (ms | me);
+  local t:8 = (g48_gpr8_4 & rv) & m; local r:8 = (g48_gpr8_4 & ~m) | t; gs_cc_nz(t);
+  g48_gpr8_4 = r;
 }
 :RNSBG g48_gpr8_4,g48_gpr12_4,g48_u16_8,g48_u24_8,g48_u32_8 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u40_4=0x5 & g48_u44_4=0x4 & g48_gpr8_4 & g48_gpr12_4 & g48_u16_8 & g48_u24_8 & g48_u32_8 {
-  local i2:8 = g48_u16_8;
-  local i3:8 = g48_u24_8;
-  local i4:8 = g48_u32_8;
-  g48_gpr8_4 = s390_rnsbg(g48_gpr12_4, i2, i3, i4);
+  local s:8 = g48_u16_8; local e:8 = g48_u24_8; local rot:8 = g48_u32_8;
+  s = s & 63; e = e & 63;
+  local src:8 = g48_gpr12_4; local rs:8 = rot & 63;
+  local rv:8 = (src << rs) | (src >> ((64 - rs) & 63)); rv = zext(rs != 0) * rv + zext(rs == 0) * src;
+  local ms:8 = 0xffffffffffffffff >> s; local me:8 = 0xffffffffffffffff << (63 - e);
+  local wrap:1 = s > e; local m:8 = zext(!wrap) * (ms & me) + zext(wrap) * (ms | me);
+  local t:8 = (g48_gpr8_4 & rv) & m; local r:8 = (g48_gpr8_4 & ~m) | t; gs_cc_nz(t);
+  g48_gpr8_4 = r;
 }
 :RISBLG g48_gpr8_4,g48_gpr12_4,g48_u16_8,g48_u24_8 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u40_4=0x5 & g48_u44_4=0x1 & g48_u32_8=0 & g48_gpr8_4 & g48_gpr12_4 & g48_u16_8 & g48_u24_8 {
-  local i2:8 = g48_u16_8;
-  local i3:8 = g48_u24_8;
-  local i4:8 = 0;
-  g48_gpr8_4 = s390_risblg(g48_gpr12_4, i2, i3, i4);
+  local s:8 = g48_u16_8; local e:8 = g48_u24_8; local rot:8 = 0;
+  s = (s & 31) + 32; e = (e & 31) + 32;
+  local src:8 = g48_gpr12_4; local rs:8 = rot & 63;
+  local rv:8 = (src << rs) | (src >> ((64 - rs) & 63)); rv = zext(rs != 0) * rv + zext(rs == 0) * src;
+  local ms:8 = 0xffffffffffffffff >> s; local me:8 = 0xffffffffffffffff << (63 - e);
+  local wrap:1 = s > e; local m:8 = zext(!wrap) * (ms & me) + zext(wrap) * (ms | me);
+  local r:8 = (g48_gpr8_4 & ~m) | (rv & m);
+  g48_gpr8_4 = (g48_gpr8_4 & 0xffffffff00000000) | (r & 0xffffffff);
 }
 :RISBLG g48_gpr8_4,g48_gpr12_4,g48_u16_8,g48_u24_8,g48_u32_8 is g48_u0_4=0xe & g48_u4_4=0xc & g48_u40_4=0x5 & g48_u44_4=0x1 & g48_gpr8_4 & g48_gpr12_4 & g48_u16_8 & g48_u24_8 & g48_u32_8 {
-  local i2:8 = g48_u16_8;
-  local i3:8 = g48_u24_8;
-  local i4:8 = g48_u32_8;
-  g48_gpr8_4 = s390_risblg(g48_gpr12_4, i2, i3, i4);
+  local s:8 = g48_u16_8; local e:8 = g48_u24_8; local rot:8 = g48_u32_8;
+  s = (s & 31) + 32; e = (e & 31) + 32;
+  local src:8 = g48_gpr12_4; local rs:8 = rot & 63;
+  local rv:8 = (src << rs) | (src >> ((64 - rs) & 63)); rv = zext(rs != 0) * rv + zext(rs == 0) * src;
+  local ms:8 = 0xffffffffffffffff >> s; local me:8 = 0xffffffffffffffff << (63 - e);
+  local wrap:1 = s > e; local m:8 = zext(!wrap) * (ms & me) + zext(wrap) * (ms | me);
+  local r:8 = (g48_gpr8_4 & ~m) | (rv & m);
+  g48_gpr8_4 = (g48_gpr8_4 & 0xffffffff00000000) | (r & 0xffffffff);
 }
 :LAAL g48_gpr8_4,g48_gpr12_4,a48_20_20_16 is g48_u0_4=0xe & g48_u4_4=0xb & g48_u40_4=0xf & g48_u44_4=0xa & g48_gpr8_4 & g48_gpr12_4 & a48_20_20_16 {
-  g48_gpr8_4 = s390_laal(g48_gpr12_4, a48_20_20_16);
+  local old:4 = *:4 a48_20_20_16; local y:4 = g48_gpr12_4:4; local r:4 = old + y;
+  local c:1 = carry(old, y); gs_cc_addl(r, c);
+  *:4 a48_20_20_16 = r;
+  local w32_3:4 = old; gs_set32(g48_gpr8_4, w32_3);
 }
 :LAA g48_gpr8_4,g48_gpr12_4,a48_20_20_16 is g48_u0_4=0xe & g48_u4_4=0xb & g48_u40_4=0xf & g48_u44_4=0x8 & g48_gpr8_4 & g48_gpr12_4 & a48_20_20_16 {
-  g48_gpr8_4 = s390_laa(g48_gpr12_4, a48_20_20_16);
+  local old:4 = *:4 a48_20_20_16; local y:4 = g48_gpr12_4:4; local r:4 = old + y;
+  local ov:1 = scarry(old, y); gs_cc_arith(r, ov);
+  *:4 a48_20_20_16 = r;
+  local w32_4:4 = old; gs_set32(g48_gpr8_4, w32_4);
 }
 :LAX g48_gpr8_4,g48_gpr12_4,a48_20_20_16 is g48_u0_4=0xe & g48_u4_4=0xb & g48_u40_4=0xf & g48_u44_4=0x7 & g48_gpr8_4 & g48_gpr12_4 & a48_20_20_16 {
-  g48_gpr8_4 = s390_lax(g48_gpr12_4, a48_20_20_16);
+  local old:4 = *:4 a48_20_20_16; local y:4 = g48_gpr12_4:4; local r:4 = old ^ y;
+  gs_cc_nz(r);
+  *:4 a48_20_20_16 = r;
+  local w32_5:4 = old; gs_set32(g48_gpr8_4, w32_5);
 }
 :LAO g48_gpr8_4,g48_gpr12_4,a48_20_20_16 is g48_u0_4=0xe & g48_u4_4=0xb & g48_u40_4=0xf & g48_u44_4=0x6 & g48_gpr8_4 & g48_gpr12_4 & a48_20_20_16 {
-  g48_gpr8_4 = s390_lao(g48_gpr12_4, a48_20_20_16);
+  local old:4 = *:4 a48_20_20_16; local y:4 = g48_gpr12_4:4; local r:4 = old | y;
+  gs_cc_nz(r);
+  *:4 a48_20_20_16 = r;
+  local w32_6:4 = old; gs_set32(g48_gpr8_4, w32_6);
 }
 :LAN g48_gpr8_4,g48_gpr12_4,a48_20_20_16 is g48_u0_4=0xe & g48_u4_4=0xb & g48_u40_4=0xf & g48_u44_4=0x4 & g48_gpr8_4 & g48_gpr12_4 & a48_20_20_16 {
-  g48_gpr8_4 = s390_lan(g48_gpr12_4, a48_20_20_16);
+  local old:4 = *:4 a48_20_20_16; local y:4 = g48_gpr12_4:4; local r:4 = old & y;
+  gs_cc_nz(r);
+  *:4 a48_20_20_16 = r;
+  local w32_7:4 = old; gs_set32(g48_gpr8_4, w32_7);
 }
 :LAALG g48_gpr8_4,g48_gpr12_4,a48_20_20_16 is g48_u0_4=0xe & g48_u4_4=0xb & g48_u40_4=0xe & g48_u44_4=0xa & g48_gpr8_4 & g48_gpr12_4 & a48_20_20_16 {
-  g48_gpr8_4 = s390_laalg(g48_gpr12_4, a48_20_20_16);
+  local old:8 = *:8 a48_20_20_16; local y:8 = g48_gpr12_4; local r:8 = old + y;
+  local c:1 = carry(old, y); gs_cc_addl(r, c);
+  *:8 a48_20_20_16 = r;
+  g48_gpr8_4 = old;
 }
 :LAAG g48_gpr8_4,g48_gpr12_4,a48_20_20_16 is g48_u0_4=0xe & g48_u4_4=0xb & g48_u40_4=0xe & g48_u44_4=0x8 & g48_gpr8_4 & g48_gpr12_4 & a48_20_20_16 {
-  g48_gpr8_4 = s390_laag(g48_gpr12_4, a48_20_20_16);
+  local old:8 = *:8 a48_20_20_16; local y:8 = g48_gpr12_4; local r:8 = old + y;
+  local ov:1 = scarry(old, y); gs_cc_arith(r, ov);
+  *:8 a48_20_20_16 = r;
+  g48_gpr8_4 = old;
 }
 :LAXG g48_gpr8_4,g48_gpr12_4,a48_20_20_16 is g48_u0_4=0xe & g48_u4_4=0xb & g48_u40_4=0xe & g48_u44_4=0x7 & g48_gpr8_4 & g48_gpr12_4 & a48_20_20_16 {
-  g48_gpr8_4 = s390_laxg(g48_gpr12_4, a48_20_20_16);
+  local old:8 = *:8 a48_20_20_16; local y:8 = g48_gpr12_4; local r:8 = old ^ y;
+  gs_cc_nz(r);
+  *:8 a48_20_20_16 = r;
+  g48_gpr8_4 = old;
 }
 :LAOG g48_gpr8_4,g48_gpr12_4,a48_20_20_16 is g48_u0_4=0xe & g48_u4_4=0xb & g48_u40_4=0xe & g48_u44_4=0x6 & g48_gpr8_4 & g48_gpr12_4 & a48_20_20_16 {
-  g48_gpr8_4 = s390_laog(g48_gpr12_4, a48_20_20_16);
+  local old:8 = *:8 a48_20_20_16; local y:8 = g48_gpr12_4; local r:8 = old | y;
+  gs_cc_nz(r);
+  *:8 a48_20_20_16 = r;
+  g48_gpr8_4 = old;
 }
 :LANG g48_gpr8_4,g48_gpr12_4,a48_20_20_16 is g48_u0_4=0xe & g48_u4_4=0xb & g48_u40_4=0xe & g48_u44_4=0x4 & g48_gpr8_4 & g48_gpr12_4 & a48_20_20_16 {
-  g48_gpr8_4 = s390_lang(g48_gpr12_4, a48_20_20_16);
+  local old:8 = *:8 a48_20_20_16; local y:8 = g48_gpr12_4; local r:8 = old & y;
+  gs_cc_nz(r);
+  *:8 a48_20_20_16 = r;
+  g48_gpr8_4 = old;
 }
 :STAMY g48_ar8_4,g48_ar12_4,a48_20_20_16 is g48_u0_4=0xe & g48_u4_4=0xb & g48_u40_4=0x9 & g48_u44_4=0xb & g48_ar8_4 & g48_ar12_4 & a48_20_20_16 {
   s390_stamy(g48_ar8_4, g48_ar12_4, a48_20_20_16);
@@ -2431,43 +2512,34 @@ a32_20_12_41_12_4_16: g32_u20_12(g32_gpr12_4,g32_gpr16_4) is g32_u20_12 & g32_u1
   g48_gpr8_4 = s390_icmh(i1, a48_20_12_16);
 }
 :ALGSI a48_20_20_16,g48_s8_8 is g48_u0_4=0xe & g48_u4_4=0xb & g48_u40_4=0x7 & g48_u44_4=0xe & a48_20_20_16 & g48_s8_8 {
-  local i1:8 = g48_s8_8;
-  s390_algsi(a48_20_20_16, i1);
+  local i:8 = g48_s8_8; local x:8 = *:8 a48_20_20_16; local y:8 = i:8; local r:8 = x + y; local c:1 = carry(x, y); gs_cc_addl(r, c); *:8 a48_20_20_16 = r;
 }
 :AGSI a48_20_20_16,g48_s8_8 is g48_u0_4=0xe & g48_u4_4=0xb & g48_u40_4=0x7 & g48_u44_4=0xa & a48_20_20_16 & g48_s8_8 {
-  local i1:8 = g48_s8_8;
-  s390_agsi(a48_20_20_16, i1);
+  local i:8 = g48_s8_8; local x:8 = *:8 a48_20_20_16; local y:8 = i:8; local r:8 = x + y; local ov:1 = scarry(x, y); gs_cc_arith(r, ov); *:8 a48_20_20_16 = r;
 }
 :LPSWEY a48_20_20_16 is g48_u0_4=0xe & g48_u4_4=0xb & g48_u8_4=0x0 & g48_u12_4=0x0 & g48_u40_4=0x7 & g48_u44_4=0x1 & a48_20_20_16 {
   s390_lpswey(a48_20_20_16);
 }
 :ALSI a48_20_20_16,g48_s8_8 is g48_u0_4=0xe & g48_u4_4=0xb & g48_u40_4=0x6 & g48_u44_4=0xe & a48_20_20_16 & g48_s8_8 {
-  local i1:8 = g48_s8_8;
-  s390_alsi(a48_20_20_16, i1);
+  local i:8 = g48_s8_8; local x:4 = *:4 a48_20_20_16; local y:4 = i:4; local r:4 = x + y; local c:1 = carry(x, y); gs_cc_addl(r, c); *:4 a48_20_20_16 = r;
 }
 :ASI a48_20_20_16,g48_s8_8 is g48_u0_4=0xe & g48_u4_4=0xb & g48_u40_4=0x6 & g48_u44_4=0xa & a48_20_20_16 & g48_s8_8 {
-  local i1:8 = g48_s8_8;
-  s390_asi(a48_20_20_16, i1);
+  local i:8 = g48_s8_8; local x:4 = *:4 a48_20_20_16; local y:4 = i:4; local r:4 = x + y; local ov:1 = scarry(x, y); gs_cc_arith(r, ov); *:4 a48_20_20_16 = r;
 }
 :XIY a48_20_20_16,g48_u8_8 is g48_u0_4=0xe & g48_u4_4=0xb & g48_u40_4=0x5 & g48_u44_4=0x7 & a48_20_20_16 & g48_u8_8 {
-  local i1:8 = g48_u8_8;
-  s390_xiy(a48_20_20_16, i1);
+  local i:1 = g48_u8_8; local r:1 = *:1 a48_20_20_16 ^ i; *:1 a48_20_20_16 = r; gs_cc_nz(r);
 }
 :OIY a48_20_20_16,g48_u8_8 is g48_u0_4=0xe & g48_u4_4=0xb & g48_u40_4=0x5 & g48_u44_4=0x6 & a48_20_20_16 & g48_u8_8 {
-  local i1:8 = g48_u8_8;
-  s390_oiy(a48_20_20_16, i1);
+  local i:1 = g48_u8_8; local r:1 = *:1 a48_20_20_16 | i; *:1 a48_20_20_16 = r; gs_cc_nz(r);
 }
 :CLIY a48_20_20_16,g48_u8_8 is g48_u0_4=0xe & g48_u4_4=0xb & g48_u40_4=0x5 & g48_u44_4=0x5 & a48_20_20_16 & g48_u8_8 {
-  local i1:8 = g48_u8_8;
-  s390_cliy(a48_20_20_16, i1);
+  local i:1 = g48_u8_8; local x:1 = *:1 a48_20_20_16; gs_cc_cmpu(x, i);
 }
 :NIY a48_20_20_16,g48_u8_8 is g48_u0_4=0xe & g48_u4_4=0xb & g48_u40_4=0x5 & g48_u44_4=0x4 & a48_20_20_16 & g48_u8_8 {
-  local i1:8 = g48_u8_8;
-  s390_niy(a48_20_20_16, i1);
+  local i:1 = g48_u8_8; local r:1 = *:1 a48_20_20_16 & i; *:1 a48_20_20_16 = r; gs_cc_nz(r);
 }
 :MVIY a48_20_20_16,g48_u8_8 is g48_u0_4=0xe & g48_u4_4=0xb & g48_u40_4=0x5 & g48_u44_4=0x2 & a48_20_20_16 & g48_u8_8 {
-  local i1:8 = g48_u8_8;
-  s390_mviy(a48_20_20_16, i1);
+  local i:1 = g48_u8_8; *:1 a48_20_20_16 = i;
 }
 :ECAG g48_gpr8_4,g48_gpr12_4,a48_20_20_16 is g48_u0_4=0xe & g48_u4_4=0xb & g48_u40_4=0x4 & g48_u44_4=0xc & g48_gpr8_4 & g48_gpr12_4 & a48_20_20_16 {
   g48_gpr8_4 = s390_ecag(g48_gpr12_4, a48_20_20_16);
@@ -2482,10 +2554,22 @@ a32_20_12_41_12_4_16: g32_u20_12(g32_gpr12_4,g32_gpr16_4) is g32_u20_12 & g32_u1
   g48_gpr8_4 = s390_cdsy(g48_gpr12_4, a48_20_20_16);
 }
 :CSG g48_gpr8_4,g48_gpr12_4,a48_20_20_16 is g48_u0_4=0xe & g48_u4_4=0xb & g48_u40_4=0x3 & g48_u44_4=0x0 & g48_gpr8_4 & g48_gpr12_4 & a48_20_20_16 {
-  g48_gpr8_4 = s390_csg(g48_gpr12_4, a48_20_20_16);
+  local old:8 = *:8 a48_20_20_16; local cmp:8 = g48_gpr8_4;
+  if (old != cmp) goto <neq>;
+  *:8 a48_20_20_16 = g48_gpr12_4; cc = 0;
+  goto <done>;
+  <neq>
+  cc = 1; g48_gpr8_4 = old;
+  <done>
 }
 :CSG g48_gpr8_4,g48_gpr12_4,a48_20_12_16 is g48_u0_4=0xe & g48_u4_4=0xb & g48_u32_4=0x0 & g48_u36_4=0x0 & g48_u40_4=0x3 & g48_u44_4=0x0 & g48_gpr8_4 & g48_gpr12_4 & a48_20_12_16 {
-  g48_gpr8_4 = s390_csg(g48_gpr12_4, a48_20_12_16);
+  local old:8 = *:8 a48_20_12_16; local cmp:8 = g48_gpr8_4;
+  if (old != cmp) goto <neq>;
+  *:8 a48_20_12_16 = g48_gpr12_4; cc = 0;
+  goto <done>;
+  <neq>
+  cc = 1; g48_gpr8_4 = old;
+  <done>
 }
 :LCTLG g48_cr8_4,g48_cr12_4,a48_20_20_16 is g48_u0_4=0xe & g48_u4_4=0xb & g48_u40_4=0x2 & g48_u44_4=0xf & g48_cr8_4 & g48_cr12_4 & a48_20_20_16 {
   s390_lctlg(g48_cr8_4, g48_cr12_4, a48_20_20_16);
@@ -2523,7 +2607,13 @@ a32_20_12_41_12_4_16: g32_u20_12(g32_gpr12_4,g32_gpr16_4) is g32_u20_12 & g32_u1
   s390_pfcr(g48_gpr8_4, g48_gpr12_4, a48_20_20_16);
 }
 :CSY g48_gpr8_4,g48_gpr12_4,a48_20_20_16 is g48_u0_4=0xe & g48_u4_4=0xb & g48_u40_4=0x1 & g48_u44_4=0x4 & g48_gpr8_4 & g48_gpr12_4 & a48_20_20_16 {
-  g48_gpr8_4 = s390_csy(g48_gpr12_4, a48_20_20_16);
+  local old:4 = *:4 a48_20_20_16; local cmp:4 = g48_gpr8_4:4;
+  if (old != cmp) goto <neq>;
+  *:4 a48_20_20_16 = g48_gpr12_4:4; cc = 0;
+  goto <done>;
+  <neq>
+  cc = 1; local w32_8:4 = old; gs_set32(g48_gpr8_4, w32_8);
+  <done>
 }
 :TRACG g48_gpr8_4,g48_gpr12_4,a48_20_20_16 is g48_u0_4=0xe & g48_u4_4=0xb & g48_u40_4=0x0 & g48_u44_4=0xf & g48_gpr8_4 & g48_gpr12_4 & a48_20_20_16 {
   g48_gpr8_4 = s390_tracg(g48_gpr12_4, a48_20_20_16);
@@ -5040,8 +5130,9 @@ a32_20_12_41_12_4_16: g32_u20_12(g32_gpr12_4,g32_gpr16_4) is g32_u20_12 & g32_u1
   v48_8 = s390_veslb(v48_12, a48_20_12_16);
 }
 :LCBB g48_gpr8_4,a48_20_12_41_12_4_16,g48_u32_4 is g48_u0_4=0xe & g48_u4_4=0x7 & g48_u36_4=0x0 & g48_u40_4=0x2 & g48_u44_4=0x7 & g48_gpr8_4 & a48_20_12_41_12_4_16 & g48_u32_4 {
-  local i2:8 = g48_u32_4;
-  g48_gpr8_4 = s390_lcbb(a48_20_12_41_12_4_16, i2);
+  local i:8 = g48_u32_4; local bs:8 = 64 << (i & 7); local ea:8 = a48_20_12_41_12_4_16; local left:8 = bs - (ea & (bs - 1)); local cnt:8 = left; if (left <= 16) goto <ok>; cnt = 16;
+  <ok>
+  local w32_9:4 = cnt:4; gs_set32(g48_gpr8_4, w32_9); cc = zext(cnt != 16) * 3;
 }
 :VLVG v48_8,g48_gpr12_4,a48_20_12_16,g48_u32_4 is g48_u0_4=0xe & g48_u4_4=0x7 & g48_u40_4=0x2 & g48_u44_4=0x2 & v48_8 & g48_gpr12_4 & a48_20_12_16 & g48_u32_4 {
   local i3:8 = g48_u32_4;
@@ -5074,12 +5165,10 @@ a32_20_12_41_12_4_16: g32_u20_12(g32_gpr12_4,g32_gpr16_4) is g32_u20_12 & g32_u1
   v48_8 = s390_vgeg(a48_20_12_840_12_4_16, i2);
 }
 :VST v48_8,a48_20_12_41_12_4_16 is g48_u0_4=0xe & g48_u4_4=0x7 & g48_u40_4=0x0 & g48_u44_4=0xe & g48_u32_4=0 & v48_8 & a48_20_12_41_12_4_16 {
-  local i2:8 = 0;
-  s390_vst(v48_8, a48_20_12_41_12_4_16, i2);
+  *:16 a48_20_12_41_12_4_16 = v48_8;
 }
 :VST v48_8,a48_20_12_41_12_4_16,g48_u32_4 is g48_u0_4=0xe & g48_u4_4=0x7 & g48_u40_4=0x0 & g48_u44_4=0xe & v48_8 & a48_20_12_41_12_4_16 & g48_u32_4 {
-  local i2:8 = g48_u32_4;
-  s390_vst(v48_8, a48_20_12_41_12_4_16, i2);
+  *:16 a48_20_12_41_12_4_16 = v48_8;
 }
 :VSTEF v48_8,a48_20_12_41_12_4_16,g48_u32_4 is g48_u0_4=0xe & g48_u4_4=0x7 & g48_u40_4=0x0 & g48_u44_4=0xb & v48_8 & a48_20_12_41_12_4_16 & g48_u32_4 {
   local i2:8 = g48_u32_4;
@@ -5102,12 +5191,10 @@ a32_20_12_41_12_4_16: g32_u20_12(g32_gpr12_4,g32_gpr16_4) is g32_u20_12 & g32_u1
   v48_8 = s390_vlbb(a48_20_12_41_12_4_16, i2);
 }
 :VL v48_8,a48_20_12_41_12_4_16 is g48_u0_4=0xe & g48_u4_4=0x7 & g48_u40_4=0x0 & g48_u44_4=0x6 & g48_u32_4=0 & v48_8 & a48_20_12_41_12_4_16 {
-  local i2:8 = 0;
-  v48_8 = s390_vl(a48_20_12_41_12_4_16, i2);
+  v48_8 = *:16 a48_20_12_41_12_4_16;
 }
 :VL v48_8,a48_20_12_41_12_4_16,g48_u32_4 is g48_u0_4=0xe & g48_u4_4=0x7 & g48_u40_4=0x0 & g48_u44_4=0x6 & v48_8 & a48_20_12_41_12_4_16 & g48_u32_4 {
-  local i2:8 = g48_u32_4;
-  v48_8 = s390_vl(a48_20_12_41_12_4_16, i2);
+  v48_8 = *:16 a48_20_12_41_12_4_16;
 }
 :VLREP v48_8,a48_20_12_41_12_4_16,g48_u32_4 is g48_u0_4=0xe & g48_u4_4=0x7 & g48_u40_4=0x0 & g48_u44_4=0x5 & v48_8 & a48_20_12_41_12_4_16 & g48_u32_4 {
   local i2:8 = g48_u32_4;
@@ -5465,28 +5552,22 @@ a32_20_12_41_12_4_16: g32_u20_12(g32_gpr12_4,g32_gpr16_4) is g32_u20_12 & g32_u1
   s390_tbegin(a48_20_12_16, i1);
 }
 :CLFHSI a48_20_12_16,g48_u32_16 is g48_u0_4=0xe & g48_u4_4=0x5 & g48_u8_4=0x5 & g48_u12_4=0xd & a48_20_12_16 & g48_u32_16 {
-  local i1:8 = g48_u32_16;
-  s390_clfhsi(a48_20_12_16, i1);
+  local i:8 = g48_u32_16; local x:4 = *:4 a48_20_12_16; local y:4 = zext(i:2); gs_cc_cmpu(x, y);
 }
 :CHSI a48_20_12_16,g48_s32_16 is g48_u0_4=0xe & g48_u4_4=0x5 & g48_u8_4=0x5 & g48_u12_4=0xc & a48_20_12_16 & g48_s32_16 {
-  local i1:8 = g48_s32_16;
-  s390_chsi(a48_20_12_16, i1);
+  local i:8 = g48_s32_16; local x:4 = *:4 a48_20_12_16; local y:4 = sext(i:2); gs_cc_cmps(x, y);
 }
 :CLGHSI a48_20_12_16,g48_u32_16 is g48_u0_4=0xe & g48_u4_4=0x5 & g48_u8_4=0x5 & g48_u12_4=0x9 & a48_20_12_16 & g48_u32_16 {
-  local i1:8 = g48_u32_16;
-  s390_clghsi(a48_20_12_16, i1);
+  local i:8 = g48_u32_16; local x:8 = *:8 a48_20_12_16; local y:8 = zext(i:2); gs_cc_cmpu(x, y);
 }
 :CGHSI a48_20_12_16,g48_s32_16 is g48_u0_4=0xe & g48_u4_4=0x5 & g48_u8_4=0x5 & g48_u12_4=0x8 & a48_20_12_16 & g48_s32_16 {
-  local i1:8 = g48_s32_16;
-  s390_cghsi(a48_20_12_16, i1);
+  local i:8 = g48_s32_16; local x:8 = *:8 a48_20_12_16; local y:8 = sext(i:2); gs_cc_cmps(x, y);
 }
 :CLHHSI a48_20_12_16,g48_u32_16 is g48_u0_4=0xe & g48_u4_4=0x5 & g48_u8_4=0x5 & g48_u12_4=0x5 & a48_20_12_16 & g48_u32_16 {
-  local i1:8 = g48_u32_16;
-  s390_clhhsi(a48_20_12_16, i1);
+  local i:8 = g48_u32_16; local x:2 = *:2 a48_20_12_16; local y:2 = i:2; gs_cc_cmpu(x, y);
 }
 :CHHSI a48_20_12_16,g48_s32_16 is g48_u0_4=0xe & g48_u4_4=0x5 & g48_u8_4=0x5 & g48_u12_4=0x4 & a48_20_12_16 & g48_s32_16 {
-  local i1:8 = g48_s32_16;
-  s390_chhsi(a48_20_12_16, i1);
+  local i:8 = g48_s32_16; local x:2 = *:2 a48_20_12_16; local y:2 = i:2; gs_cc_cmps(x, y);
 }
 :MVCDK a48_20_12_16,a48_36_12_32 is g48_u0_4=0xe & g48_u4_4=0x5 & g48_u8_4=0x0 & g48_u12_4=0xf & a48_20_12_16 & a48_36_12_32 {
   s390_mvcdk(a48_20_12_16, a48_36_12_32);
@@ -5582,22 +5663,22 @@ a32_20_12_41_12_4_16: g32_u20_12(g32_gpr12_4,g32_gpr16_4) is g32_u20_12 & g32_u1
   g48_gpr8_4 = s390_lbh(a48_20_20_41_12_4_16);
 }
 :SLB g48_gpr8_4,a48_20_20_41_12_4_16 is g48_u0_4=0xe & g48_u4_4=0x3 & g48_u40_4=0x9 & g48_u44_4=0x9 & g48_gpr8_4 & a48_20_20_41_12_4_16 {
-  g48_gpr8_4 = s390_slb(a48_20_20_41_12_4_16);
+  local x:4 = g48_gpr8_4:4; local y:4 = *:4 a48_20_20_41_12_4_16; local bi:4 = zext((cc & 2) == 0); local t:4 = x - y; local r:4 = t - bi; local bo:1 = (x < y) || (t < bi); gs_cc_subl(r, bo); local w32_10:4 = r; gs_set32(g48_gpr8_4, w32_10);
 }
 :SLB g48_gpr8_4,a48_20_12_41_12_4_16 is g48_u0_4=0xe & g48_u4_4=0x3 & g48_u32_4=0x0 & g48_u36_4=0x0 & g48_u40_4=0x9 & g48_u44_4=0x9 & g48_gpr8_4 & a48_20_12_41_12_4_16 {
-  g48_gpr8_4 = s390_slb(a48_20_12_41_12_4_16);
+  local x:4 = g48_gpr8_4:4; local y:4 = *:4 a48_20_12_41_12_4_16; local bi:4 = zext((cc & 2) == 0); local t:4 = x - y; local r:4 = t - bi; local bo:1 = (x < y) || (t < bi); gs_cc_subl(r, bo); local w32_11:4 = r; gs_set32(g48_gpr8_4, w32_11);
 }
 :ALC g48_gpr8_4,a48_20_20_41_12_4_16 is g48_u0_4=0xe & g48_u4_4=0x3 & g48_u40_4=0x9 & g48_u44_4=0x8 & g48_gpr8_4 & a48_20_20_41_12_4_16 {
-  g48_gpr8_4 = s390_alc(a48_20_20_41_12_4_16);
+  local x:4 = g48_gpr8_4:4; local y:4 = *:4 a48_20_20_41_12_4_16; local c:4 = zext((cc & 2) != 0); local t:4 = x + y; local r:4 = t + c; local co:1 = carry(x, y) || carry(t, c); gs_cc_addl(r, co); local w32_12:4 = r; gs_set32(g48_gpr8_4, w32_12);
 }
 :ALC g48_gpr8_4,a48_20_12_41_12_4_16 is g48_u0_4=0xe & g48_u4_4=0x3 & g48_u32_4=0x0 & g48_u36_4=0x0 & g48_u40_4=0x9 & g48_u44_4=0x8 & g48_gpr8_4 & a48_20_12_41_12_4_16 {
-  g48_gpr8_4 = s390_alc(a48_20_12_41_12_4_16);
+  local x:4 = g48_gpr8_4:4; local y:4 = *:4 a48_20_12_41_12_4_16; local c:4 = zext((cc & 2) != 0); local t:4 = x + y; local r:4 = t + c; local co:1 = carry(x, y) || carry(t, c); gs_cc_addl(r, co); local w32_13:4 = r; gs_set32(g48_gpr8_4, w32_13);
 }
 :LLH g48_gpr8_4,a48_20_20_41_12_4_16 is g48_u0_4=0xe & g48_u4_4=0x3 & g48_u40_4=0x9 & g48_u44_4=0x5 & g48_gpr8_4 & a48_20_20_41_12_4_16 {
-  g48_gpr8_4 = s390_llh(a48_20_20_41_12_4_16);
+  local v:2 = *:2 a48_20_20_41_12_4_16; local w32_14:4 = zext(v); gs_set32(g48_gpr8_4, w32_14);
 }
 :LLC g48_gpr8_4,a48_20_20_41_12_4_16 is g48_u0_4=0xe & g48_u4_4=0x3 & g48_u40_4=0x9 & g48_u44_4=0x4 & g48_gpr8_4 & a48_20_20_41_12_4_16 {
-  g48_gpr8_4 = s390_llc(a48_20_20_41_12_4_16);
+  local v:1 = *:1 a48_20_20_41_12_4_16; local w32_15:4 = zext(v); gs_set32(g48_gpr8_4, w32_15);
 }
 :LPQ g48_gpr8_4,a48_20_20_41_12_4_16 is g48_u0_4=0xe & g48_u4_4=0x3 & g48_u40_4=0x8 & g48_u44_4=0xf & g48_gpr8_4 & a48_20_20_41_12_4_16 {
   g48_gpr8_4 = s390_lpq(a48_20_20_41_12_4_16);
@@ -5612,16 +5693,16 @@ a32_20_12_41_12_4_16: g32_u20_12(g32_gpr12_4,g32_gpr16_4) is g32_u20_12 & g32_u1
   s390_stpq(g48_gpr8_4, a48_20_12_41_12_4_16);
 }
 :SLBG g48_gpr8_4,a48_20_20_41_12_4_16 is g48_u0_4=0xe & g48_u4_4=0x3 & g48_u40_4=0x8 & g48_u44_4=0x9 & g48_gpr8_4 & a48_20_20_41_12_4_16 {
-  g48_gpr8_4 = s390_slbg(a48_20_20_41_12_4_16);
+  local x:8 = g48_gpr8_4; local y:8 = *:8 a48_20_20_41_12_4_16; local bi:8 = zext((cc & 2) == 0); local t:8 = x - y; local r:8 = t - bi; local bo:1 = (x < y) || (t < bi); gs_cc_subl(r, bo); g48_gpr8_4 = r;
 }
 :SLBG g48_gpr8_4,a48_20_12_41_12_4_16 is g48_u0_4=0xe & g48_u4_4=0x3 & g48_u32_4=0x0 & g48_u36_4=0x0 & g48_u40_4=0x8 & g48_u44_4=0x9 & g48_gpr8_4 & a48_20_12_41_12_4_16 {
-  g48_gpr8_4 = s390_slbg(a48_20_12_41_12_4_16);
+  local x:8 = g48_gpr8_4; local y:8 = *:8 a48_20_12_41_12_4_16; local bi:8 = zext((cc & 2) == 0); local t:8 = x - y; local r:8 = t - bi; local bo:1 = (x < y) || (t < bi); gs_cc_subl(r, bo); g48_gpr8_4 = r;
 }
 :ALCG g48_gpr8_4,a48_20_20_41_12_4_16 is g48_u0_4=0xe & g48_u4_4=0x3 & g48_u40_4=0x8 & g48_u44_4=0x8 & g48_gpr8_4 & a48_20_20_41_12_4_16 {
-  g48_gpr8_4 = s390_alcg(a48_20_20_41_12_4_16);
+  local x:8 = g48_gpr8_4; local y:8 = *:8 a48_20_20_41_12_4_16; local c:8 = zext((cc & 2) != 0); local t:8 = x + y; local r:8 = t + c; local co:1 = carry(x, y) || carry(t, c); gs_cc_addl(r, co); g48_gpr8_4 = r;
 }
 :ALCG g48_gpr8_4,a48_20_12_41_12_4_16 is g48_u0_4=0xe & g48_u4_4=0x3 & g48_u32_4=0x0 & g48_u36_4=0x0 & g48_u40_4=0x8 & g48_u44_4=0x8 & g48_gpr8_4 & a48_20_12_41_12_4_16 {
-  g48_gpr8_4 = s390_alcg(a48_20_12_41_12_4_16);
+  local x:8 = g48_gpr8_4; local y:8 = *:8 a48_20_12_41_12_4_16; local c:8 = zext((cc & 2) != 0); local t:8 = x + y; local r:8 = t + c; local co:1 = carry(x, y) || carry(t, c); gs_cc_addl(r, co); g48_gpr8_4 = r;
 }
 :MSGC g48_gpr8_4,a48_20_20_41_12_4_16 is g48_u0_4=0xe & g48_u4_4=0x3 & g48_u40_4=0x8 & g48_u44_4=0x3 & g48_gpr8_4 & a48_20_20_41_12_4_16 {
   g48_gpr8_4 = s390_msgc(a48_20_20_41_12_4_16);
@@ -5630,7 +5711,7 @@ a32_20_12_41_12_4_16: g32_u20_12(g32_gpr12_4,g32_gpr16_4) is g32_u20_12 & g32_u1
   g48_gpr8_4 = s390_laey(a48_20_20_41_12_4_16);
 }
 :ICY g48_gpr8_4,a48_20_20_41_12_4_16 is g48_u0_4=0xe & g48_u4_4=0x3 & g48_u40_4=0x7 & g48_u44_4=0x3 & g48_gpr8_4 & a48_20_20_41_12_4_16 {
-  g48_gpr8_4 = s390_icy(a48_20_20_41_12_4_16);
+  local v:1 = *:1 a48_20_20_41_12_4_16; g48_gpr8_4 = (g48_gpr8_4 & 0xffffffffffffff00) | zext(v);
 }
 :LLXAQ g48_gpr8_4,a48_20_20_41_12_4_16 is g48_u0_4=0xe & g48_u4_4=0x3 & g48_u40_4=0x6 & g48_u44_4=0x9 & g48_gpr8_4 & a48_20_20_41_12_4_16 {
   g48_gpr8_4 = s390_llxaq(a48_20_20_41_12_4_16);
@@ -5663,22 +5744,32 @@ a32_20_12_41_12_4_16: g32_u20_12(g32_gpr12_4,g32_gpr16_4) is g32_u20_12 & g32_u1
   g48_gpr8_4 = s390_lxab(a48_20_20_41_12_4_16);
 }
 :SLY g48_gpr8_4,a48_20_20_41_12_4_16 is g48_u0_4=0xe & g48_u4_4=0x3 & g48_u40_4=0x5 & g48_u44_4=0xf & g48_gpr8_4 & a48_20_20_41_12_4_16 {
-  g48_gpr8_4 = s390_sly(a48_20_20_41_12_4_16);
+  local x:4 = g48_gpr8_4:4; local y:4 = *:4 a48_20_20_41_12_4_16; local r:4 = x - y;
+  local b:1 = x < y; gs_cc_subl(r, b);
+  local w32_16:4 = r; gs_set32(g48_gpr8_4, w32_16);
 }
 :ALY g48_gpr8_4,a48_20_20_41_12_4_16 is g48_u0_4=0xe & g48_u4_4=0x3 & g48_u40_4=0x5 & g48_u44_4=0xe & g48_gpr8_4 & a48_20_20_41_12_4_16 {
-  g48_gpr8_4 = s390_aly(a48_20_20_41_12_4_16);
+  local x:4 = g48_gpr8_4:4; local y:4 = *:4 a48_20_20_41_12_4_16; local r:4 = x + y;
+  local c:1 = carry(x, y); gs_cc_addl(r, c);
+  local w32_17:4 = r; gs_set32(g48_gpr8_4, w32_17);
 }
 :SY g48_gpr8_4,a48_20_20_41_12_4_16 is g48_u0_4=0xe & g48_u4_4=0x3 & g48_u40_4=0x5 & g48_u44_4=0xb & g48_gpr8_4 & a48_20_20_41_12_4_16 {
-  g48_gpr8_4 = s390_sy(a48_20_20_41_12_4_16);
+  local x:4 = g48_gpr8_4:4; local y:4 = *:4 a48_20_20_41_12_4_16; local r:4 = x - y;
+  local ov:1 = sborrow(x, y);
+  gs_cc_arith(r, ov);
+  local w32_18:4 = r; gs_set32(g48_gpr8_4, w32_18);
 }
 :AY g48_gpr8_4,a48_20_20_41_12_4_16 is g48_u0_4=0xe & g48_u4_4=0x3 & g48_u40_4=0x5 & g48_u44_4=0xa & g48_gpr8_4 & a48_20_20_41_12_4_16 {
-  g48_gpr8_4 = s390_ay(a48_20_20_41_12_4_16);
+  local x:4 = g48_gpr8_4:4; local y:4 = *:4 a48_20_20_41_12_4_16; local r:4 = x + y;
+  local ov:1 = scarry(x, y);
+  gs_cc_arith(r, ov);
+  local w32_19:4 = r; gs_set32(g48_gpr8_4, w32_19);
 }
 :CY g48_gpr8_4,a48_20_20_41_12_4_16 is g48_u0_4=0xe & g48_u4_4=0x3 & g48_u40_4=0x5 & g48_u44_4=0x9 & g48_gpr8_4 & a48_20_20_41_12_4_16 {
-  s390_cy(g48_gpr8_4, a48_20_20_41_12_4_16);
+  local x:4 = g48_gpr8_4:4; local y:4 = *:4 a48_20_20_41_12_4_16; gs_cc_cmps(x, y);
 }
 :CLY g48_gpr8_4,a48_20_20_41_12_4_16 is g48_u0_4=0xe & g48_u4_4=0x3 & g48_u40_4=0x5 & g48_u44_4=0x5 & g48_gpr8_4 & a48_20_20_41_12_4_16 {
-  s390_cly(g48_gpr8_4, a48_20_20_41_12_4_16);
+  local x:4 = g48_gpr8_4:4; local y:4 = *:4 a48_20_20_41_12_4_16; gs_cc_cmpu(x, y);
 }
 :MSC g48_gpr8_4,a48_20_20_41_12_4_16 is g48_u0_4=0xe & g48_u4_4=0x3 & g48_u40_4=0x5 & g48_u44_4=0x3 & g48_gpr8_4 & a48_20_20_41_12_4_16 {
   g48_gpr8_4 = s390_msc(a48_20_20_41_12_4_16);
@@ -5700,16 +5791,16 @@ a32_20_12_41_12_4_16: g32_u20_12(g32_gpr12_4,g32_gpr16_4) is g32_u20_12 & g32_u1
   s390_bic(i0, a48_20_20_41_12_4_16);
 }
 :STRVH g48_gpr8_4,a48_20_20_41_12_4_16 is g48_u0_4=0xe & g48_u4_4=0x3 & g48_u40_4=0x3 & g48_u44_4=0xf & g48_gpr8_4 & a48_20_20_41_12_4_16 {
-  s390_strvh(g48_gpr8_4, a48_20_20_41_12_4_16);
+  local v:2 = g48_gpr8_4:2; local r:2 = (zext(v[0,8]) << 8) | (zext(v[8,8]) << 0); *:2 a48_20_20_41_12_4_16 = r;
 }
 :STRVH g48_gpr8_4,a48_20_12_41_12_4_16 is g48_u0_4=0xe & g48_u4_4=0x3 & g48_u32_4=0x0 & g48_u36_4=0x0 & g48_u40_4=0x3 & g48_u44_4=0xf & g48_gpr8_4 & a48_20_12_41_12_4_16 {
-  s390_strvh(g48_gpr8_4, a48_20_12_41_12_4_16);
+  local v:2 = g48_gpr8_4:2; local r:2 = (zext(v[0,8]) << 8) | (zext(v[8,8]) << 0); *:2 a48_20_12_41_12_4_16 = r;
 }
 :STRV g48_gpr8_4,a48_20_20_41_12_4_16 is g48_u0_4=0xe & g48_u4_4=0x3 & g48_u40_4=0x3 & g48_u44_4=0xe & g48_gpr8_4 & a48_20_20_41_12_4_16 {
-  s390_strv(g48_gpr8_4, a48_20_20_41_12_4_16);
+  local v:4 = g48_gpr8_4:4; local r:4 = (zext(v[0,8]) << 24) | (zext(v[8,8]) << 16) | (zext(v[16,8]) << 8) | (zext(v[24,8]) << 0); *:4 a48_20_20_41_12_4_16 = r;
 }
 :STRV g48_gpr8_4,a48_20_12_41_12_4_16 is g48_u0_4=0xe & g48_u4_4=0x3 & g48_u32_4=0x0 & g48_u36_4=0x0 & g48_u40_4=0x3 & g48_u44_4=0xe & g48_gpr8_4 & a48_20_12_41_12_4_16 {
-  s390_strv(g48_gpr8_4, a48_20_12_41_12_4_16);
+  local v:4 = g48_gpr8_4:4; local r:4 = (zext(v[0,8]) << 24) | (zext(v[8,8]) << 16) | (zext(v[16,8]) << 8) | (zext(v[24,8]) << 0); *:4 a48_20_12_41_12_4_16 = r;
 }
 :LZRF g48_gpr8_4,a48_20_20_41_12_4_16 is g48_u0_4=0xe & g48_u4_4=0x3 & g48_u40_4=0x3 & g48_u44_4=0xb & g48_gpr8_4 & a48_20_20_41_12_4_16 {
   g48_gpr8_4 = s390_lzrf(a48_20_20_41_12_4_16);
@@ -5724,17 +5815,16 @@ a32_20_12_41_12_4_16: g32_u20_12(g32_gpr12_4,g32_gpr16_4) is g32_u20_12 & g32_u1
   g48_gpr8_4 = s390_agh(a48_20_20_41_12_4_16);
 }
 :PFD g48_u8_4,a48_20_20_41_12_4_16 is g48_u0_4=0xe & g48_u4_4=0x3 & g48_u40_4=0x3 & g48_u44_4=0x6 & g48_u8_4 & a48_20_20_41_12_4_16 {
-  local i0:8 = g48_u8_4;
-  s390_pfd(i0, a48_20_20_41_12_4_16);
+  local nop:1 = 0;
 }
 :CGH g48_gpr8_4,a48_20_20_41_12_4_16 is g48_u0_4=0xe & g48_u4_4=0x3 & g48_u40_4=0x3 & g48_u44_4=0x4 & g48_gpr8_4 & a48_20_20_41_12_4_16 {
   s390_cgh(g48_gpr8_4, a48_20_20_41_12_4_16);
 }
 :STRVG g48_gpr8_4,a48_20_20_41_12_4_16 is g48_u0_4=0xe & g48_u4_4=0x3 & g48_u40_4=0x2 & g48_u44_4=0xf & g48_gpr8_4 & a48_20_20_41_12_4_16 {
-  s390_strvg(g48_gpr8_4, a48_20_20_41_12_4_16);
+  local v:8 = g48_gpr8_4:8; local r:8 = (zext(v[0,8]) << 56) | (zext(v[8,8]) << 48) | (zext(v[16,8]) << 40) | (zext(v[24,8]) << 32) | (zext(v[32,8]) << 24) | (zext(v[40,8]) << 16) | (zext(v[48,8]) << 8) | (zext(v[56,8]) << 0); *:8 a48_20_20_41_12_4_16 = r;
 }
 :STRVG g48_gpr8_4,a48_20_12_41_12_4_16 is g48_u0_4=0xe & g48_u4_4=0x3 & g48_u32_4=0x0 & g48_u36_4=0x0 & g48_u40_4=0x2 & g48_u44_4=0xf & g48_gpr8_4 & a48_20_12_41_12_4_16 {
-  s390_strvg(g48_gpr8_4, a48_20_12_41_12_4_16);
+  local v:8 = g48_gpr8_4:8; local r:8 = (zext(v[0,8]) << 56) | (zext(v[8,8]) << 48) | (zext(v[16,8]) << 40) | (zext(v[24,8]) << 32) | (zext(v[32,8]) << 24) | (zext(v[40,8]) << 16) | (zext(v[48,8]) << 8) | (zext(v[56,8]) << 0); *:8 a48_20_12_41_12_4_16 = r;
 }
 :CVDG g48_gpr8_4,a48_20_20_41_12_4_16 is g48_u0_4=0xe & g48_u4_4=0x3 & g48_u40_4=0x2 & g48_u44_4=0xe & g48_gpr8_4 & a48_20_20_41_12_4_16 {
   g48_gpr8_4 = s390_cvdg(a48_20_20_41_12_4_16);
@@ -5752,31 +5842,31 @@ a32_20_12_41_12_4_16: g32_u20_12(g32_gpr12_4,g32_gpr16_4) is g32_u20_12 & g32_u1
   s390_ntstg(g48_gpr8_4, a48_20_20_41_12_4_16);
 }
 :LRVH g48_gpr8_4,a48_20_20_41_12_4_16 is g48_u0_4=0xe & g48_u4_4=0x3 & g48_u40_4=0x1 & g48_u44_4=0xf & g48_gpr8_4 & a48_20_20_41_12_4_16 {
-  g48_gpr8_4 = s390_lrvh(a48_20_20_41_12_4_16);
+  local v:2 = *:2 a48_20_20_41_12_4_16; local r:2 = (zext(v[0,8]) << 8) | (zext(v[8,8]) << 0); g48_gpr8_4 = (g48_gpr8_4 & 0xffffffffffff0000) | zext(r);
 }
 :LRVH g48_gpr8_4,a48_20_12_41_12_4_16 is g48_u0_4=0xe & g48_u4_4=0x3 & g48_u32_4=0x0 & g48_u36_4=0x0 & g48_u40_4=0x1 & g48_u44_4=0xf & g48_gpr8_4 & a48_20_12_41_12_4_16 {
-  g48_gpr8_4 = s390_lrvh(a48_20_12_41_12_4_16);
+  local v:2 = *:2 a48_20_12_41_12_4_16; local r:2 = (zext(v[0,8]) << 8) | (zext(v[8,8]) << 0); g48_gpr8_4 = (g48_gpr8_4 & 0xffffffffffff0000) | zext(r);
 }
 :LRV g48_gpr8_4,a48_20_20_41_12_4_16 is g48_u0_4=0xe & g48_u4_4=0x3 & g48_u40_4=0x1 & g48_u44_4=0xe & g48_gpr8_4 & a48_20_20_41_12_4_16 {
-  g48_gpr8_4 = s390_lrv(a48_20_20_41_12_4_16);
+  local v:4 = *:4 a48_20_20_41_12_4_16; local r:4 = (zext(v[0,8]) << 24) | (zext(v[8,8]) << 16) | (zext(v[16,8]) << 8) | (zext(v[24,8]) << 0); local w32_20:4 = r; gs_set32(g48_gpr8_4, w32_20);
 }
 :LRV g48_gpr8_4,a48_20_12_41_12_4_16 is g48_u0_4=0xe & g48_u4_4=0x3 & g48_u32_4=0x0 & g48_u36_4=0x0 & g48_u40_4=0x1 & g48_u44_4=0xe & g48_gpr8_4 & a48_20_12_41_12_4_16 {
-  g48_gpr8_4 = s390_lrv(a48_20_12_41_12_4_16);
+  local v:4 = *:4 a48_20_12_41_12_4_16; local r:4 = (zext(v[0,8]) << 24) | (zext(v[8,8]) << 16) | (zext(v[16,8]) << 8) | (zext(v[24,8]) << 0); local w32_21:4 = r; gs_set32(g48_gpr8_4, w32_21);
 }
 :LLGT g48_gpr8_4,a48_20_20_41_12_4_16 is g48_u0_4=0xe & g48_u4_4=0x3 & g48_u40_4=0x1 & g48_u44_4=0x7 & g48_gpr8_4 & a48_20_20_41_12_4_16 {
-  g48_gpr8_4 = s390_llgt(a48_20_20_41_12_4_16);
+  local v:4 = *:4 a48_20_20_41_12_4_16; g48_gpr8_4 = zext(v & 0x7fffffff);
 }
 :LLGT g48_gpr8_4,a48_20_12_41_12_4_16 is g48_u0_4=0xe & g48_u4_4=0x3 & g48_u32_4=0x0 & g48_u36_4=0x0 & g48_u40_4=0x1 & g48_u44_4=0x7 & g48_gpr8_4 & a48_20_12_41_12_4_16 {
-  g48_gpr8_4 = s390_llgt(a48_20_12_41_12_4_16);
+  local v:4 = *:4 a48_20_12_41_12_4_16; g48_gpr8_4 = zext(v & 0x7fffffff);
 }
 :LRAY g48_gpr8_4,a48_20_20_41_12_4_16 is g48_u0_4=0xe & g48_u4_4=0x3 & g48_u40_4=0x1 & g48_u44_4=0x3 & g48_gpr8_4 & a48_20_20_41_12_4_16 {
   g48_gpr8_4 = s390_lray(a48_20_20_41_12_4_16);
 }
 :LRVG g48_gpr8_4,a48_20_20_41_12_4_16 is g48_u0_4=0xe & g48_u4_4=0x3 & g48_u40_4=0x0 & g48_u44_4=0xf & g48_gpr8_4 & a48_20_20_41_12_4_16 {
-  g48_gpr8_4 = s390_lrvg(a48_20_20_41_12_4_16);
+  local v:8 = *:8 a48_20_20_41_12_4_16; local r:8 = (zext(v[0,8]) << 56) | (zext(v[8,8]) << 48) | (zext(v[16,8]) << 40) | (zext(v[24,8]) << 32) | (zext(v[32,8]) << 24) | (zext(v[40,8]) << 16) | (zext(v[48,8]) << 8) | (zext(v[56,8]) << 0); g48_gpr8_4 = r;
 }
 :LRVG g48_gpr8_4,a48_20_12_41_12_4_16 is g48_u0_4=0xe & g48_u4_4=0x3 & g48_u32_4=0x0 & g48_u36_4=0x0 & g48_u40_4=0x0 & g48_u44_4=0xf & g48_gpr8_4 & a48_20_12_41_12_4_16 {
-  g48_gpr8_4 = s390_lrvg(a48_20_12_41_12_4_16);
+  local v:8 = *:8 a48_20_12_41_12_4_16; local r:8 = (zext(v[0,8]) << 56) | (zext(v[8,8]) << 48) | (zext(v[16,8]) << 40) | (zext(v[24,8]) << 32) | (zext(v[32,8]) << 24) | (zext(v[40,8]) << 16) | (zext(v[48,8]) << 8) | (zext(v[56,8]) << 0); g48_gpr8_4 = r;
 }
 :CVBG g48_gpr8_4,a48_20_20_41_12_4_16 is g48_u0_4=0xe & g48_u4_4=0x3 & g48_u40_4=0x0 & g48_u44_4=0xe & g48_gpr8_4 & a48_20_20_41_12_4_16 {
   g48_gpr8_4 = s390_cvbg(a48_20_20_41_12_4_16);
@@ -5854,164 +5944,182 @@ a32_20_12_41_12_4_16: g32_u20_12(g32_gpr12_4,g32_gpr16_4) is g32_u20_12 & g32_u1
   s390_mvcos(a48_20_12_16, a48_36_12_32, g48_gpr8_4);
 }
 :BPP g48_u8_4,rel48_32_16,a48_20_12_16 is g48_u0_4=0xc & g48_u4_4=0x7 & g48_u12_4=0x0 & g48_u8_4 & rel48_32_16 & a48_20_12_16 {
-  local i0:8 = g48_u8_4;
-  s390_bpp(i0, rel48_32_16, a48_20_12_16);
+  local nop:1 = 0;
 }
 :CLRL g48_gpr8_4,rel48_16_32 is g48_u0_4=0xc & g48_u4_4=0x6 & g48_u12_4=0xf & g48_gpr8_4 & rel48_16_32 {
-  s390_clrl(g48_gpr8_4, rel48_16_32);
+  local a:8 = &rel48_16_32; local v:4 = *:4 a; local x:4 = g48_gpr8_4:4; local y:4 = v; gs_cc_cmpu(x, y);
 }
 :CLGFRL g48_gpr8_4,rel48_16_32 is g48_u0_4=0xc & g48_u4_4=0x6 & g48_u12_4=0xe & g48_gpr8_4 & rel48_16_32 {
-  s390_clgfrl(g48_gpr8_4, rel48_16_32);
+  local a:8 = &rel48_16_32; local v:4 = *:4 a; local x:8 = g48_gpr8_4; local y:8 = zext(v); gs_cc_cmpu(x, y);
 }
 :CRL g48_gpr8_4,rel48_16_32 is g48_u0_4=0xc & g48_u4_4=0x6 & g48_u12_4=0xd & g48_gpr8_4 & rel48_16_32 {
-  s390_crl(g48_gpr8_4, rel48_16_32);
+  local a:8 = &rel48_16_32; local v:4 = *:4 a; local x:4 = g48_gpr8_4:4; local y:4 = v; gs_cc_cmps(x, y);
 }
 :CGFRL g48_gpr8_4,rel48_16_32 is g48_u0_4=0xc & g48_u4_4=0x6 & g48_u12_4=0xc & g48_gpr8_4 & rel48_16_32 {
-  s390_cgfrl(g48_gpr8_4, rel48_16_32);
+  local a:8 = &rel48_16_32; local v:4 = *:4 a; local x:8 = g48_gpr8_4; local y:8 = sext(v); gs_cc_cmps(x, y);
 }
 :CLGRL g48_gpr8_4,rel48_16_32 is g48_u0_4=0xc & g48_u4_4=0x6 & g48_u12_4=0xa & g48_gpr8_4 & rel48_16_32 {
-  s390_clgrl(g48_gpr8_4, rel48_16_32);
+  local a:8 = &rel48_16_32; local v:8 = *:8 a; local x:8 = g48_gpr8_4; local y:8 = v; gs_cc_cmpu(x, y);
 }
 :CGRL g48_gpr8_4,rel48_16_32 is g48_u0_4=0xc & g48_u4_4=0x6 & g48_u12_4=0x8 & g48_gpr8_4 & rel48_16_32 {
-  s390_cgrl(g48_gpr8_4, rel48_16_32);
+  local a:8 = &rel48_16_32; local v:8 = *:8 a; local x:8 = g48_gpr8_4; local y:8 = v; gs_cc_cmps(x, y);
 }
 :CLHRL g48_gpr8_4,rel48_16_32 is g48_u0_4=0xc & g48_u4_4=0x6 & g48_u12_4=0x7 & g48_gpr8_4 & rel48_16_32 {
-  s390_clhrl(g48_gpr8_4, rel48_16_32);
+  local a:8 = &rel48_16_32; local v:2 = *:2 a; local x:4 = g48_gpr8_4:4; local y:4 = zext(v); gs_cc_cmpu(x, y);
 }
 :CLGHRL g48_gpr8_4,rel48_16_32 is g48_u0_4=0xc & g48_u4_4=0x6 & g48_u12_4=0x6 & g48_gpr8_4 & rel48_16_32 {
-  s390_clghrl(g48_gpr8_4, rel48_16_32);
+  local a:8 = &rel48_16_32; local v:2 = *:2 a; local x:8 = g48_gpr8_4; local y:8 = zext(v); gs_cc_cmpu(x, y);
 }
 :CHRL g48_gpr8_4,rel48_16_32 is g48_u0_4=0xc & g48_u4_4=0x6 & g48_u12_4=0x5 & g48_gpr8_4 & rel48_16_32 {
-  s390_chrl(g48_gpr8_4, rel48_16_32);
+  local a:8 = &rel48_16_32; local v:2 = *:2 a; local x:4 = g48_gpr8_4:4; local y:4 = sext(v); gs_cc_cmps(x, y);
 }
 :CGHRL g48_gpr8_4,rel48_16_32 is g48_u0_4=0xc & g48_u4_4=0x6 & g48_u12_4=0x4 & g48_gpr8_4 & rel48_16_32 {
-  s390_cghrl(g48_gpr8_4, rel48_16_32);
+  local a:8 = &rel48_16_32; local v:2 = *:2 a; local x:8 = g48_gpr8_4; local y:8 = sext(v); gs_cc_cmps(x, y);
 }
 :PFDRL g48_u8_4,rel48_16_32 is g48_u0_4=0xc & g48_u4_4=0x6 & g48_u12_4=0x2 & g48_u8_4 & rel48_16_32 {
-  local i0:8 = g48_u8_4;
-  s390_pfdrl(i0, rel48_16_32);
+  local nop:1 = 0;
 }
 :EXRL g48_gpr8_4,rel48_16_32 is g48_u0_4=0xc & g48_u4_4=0x6 & g48_u12_4=0x0 & g48_gpr8_4 & rel48_16_32 {
-  g48_gpr8_4 = s390_exrl(rel48_16_32);
+  local a:8 = &rel48_16_32; s390_execute(g48_gpr8_4, a);
 }
 :BPRP g48_u8_4,rel48_12_12,rel48_24_24 is g48_u0_4=0xc & g48_u4_4=0x5 & g48_u8_4 & rel48_12_12 & rel48_24_24 {
-  local i0:8 = g48_u8_4;
-  s390_bprp(i0, rel48_12_12, rel48_24_24);
+  local nop:1 = 0;
 }
 :LLGFRL g48_gpr8_4,rel48_16_32 is g48_u0_4=0xc & g48_u4_4=0x4 & g48_u12_4=0xe & g48_gpr8_4 & rel48_16_32 {
-  g48_gpr8_4 = s390_llgfrl(rel48_16_32);
+  local a:8 = &rel48_16_32; local v:4 = *:4 a; g48_gpr8_4 = zext(v);
 }
 :LRL g48_gpr8_4,rel48_16_32 is g48_u0_4=0xc & g48_u4_4=0x4 & g48_u12_4=0xd & g48_gpr8_4 & rel48_16_32 {
-  g48_gpr8_4 = s390_lrl(rel48_16_32);
+  local a:8 = &rel48_16_32; local v:4 = *:4 a; local w32_22:4 = v; gs_set32(g48_gpr8_4, w32_22);
 }
 :LGFRL g48_gpr8_4,rel48_16_32 is g48_u0_4=0xc & g48_u4_4=0x4 & g48_u12_4=0xc & g48_gpr8_4 & rel48_16_32 {
-  g48_gpr8_4 = s390_lgfrl(rel48_16_32);
+  local a:8 = &rel48_16_32; local v:4 = *:4 a; g48_gpr8_4 = sext(v);
 }
 :STGRL g48_gpr8_4,rel48_16_32 is g48_u0_4=0xc & g48_u4_4=0x4 & g48_u12_4=0xb & g48_gpr8_4 & rel48_16_32 {
-  s390_stgrl(g48_gpr8_4, rel48_16_32);
+  local a:8 = &rel48_16_32; *:8 a = g48_gpr8_4:8;
 }
 :LGRL g48_gpr8_4,rel48_16_32 is g48_u0_4=0xc & g48_u4_4=0x4 & g48_u12_4=0x8 & g48_gpr8_4 & rel48_16_32 {
-  g48_gpr8_4 = s390_lgrl(rel48_16_32);
+  local a:8 = &rel48_16_32; local v:8 = *:8 a; g48_gpr8_4 = v;
 }
 :STHRL g48_gpr8_4,rel48_16_32 is g48_u0_4=0xc & g48_u4_4=0x4 & g48_u12_4=0x7 & g48_gpr8_4 & rel48_16_32 {
-  s390_sthrl(g48_gpr8_4, rel48_16_32);
+  local a:8 = &rel48_16_32; *:2 a = g48_gpr8_4:2;
 }
 :LLGHRL g48_gpr8_4,rel48_16_32 is g48_u0_4=0xc & g48_u4_4=0x4 & g48_u12_4=0x6 & g48_gpr8_4 & rel48_16_32 {
-  g48_gpr8_4 = s390_llghrl(rel48_16_32);
+  local a:8 = &rel48_16_32; local v:2 = *:2 a; g48_gpr8_4 = zext(v);
 }
 :LHRL g48_gpr8_4,rel48_16_32 is g48_u0_4=0xc & g48_u4_4=0x4 & g48_u12_4=0x5 & g48_gpr8_4 & rel48_16_32 {
-  g48_gpr8_4 = s390_lhrl(rel48_16_32);
+  local a:8 = &rel48_16_32; local v:2 = *:2 a; local w32_23:4 = sext(v); gs_set32(g48_gpr8_4, w32_23);
 }
 :LGHRL g48_gpr8_4,rel48_16_32 is g48_u0_4=0xc & g48_u4_4=0x4 & g48_u12_4=0x4 & g48_gpr8_4 & rel48_16_32 {
-  g48_gpr8_4 = s390_lghrl(rel48_16_32);
+  local a:8 = &rel48_16_32; local v:2 = *:2 a; g48_gpr8_4 = sext(v);
 }
 :LLHRL g48_gpr8_4,rel48_16_32 is g48_u0_4=0xc & g48_u4_4=0x4 & g48_u12_4=0x2 & g48_gpr8_4 & rel48_16_32 {
-  g48_gpr8_4 = s390_llhrl(rel48_16_32);
+  local a:8 = &rel48_16_32; local v:2 = *:2 a; local w32_24:4 = zext(v); gs_set32(g48_gpr8_4, w32_24);
 }
 :CLFI g48_gpr8_4,g48_u16_32 is g48_u0_4=0xc & g48_u4_4=0x2 & g48_u12_4=0xf & g48_gpr8_4 & g48_u16_32 {
-  local i1:8 = g48_u16_32;
-  s390_clfi(g48_gpr8_4, i1);
+  local i:8 = g48_u16_32; local a:4 = g48_gpr8_4:4; local b:4 = i:4; gs_cc_cmpu(a, b);
 }
 :CLGFI g48_gpr8_4,g48_u16_32 is g48_u0_4=0xc & g48_u4_4=0x2 & g48_u12_4=0xe & g48_gpr8_4 & g48_u16_32 {
-  local i1:8 = g48_u16_32;
-  s390_clgfi(g48_gpr8_4, i1);
+  local i:8 = g48_u16_32; local a:8 = g48_gpr8_4; local b:8 = zext(i:4); gs_cc_cmpu(a, b);
 }
 :ALFI g48_gpr8_4,g48_u16_32 is g48_u0_4=0xc & g48_u4_4=0x2 & g48_u12_4=0xb & g48_gpr8_4 & g48_u16_32 {
-  local i1:8 = g48_u16_32;
-  g48_gpr8_4 = s390_alfi(i1);
+  local i:8 = g48_u16_32;
+  local x:4 = g48_gpr8_4:4; local y:4 = i:4; local r:4 = x + y;
+  local c:1 = carry(x, y); gs_cc_addl(r, c);
+  local w32_25:4 = r; gs_set32(g48_gpr8_4, w32_25);
 }
 :ALGFI g48_gpr8_4,g48_u16_32 is g48_u0_4=0xc & g48_u4_4=0x2 & g48_u12_4=0xa & g48_gpr8_4 & g48_u16_32 {
-  local i1:8 = g48_u16_32;
-  g48_gpr8_4 = s390_algfi(i1);
+  local i:8 = g48_u16_32;
+  local x:8 = g48_gpr8_4; local y:8 = i; local r:8 = x + y;
+  local c:1 = carry(x, y); gs_cc_addl(r, c);
+  g48_gpr8_4 = r;
 }
 :SLFI g48_gpr8_4,g48_u16_32 is g48_u0_4=0xc & g48_u4_4=0x2 & g48_u12_4=0x5 & g48_gpr8_4 & g48_u16_32 {
-  local i1:8 = g48_u16_32;
-  g48_gpr8_4 = s390_slfi(i1);
+  local i:8 = g48_u16_32;
+  local x:4 = g48_gpr8_4:4; local y:4 = i:4; local r:4 = x - y;
+  local b:1 = x < y; gs_cc_subl(r, b);
+  local w32_26:4 = r; gs_set32(g48_gpr8_4, w32_26);
 }
 :SLGFI g48_gpr8_4,g48_u16_32 is g48_u0_4=0xc & g48_u4_4=0x2 & g48_u12_4=0x4 & g48_gpr8_4 & g48_u16_32 {
-  local i1:8 = g48_u16_32;
-  g48_gpr8_4 = s390_slgfi(i1);
+  local i:8 = g48_u16_32;
+  local x:8 = g48_gpr8_4; local y:8 = i; local r:8 = x - y;
+  local b:1 = x < y; gs_cc_subl(r, b);
+  g48_gpr8_4 = r;
 }
 :LLILF g48_gpr8_4,g48_u16_32 is g48_u0_4=0xc & g48_u4_4=0x0 & g48_u12_4=0xf & g48_gpr8_4 & g48_u16_32 {
-  local i1:8 = g48_u16_32;
-  g48_gpr8_4 = s390_llilf(i1);
+  local i:8 = g48_u16_32; g48_gpr8_4 = (i & 0xffffffff) << 0;
 }
 :LLIHF g48_gpr8_4,g48_u16_32 is g48_u0_4=0xc & g48_u4_4=0x0 & g48_u12_4=0xe & g48_gpr8_4 & g48_u16_32 {
-  local i1:8 = g48_u16_32;
-  g48_gpr8_4 = s390_llihf(i1);
+  local i:8 = g48_u16_32; g48_gpr8_4 = (i & 0xffffffff) << 32;
 }
 :OIHF g48_gpr8_4,g48_u16_32 is g48_u0_4=0xc & g48_u4_4=0x0 & g48_u12_4=0xc & g48_gpr8_4 & g48_u16_32 {
-  local i1:8 = g48_u16_32;
-  g48_gpr8_4 = s390_oihf(i1);
+  local i:4 = g48_u16_32; local h:4 = g48_gpr8_4(4); local r:4 = h | i; gs_cc_nz(r); gs_seth32(g48_gpr8_4, r);
 }
 :NILF g48_gpr8_4,g48_u16_32 is g48_u0_4=0xc & g48_u4_4=0x0 & g48_u12_4=0xb & g48_gpr8_4 & g48_u16_32 {
-  local i1:8 = g48_u16_32;
-  g48_gpr8_4 = s390_nilf(i1);
+  local i:4 = g48_u16_32; local r:4 = g48_gpr8_4:4 & i; gs_cc_nz(r); local w32_27:4 = r; gs_set32(g48_gpr8_4, w32_27);
 }
 :XILF g48_gpr8_4,g48_u16_32 is g48_u0_4=0xc & g48_u4_4=0x0 & g48_u12_4=0x7 & g48_gpr8_4 & g48_u16_32 {
-  local i1:8 = g48_u16_32;
-  g48_gpr8_4 = s390_xilf(i1);
+  local i:4 = g48_u16_32; local r:4 = g48_gpr8_4:4 ^ i; gs_cc_nz(r); local w32_28:4 = r; gs_set32(g48_gpr8_4, w32_28);
 }
 :XIHF g48_gpr8_4,g48_u16_32 is g48_u0_4=0xc & g48_u4_4=0x0 & g48_u12_4=0x6 & g48_gpr8_4 & g48_u16_32 {
-  local i1:8 = g48_u16_32;
-  g48_gpr8_4 = s390_xihf(i1);
+  local i:4 = g48_u16_32; local h:4 = g48_gpr8_4(4); local r:4 = h ^ i; gs_cc_nz(r); gs_seth32(g48_gpr8_4, r);
 }
 :LGFI g48_gpr8_4,g48_s16_32 is g48_u0_4=0xc & g48_u4_4=0x0 & g48_u12_4=0x1 & g48_gpr8_4 & g48_s16_32 {
-  local i1:8 = g48_s16_32;
-  g48_gpr8_4 = s390_lgfi(i1);
+  local i:4 = g48_s16_32; g48_gpr8_4 = sext(i);
 }
 :CDS g32_gpr8_4,g32_gpr12_4,a32_20_12_16 is g32_u0_4=0xb & g32_u4_4=0xb & g32_gpr8_4 & g32_gpr12_4 & a32_20_12_16 {
   g32_gpr8_4 = s390_cds(g32_gpr12_4, a32_20_12_16);
 }
 :CS g32_gpr8_4,g32_gpr12_4,a32_20_12_16 is g32_u0_4=0xb & g32_u4_4=0xa & g32_gpr8_4 & g32_gpr12_4 & a32_20_12_16 {
-  g32_gpr8_4 = s390_cs(g32_gpr12_4, a32_20_12_16);
+  local old:4 = *:4 a32_20_12_16; local cmp:4 = g32_gpr8_4:4;
+  if (old != cmp) goto <neq>;
+  *:4 a32_20_12_16 = g32_gpr12_4:4; cc = 0;
+  goto <done>;
+  <neq>
+  cc = 1; local w32_29:4 = old; gs_set32(g32_gpr8_4, w32_29);
+  <done>
 }
 :MSRKC g32_gpr24_4,g32_gpr28_4,g32_gpr16_4 is g32_u0_4=0xb & g32_u4_4=0x9 & g32_u8_4=0xf & g32_u12_4=0xd & g32_gpr24_4 & g32_gpr28_4 & g32_gpr16_4 {
   g32_gpr24_4 = s390_msrkc(g32_gpr28_4, g32_gpr16_4);
 }
 :SLRK g32_gpr24_4,g32_gpr28_4,g32_gpr16_4 is g32_u0_4=0xb & g32_u4_4=0x9 & g32_u8_4=0xf & g32_u12_4=0xb & g32_gpr24_4 & g32_gpr28_4 & g32_gpr16_4 {
-  g32_gpr24_4 = s390_slrk(g32_gpr28_4, g32_gpr16_4);
+  local x:4 = g32_gpr28_4:4; local y:4 = g32_gpr16_4:4; local r:4 = x - y;
+  local b:1 = x < y; gs_cc_subl(r, b);
+  local w32_30:4 = r; gs_set32(g32_gpr24_4, w32_30);
 }
 :ALRK g32_gpr24_4,g32_gpr28_4,g32_gpr16_4 is g32_u0_4=0xb & g32_u4_4=0x9 & g32_u8_4=0xf & g32_u12_4=0xa & g32_gpr24_4 & g32_gpr28_4 & g32_gpr16_4 {
-  g32_gpr24_4 = s390_alrk(g32_gpr28_4, g32_gpr16_4);
+  local x:4 = g32_gpr28_4:4; local y:4 = g32_gpr16_4:4; local r:4 = x + y;
+  local c:1 = carry(x, y); gs_cc_addl(r, c);
+  local w32_31:4 = r; gs_set32(g32_gpr24_4, w32_31);
 }
 :SRK g32_gpr24_4,g32_gpr28_4,g32_gpr16_4 is g32_u0_4=0xb & g32_u4_4=0x9 & g32_u8_4=0xf & g32_u12_4=0x9 & g32_gpr24_4 & g32_gpr28_4 & g32_gpr16_4 {
-  g32_gpr24_4 = s390_srk(g32_gpr28_4, g32_gpr16_4);
+  local x:4 = g32_gpr28_4:4; local y:4 = g32_gpr16_4:4; local r:4 = x - y;
+  local ov:1 = sborrow(x, y);
+  gs_cc_arith(r, ov);
+  local w32_32:4 = r; gs_set32(g32_gpr24_4, w32_32);
 }
 :ARK g32_gpr24_4,g32_gpr28_4,g32_gpr16_4 is g32_u0_4=0xb & g32_u4_4=0x9 & g32_u8_4=0xf & g32_u12_4=0x8 & g32_gpr24_4 & g32_gpr28_4 & g32_gpr16_4 {
-  g32_gpr24_4 = s390_ark(g32_gpr28_4, g32_gpr16_4);
+  local x:4 = g32_gpr28_4:4; local y:4 = g32_gpr16_4:4; local r:4 = x + y;
+  local ov:1 = scarry(x, y);
+  gs_cc_arith(r, ov);
+  local w32_33:4 = r; gs_set32(g32_gpr24_4, w32_33);
 }
 :XRK g32_gpr24_4,g32_gpr28_4,g32_gpr16_4 is g32_u0_4=0xb & g32_u4_4=0x9 & g32_u8_4=0xf & g32_u12_4=0x7 & g32_gpr24_4 & g32_gpr28_4 & g32_gpr16_4 {
-  g32_gpr24_4 = s390_xrk(g32_gpr28_4, g32_gpr16_4);
+  local x:4 = g32_gpr28_4:4; local y:4 = g32_gpr16_4:4; local r:4 = x ^ y;
+  gs_cc_nz(r);
+  local w32_34:4 = r; gs_set32(g32_gpr24_4, w32_34);
 }
 :ORK g32_gpr24_4,g32_gpr28_4,g32_gpr16_4 is g32_u0_4=0xb & g32_u4_4=0x9 & g32_u8_4=0xf & g32_u12_4=0x6 & g32_gpr24_4 & g32_gpr28_4 & g32_gpr16_4 {
-  g32_gpr24_4 = s390_ork(g32_gpr28_4, g32_gpr16_4);
+  local x:4 = g32_gpr28_4:4; local y:4 = g32_gpr16_4:4; local r:4 = x | y;
+  gs_cc_nz(r);
+  local w32_35:4 = r; gs_set32(g32_gpr24_4, w32_35);
 }
 :NCRK g32_gpr24_4,g32_gpr28_4,g32_gpr16_4 is g32_u0_4=0xb & g32_u4_4=0x9 & g32_u8_4=0xf & g32_u12_4=0x5 & g32_gpr24_4 & g32_gpr28_4 & g32_gpr16_4 {
   g32_gpr24_4 = s390_ncrk(g32_gpr28_4, g32_gpr16_4);
 }
 :NRK g32_gpr24_4,g32_gpr28_4,g32_gpr16_4 is g32_u0_4=0xb & g32_u4_4=0x9 & g32_u8_4=0xf & g32_u12_4=0x4 & g32_gpr24_4 & g32_gpr28_4 & g32_gpr16_4 {
-  g32_gpr24_4 = s390_nrk(g32_gpr28_4, g32_gpr16_4);
+  local x:4 = g32_gpr28_4:4; local y:4 = g32_gpr16_4:4; local r:4 = x & y;
+  gs_cc_nz(r);
+  local w32_36:4 = r; gs_set32(g32_gpr24_4, w32_36);
 }
 :MSGRKC g32_gpr24_4,g32_gpr28_4,g32_gpr16_4 is g32_u0_4=0xb & g32_u4_4=0x9 & g32_u8_4=0xe & g32_u12_4=0xd & g32_gpr24_4 & g32_gpr28_4 & g32_gpr16_4 {
   g32_gpr24_4 = s390_msgrkc(g32_gpr28_4, g32_gpr16_4);
@@ -6020,36 +6128,68 @@ a32_20_12_41_12_4_16: g32_u20_12(g32_gpr12_4,g32_gpr16_4) is g32_u20_12 & g32_u1
   g32_gpr24_4 = s390_mgrk(g32_gpr28_4, g32_gpr16_4);
 }
 :SLGRK g32_gpr24_4,g32_gpr28_4,g32_gpr16_4 is g32_u0_4=0xb & g32_u4_4=0x9 & g32_u8_4=0xe & g32_u12_4=0xb & g32_gpr24_4 & g32_gpr28_4 & g32_gpr16_4 {
-  g32_gpr24_4 = s390_slgrk(g32_gpr28_4, g32_gpr16_4);
+  local x:8 = g32_gpr28_4; local y:8 = g32_gpr16_4; local r:8 = x - y;
+  local b:1 = x < y; gs_cc_subl(r, b);
+  g32_gpr24_4 = r;
 }
 :ALGRK g32_gpr24_4,g32_gpr28_4,g32_gpr16_4 is g32_u0_4=0xb & g32_u4_4=0x9 & g32_u8_4=0xe & g32_u12_4=0xa & g32_gpr24_4 & g32_gpr28_4 & g32_gpr16_4 {
-  g32_gpr24_4 = s390_algrk(g32_gpr28_4, g32_gpr16_4);
+  local x:8 = g32_gpr28_4; local y:8 = g32_gpr16_4; local r:8 = x + y;
+  local c:1 = carry(x, y); gs_cc_addl(r, c);
+  g32_gpr24_4 = r;
 }
 :SGRK g32_gpr24_4,g32_gpr28_4,g32_gpr16_4 is g32_u0_4=0xb & g32_u4_4=0x9 & g32_u8_4=0xe & g32_u12_4=0x9 & g32_gpr24_4 & g32_gpr28_4 & g32_gpr16_4 {
-  g32_gpr24_4 = s390_sgrk(g32_gpr28_4, g32_gpr16_4);
+  local x:8 = g32_gpr28_4; local y:8 = g32_gpr16_4; local r:8 = x - y;
+  local ov:1 = sborrow(x, y);
+  gs_cc_arith(r, ov);
+  g32_gpr24_4 = r;
 }
 :AGRK g32_gpr24_4,g32_gpr28_4,g32_gpr16_4 is g32_u0_4=0xb & g32_u4_4=0x9 & g32_u8_4=0xe & g32_u12_4=0x8 & g32_gpr24_4 & g32_gpr28_4 & g32_gpr16_4 {
-  g32_gpr24_4 = s390_agrk(g32_gpr28_4, g32_gpr16_4);
+  local x:8 = g32_gpr28_4; local y:8 = g32_gpr16_4; local r:8 = x + y;
+  local ov:1 = scarry(x, y);
+  gs_cc_arith(r, ov);
+  g32_gpr24_4 = r;
 }
 :XGRK g32_gpr24_4,g32_gpr28_4,g32_gpr16_4 is g32_u0_4=0xb & g32_u4_4=0x9 & g32_u8_4=0xe & g32_u12_4=0x7 & g32_gpr24_4 & g32_gpr28_4 & g32_gpr16_4 {
-  g32_gpr24_4 = s390_xgrk(g32_gpr28_4, g32_gpr16_4);
+  local x:8 = g32_gpr28_4; local y:8 = g32_gpr16_4; local r:8 = x ^ y;
+  gs_cc_nz(r);
+  g32_gpr24_4 = r;
 }
 :OGRK g32_gpr24_4,g32_gpr28_4,g32_gpr16_4 is g32_u0_4=0xb & g32_u4_4=0x9 & g32_u8_4=0xe & g32_u12_4=0x6 & g32_gpr24_4 & g32_gpr28_4 & g32_gpr16_4 {
-  g32_gpr24_4 = s390_ogrk(g32_gpr28_4, g32_gpr16_4);
+  local x:8 = g32_gpr28_4; local y:8 = g32_gpr16_4; local r:8 = x | y;
+  gs_cc_nz(r);
+  g32_gpr24_4 = r;
 }
 :NCGRK g32_gpr24_4,g32_gpr28_4,g32_gpr16_4 is g32_u0_4=0xb & g32_u4_4=0x9 & g32_u8_4=0xe & g32_u12_4=0x5 & g32_gpr24_4 & g32_gpr28_4 & g32_gpr16_4 {
   g32_gpr24_4 = s390_ncgrk(g32_gpr28_4, g32_gpr16_4);
 }
 :NGRK g32_gpr24_4,g32_gpr28_4,g32_gpr16_4 is g32_u0_4=0xb & g32_u4_4=0x9 & g32_u8_4=0xe & g32_u12_4=0x4 & g32_gpr24_4 & g32_gpr28_4 & g32_gpr16_4 {
-  g32_gpr24_4 = s390_ngrk(g32_gpr28_4, g32_gpr16_4);
+  local x:8 = g32_gpr28_4; local y:8 = g32_gpr16_4; local r:8 = x & y;
+  gs_cc_nz(r);
+  g32_gpr24_4 = r;
 }
 :POPCNT g32_gpr24_4,g32_gpr28_4 is g32_u0_4=0xb & g32_u4_4=0x9 & g32_u8_4=0xe & g32_u12_4=0x1 & g32_u20_4=0x0 & g32_u16_4=0 & g32_gpr24_4 & g32_gpr28_4 {
-  local i2:8 = 0;
-  g32_gpr24_4 = s390_popcnt(g32_gpr28_4, i2);
+  local v:8 = g32_gpr28_4; local r:8 = 0;
+  local pc0:1 = popcount(v[0,8]); r = r | (zext(pc0) << 0);
+  local pc1:1 = popcount(v[8,8]); r = r | (zext(pc1) << 8);
+  local pc2:1 = popcount(v[16,8]); r = r | (zext(pc2) << 16);
+  local pc3:1 = popcount(v[24,8]); r = r | (zext(pc3) << 24);
+  local pc4:1 = popcount(v[32,8]); r = r | (zext(pc4) << 32);
+  local pc5:1 = popcount(v[40,8]); r = r | (zext(pc5) << 40);
+  local pc6:1 = popcount(v[48,8]); r = r | (zext(pc6) << 48);
+  local pc7:1 = popcount(v[56,8]); r = r | (zext(pc7) << 56);
+  g32_gpr24_4 = r; gs_cc_nz(v);
 }
 :POPCNT g32_gpr24_4,g32_gpr28_4,g32_u16_4 is g32_u0_4=0xb & g32_u4_4=0x9 & g32_u8_4=0xe & g32_u12_4=0x1 & g32_u20_4=0x0 & g32_gpr24_4 & g32_gpr28_4 & g32_u16_4 {
-  local i2:8 = g32_u16_4;
-  g32_gpr24_4 = s390_popcnt(g32_gpr28_4, i2);
+  local v:8 = g32_gpr28_4; local r:8 = 0;
+  local pc0:1 = popcount(v[0,8]); r = r | (zext(pc0) << 0);
+  local pc1:1 = popcount(v[8,8]); r = r | (zext(pc1) << 8);
+  local pc2:1 = popcount(v[16,8]); r = r | (zext(pc2) << 16);
+  local pc3:1 = popcount(v[24,8]); r = r | (zext(pc3) << 24);
+  local pc4:1 = popcount(v[32,8]); r = r | (zext(pc4) << 32);
+  local pc5:1 = popcount(v[40,8]); r = r | (zext(pc5) << 40);
+  local pc6:1 = popcount(v[48,8]); r = r | (zext(pc6) << 48);
+  local pc7:1 = popcount(v[56,8]); r = r | (zext(pc7) << 56);
+  g32_gpr24_4 = r; gs_cc_nz(v);
 }
 :CLHLR g32_gpr24_4,g32_gpr28_4 is g32_u0_4=0xb & g32_u4_4=0x9 & g32_u8_4=0xd & g32_u12_4=0xf & g32_u16_4=0x0 & g32_u20_4=0x0 & g32_gpr24_4 & g32_gpr28_4 {
   s390_clhlr(g32_gpr24_4, g32_gpr28_4);
@@ -6163,16 +6303,16 @@ a32_20_12_41_12_4_16: g32_u20_12(g32_gpr12_4,g32_gpr16_4) is g32_u20_12 & g32_u1
   g32_gpr24_4 = s390_epair();
 }
 :SLBR g32_gpr24_4,g32_gpr28_4 is g32_u0_4=0xb & g32_u4_4=0x9 & g32_u8_4=0x9 & g32_u12_4=0x9 & g32_u16_4=0x0 & g32_u20_4=0x0 & g32_gpr24_4 & g32_gpr28_4 {
-  g32_gpr24_4 = s390_slbr(g32_gpr28_4);
+  local x:4 = g32_gpr24_4:4; local y:4 = g32_gpr28_4:4; local bi:4 = zext((cc & 2) == 0); local t:4 = x - y; local r:4 = t - bi; local bo:1 = (x < y) || (t < bi); gs_cc_subl(r, bo); local w32_37:4 = r; gs_set32(g32_gpr24_4, w32_37);
 }
 :ALCR g32_gpr24_4,g32_gpr28_4 is g32_u0_4=0xb & g32_u4_4=0x9 & g32_u8_4=0x9 & g32_u12_4=0x8 & g32_u16_4=0x0 & g32_u20_4=0x0 & g32_gpr24_4 & g32_gpr28_4 {
-  g32_gpr24_4 = s390_alcr(g32_gpr28_4);
+  local x:4 = g32_gpr24_4:4; local y:4 = g32_gpr28_4:4; local c:4 = zext((cc & 2) != 0); local t:4 = x + y; local r:4 = t + c; local co:1 = carry(x, y) || carry(t, c); gs_cc_addl(r, co); local w32_38:4 = r; gs_set32(g32_gpr24_4, w32_38);
 }
 :LLHR g32_gpr24_4,g32_gpr28_4 is g32_u0_4=0xb & g32_u4_4=0x9 & g32_u8_4=0x9 & g32_u12_4=0x5 & g32_u16_4=0x0 & g32_u20_4=0x0 & g32_gpr24_4 & g32_gpr28_4 {
-  g32_gpr24_4 = s390_llhr(g32_gpr28_4);
+  local v:2 = g32_gpr28_4:2; local w32_39:4 = zext(v); gs_set32(g32_gpr24_4, w32_39);
 }
 :LLCR g32_gpr24_4,g32_gpr28_4 is g32_u0_4=0xb & g32_u4_4=0x9 & g32_u8_4=0x9 & g32_u12_4=0x4 & g32_u16_4=0x0 & g32_u20_4=0x0 & g32_gpr24_4 & g32_gpr28_4 {
-  g32_gpr24_4 = s390_llcr(g32_gpr28_4);
+  local v:1 = g32_gpr28_4:1; local w32_40:4 = zext(v); gs_set32(g32_gpr24_4, w32_40);
 }
 :TROO g32_gpr24_4,g32_gpr28_4 is g32_u0_4=0xb & g32_u4_4=0x9 & g32_u8_4=0x9 & g32_u12_4=0x3 & g32_u20_4=0x0 & g32_u16_4=0 & g32_gpr24_4 & g32_gpr28_4 {
   local i2:8 = 0;
@@ -6237,16 +6377,16 @@ a32_20_12_41_12_4_16: g32_u20_12(g32_gpr12_4,g32_gpr16_4) is g32_u20_12 & g32_u1
   g32_gpr24_4 = s390_cspg(g32_gpr28_4);
 }
 :SLBGR g32_gpr24_4,g32_gpr28_4 is g32_u0_4=0xb & g32_u4_4=0x9 & g32_u8_4=0x8 & g32_u12_4=0x9 & g32_u16_4=0x0 & g32_u20_4=0x0 & g32_gpr24_4 & g32_gpr28_4 {
-  g32_gpr24_4 = s390_slbgr(g32_gpr28_4);
+  local x:8 = g32_gpr24_4; local y:8 = g32_gpr28_4; local bi:8 = zext((cc & 2) == 0); local t:8 = x - y; local r:8 = t - bi; local bo:1 = (x < y) || (t < bi); gs_cc_subl(r, bo); g32_gpr24_4 = r;
 }
 :ALCGR g32_gpr24_4,g32_gpr28_4 is g32_u0_4=0xb & g32_u4_4=0x9 & g32_u8_4=0x8 & g32_u12_4=0x8 & g32_u16_4=0x0 & g32_u20_4=0x0 & g32_gpr24_4 & g32_gpr28_4 {
-  g32_gpr24_4 = s390_alcgr(g32_gpr28_4);
+  local x:8 = g32_gpr24_4; local y:8 = g32_gpr28_4; local c:8 = zext((cc & 2) != 0); local t:8 = x + y; local r:8 = t + c; local co:1 = carry(x, y) || carry(t, c); gs_cc_addl(r, co); g32_gpr24_4 = r;
 }
 :LLGHR g32_gpr24_4,g32_gpr28_4 is g32_u0_4=0xb & g32_u4_4=0x9 & g32_u8_4=0x8 & g32_u12_4=0x5 & g32_u16_4=0x0 & g32_u20_4=0x0 & g32_gpr24_4 & g32_gpr28_4 {
-  g32_gpr24_4 = s390_llghr(g32_gpr28_4);
+  local v:2 = g32_gpr28_4:2; g32_gpr24_4 = zext(v);
 }
 :LLGCR g32_gpr24_4,g32_gpr28_4 is g32_u0_4=0xb & g32_u4_4=0x9 & g32_u8_4=0x8 & g32_u12_4=0x4 & g32_u16_4=0x0 & g32_u20_4=0x0 & g32_gpr24_4 & g32_gpr28_4 {
-  g32_gpr24_4 = s390_llgcr(g32_gpr28_4);
+  local v:1 = g32_gpr28_4:1; g32_gpr24_4 = zext(v);
 }
 :FLOGR g32_gpr24_4,g32_gpr28_4 is g32_u0_4=0xb & g32_u4_4=0x9 & g32_u8_4=0x8 & g32_u12_4=0x3 & g32_u16_4=0x0 & g32_u20_4=0x0 & g32_gpr24_4 & g32_gpr28_4 {
   g32_gpr24_4 = s390_flogr(g32_gpr28_4);
@@ -6376,52 +6516,62 @@ a32_20_12_41_12_4_16: g32_u20_12(g32_gpr12_4,g32_gpr16_4) is g32_u20_12 & g32_u1
   g32_gpr24_4 = s390_sortl(g32_gpr28_4);
 }
 :CLGFR g32_gpr24_4,g32_gpr28_4 is g32_u0_4=0xb & g32_u4_4=0x9 & g32_u8_4=0x3 & g32_u12_4=0x1 & g32_u16_4=0x0 & g32_u20_4=0x0 & g32_gpr24_4 & g32_gpr28_4 {
-  s390_clgfr(g32_gpr24_4, g32_gpr28_4);
+  local v:4 = g32_gpr28_4:4; local y:8 = zext(v); local x:8 = g32_gpr24_4; gs_cc_cmpu(x, y);
 }
 :CGFR g32_gpr24_4,g32_gpr28_4 is g32_u0_4=0xb & g32_u4_4=0x9 & g32_u8_4=0x3 & g32_u12_4=0x0 & g32_u16_4=0x0 & g32_u20_4=0x0 & g32_gpr24_4 & g32_gpr28_4 {
-  s390_cgfr(g32_gpr24_4, g32_gpr28_4);
+  local v:4 = g32_gpr28_4:4; local y:8 = sext(v); local x:8 = g32_gpr24_4; gs_cc_cmps(x, y);
 }
 :LHR g32_gpr24_4,g32_gpr28_4 is g32_u0_4=0xb & g32_u4_4=0x9 & g32_u8_4=0x2 & g32_u12_4=0x7 & g32_u16_4=0x0 & g32_u20_4=0x0 & g32_gpr24_4 & g32_gpr28_4 {
-  g32_gpr24_4 = s390_lhr(g32_gpr28_4);
+  local v:2 = g32_gpr28_4:2; local w32_41:4 = sext(v); gs_set32(g32_gpr24_4, w32_41);
 }
 :LBR g32_gpr24_4,g32_gpr28_4 is g32_u0_4=0xb & g32_u4_4=0x9 & g32_u8_4=0x2 & g32_u12_4=0x6 & g32_u16_4=0x0 & g32_u20_4=0x0 & g32_gpr24_4 & g32_gpr28_4 {
-  g32_gpr24_4 = s390_lbr(g32_gpr28_4);
+  local v:1 = g32_gpr28_4:1; local w32_42:4 = sext(v); gs_set32(g32_gpr24_4, w32_42);
 }
 :STURG g32_gpr24_4,g32_gpr28_4 is g32_u0_4=0xb & g32_u4_4=0x9 & g32_u8_4=0x2 & g32_u12_4=0x5 & g32_u16_4=0x0 & g32_u20_4=0x0 & g32_gpr24_4 & g32_gpr28_4 {
   s390_sturg(g32_gpr24_4, g32_gpr28_4);
 }
 :LRVR g32_gpr24_4,g32_gpr28_4 is g32_u0_4=0xb & g32_u4_4=0x9 & g32_u8_4=0x1 & g32_u12_4=0xf & g32_u16_4=0x0 & g32_u20_4=0x0 & g32_gpr24_4 & g32_gpr28_4 {
-  g32_gpr24_4 = s390_lrvr(g32_gpr28_4);
+  local v:4 = g32_gpr28_4:4; local r:4 = (zext(v[0,8]) << 24) | (zext(v[8,8]) << 16) | (zext(v[16,8]) << 8) | (zext(v[24,8]) << 0); local w32_43:4 = r; gs_set32(g32_gpr24_4, w32_43);
 }
 :SLGFR g32_gpr24_4,g32_gpr28_4 is g32_u0_4=0xb & g32_u4_4=0x9 & g32_u8_4=0x1 & g32_u12_4=0xb & g32_u16_4=0x0 & g32_u20_4=0x0 & g32_gpr24_4 & g32_gpr28_4 {
-  g32_gpr24_4 = s390_slgfr(g32_gpr28_4);
+  local v:4 = g32_gpr28_4:4;
+  local x:8 = g32_gpr24_4; local y:8 = zext(v); local r:8 = x - y;
+  local b:1 = x < y; gs_cc_subl(r, b);
+  g32_gpr24_4 = r;
 }
 :ALGFR g32_gpr24_4,g32_gpr28_4 is g32_u0_4=0xb & g32_u4_4=0x9 & g32_u8_4=0x1 & g32_u12_4=0xa & g32_u16_4=0x0 & g32_u20_4=0x0 & g32_gpr24_4 & g32_gpr28_4 {
-  g32_gpr24_4 = s390_algfr(g32_gpr28_4);
+  local v:4 = g32_gpr28_4:4;
+  local x:8 = g32_gpr24_4; local y:8 = zext(v); local r:8 = x + y;
+  local c:1 = carry(x, y); gs_cc_addl(r, c);
+  g32_gpr24_4 = r;
 }
 :SGFR g32_gpr24_4,g32_gpr28_4 is g32_u0_4=0xb & g32_u4_4=0x9 & g32_u8_4=0x1 & g32_u12_4=0x9 & g32_u16_4=0x0 & g32_u20_4=0x0 & g32_gpr24_4 & g32_gpr28_4 {
-  g32_gpr24_4 = s390_sgfr(g32_gpr28_4);
+  local v:4 = g32_gpr28_4:4;
+  local x:8 = g32_gpr24_4; local y:8 = sext(v); local r:8 = x - y;
+  local ov:1 = sborrow(x, y);
+  gs_cc_arith(r, ov);
+  g32_gpr24_4 = r;
 }
 :LLGTR g32_gpr24_4,g32_gpr28_4 is g32_u0_4=0xb & g32_u4_4=0x9 & g32_u8_4=0x1 & g32_u12_4=0x7 & g32_u16_4=0x0 & g32_u20_4=0x0 & g32_gpr24_4 & g32_gpr28_4 {
-  g32_gpr24_4 = s390_llgtr(g32_gpr28_4);
+  local v:4 = g32_gpr28_4:4; g32_gpr24_4 = zext(v & 0x7fffffff);
 }
 :LLGFR g32_gpr24_4,g32_gpr28_4 is g32_u0_4=0xb & g32_u4_4=0x9 & g32_u8_4=0x1 & g32_u12_4=0x6 & g32_u16_4=0x0 & g32_u20_4=0x0 & g32_gpr24_4 & g32_gpr28_4 {
-  g32_gpr24_4 = s390_llgfr(g32_gpr28_4);
+  local v:4 = g32_gpr28_4:4; g32_gpr24_4 = zext(v);
 }
 :LTGFR g32_gpr24_4,g32_gpr28_4 is g32_u0_4=0xb & g32_u4_4=0x9 & g32_u8_4=0x1 & g32_u12_4=0x2 & g32_u16_4=0x0 & g32_u20_4=0x0 & g32_gpr24_4 & g32_gpr28_4 {
   g32_gpr24_4 = s390_ltgfr(g32_gpr28_4);
 }
 :LRVGR g32_gpr24_4,g32_gpr28_4 is g32_u0_4=0xb & g32_u4_4=0x9 & g32_u8_4=0x0 & g32_u12_4=0xf & g32_u16_4=0x0 & g32_u20_4=0x0 & g32_gpr24_4 & g32_gpr28_4 {
-  g32_gpr24_4 = s390_lrvgr(g32_gpr28_4);
+  local v:8 = g32_gpr28_4:8; local r:8 = (zext(v[0,8]) << 56) | (zext(v[8,8]) << 48) | (zext(v[16,8]) << 40) | (zext(v[24,8]) << 32) | (zext(v[32,8]) << 24) | (zext(v[40,8]) << 16) | (zext(v[48,8]) << 8) | (zext(v[56,8]) << 0); g32_gpr24_4 = r;
 }
 :EREGG g32_gpr24_4,g32_gpr28_4 is g32_u0_4=0xb & g32_u4_4=0x9 & g32_u8_4=0x0 & g32_u12_4=0xe & g32_u16_4=0x0 & g32_u20_4=0x0 & g32_gpr24_4 & g32_gpr28_4 {
   g32_gpr24_4 = s390_eregg(g32_gpr28_4);
 }
 :LGHR g32_gpr24_4,g32_gpr28_4 is g32_u0_4=0xb & g32_u4_4=0x9 & g32_u8_4=0x0 & g32_u12_4=0x7 & g32_u16_4=0x0 & g32_u20_4=0x0 & g32_gpr24_4 & g32_gpr28_4 {
-  g32_gpr24_4 = s390_lghr(g32_gpr28_4);
+  local v:2 = g32_gpr28_4:2; g32_gpr24_4 = sext(v);
 }
 :LGBR g32_gpr24_4,g32_gpr28_4 is g32_u0_4=0xb & g32_u4_4=0x9 & g32_u8_4=0x0 & g32_u12_4=0x6 & g32_u16_4=0x0 & g32_u20_4=0x0 & g32_gpr24_4 & g32_gpr28_4 {
-  g32_gpr24_4 = s390_lgbr(g32_gpr28_4);
+  local v:1 = g32_gpr28_4:1; g32_gpr24_4 = sext(v);
 }
 :LURAG g32_gpr24_4,g32_gpr28_4 is g32_u0_4=0xb & g32_u4_4=0x9 & g32_u8_4=0x0 & g32_u12_4=0x5 & g32_u16_4=0x0 & g32_u20_4=0x0 & g32_gpr24_4 & g32_gpr28_4 {
   g32_gpr24_4 = s390_lurag(g32_gpr28_4);
@@ -6798,9 +6948,7 @@ a32_20_12_41_12_4_16: g32_u20_12(g32_gpr12_4,g32_gpr16_4) is g32_u20_12 & g32_u1
   s390_tabort(a32_20_12_16);
 }
 :NIAI g32_u24_4,g32_u28_4 is g32_u0_4=0xb & g32_u4_4=0x2 & g32_u8_4=0xf & g32_u12_4=0xa & g32_u16_4=0x0 & g32_u20_4=0x0 & g32_u24_4 & g32_u28_4 {
-  local i0:8 = g32_u24_4;
-  local i1:8 = g32_u28_4;
-  s390_niai(i0, i1);
+  local nop:1 = 0;
 }
 :TEND  is g32_u0_4=0xb & g32_u4_4=0x2 & g32_u8_4=0xf & g32_u12_4=0x8 & g32_u16_4=0x0 & g32_u20_4=0x0 & g32_u24_4=0x0 & g32_u28_4=0x0 {
   s390_tend();
@@ -6812,8 +6960,7 @@ a32_20_12_41_12_4_16: g32_u20_12(g32_gpr12_4,g32_gpr16_4) is g32_u20_12 & g32_u1
   g32_gpr24_4 = s390_etnd();
 }
 :PPA g32_gpr24_4,g32_gpr28_4,g32_u16_4 is g32_u0_4=0xb & g32_u4_4=0x2 & g32_u8_4=0xe & g32_u12_4=0x8 & g32_u20_4=0x0 & g32_gpr24_4 & g32_gpr28_4 & g32_u16_4 {
-  local i2:8 = g32_u16_4;
-  s390_ppa(g32_gpr24_4, g32_gpr28_4, i2);
+  local nop:1 = 0;
 }
 :EPCTR g32_gpr24_4,g32_gpr28_4 is g32_u0_4=0xb & g32_u4_4=0x2 & g32_u8_4=0xe & g32_u12_4=0x5 & g32_u16_4=0x0 & g32_u20_4=0x0 & g32_gpr24_4 & g32_gpr28_4 {
   g32_gpr24_4 = s390_epctr(g32_gpr28_4);
@@ -6910,10 +7057,10 @@ a32_20_12_41_12_4_16: g32_u20_12(g32_gpr12_4,g32_gpr16_4) is g32_u20_12 & g32_u1
   g32_gpr24_4 = s390_csp(g32_gpr28_4);
 }
 :EAR g32_gpr24_4,g32_ar28_4 is g32_u0_4=0xb & g32_u4_4=0x2 & g32_u8_4=0x4 & g32_u12_4=0xf & g32_u16_4=0x0 & g32_u20_4=0x0 & g32_gpr24_4 & g32_ar28_4 {
-  g32_gpr24_4 = s390_ear(g32_ar28_4);
+  local w32_44:4 = g32_ar28_4; gs_set32(g32_gpr24_4, w32_44);
 }
 :SAR g32_ar24_4,g32_gpr28_4 is g32_u0_4=0xb & g32_u4_4=0x2 & g32_u8_4=0x4 & g32_u12_4=0xe & g32_u16_4=0x0 & g32_u20_4=0x0 & g32_ar24_4 & g32_gpr28_4 {
-  g32_ar24_4 = s390_sar(g32_gpr28_4);
+  g32_ar24_4 = g32_gpr28_4:4;
 }
 :CPYA g32_ar24_4,g32_ar28_4 is g32_u0_4=0xb & g32_u4_4=0x2 & g32_u8_4=0x4 & g32_u12_4=0xd & g32_u16_4=0x0 & g32_u20_4=0x0 & g32_ar24_4 & g32_ar28_4 {
   g32_ar24_4 = s390_cpya(g32_ar28_4);

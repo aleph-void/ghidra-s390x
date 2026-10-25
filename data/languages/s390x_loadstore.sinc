@@ -47,6 +47,7 @@ define token RIa(32)
     RIa_R1 = (20,23)
     RIa_OPCD = (16,19)
     RIa_I2 = (0,15) signed
+    RIa_U2 = (0,15)        # the same field, unsigned (display of logical immediates)
 ;
 attach variables [ RIa_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14 r15 ];
 

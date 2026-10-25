@@ -483,7 +483,7 @@ macro cc_lttest(v, signbit) {
 
 # IIHH: INSERT IMMEDIATE high-high (A5/0). Insert I2 into IBM bits 0-15
 # (SLEIGH high 16). CC unchanged.
-:IIHH RIa_R1 "," RIa_I2 is RIa_OP=0xA5 & RIa_R1 & RIa_OPCD=0x0 & RIa_I2
+:IIHH RIa_R1 "," RIa_U2 is RIa_OP=0xA5 & RIa_R1 & RIa_OPCD=0x0 & RIa_I2 & RIa_U2
 {
     local i2:8;
     i2 = RIa_I2 & 0xffff;
@@ -492,7 +492,7 @@ macro cc_lttest(v, signbit) {
 
 # NILH: AND IMMEDIATE low-high (A5/6). AND I2 into IBM bits 32-47
 # (SLEIGH bits 16-31). CC from the 16 ANDed bits: 0=zero, 1=not zero.
-:NILH RIa_R1 "," RIa_I2 is RIa_OP=0xA5 & RIa_R1 & RIa_OPCD=0x6 & RIa_I2
+:NILH RIa_R1 "," RIa_U2 is RIa_OP=0xA5 & RIa_R1 & RIa_OPCD=0x6 & RIa_I2 & RIa_U2
 {
     local i2:8;
     local r:8;
@@ -504,7 +504,7 @@ macro cc_lttest(v, signbit) {
 
 # NILL: AND IMMEDIATE low-low (A5/7). AND I2 into IBM bits 48-63
 # (SLEIGH low 16). CC from the 16 ANDed bits.
-:NILL RIa_R1 "," RIa_I2 is RIa_OP=0xA5 & RIa_R1 & RIa_OPCD=0x7 & RIa_I2
+:NILL RIa_R1 "," RIa_U2 is RIa_OP=0xA5 & RIa_R1 & RIa_OPCD=0x7 & RIa_I2 & RIa_U2
 {
     local i2:8;
     local r:8;
@@ -516,7 +516,7 @@ macro cc_lttest(v, signbit) {
 
 # OILL: OR IMMEDIATE low-low (A5/B). OR I2 into IBM bits 48-63
 # (SLEIGH low 16). CC from the 16 ORed bits: 0=zero, 1=not zero.
-:OILL RIa_R1 "," RIa_I2 is RIa_OP=0xA5 & RIa_R1 & RIa_OPCD=0xB & RIa_I2
+:OILL RIa_R1 "," RIa_U2 is RIa_OP=0xA5 & RIa_R1 & RIa_OPCD=0xB & RIa_I2 & RIa_U2
 {
     local i2:8;
     local r:8;
@@ -528,7 +528,7 @@ macro cc_lttest(v, signbit) {
 
 # IIHL: INSERT IMMEDIATE high-low (A5/1). Insert I2 into IBM bits 16-31
 # (SLEIGH bits 32-47). CC unchanged. (Found missing by the fuzzer.)
-:IIHL RIa_R1 "," RIa_I2 is RIa_OP=0xA5 & RIa_R1 & RIa_OPCD=0x1 & RIa_I2
+:IIHL RIa_R1 "," RIa_U2 is RIa_OP=0xA5 & RIa_R1 & RIa_OPCD=0x1 & RIa_I2 & RIa_U2
 {
     local i2:8;
     i2 = RIa_I2 & 0xffff;
@@ -537,7 +537,7 @@ macro cc_lttest(v, signbit) {
 
 # IILH: INSERT IMMEDIATE low-high (A5/2). Insert I2 into IBM bits 32-47
 # (SLEIGH bits 16-31). CC unchanged.
-:IILH RIa_R1 "," RIa_I2 is RIa_OP=0xA5 & RIa_R1 & RIa_OPCD=0x2 & RIa_I2
+:IILH RIa_R1 "," RIa_U2 is RIa_OP=0xA5 & RIa_R1 & RIa_OPCD=0x2 & RIa_I2 & RIa_U2
 {
     local i2:8;
     i2 = RIa_I2 & 0xffff;
@@ -546,7 +546,7 @@ macro cc_lttest(v, signbit) {
 
 # IILL: INSERT IMMEDIATE low-low (A5/3). Insert I2 into IBM bits 48-63
 # (SLEIGH low 16). CC unchanged.
-:IILL RIa_R1 "," RIa_I2 is RIa_OP=0xA5 & RIa_R1 & RIa_OPCD=0x3 & RIa_I2
+:IILL RIa_R1 "," RIa_U2 is RIa_OP=0xA5 & RIa_R1 & RIa_OPCD=0x3 & RIa_I2 & RIa_U2
 {
     local i2:8;
     i2 = RIa_I2 & 0xffff;
@@ -555,7 +555,7 @@ macro cc_lttest(v, signbit) {
 
 # NIHH: AND IMMEDIATE high-high (A5/4). AND I2 into IBM bits 0-15
 # (SLEIGH high 16). CC from the 16 ANDed bits: 0=zero, 1=not zero.
-:NIHH RIa_R1 "," RIa_I2 is RIa_OP=0xA5 & RIa_R1 & RIa_OPCD=0x4 & RIa_I2
+:NIHH RIa_R1 "," RIa_U2 is RIa_OP=0xA5 & RIa_R1 & RIa_OPCD=0x4 & RIa_I2 & RIa_U2
 {
     local i2:8;
     local r:8;
@@ -567,7 +567,7 @@ macro cc_lttest(v, signbit) {
 
 # NIHL: AND IMMEDIATE high-low (A5/5). AND I2 into IBM bits 16-31
 # (SLEIGH bits 32-47). CC from the 16 ANDed bits.
-:NIHL RIa_R1 "," RIa_I2 is RIa_OP=0xA5 & RIa_R1 & RIa_OPCD=0x5 & RIa_I2
+:NIHL RIa_R1 "," RIa_U2 is RIa_OP=0xA5 & RIa_R1 & RIa_OPCD=0x5 & RIa_I2 & RIa_U2
 {
     local i2:8;
     local r:8;
@@ -579,7 +579,7 @@ macro cc_lttest(v, signbit) {
 
 # OIHH: OR IMMEDIATE high-high (A5/8). OR I2 into IBM bits 0-15
 # (SLEIGH high 16). CC from the 16 ORed bits: 0=zero, 1=not zero.
-:OIHH RIa_R1 "," RIa_I2 is RIa_OP=0xA5 & RIa_R1 & RIa_OPCD=0x8 & RIa_I2
+:OIHH RIa_R1 "," RIa_U2 is RIa_OP=0xA5 & RIa_R1 & RIa_OPCD=0x8 & RIa_I2 & RIa_U2
 {
     local i2:8;
     local r:8;
@@ -591,7 +591,7 @@ macro cc_lttest(v, signbit) {
 
 # OIHL: OR IMMEDIATE high-low (A5/9). OR I2 into IBM bits 16-31
 # (SLEIGH bits 32-47). CC from the 16 ORed bits.
-:OIHL RIa_R1 "," RIa_I2 is RIa_OP=0xA5 & RIa_R1 & RIa_OPCD=0x9 & RIa_I2
+:OIHL RIa_R1 "," RIa_U2 is RIa_OP=0xA5 & RIa_R1 & RIa_OPCD=0x9 & RIa_I2 & RIa_U2
 {
     local i2:8;
     local r:8;
@@ -603,7 +603,7 @@ macro cc_lttest(v, signbit) {
 
 # OILH: OR IMMEDIATE low-high (A5/A). OR I2 into IBM bits 32-47
 # (SLEIGH bits 16-31). CC from the 16 ORed bits.
-:OILH RIa_R1 "," RIa_I2 is RIa_OP=0xA5 & RIa_R1 & RIa_OPCD=0xA & RIa_I2
+:OILH RIa_R1 "," RIa_U2 is RIa_OP=0xA5 & RIa_R1 & RIa_OPCD=0xA & RIa_I2 & RIa_U2
 {
     local i2:8;
     local r:8;
@@ -615,7 +615,7 @@ macro cc_lttest(v, signbit) {
 
 # LLIHH: LOAD LOGICAL IMMEDIATE high-high (A5/C). I2 -> IBM bits 0-15 (SLEIGH
 # high 16); remaining bits zeroed. CC unchanged.
-:LLIHH RIa_R1 "," RIa_I2 is RIa_OP=0xA5 & RIa_R1 & RIa_OPCD=0xC & RIa_I2
+:LLIHH RIa_R1 "," RIa_U2 is RIa_OP=0xA5 & RIa_R1 & RIa_OPCD=0xC & RIa_I2 & RIa_U2
 {
     local i2:8;
     i2 = RIa_I2 & 0xffff;
@@ -624,7 +624,7 @@ macro cc_lttest(v, signbit) {
 
 # LLIHL: LOAD LOGICAL IMMEDIATE high-low (A5/D). I2 -> IBM bits 16-31 (SLEIGH
 # bits 32-47); remaining bits zeroed. CC unchanged.
-:LLIHL RIa_R1 "," RIa_I2 is RIa_OP=0xA5 & RIa_R1 & RIa_OPCD=0xD & RIa_I2
+:LLIHL RIa_R1 "," RIa_U2 is RIa_OP=0xA5 & RIa_R1 & RIa_OPCD=0xD & RIa_I2 & RIa_U2
 {
     local i2:8;
     i2 = RIa_I2 & 0xffff;
@@ -633,7 +633,7 @@ macro cc_lttest(v, signbit) {
 
 # LLILH: LOAD LOGICAL IMMEDIATE low-high (A5/E). I2 -> IBM bits 32-47 (SLEIGH
 # bits 16-31); remaining bits zeroed. CC unchanged.
-:LLILH RIa_R1 "," RIa_I2 is RIa_OP=0xA5 & RIa_R1 & RIa_OPCD=0xE & RIa_I2
+:LLILH RIa_R1 "," RIa_U2 is RIa_OP=0xA5 & RIa_R1 & RIa_OPCD=0xE & RIa_I2 & RIa_U2
 {
     local i2:8;
     i2 = RIa_I2 & 0xffff;
@@ -642,7 +642,7 @@ macro cc_lttest(v, signbit) {
 
 # LLILL: LOAD LOGICAL IMMEDIATE low-low (A5/F). I2 -> IBM bits 48-63 (SLEIGH
 # low 16); remaining bits zeroed. CC unchanged.
-:LLILL RIa_R1 "," RIa_I2 is RIa_OP=0xA5 & RIa_R1 & RIa_OPCD=0xF & RIa_I2
+:LLILL RIa_R1 "," RIa_U2 is RIa_OP=0xA5 & RIa_R1 & RIa_OPCD=0xF & RIa_I2 & RIa_U2
 {
     local i2:8;
     i2 = RIa_I2 & 0xffff;
@@ -651,7 +651,7 @@ macro cc_lttest(v, signbit) {
 
 # IIHF: INSERT IMMEDIATE high-full (C0/8). Insert I2 into IBM bits 0-31
 # (SLEIGH high 32). CC unchanged.
-:IIHF RILa_R1 "," RILa_I2 is RILa_OP=0xC0 & RILa_R1 & RILa_OPCD=0x8 & RILa_I2
+:IIHF RILa_R1 "," RILa_U2 is RILa_OP=0xC0 & RILa_R1 & RILa_OPCD=0x8 & RILa_I2 & RILa_U2
 {
     local i2:8;
     i2 = RILa_I2 & 0xffffffff;
@@ -660,7 +660,7 @@ macro cc_lttest(v, signbit) {
 
 # IILF: INSERT IMMEDIATE low-full (C0/9). Insert I2 into IBM bits 32-63
 # (SLEIGH low 32). CC unchanged.
-:IILF RILa_R1 "," RILa_I2 is RILa_OP=0xC0 & RILa_R1 & RILa_OPCD=0x9 & RILa_I2
+:IILF RILa_R1 "," RILa_U2 is RILa_OP=0xC0 & RILa_R1 & RILa_OPCD=0x9 & RILa_I2 & RILa_U2
 {
     local i2:8;
     i2 = RILa_I2 & 0xffffffff;
@@ -669,7 +669,7 @@ macro cc_lttest(v, signbit) {
 
 # NIHF: AND IMMEDIATE high-full (C0/A). AND I2 into IBM bits 0-31
 # (SLEIGH high 32). CC from the 32 ANDed bits.
-:NIHF RILa_R1 "," RILa_I2 is RILa_OP=0xC0 & RILa_R1 & RILa_OPCD=0xA & RILa_I2
+:NIHF RILa_R1 "," RILa_U2 is RILa_OP=0xC0 & RILa_R1 & RILa_OPCD=0xA & RILa_I2 & RILa_U2
 {
     local i2:8;
     local r:8;
@@ -681,7 +681,7 @@ macro cc_lttest(v, signbit) {
 
 # OILF: OR IMMEDIATE low-full (C0/D). OR I2 into IBM bits 32-63
 # (SLEIGH low 32). CC from the 32 ORed bits.
-:OILF RILa_R1 "," RILa_I2 is RILa_OP=0xC0 & RILa_R1 & RILa_OPCD=0xD & RILa_I2
+:OILF RILa_R1 "," RILa_U2 is RILa_OP=0xC0 & RILa_R1 & RILa_OPCD=0xD & RILa_I2 & RILa_U2
 {
     local i2:8;
     local r:8;
