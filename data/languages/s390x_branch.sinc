@@ -769,19 +769,33 @@ RILb_Target: RILb_TargetLoc is RILb_TargetLoc { export *:8 RILb_TargetLoc; }
 # 64-bit updated instruction address.)
 # ---------------------------------------------------------------------------
 
-:BRAS RIb_R1 "," RIb_Target is RIb_OP=0xA7 & RIb_R1 & RIb_OP2=0x5 & RIb_Target
+# Calls link through r14 (the ABI's return-address register). gcc also uses BRAS/BRASL with
+# another register to step over an inline literal ("bras %r5,1f; .long X; 1:"); treating
+# that as a call made Ghidra disassemble the literal as the return path, so with R1 != 14
+# the link is stored and the branch is a plain jump.
+:BRAS RIb_R1 "," RIb_Target is RIb_OP=0xA7 & RIb_R1 & RIb_R1=14 & RIb_OP2=0x5 & RIb_Target
 {
-    # PoP 7-47: the link is stored even when RIb_R1 designates r0, and the
-    # branch is always taken.
     RIb_R1 = inst_next;
     call RIb_Target;
 }
 
-:BRASL RILb_R1 "," RILb_Target is RILb_OP=0xC0 & RILb_R1 & RILb_OPCD=0x5 & RILb_Target
+:BRAS RIb_R1 "," RIb_Target is RIb_OP=0xA7 & RIb_R1 & RIb_OP2=0x5 & RIb_Target
 {
-    # As BRAS, with the 32-bit relative offset (PoP 7-47).
+    RIb_R1 = inst_next;
+    goto RIb_Target;
+}
+
+
+:BRASL RILb_R1 "," RILb_Target is RILb_OP=0xC0 & RILb_R1 & RILb_R1=14 & RILb_OPCD=0x5 & RILb_Target
+{
     RILb_R1 = inst_next;
     call RILb_Target;
+}
+
+:BRASL RILb_R1 "," RILb_Target is RILb_OP=0xC0 & RILb_R1 & RILb_OPCD=0x5 & RILb_Target
+{
+    RILb_R1 = inst_next;
+    goto RILb_Target;
 }
 
 :BASR RR_R1 "," RR_R2 is RR_OP=0x0D & RR_R1 & RR_R2 & RR_R2=0
@@ -858,14 +872,18 @@ RILb_Target: RILb_TargetLoc is RILb_TargetLoc { export *:8 RILb_TargetLoc; }
 # machine-dependent). They fall through; no control-flow pcode is emitted.
 # ---------------------------------------------------------------------------
 
+define pcodeop syscall;
+# SUPERVISOR CALL (PoP 7-457). Linux s390x: the system-call number is the I field, or r1 when
+# I is 0; arguments are r2-r7 and the result returns in r2. The call falls through.
+:SVC "0" is I_OP=0x0A & I_I=0
+{
+    r2 = syscall(r1, r2, r3, r4, r5, r6, r7);
+}
+
 :SVC I_I is I_OP=0x0A & I_I
 {
-    # SUPERVISOR CALL (PoP 7-457): raises a supervisor-call interruption;
-    # the I_I field becomes the low byte of the interruption code. The
-    # handler, its effects, and whether it returns are OS-dependent
-    # (Linux/s390x uses SVC 0 as its system-call gateway), so this is
-    # deliberately opaque.
-    # TODO: model Linux s390x syscalls (SVC 0, number in r1) as calls.
+    local nr:8 = I_I;
+    r2 = syscall(nr, r2, r3, r4, r5, r6, r7);
 }
 
 :TRAP2 is E_OP=0x01 & E_OP2=0xFF
