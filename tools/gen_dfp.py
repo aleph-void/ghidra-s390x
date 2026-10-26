@@ -187,8 +187,12 @@ def ndigits(blk, v, size):
     return n
 
 def drm(blk, mask):
+    """effective DFP rounding method (as the FPC DRM encodes it) of the modifier field mask:
+    0 and 2 the FPC DRM; 1 ties away from 0; 3 prepare for shorter precision; 4-7 ties to
+    even, toward 0, toward +inf, toward -inf; 8-15 the DRM encoding mask - 8"""
     m = blk.local(8, mask)
-    return blk.local(8, f"zext(({m} & 8) != 0) * ({m} & 7) + zext(({m} & 8) == 0) * zext((fpc >> 4) & 7)")
+    return blk.local(8, f"zext(({m} & 8) != 0) * ({m} & 7) + zext(({m} == 0) || ({m} == 2)) * zext((fpc >> 4) & 7) + "
+                        f"zext({m} == 1) * 4 + zext({m} == 3) * 7 + zext(({m} >= 4) && ({m} <= 7)) * ({m} - 4)")
 
 class R:
     """A result: kind 0 finite / 1 inf / 2 NaN (cc 3), sign, bits."""
@@ -786,7 +790,8 @@ def semantics(ctx):
         pc = pow10(blk, sig, 32)
         blk.add(f"if ({Vr} != {pc}) goto <{l}r>; {Vr} = {Vr} / 10; {q} = {q} + 1;\n<{l}r>")
         rb, z, i = round_finite(blk, f, a.s, q, Vr, 32, "0:1", mode)
-        blk.add(f"{bits} = {rb};\n<{l}e>")
+        dn = default_nan(blk, f)
+        blk.add(f"{bits} = {rb}; if ({q} s<= {(3 << FMT[f][1]) - 1 - FMT[f][3]}) goto <{l}e>; {bits} = {dn};\n<{l}e>")
         st(0, f)(bits)
         return done()
     m = re.fullmatch(r"s([lr])([dx])t", n)
