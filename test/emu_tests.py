@@ -641,6 +641,91 @@ _prno_tests()
 T("prno_trng_ratio", "prno %r2,%r4", f"r0=70,r1={DATA:x}", f"m8:{DATA:x}=0000000100000001,cc=0")
 T("prno_trng_empty", "prno %r2,%r4", f"r0=72,r1={DATA:x},r2={_OUT:x},r3=0,r4={_IN:x},r5=0", f"r2={_OUT:x},r3=0,r4={_IN:x},r5=0,cc=0")
 
+def _sortl_tests():
+    import random, sortl_model as SM
+    PB, LB, O1, O2, CR = DATA, DATA + 0x1000, DATA + 0x6000, DATA + 0x7800, DATA + 0x9000
+    def build(nis, keylen, paylen, asc, cf, ail, eil, lists, csb=None):
+        pb = bytearray(576 + 16 * nis)
+        pb[0] = {32: 0x20, 64: 0x10, 128: 0x08}[nis]
+        pb[10:12] = keylen.to_bytes(2, "big"); pb[14:16] = paylen.to_bytes(2, "big")
+        pb[7] = (0 if asc else 0x80) | cf
+        pb[33] = ail; pb[40] = eil << 6
+        pb[56:64] = CR.to_bytes(8, "big")
+        if csb:
+            pb[64] = csb["open"]; pb[65] = csb["fn"]
+            pb[72:80] = (O1 + csb["start"]).to_bytes(8, "big"); pb[80:88] = csb["len"].to_bytes(8, "big")
+        addrs = []
+        for i, d in enumerate(lists):
+            a = LB + 0x400 * i
+            addrs.append(a)
+            pb[576 + 16 * i: 584 + 16 * i] = a.to_bytes(8, "big")
+            pb[584 + 16 * i: 592 + 16 * i] = len(d).to_bytes(8, "big")
+        return bytes(pb), addrs
+    def case(name, lists, keylen=8, paylen=0, asc=True, mm=0, svlr=False, eil=0, op1=0x1000, op2=0x400, nis=32, cf=0, state=None, prev=None, off=0):
+        ail = len(lists) - 1
+        pb, addrs = build(nis, keylen, paylen, asc, cf, ail, eil, lists, state)
+        r = SM.run(lists, keylen, paylen, asc, mm, svlr, eil, op1, op2, state, prev, off)
+        init = f"r0={(2 if svlr else 1) | (0x80 if mm else 0):x},r1={PB:x},r2={O1 + off:x},r3={op1:x},r4={O2:x},r5={op2:x},m{len(pb)}:{PB:x}={pb.hex()}"
+        for a, d in zip(addrs, lists):
+            if d:
+                init += f",m{len(d)}:{a:x}={d.hex()}"
+        if prev is not None:
+            init += f",m{len(prev)}:{CR:x}={prev.hex()}"
+        exp = f"cc={r['cc']},r2={O1 + off + len(r['out']):x},r3={r['op1']:x}"
+        if mm == 0:
+            exp += f",r4={O2 + 16 * len(r['olds']):x},r5={r['op2']:x}"
+        if r["out"]:
+            exp += f",m{len(r['out'])}:{O1 + off:x}={r['out'].hex()}"
+        if mm == 0 and r["olds"]:
+            exp += f",m{16 * len(r['olds'])}:{O2:x}=" + "".join(((O1 + st).to_bytes(8, "big") + ln.to_bytes(8, "big")).hex() for st, ln in r["olds"])
+        for i, (a, d) in enumerate(zip(addrs, lists)):
+            exp += f",m8:{PB + 576 + 16 * i:x}={(a + r['used'][i]):016x},m8:{PB + 584 + 16 * i:x}={len(d) - r['used'][i]:016x}"
+        cf_out = 0 if r["cc"] == 0 else 1
+        exp += f",m1:{PB + 7:x}={(0 if asc else 0x80) | cf_out:02x},m1:{PB + 41:x}={r['eiln']:02x},m1:{PB + 47:x}={r['iiln']:02x}"
+        exp += f",m1:{PB + 64:x}={int(r['op']):02x},m1:{PB + 65:x}={int(r['fn']):02x}"
+        if r["cc"] != 0 and r["placed"] and mm == 0:
+            exp += f",m{keylen}:{CR:x}={r['prev'].hex()}"
+        T(name, "sortl %r2,%r4", init, exp)
+        return r
+    recs = lambda vals, kl=8, pay=b"": b"".join(v.to_bytes(kl, "big") + pay for v in vals)
+    # the manual's examples (figures 26-108 and 26-109)
+    case("sortl_fig108", [recs([5, 1, 17, 3]), recs([10, 8, 2, 14]), recs([99, 6, 88, 20])])
+    case("sortl_fig109", [recs([5, 1]), recs([10, 8]), recs([99, 6]), recs([17, 3]), recs([2, 14]), recs([88, 20])])
+    case("sortl_desc", [recs([5, 1, 17, 3]), recs([10, 8, 2, 14]), recs([99, 6, 88, 20])], asc=False)
+    case("sortl_merge", [recs([1, 5, 9]), recs([2, 5, 6, 40]), recs([3, 5, 7])], mm=1)
+    case("sortl_merge_desc_payload", [recs([9, 5, 1], 8, b"AAAAAAAA"), recs([40, 6, 5, 2], 8, b"BBBBBBBB"), recs([7, 5, 3], 8, b"CCCCCCCC")], paylen=8, mm=1, asc=False)
+    # equal keys: the list with the higher number comes first
+    case("sortl_ties", [recs([4, 4], 8, b"11111111"), recs([4, 4], 8, b"22222222"), recs([4], 8, b"33333333")], paylen=8)
+    case("sortl_key16", [recs([3, 1, 2], 16), recs([9, 0], 16)], keylen=16)
+    # variable-length records: key, 8-byte payload length, payload
+    def vl(vals):
+        return b"".join(v.to_bytes(8, "big") + (8 * (v % 3)).to_bytes(8, "big") + bytes([v & 0xff]) * (8 * (v % 3)) for v in vals)
+    case("sortl_svlr", [vl([5, 3, 9]), vl([4, 8, 2]), vl([1, 7])], svlr=True)
+    case("sortl_svlr_merge", [vl([1, 3, 9]), vl([2, 8, 20])], svlr=True, mm=1)
+    # condition codes: a short first operand (1), a short second operand (1), an empty list (2), an incomplete list (2)
+    lists = [recs([5, 1, 17, 3]), recs([10, 8, 2, 14]), recs([99, 6, 88, 20])]
+    case("sortl_cc1_op1", lists, op1=0x48)
+    case("sortl_cc1_op2", lists, op2=0x20)
+    case("sortl_cc1_op2_tail", lists, op2=0x30)
+    case("sortl_cc2_eil0", lists, eil=2)
+    case("sortl_cc2_eilN", lists, eil=1)
+    case("sortl_cc2_eil11", lists, eil=3)
+    case("sortl_cc2_incomplete", [recs([5, 1, 17]) + b"\x00" * 8, recs([10, 8]) + b"\x01" * 8 + b"\x02" * 3])
+    # resume after a short first operand, from the model's own state
+    r = SM.run(lists, 8, 0, True, 0, False, 0, 0x48, 0x400)
+    rest = [d[u:] for d, u in zip(lists, r["used"])]
+    case("sortl_resume", rest, state=dict(open=int(r["op"]), fn=int(r["fn"]), start=r["start"], len=r["len"]), prev=r["prev"], cf=1, off=len(r["out"]))
+    # random lists
+    rnd = random.Random(1234)
+    for i in range(6):
+        nl = rnd.choice([2, 5, 9])
+        kl = rnd.choice([8, 16])
+        pay = rnd.choice([0, 8, 16])
+        lst = [b"".join(rnd.randrange(0, 40).to_bytes(kl, "big") + bytes(rnd.randrange(256) for _ in range(pay)) for _ in range(rnd.randrange(0, 7))) for _ in range(nl)]
+        case(f"sortl_rand{i}", lst, keylen=kl, paylen=pay, asc=bool(i & 1), mm=0)
+_sortl_tests()
+T("sortl_query", "sortl %r2,%r4", f"r0=0,r1={DATA:x}", f"m32:{DATA:x}=" + "e0" + "00" * 15 + "38" + "00" * 7 + "8000" + "00" * 6)
+
 
 def main():
     out = sys.argv[1]

@@ -907,6 +907,7 @@ import gen_dfp
 import gen_vpd
 import gen_pfpo
 import gen_cpacf
+import gen_sortl
 HFP_NAMES = set("""ad adr ae aer au aur aw awr axr cd cdfr cdgr cdr ce cefr cegr cer cfdr cfer cfxr cgdr cger
 cgxr cxfr cxgr cxr dd ddr de der dxr fidr fier fixr hdr her lcdr lcer lcxr lde lder ldxr ledr lexr
 lndr lner lnxr lpdr lper lpxr lrdr lrer ltdr lter ltxr lxd lxdr lxe lxer mad madr mae maer md mde
@@ -918,6 +919,7 @@ for _n in ("cxstr", "cxutr"):
 EXTRA_FIELDS["cuxtr"] = [(24, 4, "gpro")]
 for _n in ("km", "kmc", "kmf", "kmo", "kmac"):
     EXTRA_FIELDS[_n] = [(28, 4, "gpro"), (28, 4, "u"), (24, 4, "u")]                  # R2 + 1, R2, R1
+EXTRA_FIELDS["sortl"] = [(24, 4, "gpro"), (24, 4, "u"), (28, 4, "gpro"), (28, 4, "u")]   # R1 + 1, R1, R2 + 1, R2
 EXTRA_FIELDS["prno"] = [(24, 4, "gpro"), (24, 4, "u"), (28, 4, "gpro"), (28, 4, "u")]   # R1 + 1, R1, R2 + 1, R2
 EXTRA_FIELDS["kma"] = [(28, 4, "gpro"), (28, 4, "u"), (24, 4, "u"), (16, 4, "u"), (16, 4, "gpro")]   # R2 + 1, R2, R1, R3, R3 + 1
 EXTRA_FIELDS["kmctr"] = [(28, 4, "gpro"), (28, 4, "u"), (24, 4, "u"), (16, 4, "u")]   # R2 + 1, R2, R1, R3
@@ -938,6 +940,8 @@ def semantics(ctx):
         r = gen_dfp.semantics(ctx)
     if r is None and ctx["name"] in gen_cpacf.NAMES:
         r = gen_cpacf.semantics(ctx)
+    if r is None and ctx["name"] in gen_sortl.NAMES:
+        r = gen_sortl.semantics(ctx)
     if r is None and ctx["name"] == "pfpo":
         r = gen_pfpo.semantics(ctx)
     if r is None and ctx["name"] in gen_vpd.NAMES:

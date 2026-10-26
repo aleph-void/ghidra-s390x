@@ -277,7 +277,6 @@ define pcodeop s390_sckpf;
 define pcodeop s390_sie;
 define pcodeop s390_siga;
 define pcodeop s390_sigp;
-define pcodeop s390_sortl;
 define pcodeop s390_spctr;
 define pcodeop s390_spx;
 define pcodeop s390_ssair;
@@ -61954,8 +61953,92 @@ rel32_16_16: tgt is g32_s16_16 [ tgt = inst_start + 2 * g32_s16_16; ] { export *
 :DFLTCC g32_gpr24_4,g32_gpr28_4,g32_gpr16_4 is g32_u0_4=0xb & g32_u4_4=0x9 & g32_u8_4=0x3 & g32_u12_4=0x9 & g32_gpr24_4 & g32_gpr28_4 & g32_gpr16_4 {
   g32_gpr24_4 = s390_dfltcc(g32_gpr28_4, g32_gpr16_4);
 }
-:SORTL g32_gpr24_4,g32_gpr28_4 is g32_u0_4=0xb & g32_u4_4=0x9 & g32_u8_4=0x3 & g32_u12_4=0x8 & g32_u16_4=0x0 & g32_u20_4=0x0 & g32_gpr24_4 & g32_gpr28_4 {
-  g32_gpr24_4 = s390_sortl(g32_gpr28_4);
+:SORTL g32_gpr24_4,g32_gpr28_4 is g32_u0_4=0xb & g32_u4_4=0x9 & g32_u8_4=0x3 & g32_u12_4=0x8 & g32_u16_4=0x0 & g32_u20_4=0x0 & g32_gpr24_4 & g32_gpr28_4 & g32_gpro24_4 & g32_u24_4 & g32_gpro28_4 & g32_u28_4 {
+  local r1num:4 = g32_u24_4; local r2num:4 = g32_u28_4;
+  local fc:1 = r0:1 & 0x7f; local qmm:1 = 0; local qsv:1 = 0; local qasc:1 = 1; local qcf:1 = 0; local qel:1 = 0; local qnis:8 = 0; local qail:8 = 0; local qkl:8 = 0; local qpl:8 = 0; local qfix:8 = 0; local qn:8 = 0; local qbest:8 = 0; local qhs:1 = 0; local qbad:8 = 0; local qbrl:8 = 0; local qad:8 = 0; local qln:8 = 0; local qrl:8 = 0; local qne:8 = 0; local qcont:1 = 0; local qc:1 = 0; local qx:8 = 0; local qy:8 = 0; local qci:8 = 0; local qj:4 = 0; local qop:1 = 0; local qfn:1 = 0; local qos:8 = 0; local qol:8 = 0; local qplaced:8 = 0; local qcrrb:8 = 0; local qa1:8 = 0; local ql1:8 = 0; local qa2:8 = 0; local ql2:8 = 0; local qcc:1 = 0; local qcfo:1 = 0; local qiilf:1 = 0; local qiiln:1 = 0; local qeilf:1 = 0; local qeiln:1 = 0; local qeilp:1 = 0; local qeilw:8 = 0; local qb:1 = 0; local qnl:8 = 0; local qb40:1 = 0; local qb46:1 = 0; local qb7:1 = 0; local qpb:2 = 0; local qp0:1 = 0; local qp1:1 = 0; local qt:8 = 0;
+  if (fc != 0) goto <L_fn>;
+  *:8 r1 = 0xe000000000000000:8; *:8 (r1 + 8) = 0:8; *:8 (r1 + 16) = 0x3800000000000000:8; *:8 (r1 + 24) = 0x8000000000000000:8; cc = 0; cc_sync(); goto <L_done>;
+  <L_fn> if ((fc == 1) || (fc == 2)) goto <L_fok>; trap_specification(); goto <L_done>;
+  <L_fok>
+  qsv = (fc == 2); qmm = (r0:1 >> 7) & 1;
+  if ((((r1num & 1) == 0) && (r1num != 0)) && (((r2num & 1) == 0) && (r2num != 0))) goto <L_rok>; trap_specification(); goto <L_done>;
+  <L_rok>
+  if ((r1 & 7) != 0) goto <L_sbad>; if ((g32_gpr24_4 & 7) != 0) goto <L_sbad>; if (qmm != 0) goto <L_sok>; if ((g32_gpr28_4 & 7) == 0) goto <L_sok>;
+  <L_sbad> trap_specification(); goto <L_done>;
+  <L_sok>
+  qp0 = *:1 r1; qp1 = *:1 (r1 + 1);
+  qnis = 0; if (qp0 != 0x20) goto <L_n1>; qnis = 32;
+  <L_n1> if (qp0 != 0x10) goto <L_n2>; qnis = 64;
+  <L_n2> if (qp0 != 0x08) goto <L_n3>; qnis = 128;
+  <L_n3>
+  if ((qnis != 0) && ((qp1 & 0xf) == 0)) goto <L_pbok>; trap_data_exception(); goto <L_done>;
+  <L_pbok>
+  qkl = zext(*:2 (r1 + 10)); qpl = zext(*:2 (r1 + 14));
+  if ((qkl == 0) || ((qkl & 7) != 0) || (qkl > 4096)) goto <L_dex>;
+  qfix = qkl + qpl; if (qsv != 0) goto <L_kok>; if (((qpl & 7) != 0) || (qfix > 4096)) goto <L_dex>;
+  <L_kok>
+  qail = zext(*:1 (r1 + 33) & 0x7f); if (qail < qnis) goto <L_aok>;
+  <L_dex> trap_data_exception(); goto <L_done>;
+  <L_aok>
+  qb7 = *:1 (r1 + 7); qasc = (qb7 & 0x80) == 0; qcf = qb7 & 1; qel = *:1 (r1 + 40) & 0xc0;
+  qn = 0; <L_al> if ((*:8 (r1 + 576 + (qn * 16)) & 7) != 0) goto <L_dex>; qn = qn + 1; if (qn <= qail) goto <L_al>;
+  qcrrb = *:8 (r1 + 56); qcrrb = qcrrb & 0xfffffffffffff000;
+  qa1 = g32_gpr24_4; ql1 = g32_gpro24_4; qa2 = g32_gpr28_4; ql2 = g32_gpro28_4; qplaced = 0; qeilp = 0; qop = 0; qfn = 0;
+  if (qcf == 0) goto <L_begin>; qop = *:1 (r1 + 64); qfn = *:1 (r1 + 65); qos = *:8 (r1 + 72); qol = *:8 (r1 + 80);
+  <L_begin>
+  qcont = 0; if (qmm != 0) goto <L_nc>;
+  if ((qop == 0) || (qfn == 0)) goto <L_nopend>; if (ql2 < 16) goto <L_end1>; *:8 qa2 = qos; *:8 (qa2 + 8) = qol; qa2 = qa2 + 16; ql2 = ql2 - 16; qop = 0;
+  <L_nopend>
+  if ((qop == 0) || (qfn != 0)) goto <L_nc>; qcont = 1; qci = 0; qj = 0;
+  <L_lp> *[cpm]:8 (0x3000:4 + qj) = *:8 (qcrrb + qci); qci = qci + 8; qj = qj + 8; if (qci < qkl) goto <L_lp>;
+  <L_nc>
+  <L_unit> qhs = 0; qne = 0; qn = 0;
+  <L_scan> qln = *:8 (r1 + 584 + (qn * 16)); if (qln == 0) goto <L_snext>; qad = *:8 (r1 + 576 + (qn * 16));
+  qrl = qfix; if (qsv == 0) goto <L_haverl>; if (qln < (qkl + 8)) goto <L_incomp>;
+  qpl = zext(*:2 (qad + qkl + 6)); if (((qpl & 7) != 0) || ((qkl + qpl) > 4088)) goto <L_dex>; qrl = qkl + 8 + qpl;
+  <L_haverl> if (qln < qrl) goto <L_incomp>; qne = qne + 1; if (qcont == 0) goto <L_nq>;
+  qci = 0; qj = 0; qc = 0; <L_pa1> if (qci >= qkl) goto <L_pd1>; qx = *:8 (qad + qci); qy = *[cpm]:8 (0x3000:4 + qj); if (qx == qy) goto <L_pn1>; qc = 1; if (qx < qy) goto <L_pd1>; qc = 2; goto <L_pd1>; <L_pn1> qci = qci + 8; qj = qj + 8; goto <L_pa1>; <L_pd1>
+  if (qasc == 0) goto <L_qd>; if (qc == 1) goto <L_snext>; goto <L_nq>;
+  <L_qd> if (qc == 2) goto <L_snext>;
+  <L_nq> if (qhs != 0) goto <L_cmpb>; <L_take> qhs = 1; qbest = qn; qbad = qad; qbrl = qrl; goto <L_snext>;
+  <L_cmpb> qci = 0; qc = 0; <L_ca2> if (qci >= qkl) goto <L_cd2>; qx = *:8 (qad + qci); qy = *:8 (qbad + qci); if (qx == qy) goto <L_cn2>; qc = 1; if (qx < qy) goto <L_cd2>; qc = 2; goto <L_cd2>; <L_cn2> qci = qci + 8; goto <L_ca2>; <L_cd2>
+  if (qasc == 0) goto <L_bd>; if (qc != 2) goto <L_take>; goto <L_snext>;
+  <L_bd> if (qc != 1) goto <L_take>;
+  <L_snext> qn = qn + 1; if (qn <= qail) goto <L_scan>;
+  if (qne == 0) goto <L_done0>; if (qeilp != 0) goto <L_endeil>; if (qhs != 0) goto <L_sel>; qcont = 0; goto <L_unit>;
+  <L_sel> if (qmm != 0) goto <L_room>; if (qcont != 0) goto <L_room>; if (qop == 0) goto <L_room>;
+  if (ql2 < 16) goto <L_end1n>; *:8 qa2 = qos; *:8 (qa2 + 8) = qol; qa2 = qa2 + 16; ql2 = ql2 - 16; qop = 0;
+  <L_room> if (ql1 >= qbrl) goto <L_place>; qfn = 1; goto <L_end1>;
+  <L_end1n> qfn = 1; goto <L_end1>;
+  <L_place> qci = 0; <L_cpy> *:8 (qa1 + qci) = *:8 (qbad + qci); qci = qci + 8; if (qci < qbrl) goto <L_cpy>;
+  if (qmm != 0) goto <L_nokey>; qci = 0; qj = 0;
+  <L_ck> *[cpm]:8 (0x3000:4 + qj) = *:8 (qbad + qci); qci = qci + 8; qj = qj + 8; if (qci < qkl) goto <L_ck>;
+  if (qcont != 0) goto <L_cont>; qop = 1; qos = qa1; qol = qbrl; goto <L_nokey>;
+  <L_cont> qol = qol + qbrl;
+  <L_nokey> qa1 = qa1 + qbrl; ql1 = ql1 - qbrl; qplaced = qplaced + 1;
+  qt = *:8 (r1 + 576 + (qbest * 16)); *:8 (r1 + 576 + (qbest * 16)) = qt + qbrl; qnl = *:8 (r1 + 584 + (qbest * 16)) - qbrl; *:8 (r1 + 584 + (qbest * 16)) = qnl;
+  qcont = 0; if (qmm != 0) goto <L_c2>; qcont = 1;
+  <L_c2> if (qnl != 0) goto <L_unit>;
+  if (qbest != 0) goto <L_eo>; if ((qel & 0x80) == 0) goto <L_unit>; goto <L_eset>;
+  <L_eo> if ((qel & 0x40) == 0) goto <L_unit>;
+  <L_eset> qeilp = 1; qeilw = qbest; goto <L_unit>;
+  <L_done0> if (qmm != 0) goto <L_n0>; if (qop == 0) goto <L_n0>; if (ql2 < 16) goto <L_pend>; *:8 qa2 = qos; *:8 (qa2 + 8) = qol; qa2 = qa2 + 16; ql2 = ql2 - 16; qop = 0;
+  <L_n0> qcc = 0; qcfo = 0; goto <L_fin>;
+  <L_pend> qfn = 1; goto <L_end1>;
+  <L_end1> qcc = 1; qcfo = 1; goto <L_fin>;
+  <L_endeil> qcc = 2; qcfo = 1; qeilf = 0; qeiln = 0; qfn = 1; if (qel != 0xc0) goto <L_fin>; qeilf = 1; qeiln = qeilw:1; qfn = 0; goto <L_fin>;
+  <L_incomp> qcc = 2; qcfo = 1; qiilf = 1; qiiln = qn:1; qfn = 0; goto <L_fin>;
+  <L_fin> *:1 (r1 + 2) = 0; qb7 = *:1 (r1 + 7); qb7 = (qb7 & 0xfe) | qcfo; *:1 (r1 + 7) = qb7;
+  qb40 = *:1 (r1 + 40) & 0xdf; if (qeilf == 0) goto <L_e0>; qb40 = qb40 | 0x20;
+  <L_e0> *:1 (r1 + 40) = qb40; *:1 (r1 + 41) = qeiln;
+  qb46 = *:1 (r1 + 46) & 0x7f; if (qiilf == 0) goto <L_i0>; qb46 = qb46 | 0x80;
+  <L_i0> *:1 (r1 + 46) = qb46; *:1 (r1 + 47) = qiiln;
+  *:1 (r1 + 64) = qop; *:1 (r1 + 65) = qfn; *:8 (r1 + 72) = qos; *:8 (r1 + 80) = qol;
+  if (qmm != 0) goto <L_nr>; if (qplaced == 0) goto <L_nr>; if (qcfo == 0) goto <L_nr>; qci = 0; qj = 0;
+  <L_sk> *:8 (qcrrb + qci) = *[cpm]:8 (0x3000:4 + qj); qci = qci + 8; qj = qj + 8; if (qci < qkl) goto <L_sk>;
+  <L_nr> g32_gpr24_4 = qa1; g32_gpro24_4 = ql1; if (qmm != 0) goto <L_n2r>; g32_gpr28_4 = qa2; g32_gpro28_4 = ql2;
+  <L_n2r> cc = qcc; cc_sync();
+  <L_done>
 }
 :CLGFR g32_gpr24_4,g32_gpr28_4 is g32_u0_4=0xb & g32_u4_4=0x9 & g32_u8_4=0x3 & g32_u12_4=0x1 & g32_u16_4=0x0 & g32_u20_4=0x0 & g32_gpr24_4 & g32_gpr28_4 {
   local x:8 = g32_gpr24_4; local y:8 = zext(g32_gpr28_4:4); gs_cc_cmpu(x, y);
