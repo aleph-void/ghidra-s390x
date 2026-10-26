@@ -120,61 +120,17 @@ attach variables [ RRsl_R2 ] [ f0 f1 f2 f3 f4 f5 f6 f7 f8 f9 f10 f11 f12 f13 f14
 
 # MSDR: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:MAYLR RRDl_R1 "," RRDl_R3 "," RRDl_R2 is RRDl_OP=0xB338 & RRDl_IGN=0 & RRDl_R1 & RRDl_R3 & RRDl_R2
-{
-    # MULTIPLY AND ADD UNNORMALIZED (long to ext. low HFP):
-    # R1 = R1 + R3 * R2, low-order 64 bits of the extended result.
-    # TODO: R1/R3/R2 designate extended pairs (over-accepted); the
-    #   architected result is the LOW-order 64 bits, modeled here into R1
-    #   (high-64 attach) as an approximation; unnormalized HFP product is
-    #   approximated by IEEE multiply. CC unchanged.
-    local p:8;
-    p = RRDl_R3 f* RRDl_R2;
-    RRDl_R1 = RRDl_R1 f+ p;
-}
+# MAYLR: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:MYLR RRDl_R1 "," RRDl_R3 "," RRDl_R2 is RRDl_OP=0xB339 & RRDl_IGN=0 & RRDl_R1 & RRDl_R3 & RRDl_R2
-{
-    # MULTIPLY UNNORMALIZED (long to ext. low HFP): R1 = R3 * R2,
-    # low-order 64 bits of the extended product.
-    # TODO: as for MAYLR. CC unchanged.
-    RRDl_R1 = RRDl_R3 f* RRDl_R2;
-}
+# MYLR: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:MAYR RRDl_R1 "," RRDl_R3 "," RRDl_R2 is RRDl_OP=0xB33A & RRDl_IGN=0 & RRDl_R1 & RRDl_R3 & RRDl_R2
-{
-    # MULTIPLY AND ADD UNNORMALIZED (long to ext. HFP):
-    # R1(pair) = R1 + R3 * R2 (entire extended product).
-    # TODO: R1/R3/R2 designate extended pairs (over-accepted); only the
-    #   high-order 64 bits are modeled. HFP approx, not fused. CC unchanged.
-    local p:8;
-    p = RRDl_R3 f* RRDl_R2;
-    RRDl_R1 = RRDl_R1 f+ p;
-}
+# MAYR: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:MYR RRDl_R1 "," RRDl_R3 "," RRDl_R2 is RRDl_OP=0xB33B & RRDl_IGN=0 & RRDl_R1 & RRDl_R3 & RRDl_R2
-{
-    # MULTIPLY UNNORMALIZED (long to ext. HFP): R1(pair) = R3 * R2.
-    # TODO: as for MAYR. CC unchanged.
-    RRDl_R1 = RRDl_R3 f* RRDl_R2;
-}
+# MYR: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:MAYHR RRDl_R1 "," RRDl_R3 "," RRDl_R2 is RRDl_OP=0xB33C & RRDl_IGN=0 & RRDl_R1 & RRDl_R3 & RRDl_R2
-{
-    # MULTIPLY AND ADD UNNORMALIZED (long to ext. high HFP):
-    # R1 = R1 + R3 * R2, high-order 64 bits of the extended product.
-    # TODO: as for MAYR. CC unchanged.
-    local p:8;
-    p = RRDl_R3 f* RRDl_R2;
-    RRDl_R1 = RRDl_R1 f+ p;
-}
+# MAYHR: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:MYHR RRDl_R1 "," RRDl_R3 "," RRDl_R2 is RRDl_OP=0xB33D & RRDl_IGN=0 & RRDl_R1 & RRDl_R3 & RRDl_R2
-{
-    # MULTIPLY UNNORMALIZED (long to ext. high HFP): R1 = R3 * R2.
-    # TODO: as for MAYR. CC unchanged.
-    RRDl_R1 = RRDl_R3 f* RRDl_R2;
-}
+# MYHR: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # ============================================================================
 # HFP RXF (48-bit): multiply-and-add/subtract, memory form.

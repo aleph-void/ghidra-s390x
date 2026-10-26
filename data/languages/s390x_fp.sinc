@@ -930,59 +930,17 @@ dxb_RXFs_DL2_RXFs_X2_RXFs_B2: RXFs_DL2 is RXFs_DL2 & RXFs_X2=0 & RXFs_B2=0  { }
 dxb_RXFs_DL2_RXFs_X2_RXFs_B2: RXFs_DL2(RXFs_B2) is RXFs_DL2 & RXFs_X2=0 & RXFs_B2  { }
 dxb_RXFs_DL2_RXFs_X2_RXFs_B2: RXFs_DL2(RXFs_X2,0) is RXFs_DL2 & RXFs_X2 & RXFs_B2=0  { }
 dxb_RXFs_DL2_RXFs_X2_RXFs_B2: RXFs_DL2(RXFs_X2,RXFs_B2) is RXFs_DL2 & RXFs_X2 & RXFs_B2  { }
-:MAYH RXFs_R1 "," RXFs_R3 "," dxb_RXFs_DL2_RXFs_X2_RXFs_B2 is RXFs_OP=0xED & RXFs_OP2=0x3C & RXFs_IGN=0 & RXFs_R1 & RXFs_R3 & RXFs_X2 & RXFs_B2 & RXFs_DL2 & dxb_RXFs_DL2_RXFs_X2_RXFs_B2
-{
-    # MULTIPLY AND ADD UNNORMALIZED, high half: R1 = R1 + R3 * *ea.
-    local ea:8; local p:8;
-    ea_D12(ea, RXFs_B2, RXFs_X2, RXFs_DL2);
-    p = RXFs_R3 f* *:8 ea;
-    RXFs_R1 = RXFs_R1 f+ p;
-}
+# MAYH: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:MYH RXFs_R1 "," RXFs_R3 "," dxb_RXFs_DL2_RXFs_X2_RXFs_B2 is RXFs_OP=0xED & RXFs_OP2=0x3D & RXFs_IGN=0 & RXFs_R1 & RXFs_R3 & RXFs_X2 & RXFs_B2 & RXFs_DL2 & dxb_RXFs_DL2_RXFs_X2_RXFs_B2
-{
-    # MULTIPLY UNNORMALIZED, high half: R1 = R3 * *ea.
-    local ea:8;
-    ea_D12(ea, RXFs_B2, RXFs_X2, RXFs_DL2);
-    RXFs_R1 = RXFs_R3 f* *:8 ea;
-}
+# MYH: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:MAY RXFs_R1 "," RXFs_R3 "," dxb_RXFs_DL2_RXFs_X2_RXFs_B2 is RXFs_OP=0xED & RXFs_OP2=0x3A & RXFs_IGN=0 & RXFs_R1 & RXFs_R3 & RXFs_X2 & RXFs_B2 & RXFs_DL2 & dxb_RXFs_DL2_RXFs_X2_RXFs_B2
-{
-    # MULTIPLY AND ADD UNNORMALIZED (entire extended product).
-    # TODO: only the high-order 64 bits are modeled (R1); the low-order
-    #   64 bits of the pair are not. HFP approx, not fused.
-    local ea:8; local p:8;
-    ea_D12(ea, RXFs_B2, RXFs_X2, RXFs_DL2);
-    p = RXFs_R3 f* *:8 ea;
-    RXFs_R1 = RXFs_R1 f+ p;
-}
+# MAY: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:MY RXFs_R1 "," RXFs_R3 "," dxb_RXFs_DL2_RXFs_X2_RXFs_B2 is RXFs_OP=0xED & RXFs_OP2=0x3B & RXFs_IGN=0 & RXFs_R1 & RXFs_R3 & RXFs_X2 & RXFs_B2 & RXFs_DL2 & dxb_RXFs_DL2_RXFs_X2_RXFs_B2
-{
-    # MULTIPLY UNNORMALIZED (entire extended product).
-    # TODO: only the high-order 64 bits are modeled (R1); the low-order
-    #   64 bits of the pair are not. HFP approx.
-    local ea:8;
-    ea_D12(ea, RXFs_B2, RXFs_X2, RXFs_DL2);
-    RXFs_R1 = RXFs_R3 f* *:8 ea;
-}
+# MY: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:MAYL RXFs_R1 "," RXFs_R3 "," dxb_RXFs_DL2_RXFs_X2_RXFs_B2 is RXFs_OP=0xED & RXFs_OP2=0x38 & RXFs_IGN=0 & RXFs_R1 & RXFs_R3 & RXFs_X2 & RXFs_B2 & RXFs_DL2 & dxb_RXFs_DL2_RXFs_X2_RXFs_B2
-{
-    # MULTIPLY AND ADD UNNORMALIZED, low half (R1+1 = R1 + low(R3 * *ea)):
-    # intentionally decode-only. The project models HFP values as IEEE
-    # doubles, so the low 64 bits of the extended product lie below the
-    # precision of the approximation -- no honest value can be
-    # materialized, and any stored value would be fabrication. R1+1 is
-    # left unchanged in the model.
-}
+# MAYL: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:MYL RXFs_R1 "," RXFs_R3 "," dxb_RXFs_DL2_RXFs_X2_RXFs_B2 is RXFs_OP=0xED & RXFs_OP2=0x39 & RXFs_IGN=0 & RXFs_R1 & RXFs_R3 & RXFs_X2 & RXFs_B2 & RXFs_DL2 & dxb_RXFs_DL2_RXFs_X2_RXFs_B2
-{
-    # MULTIPLY UNNORMALIZED, low half (R1+1 = low(R3 * *ea)):
-    # intentionally decode-only, same rationale as MAYL above.
-}
+# MYL: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # ============================================================================
 # BFP RRE: sign ops, square root, lengthen, multiply, compare-and-signal.

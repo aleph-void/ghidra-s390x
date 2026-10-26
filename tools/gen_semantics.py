@@ -907,8 +907,10 @@ HFP_NAMES = set("""ad adr ae aer au aur aw awr axr cd cdfr cdgr cdr ce cefr cegr
 cgxr cxfr cxgr cxr dd ddr de der dxr fidr fier fixr hdr her lcdr lcer lcxr lde lder ldxr ledr lexr
 lndr lner lnxr lpdr lper lpxr lrdr lrer ltdr lter ltxr lxd lxdr lxe lxer mad madr mae maer md mde
 mder mdr me mee meer mer msd msdr mse mser mxd mxdr mxr sd sdr se ser sqd sqdr sqe sqer sqxr su sur
-sw swr sxr tbdr tbedr thdr thder""".split())
+sw swr sxr tbdr tbedr thdr thder may mayr mayh mayhr mayl maylr my myr myh myhr myl mylr""".split())
 EXTRA_FIELDS.update(gen_misc.EXTRA)
+EXTRA_FIELDS["mayr"] = [(16, 4, "fprlo"), (16, 4, "fprlo2")]     # result pair of either R1 register
+EXTRA_FIELDS["may"] = [(32, 4, "fprlo"), (32, 4, "fprlo2")]
 
 def semantics(ctx):
     r = core(ctx)

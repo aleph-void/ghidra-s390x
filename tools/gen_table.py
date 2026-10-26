@@ -58,6 +58,8 @@ REGS = {
     "gpro": [f"r{i + 1}" for i in range(15)] + ["r0"],   # odd register of an even/odd pair
     "gpror": [f"r{i | 1}" for i in range(16)],           # R|1 (BXH/BXLE comparand)
     "fprp2": [f"f{(i + 2) % 16}" for i in range(16)],    # FPR n+2: low half of an extended pair
+    "fprlo": [f"f{i & 13}" for i in range(16)],          # either register of a pair -> its low-numbered one
+    "fprlo2": [f"f{(i & 13) + 2}" for i in range(16)],
 }
 
 def field(L, shift, bits, kind="u"):

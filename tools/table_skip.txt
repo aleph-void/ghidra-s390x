@@ -1,10 +1,4 @@
 # entries the hand-written .sinc files decode correctly (all 8 test encodings agree with objdump)
-myh ed000000003d ff0000000fff
-mayh ed000000003c ff0000000fff
-my ed000000003b ff0000000fff
-may ed000000003a ff0000000fff
-myl ed0000000039 ff0000000fff
-mayl ed0000000038 ff0000000fff
 lochhino ec0e0000004e ff0f0000ffff
 locghino ec0e00000046 ff0f0000ffff
 lochino ec0e00000042 ff0f0000ffff
@@ -440,12 +434,6 @@ dsgfr b91d00000000 ffffff000000
 dsgr b90d00000000 ffffff000000
 didbr b35b00000000 ffff00000000
 diebr b35300000000 ffff00000000
-myhr b33d00000000 ffff0f000000
-mayhr b33c00000000 ffff0f000000
-myr b33b00000000 ffff0f000000
-mayr b33a00000000 ffff0f000000
-mylr b33900000000 ffff0f000000
-maylr b33800000000 ffff0f000000
 trap4 b2ff00000000 ffff00000000
 lpswe b2b200000000 ffff00000000
 tre b2a500000000 ffffff000000

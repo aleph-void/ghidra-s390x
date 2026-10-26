@@ -419,7 +419,8 @@ def hfp_to_bfp(blk, h, short, m3):
     rem = blk.local(16, "zext(0:8)")
     half = blk.local(16, "zext(0:8)")
     blk.add(f"if ({sh} s> 0) goto <{done}r>; {q} = zext({f}) << (0 - {sh}); goto <{done}q>;\n"
-            f"<{done}r> {q} = zext({f}) >> {sh}; {rem} = zext({f}) - ({q} << {sh}); {half} = (zext(1:1) << {sh}) >> 1;\n<{done}q>")
+            f"<{done}r> {q} = zext({f}) >> {sh}; {rem} = zext({f}) - ({q} << {sh}); {half} = (zext(1:1) << {sh}) >> 1;\n"
+            f"if ({sh} s< 120) goto <{done}q>; {half} = {c16(1 << 127)};\n<{done}q>")
     up = blk.local(1, f"(({md} == 1) && ({rem} >= {half}) && ({half} != 0)) || "
                       f"(({md} == 4) && (({rem} > {half}) || (({rem} == {half}) && ({half} != 0) && (({q} & 1) != 0)))) || "
                       f"(({md} == 6) && ({h.s} == 0) && ({rem} != 0)) || (({md} == 7) && ({h.s} != 0) && ({rem} != 0))")
@@ -439,6 +440,44 @@ def hfp_to_bfp(blk, h, short, m3):
     blk.add(f"{res} = (zext({h.s}) << {8 * n - 1}) | ({bexp} << {P - 1}) | {qq};\n<{done}>")
     blk.add(f"gs_cc_flags({cc} == 0, {cc} == 1, {cc} == 2, {cc} == 3);")
     return res
+
+# ---- unnormalized multiply (and add), long to extended (MY*, MAY*) -------------------------------
+def may(blk, addend, a, b):
+    """Hercules mul_lf_to_ef_unnorm / add_ef_unnorm: the 28-digit product of the long fractions
+    (characteristic sum - 64, no normalization), plus the long addend aligned to the product's
+    characteristic by digit shifts (lost low digits borrow one unit on subtraction). Returns
+    (sign, characteristic, 128-bit fraction) for store_unnorm."""
+    done = lbl(blk, "my")
+    R = blk.local(16, f"{a.f} * {b.f}")
+    ep = blk.local(8, f"{a.e} + {b.e} - 64")
+    sp = blk.local(1, f"{a.s} != {b.s}")
+    if addend is None:
+        return sp, ep, R
+    A = blk.local(16, f"{addend.f} << 56")
+    ea = blk.local(8, addend.e)
+    rd = blk.local(1, "0")
+    ld = blk.local(1, "0")
+    blk.add(f"<{done}r> if (({ea} s>= {ep}) || ({A} == 0)) goto <{done}l>; {rd} = {rd} || (({A} & 0xf) != 0); "
+            f"{A} = {A} >> 4; {ea} = {ea} + 1; goto <{done}r>;\n"
+            f"<{done}l> if (({ea} s<= {ep}) || ({A} == 0)) goto <{done}a>; {ld} = {ld} || (({A} >> 124) != 0); "
+            f"{A} = {A} << 4; {ea} = {ea} - 1; goto <{done}l>;\n<{done}a>")
+    sg = blk.local(1, sp)
+    blk.add(f"if ({addend.s} != {sp}) goto <{done}d>; {R} = {R} + {A}; {ld} = {ld} || (({R} >> 112) != 0); "
+            f"{R} = {R} & {c16((1 << 112) - 1)}; goto <{done}z>;\n"
+            f"<{done}d> if ({R} < {A}) goto <{done}s>;\n"
+            f"{R} = {R} - zext({rd}) - {A}; {ld} = {ld} || {rd}; goto <{done}z>;\n"
+            f"<{done}s> {R} = {A} - {R}; {sg} = {addend.s};\n"
+            f"<{done}z> if (({R} != 0) || {ld} || {rd}) goto <{done}>; {sg} = 0;\n<{done}>")
+    return sg, ep, R
+
+def unnorm_hi(blk, sg, e, R):
+    t = blk.local(16, f"{R} >> 64")
+    ls = blk.local(8, f"{R}:8")
+    return blk.local(8, f"(zext({sg}) << 63) | ({e} << 56) | ({t}:8 << 8) | ({ls} >> 56)")
+
+def unnorm_lo(blk, sg, e, R):
+    ls = blk.local(8, f"{R}:8")
+    return blk.local(8, f"(zext({sg}) << 63) | ((({e} << 56) - 0x0e00000000000000) & 0x7f00000000000000) | ({ls} & {F56:#x})")
 
 # ---- instruction table -----------------------------------------------------------------------
 def opfmt(n):
@@ -562,6 +601,24 @@ def semantics(ctx):
         lo = blk.local(8, f"{sgn} | (({hi} - 0x0e00000000000000) & 0x7f00000000000000)")
         blk.add(f"if ({fr} != 0) goto <{(l := lbl(blk, 'lx'))}>; {hi} = {sgn}; {lo} = {sgn};\n<{l}>")
         blk.add(f"{o[0]} = {hi}; {p[0]} = {lo};")
+        return blk.text()
+    m = re.fullmatch(r"m(a?)y(h|l)?r?", n)
+    if m:
+        add_, part = bool(m.group(1)), m.group(2)
+        x2, x3 = rd(2, "d"), rd(1, "d")
+        addend = rd(0, "d") if add_ else None
+        sg, e, R = may(blk, addend, x3, x2)
+        if part == "h":
+            blk.add(f"{o[0]} = {unnorm_hi(blk, sg, e, R)};")
+        elif part == "l":
+            blk.add(f"{o[0]} = {unnorm_lo(blk, sg, e, R)};")
+        else:
+            hi, lo = unnorm_hi(blk, sg, e, R), unnorm_lo(blk, sg, e, R)
+            if add_:
+                lo_reg, lo_reg2 = ctx["extra"]
+                blk.add(f"{lo_reg} = {hi}; {lo_reg2} = {lo};")
+            else:
+                blk.add(f"{o[0]} = {hi}; {p[0]} = {lo};")
         return blk.text()
     if n in ("thdr", "thder"):
         bits = blk.local(8, o[1]) if n == "thdr" else blk.local(4, f"{o[1]}(4)")
