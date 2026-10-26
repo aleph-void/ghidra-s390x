@@ -372,6 +372,13 @@ dxb_RXb_D2_RXb_X2_RXb_B2: RXb_D2(RXb_X2,RXb_B2) is RXb_D2 & RXb_X2 & RXb_B2  { }
     <br2_skip_14>
 }
 
+# XPLINK return: B 2(,7) or B 4(,7) (see the xplink context in s390x.slaspec)
+:B dxb_RXb_D2_RXb_X2_RXb_B2 is xplink=1 & RXb_OP=0x47 & RXb_M1=0xF & RXb_X2=0 & RXb_B2=7 & RXb_D2 & dxb_RXb_D2_RXb_X2_RXb_B2
+{
+    local ea:8 = r7 + RXb_D2;
+    return [ea];
+}
+
 :B dxb_RXb_D2_RXb_X2_RXb_B2 is RXb_OP=0x47 & RXb_M1=0xF & RXb_X2 & RXb_B2 & RXb_D2 & dxb_RXb_D2_RXb_X2_RXb_B2
 {
     local ea:8;

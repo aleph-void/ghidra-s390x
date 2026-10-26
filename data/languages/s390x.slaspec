@@ -335,6 +335,14 @@ define register offset=0x300 size=8 [
     c8  c9  c10 c11 c12 c13 c14 c15
 ];
 
+# Disassembly context. xplink: set to 1 by the zos_xplink compiler spec, where "BR 7" and
+# "B 2(,7)"/"B 4(,7)" are function returns (the XPLINK return address is in R7, and a
+# 2- or 4-byte NOP after the call is skipped).
+define register offset=0x400 size=4 [ contextreg ];
+define context contextreg
+    xplink = (0,0) noflow
+;
+
 # ---------------------------------------------------------------------------
 # Field -> register attachments
 # R1/R2/R3 are true register operands: value 0 selects r0 (a real register).

@@ -421,6 +421,12 @@ macro rel_RI16(dest, RI) {
     return [RRb_R2];
 }
 
+:BR RRb_R2 is xplink=1 & RRb_OP=0x07 & RRb_M1=0xF & RRb_R2 & RRb_R2n=7
+{
+    # XPLINK (zos_xplink compiler spec): the return address is in R7.
+    return [RRb_R2];
+}
+
 :BR RRb_R2 is RRb_OP=0x07 & RRb_M1=0xF & RRb_R2 & RRb_R2n != 0 & RRb_R2n != 14
 {
     # BCR mask=15: unconditional branch to the address in R2 (PoP 7-41,
