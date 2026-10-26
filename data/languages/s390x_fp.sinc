@@ -1658,21 +1658,9 @@ dxb_RXYFl_D20_RXYFl_X2_RXYFl_B2: dispRXYFl_DL2(RXYFl_X2,RXYFl_B2) is RXYFl_DL2 &
 
 # FPC operations. SFPC/EFPC use general registers (PoP 9-30/9-47), hence
 # the RREg token (R1 -> GPR), not the FPR-attached RREl.
-:SFPC RREg_R1 is RREg_OP=0xB384 & RREg_IGN=0 & RREg_R1
-{
-    # SET FPC (PoP 9-47): FPC = bits 32-63 of GPR R1. The
-    # specification-exception checks on unsupported FPC bit positions are
-    # not modeled (no exception mechanism in this spec).
-    fpc = RREg_R1:4;
-}
+# SFPC: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:EFPC RREg_R1 is RREg_OP=0xB38C & RREg_IGN=0 & RREg_R1
-{
-    # EXTRACT FPC (PoP 9-30): bits 32-63 of GPR R1 = FPC; bits 0-31 unchanged.
-    local f:8;
-    f = zext(fpc);
-    RREg_R1 = (RREg_R1 & 0xffffffff00000000) | f;
-}
+# EFPC: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # BFP to HFP conversion (RRE).
 :THDER RREsl_R1 "," RREsl_R2 is RREsl_OP=0xB358 & RREsl_IGN=0 & RREsl_R1 & RREsl_R2

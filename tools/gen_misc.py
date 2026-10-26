@@ -494,6 +494,10 @@ def semantics(ctx):
         return sac(o)
     if n == "cpya":
         return f"{o[0]} = {o[1]};"
+    if n == "efpc":            # bits 12-15 (an old optional R2 operand) are ignored
+        return _set32(o[0], "fpc", "f")
+    if n == "sfpc":
+        return f"fpc = {o[0]}:4;"
     if n == "stfpc":
         return f"*:4 {o[0]} = fpc;"
     if n == "srnm":

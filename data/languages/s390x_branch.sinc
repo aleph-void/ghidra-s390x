@@ -107,6 +107,11 @@ macro rel_RI16(dest, RI) {
 # Extended mnemonics are the PoP Appendix J recommended set.
 # ---------------------------------------------------------------------------
 
+:NOPR is RRb_OP=0x07 & RRb_M1=0x0 & RRb_R2n=0
+{
+    # 0700: the assembler's "nopr" without an operand.
+}
+
 :NOPR RRb_R2 is RRb_OP=0x07 & RRb_M1=0x0 & RRb_R2
 {
     # BCR with mask 0 never branches; falls through. (PoP J-1.)

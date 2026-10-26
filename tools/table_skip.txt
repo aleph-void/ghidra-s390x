@@ -764,7 +764,5 @@ spm 040000000000 ff0f00000000
 trap2 01ff00000000 ffff00000000
 pr 010100000000 ffff00000000
 # kept from the hand-written files although objdump prints an extra (reserved) operand
-efpc
-sfpc
 bcr
 nopr
