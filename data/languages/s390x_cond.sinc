@@ -4385,29 +4385,7 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 # Harness note: display prints the raw L field (length-1); the harness
 # adds 1 for the 'mvcin' mnemonic (SS_LEN_MNEMS), like mvc/xc/nc/oc/clc.
 # ===========================================================================
-:MVCIN dlb_SSa_D1_SSa_L_SSa_B1 "," db_SSa_D2_SSa_B2 is SSa_OP=0xE8 & SSa_L & SSa_B1 & SSa_D1 & SSa_B2 & SSa_D2 & dlb_SSa_D1_SSa_L_SSa_B1 & db_SSa_D2_SSa_B2
-{
-    local ea1:8;
-    local ea2:8;
-    local len:8;
-    local b:1;
-    local _ext_mvcin_l:1;
-    ea_D12(ea1, SSa_B1, zero, SSa_D1);
-    ea_D12(ea2, SSa_B2, zero, SSa_D2);
-    _ext_mvcin_l = SSa_L;
-    # Second operand processed right-to-left: start at its last byte.
-    ea2 = ea2 + zext(_ext_mvcin_l);
-    len = zext(_ext_mvcin_l) + 1;
-    <mcv_loop>
-    if (len == 0) goto <mcv_done>;
-    b = *:1 (ea2);
-    *:1 ea1 = b;
-    ea1 = ea1 + 1;
-    ea2 = ea2 - 1;
-    len = len - 1;
-    goto <mcv_loop>;
-    <mcv_done>
-}
+# MVCIN: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # ===========================================================================
 # MOVE PAGE (MVPG), RRE, opcode B254 — decode-only. PoP 10-x: privileged

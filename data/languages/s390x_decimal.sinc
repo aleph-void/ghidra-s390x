@@ -805,106 +805,17 @@ db_SSc_D2_SSc_B2: SSc_D2(SSc_B2) is SSc_D2 & SSc_B2  { }
 # PACK: second operand (zoned) -> packed at first operand. Each source byte's
 # low nibble becomes a packed digit; the sign comes from the HIGH (zone)
 # nibble of the rightmost source byte (PoP). CC unchanged.
-:PACK dlb_SSb_D1_SSb_L1_SSb_B1 "," dlb_SSb_D2_SSb_L2_SSb_B2 is SSb_OP=0xF2 & SSb_L1 & SSb_L2 & SSb_B1 & SSb_D1 & SSb_B2 & SSb_D2 & dlb_SSb_D1_SSb_L1_SSb_B1 & dlb_SSb_D2_SSb_L2_SSb_B2
-{
-    local ea1:8; local ea2:8;
-    local n1:8; local n2:8;
-    local nd1:8; local nd2:8; local ndm:8;
-    local k:8; local kk:8;
-    local b:1; local d:1;
-    local in1:1; local in2:1; local gtm:1;
-    local sgn:1;
-    ea_D12(ea1, SSb_B1, zero, SSb_D1);
-    ea_D12(ea2, SSb_B2, zero, SSb_D2);
-    n1 = SSb_L1 + 1;
-    n2 = SSb_L2 + 1;
-    # sign = high (zone) nibble of last source byte (preferred signs not forced)
-    b = *:1 (ea2 + n2 - 1);
-    sgn = (b >> 4) & 0xf;
-    nd1 = 2 * n1 - 1;
-    nd2 = n2;
-    gtm = (nd2 > nd1);
-    ndm = nd1 + zext(gtm) * (nd2 - nd1);
-    k = 0;
-<pack_loop>
-    if (k == ndm) goto <pack_end>;
-    in1 = (k < nd1);
-    in2 = (k < nd2);
-    kk = k * zext(in2);
-    # k-th digit from right of source = low nibble of byte (n2-1-k)
-    b = *:1 (ea2 + n2 - 1 - kk);
-    d = (b & 0xf) * in2;
-    if (in1 == 0) goto <pack_next>;
-    dec_stdig(ea1, n1, k, d, sgn);
-<pack_next>
-    k = k + 1;
-    goto <pack_loop>;
-<pack_end>
-}
+# PACK: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # UNPK: UNPACK. Packed second operand -> zoned at first operand. Each packed
 # digit becomes a byte; the zone is 0xF for every byte except the rightmost,
 # whose zone receives the packed sign (PoP). CC unchanged.
-:UNPK dlb_SSb_D1_SSb_L1_SSb_B1 "," dlb_SSb_D2_SSb_L2_SSb_B2 is SSb_OP=0xF3 & SSb_L1 & SSb_L2 & SSb_B1 & SSb_D1 & SSb_B2 & SSb_D2 & dlb_SSb_D1_SSb_L1_SSb_B1 & dlb_SSb_D2_SSb_L2_SSb_B2
-{
-    local ea1:8; local ea2:8;
-    local n1:8; local n2:8;
-    local nd1:8; local nd2:8;
-    local k:8; local kk:8;
-    local b:1; local d:1; local in2:1;
-    local sgn:1; local isz:1; local zone:1;
-    ea_D12(ea1, SSb_B1, zero, SSb_D1);
-    ea_D12(ea2, SSb_B2, zero, SSb_D2);
-    n1 = SSb_L1 + 1;
-    n2 = SSb_L2 + 1;
-    nd1 = n1;
-    nd2 = 2 * n2 - 1;
-    # packed sign -> zone of the rightmost result byte
-    b = *:1 (ea2 + n2 - 1);
-    sgn = b & 0xf;
-    k = 0;
-<unpk_loop>
-    if (k == nd1) goto <unpk_end>;
-    in2 = (k < nd2);
-    kk = k * zext(in2);
-    dec_digit(ea2, n2, kk, d);
-    d = d * in2;
-    isz = (k == 0);
-    zone = ((sgn << 4) & 0xf0) * isz + 0xf0 * (1 - isz);
-    *:1 (ea1 + n1 - 1 - k) = zone | d;
-    k = k + 1;
-    goto <unpk_loop>;
-<unpk_end>
-}
+# UNPK: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # MVO: MOVE WITH OFFSET. The second operand's nibbles are placed at the first
 # operand starting one nibble left of the rightmost (nibble 0 of the first
 # operand is unchanged, as are nibbles beyond the moved field). CC unchanged.
-:MVO dlb_SSb_D1_SSb_L1_SSb_B1 "," dlb_SSb_D2_SSb_L2_SSb_B2 is SSb_OP=0xF1 & SSb_L1 & SSb_L2 & SSb_B1 & SSb_D1 & SSb_B2 & SSb_D2 & dlb_SSb_D1_SSb_L1_SSb_B1 & dlb_SSb_D2_SSb_L2_SSb_B2
-{
-    local ea1:8; local ea2:8;
-    local n1:8; local n2:8;
-    local nn1:8; local nn2:8;
-    local k:8; local kd:8;
-    local v:1;
-    ea_D12(ea1, SSb_B1, zero, SSb_D1);
-    ea_D12(ea2, SSb_B2, zero, SSb_D2);
-    n1 = SSb_L1 + 1;
-    n2 = SSb_L2 + 1;
-    nn1 = 2 * n1;
-    nn2 = 2 * n2;
-    k = 0;
-<mvo_loop>
-    if (k == nn2) goto <mvo_end>;
-    nib(ea2, n2, k, v);
-    kd = k + 1;
-    if (kd >= nn1) goto <mvo_next>;
-    stnib(ea1, n1, kd, v);
-<mvo_next>
-    k = k + 1;
-    goto <mvo_loop>;
-<mvo_end>
-}
+# MVO: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # PKA: PACK ASCII. The L2+1-byte ASCII second operand (low nibble = digit) is
 # packed into the 16-byte first operand; the sign is forced to positive
@@ -915,64 +826,12 @@ db_SSf_D1_SSf_B1: SSf_D1(SSf_B1) is SSf_D1 & SSf_B1  { }
 # display-only address operand (tools/fix_display.py)
 dlb_SSf_D2_SSf_L2_SSf_B2: SSf_D2(lenSSf_L2,0) is SSf_D2 & SSf_L2 & SSf_B2=0 [  lenSSf_L2 = SSf_L2 + 1; ] { }
 dlb_SSf_D2_SSf_L2_SSf_B2: SSf_D2(lenSSf_L2,SSf_B2) is SSf_D2 & SSf_L2 & SSf_B2 [  lenSSf_L2 = SSf_L2 + 1; ] { }
-:PKA db_SSf_D1_SSf_B1 "," dlb_SSf_D2_SSf_L2_SSf_B2 is SSf_OP=0xE9 & SSf_L2 & SSf_B1 & SSf_D1 & SSf_B2 & SSf_D2 & db_SSf_D1_SSf_B1 & dlb_SSf_D2_SSf_L2_SSf_B2
-{
-    local ea1:8; local ea2:8;
-    local n1:8; local n2:8;
-    local nd1:8;
-    local k:8; local kk:8;
-    local b:1; local d:1; local in2:1;
-    local sgn:1;
-    ea_D12(ea1, SSf_B1, zero, SSf_D1);
-    ea_D12(ea2, SSf_B2, zero, SSf_D2);
-    n1 = 16;
-    n2 = SSf_L2 + 1;
-    sgn = 0xc;
-    nd1 = 2 * n1 - 1;
-    k = 0;
-<pka_loop>
-    if (k == nd1) goto <pka_end>;
-    in2 = (k < n2);
-    kk = k * zext(in2);
-    b = *:1 (ea2 + n2 - 1 - kk);
-    d = (b & 0xf) * in2;
-    dec_stdig(ea1, n1, k, d, sgn);
-    k = k + 1;
-    goto <pka_loop>;
-<pka_end>
-}
+# PKA: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # PKU: PACK UNICODE. Like PKA but the second operand holds 2-byte big-endian
 # characters (length L2+1 must be even); the low byte's low nibble is the
 # digit. Sign forced positive. CC unchanged.
-:PKU db_SSf_D1_SSf_B1 "," dlb_SSf_D2_SSf_L2_SSf_B2 is SSf_OP=0xE1 & SSf_L2 & SSf_B1 & SSf_D1 & SSf_B2 & SSf_D2 & db_SSf_D1_SSf_B1 & dlb_SSf_D2_SSf_L2_SSf_B2
-{
-    local ea1:8; local ea2:8;
-    local n1:8; local n2:8; local nc:8;
-    local nd1:8;
-    local k:8; local kk:8;
-    local b:1; local d:1; local in2:1;
-    local sgn:1;
-    ea_D12(ea1, SSf_B1, zero, SSf_D1);
-    ea_D12(ea2, SSf_B2, zero, SSf_D2);
-    n1 = 16;
-    n2 = SSf_L2 + 1;
-    nc = n2 / 2;
-    sgn = 0xc;
-    nd1 = 2 * n1 - 1;
-    k = 0;
-<pku_loop>
-    if (k == nd1) goto <pku_end>;
-    in2 = (k < nc);
-    kk = k * zext(in2);
-    # k-th character from the right: low byte at ea2+n2-1-2*kk
-    b = *:1 (ea2 + n2 - 1 - 2 * kk);
-    d = (b & 0xf) * in2;
-    dec_stdig(ea1, n1, k, d, sgn);
-    k = k + 1;
-    goto <pku_loop>;
-<pku_end>
-}
+# PKU: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # ---------------------------------------------------------------------------
 # Edit (SS-a): ED, EDMK
@@ -1244,34 +1103,7 @@ dlb_SSf_D2_SSf_L2_SSf_B2: SSf_D2(lenSSf_L2,SSf_B2) is SSf_D2 & SSf_L2 & SSf_B2 [
 # (0x30|digit) at the first operand, processed right-to-left; the sign comes
 # from the low nibble of the last source byte used. Digits are not checked.
 # CC unchanged.
-:UNPKA dlb_SSa_D1_SSa_L_SSa_B1 "," db_SSa_D2_SSa_B2 is SSa_OP=0xEA & SSa_L & SSa_B1 & SSa_D1 & SSa_B2 & SSa_D2 & dlb_SSa_D1_SSa_L_SSa_B1 & db_SSa_D2_SSa_B2
-{
-    local ea1:8; local ea2:8;
-    local n1:8; local ns:8;
-    local k:8;
-    local b:1; local s:1; local d:1;
-    local pos:1; local neg:1;
-    ea_D12(ea1, SSa_B1, zero, SSa_D1);
-    ea_D12(ea2, SSa_B2, zero, SSa_D2);
-    n1 = SSa_L + 1;
-    # source bytes needed for n1 digits + sign
-    ns = (n1 + 2) / 2;
-    # the sign is checked but not transferred: CC 0 = sign A/C/E/F,
-    # 1 = sign B/D, 3 = invalid sign (PoP)
-    b = *:1 (ea2 + ns - 1);
-    s = b & 0xf;
-    pos = (s == 0xa) | (s == 0xc) | (s == 0xe) | (s == 0xf);
-    neg = (s == 0xb) | (s == 0xd);
-    cc = 3 * (1 - pos - neg) + neg;
-    k = 0;
-<unpka_loop>
-    if (k == n1) goto <unpka_end>;
-    dec_digit(ea2, ns, k, d);
-    *:1 (ea1 + n1 - 1 - k) = 0x30 | d;
-    k = k + 1;
-    goto <unpka_loop>;
-<unpka_end>
-}
+# UNPKA: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # TP: TEST DECIMAL. Check the packed first operand for valid digit and sign
 # codes. CC: 0 = all valid; 1 = digits valid, sign invalid; 2 = a digit
@@ -1317,106 +1149,17 @@ dlb_RSLa_D1_RSLa_L1_RSLa_B1: RSLa_D1(lenRSLa_L1,RSLa_B1) is RSLa_D1 & RSLa_L1 & 
 
 # MVST: MOVE STRING. Move bytes from (R2) to (R1) until the R0 terminator
 # byte is moved. R1/R2 are left pointing past the terminator. CC=1 complete.
-:MVST RRE_R1 "," RRE_R2 is RRE_OP=0xB255 & RRE_R1 & RRE_R2
-{
-    local ea1:8; local ea2:8;
-    local term:8;
-    local b:1;
-    local i:8;
-    local done:1;
-    ea1 = RRE_R1;
-    ea2 = RRE_R2;
-    term = r0 & 0xff;
-    i = 0;
-    done = 0;
-<mvst_loop>
-    if (i == 0x1000) goto <mvst_partial>;
-    b = *:1 ea2;
-    *:1 ea1 = b;
-    ea1 = ea1 + 1;
-    ea2 = ea2 + 1;
-    done = (zext(b) == term);
-    if (done == 0) goto <mvst_next>;
-    goto <mvst_done>;
-<mvst_next>
-    i = i + 1;
-    goto <mvst_loop>;
-<mvst_partial>
-    cc = 3;
-    goto <mvst_update>;
-<mvst_done>
-    cc = 1;
-<mvst_update>
-    RRE_R1 = ea1;
-    RRE_R2 = ea2;
-}
+# MVST: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # CLST: COMPARE LOGICAL STRING. Compare bytes at (R1)/(R2) until a
 # terminator is found in either operand. The terminator participates as a
 # byte value. CC: 0=equal endings, 1=first low, 2=first high, 3=partial.
 # R1/R2 point at the deciding bytes on exit.
-:CLST RRE_R1 "," RRE_R2 is RRE_OP=0xB25D & RRE_R1 & RRE_R2
-{
-    local ea1:8; local ea2:8;
-    local term:8;
-    local b1:1; local b2:1;
-    local i:8;
-    ea1 = RRE_R1;
-    ea2 = RRE_R2;
-    term = r0 & 0xff;
-    i = 0;
-<clst_loop>
-    if (i == 0x1000) goto <clst_partial>;
-    b1 = *:1 ea1;
-    b2 = *:1 ea2;
-    if (b1 != b2) goto <clst_diff>;
-    if (zext(b1) == term) goto <clst_equal>;
-    ea1 = ea1 + 1;
-    ea2 = ea2 + 1;
-    i = i + 1;
-    goto <clst_loop>;
-<clst_diff>
-    cc = 1 + (b1 > b2);
-    goto <clst_update>;
-<clst_equal>
-    cc = 0;
-    goto <clst_update>;
-<clst_partial>
-    cc = 3;
-<clst_update>
-    RRE_R1 = ea1;
-    RRE_R2 = ea2;
-}
+# CLST: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # SRST: SEARCH STRING. Search [R1,R2) for the R0 character. Found: R1 =
 # address, CC=1. Not found: R1 = R2, CC=2. CC=3 on partial (bound hit).
-:SRST RRE_R1 "," RRE_R2 is RRE_OP=0xB25E & RRE_R1 & RRE_R2
-{
-    local ea1:8; local ea2:8;
-    local ch:8;
-    local b:1;
-    ea1 = RRE_R1;
-    ea2 = RRE_R2;
-    ch = r0 & 0xff;
-<srst_loop>
-    if (ea1 == ea2) goto <srst_notfound>;
-    b = *:1 ea1;
-    if (zext(b) == ch) goto <srst_found>;
-    ea1 = ea1 + 1;
-    # bound the scan: a CPU may stop early; report partial (CC=3)
-    if ((ea1 - RRE_R1) == 0x1000) goto <srst_partial>;
-    goto <srst_loop>;
-<srst_found>
-    cc = 1;
-    goto <srst_update>;
-<srst_notfound>
-    cc = 2;
-    goto <srst_update>;
-<srst_partial>
-    cc = 3;
-<srst_update>
-    RRE_R1 = ea1;
-}
+# SRST: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # ---------------------------------------------------------------------------
 # Extended translate (RRE / RRF-c) and long compares (RS-a / RSY-a)

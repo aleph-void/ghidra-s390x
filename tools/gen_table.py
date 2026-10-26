@@ -185,6 +185,8 @@ RANGE = {   # name: (register kind, bytes per register, load/store/lmd)
     "lctl": ("c", 4, "l"), "stctl": ("c", 4, "s"), "lctlg": ("c", 8, "l"), "stctg": ("c", 8, "s"),
     "vlm": ("v", 16, "l"), "vstm": ("v", 16, "s"), "lmd": ("r", 4, "d"),
     "lam": ("a", 4, "l"), "stam": ("a", 4, "s"), "stmy": ("r", 4, "s"),
+    "lm": ("r", 4, "l"), "stm": ("r", 4, "s"), "lmg": ("r", 8, "l"), "stmg": ("r", 8, "s"),
+    "lmh": ("h", 4, "l"), "stmh": ("h", 4, "s"),     # h: bits 0-31 of the GPRs
 }
 
 # Ranges are emitted as one constructor per mnemonic: a guarded block per register, whose
