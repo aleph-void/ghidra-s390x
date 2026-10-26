@@ -248,24 +248,7 @@ define pcodeop unkval;
     cc = unkval(); cc_sync();
 }
 
-:SACF db_S_D2_S_B2 is S_OP=0xB279 & S_B2 & S_D2 & db_S_D2_S_B2
-{
-    # SET ADDRESS SPACE CONTROL FAST (PoP 10-132): bits 52-55 of the
-    # second-operand ADDRESS (not storage contents) are used as a
-    # code to set the address-space-control bits (PSW bits 16-17);
-    # bits 0-51 and 56-63 of the address are ignored (bits 52-53
-    # must be zero or a specification exception is recognized).
-    # Privileged. Unlike SAC it does not discard prefetched
-    # instructions. Conservative model: the two address-space-
-    # control bits (pswm numeric bits 47-46, since PoP PSW bit p is
-    # pswm value-bit (63-p), per the SSM convention) are set to an
-    # unknown value; the rest of pswm is unchanged. The exact
-    # code-to-mode mapping is not encoded (the code is dynamic).
-    # CC is unchanged (PoP 10-132).
-    local asc:8;
-    asc = unkval();
-    pswm = (pswm & 0xFFFF3FFFFFFFFFFF) | ((asc & 0x0000000000000003) << 46);
-}
+# SACF: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 :PC db_S_D2_S_B2 is S_OP=0xB218 & S_B2 & S_D2 & db_S_D2_S_B2
 {

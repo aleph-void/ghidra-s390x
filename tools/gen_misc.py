@@ -609,6 +609,8 @@ for _n, _k in (("lxab", 0), ("lxah", 1), ("lxaf", 2), ("lxag", 3), ("lxaq", 4)):
 for _n in ("trte", "trtre", "cuse"):
     EXTRA[_n] = [(24, 4, "u"), (28, 4, "u")]                 # R1, R2 numbers
 EXTRA["plo"] = [(8, 4, "gpro"), (12, 4, "gpro")]          # R1 + 1, R3 + 1
+for _n in ("mvck", "mvcp", "mvcs"):
+    EXTRA[_n] = [(8, 4, "gpr")]                            # R1: the true length
 
 def lxa(n, o, x):
     """LOAD (LOGICAL) INDEXED ADDRESS: R1 = B2 + (ext(X2 bits 32-63 + DX2) << k)."""
@@ -913,6 +915,19 @@ def semantics(ctx):
         return plo(o, x)
     if n == "ntstg":           # nontransactional store: in p-code a plain store
         return f"*:8 {o[1]} = {o[0]};"
+    if n == "tam":             # addressing mode from the PSW EA/BA bits: 0 24-bit, 1 31-bit, 3 64-bit
+        return "cc = zext((pswm & 0x80000000) != 0) + zext((pswm & 0x100000000) != 0) * 2;"
+    if n in ("mvck", "mvcp", "mvcs") and x:
+        # move with key / to primary / to secondary: Ghidra has one flat address space and no
+        # storage keys, so these move min(true length in R1, 256) bytes; cc 3 when longer
+        return "\n".join([f"local d:8 = {o[0]}; local s:8 = {o[1]}; local tl:8 = {x[0]}; local n:8 = tl; cc = 0;",
+                           "if (tl <= 256) goto <mv>; n = 256; cc = 3;",
+                           "<mv> local i:8 = 0;\n<lp> if (i == n) goto <done>; *:1 (d + i) = *:1 (s + i); i = i + 1; goto <lp>;",
+                           "<done>"])
+    if n in ("mvcsk", "mvcdk"):  # move with source / destination key: GR0 bits 56-63 + 1 bytes
+        return "\n".join([f"local d:8 = {o[0]}; local s:8 = {o[1]}; local n:8 = (r0 & 0xff) + 1; local i:8 = 0;",
+                           "<lp> if (i == n) goto <done>; *:1 (d + i) = *:1 (s + i); i = i + 1; goto <lp>;",
+                           "<done>"])
     if n == "mvcos":           # address-space and key controls (GR0) are not modelled
         return "\n".join([f"local d:8 = {o[0]}; local s:8 = {o[1]}; local tl:8 = {o[2]}; local n:8 = tl; cc = 0;",
                            "if (tl <= 4096) goto <mv>; n = 4096; cc = 3;",
