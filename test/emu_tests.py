@@ -262,6 +262,22 @@ T("mvck", "mvck 0(%r1,%r2),16(%r2),%r3", f"r1=4,r2={DATA:x},m4:{DATA + 0x10:x}=c
 T("mvcsk", "mvcsk 0(%r2),16(%r2)", f"r0=1,r2={DATA:x},m4:{DATA + 0x10:x}=cafef00d", f"m4:{DATA:x}=cafe0000")
 T("tam", "sam31\ntam", "", "cc=1")
 T("sacf_home", "sacf 0x300", "pswm=0", "pswm=c00000000000")
+# PERFORM FLOATING-POINT OPERATION: GR0 = 01 (type) | first-operand format | second-operand
+# format | flags/rounding; formats 0-2 HFP, 5-7 BFP, 8-a DFP (short, long, extended)
+T("pfpo_dfp_to_bfp", "pfpo", "r0=1060900,r1=ffffffffffffffff,f4=2234000000000015",
+  "f0=3ff8000000000000,cc=0,r1=ffffffff00000000")
+T("pfpo_bfp_to_dfp_exact", "pfpo", "r0=1090500,f4=3f00000000000000", "f0=2234000000000005,cc=0")
+# exact 1000: DPQC = 0 selects the largest quantum (1q3), DPQC = 1 the quantum 1 (1000q0)
+T("pfpo_dpqc0", "pfpo", "r0=1090500,f4=447a000000000000", "f0=2244000000000001,cc=0")
+T("pfpo_dpqc1", "pfpo", "r0=1090510,f4=447a000000000000", "f0=2238000000000400,cc=0")
+# 0.1 (BFP long) is not exact in 7 decimal digits: 0.1000000, inexact: cc 1
+T("pfpo_inexact", "pfpo", "r0=1080600,f4=3fb999999999999a", "f0=25e0000000000000,cc=1")
+# the test bit: valid function cc 0 (return code stored), invalid cc 3
+T("pfpo_test_valid", "pfpo", "r0=81060900,r1=1111111122222222,f0=5", "cc=0,r1=1111111100000000,f0=5")
+T("pfpo_test_invalid", "pfpo", "r0=81050500", "cc=3")
+# BFP infinity to HFP: invalid operation, the largest HFP number (cc 1)
+T("pfpo_inf_to_hfp", "pfpo", "r0=1010600,f4=7ff0000000000000", "f0=7fffffffffffffff,cc=1")
+T("pfpo_dfp_to_hfp", "pfpo", "r0=1000900,f4=2238000000000001", "f0=4110000000000000,cc=0")
 # ---- decimal floating point and vector packed decimal --------------------------------------
 # long DFP 1, 2, 3: biased exponent 398 (combination 01000, continuation 8e), coefficient declet
 T("adtr", "adtr %f0,%f2,%f4", "f2=2238000000000001,f4=2238000000000002", "f0=2238000000000003,cc=2")

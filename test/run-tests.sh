@@ -64,3 +64,8 @@ echo "== p-code: instructions qemu-s390x lacks, Ghidra emulator vs reference mod
 "$HERE/model-check.sh" hfp "$W/model-hfp" "$W/decode/s390-opc.txt" "$W/decode/s390-operands.txt" 60
 "$HERE/model-check.sh" dfp "$W/model-dfp" "$W/decode/s390-opc.txt" "$W/decode/s390-operands.txt" 150
 "$HERE/model-check.sh" vpd "$W/model-vpd" "$W/decode/s390-opc.txt" "$W/decode/s390-operands.txt" 150
+"$HERE/model-check.sh" pfpo "$W/model-pfpo" "$W/decode/s390-opc.txt" "$W/decode/s390-operands.txt" 1500
+
+echo "== p-code: every temporary is written before it is read, on every path (all table instructions)"
+"$HERE/ghidra-dis.sh" s390x:BE:64:default "$W/decode/table.bin" "$W/decode/pc_table.txt" 8 pcode
+python3 "$HERE/pcode_defcheck.py" "$W/decode/pc_table.txt"

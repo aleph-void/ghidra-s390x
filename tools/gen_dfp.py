@@ -197,9 +197,10 @@ def drm(blk, mask):
 class R:
     """A result: kind 0 finite / 1 inf / 2 NaN (cc 3), sign, bits."""
 
-def round_finite(blk, fmt, s, q, V, size, sticky, mode):
+def round_finite(blk, fmt, s, q, V, size, sticky, mode, fl=None):
     """bits of the value V * 10^q (V: size-byte magnitude, sticky: a nonzero tail below V),
-    rounded to the format by mode; returns (bits, iszero, isinf)."""
+    rounded to the format by mode; returns (bits, iszero, isinf). fl, a dict, receives the
+    1-byte locals 'inx' (the result differs from the value) and 'ovf' (overflow)."""
     P, ec, cc, bias, n = FMT[fmt]
     emaxq = (3 << ec) - 1 - bias
     etiny = -bias
@@ -211,6 +212,8 @@ def round_finite(blk, fmt, s, q, V, size, sticky, mode):
     dr = blk.local(8, f"{t} - {q}")
     qv = blk.local(size, V)
     gt, eq, inx = blk.local(1, "0"), blk.local(1, "0"), blk.local(1, f"{sticky}")
+    if fl is not None:
+        fl["inx"], fl["ovf"] = inx, blk.local(1, "0")
     blk.add(f"if ({dr} s<= 0) goto <{l}nd>;\n"
             f"if ({dr} s> {2 * size + 4}) goto <{l}far>;")
     pw = pow10(blk, dr, size)
@@ -237,6 +240,8 @@ def round_finite(blk, fmt, s, q, V, size, sticky, mode):
     blk.add(f"if (({nq} + ({t} - {emaxq})) s> {P}) goto <{l}ov>;")
     pf = pow10(blk, f"{t} - {emaxq}", size)
     blk.add(f"{qv} = {qv} * {pf}; {t} = {emaxq}; goto <{l}ok>;\n<{l}ov>")
+    if fl is not None:
+        blk.add(f"{fl['ovf']} = 1; {inx} = 1;")
     toinf = blk.local(1, f"({mode} == 0) || ({mode} == 4) || ({mode} == 5) || ({mode} == 6) || "
                          f"(({mode} == 2) && ({s} == 0)) || (({mode} == 3) && ({s} != 0))")
     inf = encode_special(blk, fmt, s, "1:1", "zext(0:8)")

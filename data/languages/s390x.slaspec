@@ -341,6 +341,15 @@ define register offset=0x300 size=8 [
     c8  c9  c10 c11 c12 c13 c14 c15
 ];
 
+# Scratch big integers of PERFORM FLOATING-POINT OPERATION (5,120 bytes each: 2^-16494 of the
+# extended BFP format needs 5^16494, 38,000 bits). SLEIGH temporaries are limited to 256 bytes,
+# so the p-code of PFPO keeps its big integers in these registers.
+define register offset=0x10000 size=5120 [ pfw0 ];
+define register offset=0x11400 size=5120 [ pfw1 ];
+define register offset=0x12800 size=5120 [ pfw2 ];
+define register offset=0x13c00 size=5120 [ pfw3 ];
+define register offset=0x15000 size=5120 [ pfw4 ];
+
 # Disassembly context. xplink: set to 1 by the zos_xplink compiler spec, where "BR 7" and
 # "B 2(,7)"/"B 4(,7)" are function returns (the XPLINK return address is in R7, and a
 # 2- or 4-byte NOP after the call is skipped).

@@ -93,8 +93,9 @@ def hfp_pattern(rng):
 def hfp_tests(opc, operands, per, seed, kind="hfp"):
     from qemu_diff import candidates, encode, ld
     import gen_names
-    names = {"hfp": gen_names.HFP_NAMES, "dfp": gen_names.DFP_NAMES, "vpd": gen_names.VPD_NAMES}[kind]
-    pattern = {"hfp": hfp_pattern, "dfp": dfp_pattern, "vpd": hfp_pattern}[kind]
+    names = {"hfp": gen_names.HFP_NAMES, "dfp": gen_names.DFP_NAMES, "vpd": gen_names.VPD_NAMES,
+             "pfpo": {"pfpo"}}[kind]
+    pattern = {"hfp": hfp_pattern, "dfp": dfp_pattern, "vpd": hfp_pattern, "pfpo": hfp_pattern}[kind]
     ents = []
     OPS = {}
     for line in open(operands):
@@ -123,6 +124,10 @@ def hfp_tests(opc, operands, per, seed, kind="hfp"):
             if kind == "vpd":
                 w, vecs = vpd_fix(e[0], bytearray(w), win, gprs, rng)
             pre = b"".join(ld(k, 8 * k, 12) for k in range(8))
+            if kind == "pfpo":
+                from qemu_diff import lg
+                pfpo_fix(rng, win)
+                pre += lg(0, 64, 12)
             tests.append(pre + w)
             meta.append((e[0], w.hex(), e))
             for k in range(4):
@@ -1099,9 +1104,111 @@ def vpd_model(name, w, e, fpr, gpr, win, cc):
         return (0 if ok else 1) if not bad else (2 if ok else 3)
     raise KeyError(n)
 
+# ---- PERFORM FLOATING-POINT OPERATION ---------------------------------------------------------
+import pfpo_model as PM
+
+def pfpo_bfp(rng, z):
+    eb, fb, bias, w = PM.BFP[z]
+    s = rng.getrandbits(1)
+    r = rng.random()
+    frac = rng.choice([rng.getrandbits(fb), rng.getrandbits(fb), 0, 1 << (fb - 1), (1 << fb) - 1,
+                       rng.getrandbits(fb) & ((1 << rng.randrange(1, fb + 1)) - 1) << rng.randrange(fb)]) & ((1 << fb) - 1)
+    if r < 0.06:
+        ex = (1 << eb) - 1
+        if rng.random() < 0.5:
+            frac = 0 if rng.random() < 0.4 else rng.getrandbits(rng.randrange(1, fb + 1)) | 1
+    elif r < 0.12:
+        ex = 0
+    elif r < 0.55:
+        ex = bias + rng.randrange(-12, 13)
+    elif r < 0.8:
+        ex = rng.randrange(1, (1 << eb) - 1)
+    else:
+        ex = rng.choice([1, 2, (1 << eb) - 2, (1 << eb) - 3, bias - fb, bias + 1, bias + 20 + rng.randrange(4)])
+    return (s << (w - 1)) | (ex << fb) | frac
+
+def pfpo_hfp(rng, z):
+    D = PM.HFPD[z]
+    s = rng.getrandbits(1)
+    ch = rng.choice([64 + rng.randrange(-10, 11)] * 3 + [rng.randrange(128), 0, 127, 1, 126])
+    r = rng.random()
+    frac = rng.getrandbits(4 * D)
+    if r < 0.1:
+        frac = 0
+    elif r < 0.3:
+        frac = (rng.getrandbits(4 * D) & ((1 << rng.randrange(1, 4 * D + 1)) - 1)) << rng.randrange(4 * D)
+        frac &= (1 << 4 * D) - 1
+    elif r < 0.5:
+        frac |= 1 << (4 * D - 4 + rng.randrange(4))
+    if z == 2:
+        hi = (s << 63) | (ch << 56) | (frac >> 56)
+        lo = (s << 63) | (((ch - 14) & 0x7f) << 56) | (frac & ((1 << 56) - 1))
+        return (hi << 64) | lo
+    w = 32 if z == 0 else 64
+    return (s << (w - 1)) | (ch << (w - 8)) | frac
+
+def pfpo_fix(rng, win):
+    """window: FPR 0-7 (f4/f6 the source), GR0 at 64"""
+    case = os.environ.get("PFPO_CASE")
+    if case:                      # "r0hex,f4hex,f6hex[;...]": fixed tests in turn (debugging)
+        cases = case.split(";")
+        pfpo_fix.n = getattr(pfpo_fix, "n", -1) + 1
+        r0, f4, f6 = (int(x, 16) for x in cases[pfpo_fix.n % len(cases)].split(","))
+        win[32:40], win[48:56], win[64:72] = (v.to_bytes(8, "big") for v in (f4, f6, r0))
+        return
+    ofc = [0, 1, 2, 5, 6, 7, 8, 9, 10]
+    c1, c2 = rng.choice(ofc), rng.choice(ofc)
+    for _ in range(8):
+        if PM.OFC[c1][0] != PM.OFC[c2][0]:
+            break
+        c2 = rng.choice(ofc)
+    if rng.random() < 0.03:
+        c2 = rng.choice([3, 4, 11, 0x80])
+    k2, z2 = PM.OFC.get(c2, ("h", 0))
+    bits = {"h": pfpo_hfp, "b": pfpo_bfp, "d": lambda r, z: dfp_value(r, PM.DFPF[z])}[k2](rng, z2)
+    if k2 == "d" and c1 in (0, 1, 2, 5, 6, 7) and rng.random() < 0.25:
+        # an integer exactly halfway between two values of the target format (ties)
+        Pt = {0: 24, 1: 56, 2: 112, 5: 24, 6: 53, 7: 113}[c1]
+        n = ((rng.getrandbits(Pt) | (1 << (Pt - 1))) << 1) | 1
+        nd = len(str(n))
+        zf = 0 if nd <= 7 else (1 if nd <= 16 else (2 if nd <= 34 else None))
+        if zf is not None:
+            c2, z2 = 8 + zf, zf
+            d = Decimal((rng.getrandbits(1), tuple(int(ch) for ch in str(n)), 0))
+            bits = DM.encode(PM.DFPF[z2], d)
+    w = {0: 32, 1: 64, 2: 128}[z2]
+    if z2 == 2:
+        hi, lo = bits >> 64, bits & ((1 << 64) - 1)
+    else:
+        hi, lo = (bits << 32 if z2 == 0 else bits), 0
+        lo = rng.getrandbits(64)
+    win[32:40] = hi.to_bytes(8, "big")
+    win[48:56] = lo.to_bytes(8, "big")
+    for a in (0, 16):                       # the old first operand: random
+        win[a:a + 8] = rng.getrandbits(64).to_bytes(8, "big")
+    rm = rng.choice([0, 1, 8, 9, 10, 11, 12, 13, 14, 15] * 3 + [2, 5, 7])
+    b58, b59 = rng.getrandbits(1), rng.getrandbits(1)
+    if PM.OFC.get(c1, ("h",))[0] == "b" and rng.random() < 0.95:
+        b58 = b59 = 0
+    r0 = (rng.getrandbits(32) << 32) | ((1 if rng.random() > 0.02 else rng.choice([0, 2, 0x7f])) << 24) \
+        | (c1 << 16) | (c2 << 8) | (rng.getrandbits(1) << 7) | (rng.getrandbits(1) << 6) | (b58 << 5) | (b59 << 4) | rm
+    if rng.random() < 0.08:
+        r0 |= 1 << 31
+    else:
+        r0 &= ~(1 << 31)
+    win[64:72] = r0.to_bytes(8, "big")
+
+def pfpo_model(name, w, e, fpr, gpr, win, cc):
+    r0 = int.from_bytes(win[64:72], "big")
+    f0, f2, ncc, rc = PM.convert(r0, fpr[0], fpr[2], fpr[4], fpr[6])
+    fpr[0], fpr[2] = f0, f2
+    if rc:
+        gpr[1] &= ~0xffffffff & ((1 << 64) - 1)
+    return cc if ncc is None else ncc
+
 def main():
     mode, out = sys.argv[1], sys.argv[2]
-    if mode in ("hfp", "dfp", "vpd"):
+    if mode in ("hfp", "dfp", "vpd", "pfpo"):
         per = int(sys.argv[5]) if len(sys.argv) > 5 else 100
         seed = sys.argv[6] if len(sys.argv) > 6 else "1"
         tests, data, meta = hfp_tests(sys.argv[3], sys.argv[4], per, seed, mode)
@@ -1136,8 +1243,8 @@ def main():
     WBASE[0] = inp + 2 * (len(lines) - 1) * Q.REC          # build(): scratch after inputs, outputs
     ents = {}
     fmodel = hfp_model
-    if len(hdr) > 11 and hdr[11] in ("hfp", "dfp", "vpd"):
-        fmodel = {"hfp": hfp_model, "dfp": dfp_model, "vpd": vpd_model}[hdr[11]]
+    if len(hdr) > 11 and hdr[11] in ("hfp", "dfp", "vpd", "pfpo"):
+        fmodel = {"hfp": hfp_model, "dfp": dfp_model, "vpd": vpd_model, "pfpo": pfpo_model}[hdr[11]]
         import qemu_diff
         OPS = {}
         for line in open(hdr[13]):
@@ -1180,6 +1287,8 @@ def main():
                 if bytes(win) != gw:
                     dd = [k for k in range(256) if win[k] != gw[k]]
                     d.append(f"window differs at {dd[:6]} model {bytes(win[dd[0]:dd[0] + 8]).hex()} ghidra {gw[dd[0]:dd[0] + 8].hex()}")
+                if n == "pfpo":
+                    d.append(f"r0={win[64:72].hex()} f4={win[32:40].hex()} f6={win[48:56].hex()}")
                 bad[n].append(f"{w}: " + "; ".join(d))
             continue
         code = bytes.fromhex(w)[8:]                 # after LA r1 / LA r2

@@ -905,6 +905,7 @@ import gen_misc
 import gen_hfp
 import gen_dfp
 import gen_vpd
+import gen_pfpo
 HFP_NAMES = set("""ad adr ae aer au aur aw awr axr cd cdfr cdgr cdr ce cefr cegr cer cfdr cfer cfxr cgdr cger
 cgxr cxfr cxgr cxr dd ddr de der dxr fidr fier fixr hdr her lcdr lcer lcxr lde lder ldxr ledr lexr
 lndr lner lnxr lpdr lper lpxr lrdr lrer ltdr lter ltxr lxd lxdr lxe lxer mad madr mae maer md mde
@@ -927,6 +928,8 @@ def semantics(ctx):
         r = gen_hfp.semantics(ctx)
     if r is None and ctx["name"] not in HFP_NAMES:
         r = gen_dfp.semantics(ctx)
+    if r is None and ctx["name"] == "pfpo":
+        r = gen_pfpo.semantics(ctx)
     if r is None and ctx["name"] in gen_vpd.NAMES:
         r = gen_vpd.semantics(ctx)
     if r is None and gen_fp.SCALAR_NAMES.match(ctx["name"]):

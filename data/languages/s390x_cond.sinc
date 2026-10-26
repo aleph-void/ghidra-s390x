@@ -51,6 +51,7 @@
 # the mask-match path so the trap is explicit in p-code; Ghidra renders it
 # as a CALLOTHER to this userop.
 define pcodeop trap_compare_data;
+define pcodeop trap_specification;
 
 # RRF-a: 4 bytes. OP(0-15), R3(16-19), M4(20-23), R1(24-27), R2(28-31).
 # Used by SELECT. M4 stays numeric (condition mask).
