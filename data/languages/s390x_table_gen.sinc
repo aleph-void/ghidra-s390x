@@ -227,7 +227,6 @@ define pcodeop s390_clfdtr;
 define pcodeop s390_clfxtr;
 define pcodeop s390_clgdtr;
 define pcodeop s390_clgxtr;
-define pcodeop s390_clzg;
 define pcodeop s390_cmpsc;
 define pcodeop s390_cpdt;
 define pcodeop s390_cpxt;
@@ -237,7 +236,6 @@ define pcodeop s390_csdtr;
 define pcodeop s390_csp;
 define pcodeop s390_cspg;
 define pcodeop s390_csxtr;
-define pcodeop s390_ctzg;
 define pcodeop s390_cudtr;
 define pcodeop s390_cuse;
 define pcodeop s390_cuxtr;
@@ -56624,10 +56622,10 @@ rel32_16_16: tgt is g32_s16_16 [ tgt = inst_start + 2 * g32_s16_16; ] { export *
   s390_bextg(g32_gpr24_4, g32_gpr28_4, g32_gpr16_4);
 }
 :CTZG g32_gpr24_4,g32_gpr28_4 is g32_u0_4=0xb & g32_u4_4=0x9 & g32_u8_4=0x6 & g32_u12_4=0x9 & g32_u16_4=0x0 & g32_u20_4=0x0 & g32_gpr24_4 & g32_gpr28_4 {
-  s390_ctzg(g32_gpr24_4, g32_gpr28_4);
+  local v:8 = g32_gpr28_4; local m:8 = (v & -v) - 1; g32_gpr24_4 = popcount(m);
 }
 :CLZG g32_gpr24_4,g32_gpr28_4 is g32_u0_4=0xb & g32_u4_4=0x9 & g32_u8_4=0x6 & g32_u12_4=0x8 & g32_u16_4=0x0 & g32_u20_4=0x0 & g32_gpr24_4 & g32_gpr28_4 {
-  s390_clzg(g32_gpr24_4, g32_gpr28_4);
+  local v:8 = g32_gpr28_4; g32_gpr24_4 = lzcount(v);
 }
 :NXGRK g32_gpr24_4,g32_gpr28_4,g32_gpr16_4 is g32_u0_4=0xb & g32_u4_4=0x9 & g32_u8_4=0x6 & g32_u12_4=0x7 & g32_gpr24_4 & g32_gpr28_4 & g32_gpr16_4 {
   local x:8 = g32_gpr28_4; local y:8 = g32_gpr16_4;

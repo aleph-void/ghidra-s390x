@@ -545,6 +545,10 @@ def semantics(ctx):
         return srst(o)
     if n == "clst":
         return clst(o)
+    if n == "clzg":            # z17: count leading zeros (64 for zero); cc unchanged
+        return f"local v:8 = {o[1]}; {o[0]} = lzcount(v);"
+    if n == "ctzg":            # z17: count trailing zeros (64 for zero)
+        return f"local v:8 = {o[1]}; local m:8 = (v & -v) - 1; {o[0]} = popcount(m);"
     if n == "lgg":             # guarded-storage events are not modelled: a plain load
         return f"{o[0]} = *:8 {o[1]};"
     return None
