@@ -903,12 +903,18 @@ import gen_vector
 import gen_fp
 import gen_misc
 import gen_hfp
+import gen_dfp
 HFP_NAMES = set("""ad adr ae aer au aur aw awr axr cd cdfr cdgr cdr ce cefr cegr cer cfdr cfer cfxr cgdr cger
 cgxr cxfr cxgr cxr dd ddr de der dxr fidr fier fixr hdr her lcdr lcer lcxr lde lder ldxr ledr lexr
 lndr lner lnxr lpdr lper lpxr lrdr lrer ltdr lter ltxr lxd lxdr lxe lxer mad madr mae maer md mde
 mder mdr me mee meer mer msd msdr mse mser mxd mxdr mxr sd sdr se ser sqd sqdr sqe sqer sqxr su sur
 sw swr sxr tbdr tbedr thdr thder may mayr mayh mayhr mayl maylr my myr myh myhr myl mylr""".split())
 EXTRA_FIELDS.update(gen_misc.EXTRA)
+for _n in ("cxstr", "cxutr"):
+    EXTRA_FIELDS[_n] = [(28, 4, "gpro")]                          # R2 + 1
+EXTRA_FIELDS["cuxtr"] = [(24, 4, "gpro")]                         # R1 + 1
+for _n in ("cdzt", "cxzt", "czdt", "czxt", "cdpt", "cxpt", "cpdt", "cpxt"):
+    EXTRA_FIELDS[_n] = [(8, 8, "u")]                              # L2
 EXTRA_FIELDS["mayr"] = [(16, 4, "fprlo"), (16, 4, "fprlo2")]     # result pair of either R1 register
 EXTRA_FIELDS["may"] = [(32, 4, "fprlo"), (32, 4, "fprlo2")]
 
@@ -918,6 +924,8 @@ def semantics(ctx):
         r = gen_misc.semantics(ctx)
     if r is None and ctx["name"] in HFP_NAMES:
         r = gen_hfp.semantics(ctx)
+    if r is None and ctx["name"] not in HFP_NAMES:
+        r = gen_dfp.semantics(ctx)
     if r is None and gen_fp.SCALAR_NAMES.match(ctx["name"]):
         r = gen_fp.scalar(ctx)
     if r is None and ctx["name"][0] in "vw":
