@@ -726,11 +726,176 @@ def _sortl_tests():
 _sortl_tests()
 T("sortl_query", "sortl %r2,%r4", f"r0=0,r1={DATA:x}", f"m32:{DATA:x}=" + "e0" + "00" * 15 + "38" + "00" * 7 + "8000" + "00" * 6)
 
+def _cmpsc_tests():
+    import random, cmpsc_model as CM2
+    DICT, SRC, DST = 0x40000, 0x60000, 0x64000
+    def bits_to_bytes(bits, cbn, init):
+        """overlay bits at bit cbn of the bytes in init (bits to the right in the last byte unchanged)"""
+        buf = bytearray(init)
+        for i, b in enumerate(bits):
+            pos = cbn + i
+            mask = 0x80 >> (pos & 7)
+            buf[pos >> 3] = (buf[pos >> 3] & ~mask & 0xff) | (mask if b else 0)
+        return bytes(buf)
+    def hexs(entries):
+        return b"".join(entries).hex()
+    def ctest(name, comp, exp, data, cdss, f1=0, cbn=0, room=0x100, op=0, st=None, ee=None, offv=None, dictbytes=None):
+        w = cdss + 8
+        n = len(comp)
+        if ee is not None:
+            ed, cws = ee
+            res = CM2.compress(comp, exp, data, bool(f1), w, None, False, (ed, cws), room, cbn)
+        else:
+            res = CM2.compress(comp, exp, data, bool(f1), w, st, bool(op), None, room, cbn)
+        r0 = (cdss << 12) | (f1 << 9) | (op << 18) | ((1 << 16) if (st is not None and not op) else 0) | ((1 << 19) if ee else 0)
+        off = n * 8
+        gr1 = DICT | cbn
+        if st is not None or ee is not None or op:
+            gr1 |= (off >> 7) << 3
+        init = f"r0={r0:x},r1={gr1:x},r2={DST:x},r3={room:x},r4={SRC:x},r5={len(data):x},m{n * 8}:{DICT:x}={hexs(comp)}"
+        if f1:
+            init += f",m{n * 8}:{DICT + n * 8:x}={hexs(exp)}"
+        if ee is not None:
+            init += f",m32:{DICT + off:x}={b''.join(v.to_bytes(2, 'big') for v in ed).hex()}"
+            stt_bytes = b"".join(((cws[i][0] << (16 - cws[i][1])) & 0xffff).to_bytes(2, "big") for i in range(n))
+            init += f",m{len(stt_bytes)}:{DICT + off + 32:x}={stt_bytes.hex()}"
+        elif st is not None or op:
+            stt_bytes = b"".join(v.to_bytes(2, "big") for v in (st + [0] * (n - len(st))))
+            init += f",m{len(stt_bytes)}:{DICT + off:x}={stt_bytes.hex()}"
+        if data:
+            init += f",m{len(data)}:{SRC:x}={data.hex()}"
+        pattern = bytes((0xA5 ^ (i * 37)) & 0xff for i in range(room))
+        if room:
+            init += f",m{room}:{DST:x}={pattern.hex()}"
+        nbits = len(res["bits"])
+        total = cbn + nbits
+        out = bits_to_bytes(res["bits"], cbn, pattern)
+        nb = (total + 7) // 8
+        gr1_out = (gr1 & ~7) | (total & 7)
+        exp_s = f"cc={res['cc']},r1={gr1_out:x},r2={DST + total // 8:x},r3={room - total // 8:x},r4={SRC + res['consumed']:x},r5={len(data) - res['consumed']:x}"
+        if nb:
+            exp_s += f",m{nb}:{DST:x}={out[:nb].hex()}"
+        T(name, "cmpsc %r2,%r4", init, exp_s)
+        return res
+    def etest(name, exp, bits, cdss, cbn=0, room=0x200, ee=None, ed=None, dictn=None):
+        w = cdss + 8
+        n = len(exp)
+        total = cbn + len(bits)
+        nbytes = (total + 7) // 8
+        src = bits_to_bytes([1, 0, 1, 1, 0, 1, 0][:cbn] + bits, 0, bytes(nbytes)) if False else None
+        # source bytes: cbn pattern bits, the compressed bits, zero padding
+        pre = [(0xB5 >> (7 - i)) & 1 for i in range(cbn)]
+        allbits = pre + bits + [0] * (nbytes * 8 - total)
+        sbytes = bytes(int("".join(map(str, allbits[i:i + 8])), 2) for i in range(0, len(allbits), 8))
+        out, used, cc = CM2.expand(exp, bits, w, room, ee, ed)
+        r0 = (cdss << 12) | (1 << 8) | ((1 << 19) if ee else 0)
+        off = n * 8
+        gr1 = DICT | cbn
+        if ee:
+            gr1 |= (off >> 7) << 3
+        init = f"r0={r0:x},r1={gr1:x},r2={DST:x},r3={room:x},r4={SRC:x},r5={nbytes:x},m{n * 8}:{DICT:x}={hexs(exp)}"
+        if ee:
+            init += f",m32:{DICT + off:x}={b''.join(v.to_bytes(2, 'big') for v in ed).hex()}"
+        if nbytes:
+            init += f",m{nbytes}:{SRC:x}={sbytes.hex()}"
+        pattern = bytes(0x5A for _ in range(room))
+        init += f",m{room}:{DST:x}={pattern.hex()}"
+        t2 = cbn + used
+        gr1_out = (gr1 & ~7) | (t2 & 7)
+        exp_s = f"cc={cc},r1={gr1_out:x},r2={DST + len(out):x},r3={room - len(out):x},r4={SRC + t2 // 8:x},r5={nbytes - t2 // 8:x}"
+        if out:
+            exp_s += f",m{len(out)}:{DST:x}={out.hex()}"
+        T(name, "cmpsc %r2,%r4", init, exp_s)
+    # the manual's example (programming note 5): three index symbols 103, 3FC, 3FF expand to 14 bytes; CBN 7 -> 5
+    ex = [bytes(8)] * 1024
+    ex[0x103] = bytes([0x30 | 0, ]) + b"" if False else bytes([0]) + bytes([0x31]) if False else None
+    # entry 103: unpreceded, 4 bytes; 3FC: 5 bytes; 3FF: 5 bytes
+    ex = [bytes(8)] * 1024
+    ex[0x103] = bytes([4]) + b"ABCD" + bytes(3)
+    ex[0x3FC] = bytes([5]) + b"EFGHI" + bytes(2)
+    ex[0x3FF] = bytes([5]) + b"JKLMN" + bytes(2)
+    T("cmpsc_manual_example", "cmpsc %r2,%r4",
+      f"r0={(2 << 12) | 0x100:x},r1={DICT | 7:x},r2=5000,r3=40,r4=6000,r5=5,m{8192}:{DICT:x}={hexs(ex)},m5:6000=0081ff9ff8",
+      f"cc=0,r1={DICT | 5:x},r2=500e,r3=32,r4=6004,r5=1,m14:5000={(b'ABCD' + b'EFGHI' + b'JKLMN').hex()}")
+    rnd = random.Random(99)
+    cases = 0
+    for seed in range(24):
+        rng = random.Random(1000 + seed)
+        cdss = rng.choice([1, 2, 3])
+        entries = 512 << (cdss - 1)
+        f1 = seed & 1
+        chars = rng.choice([[65, 66], [65, 66, 67, 68], [65, 66, 67, 68, 69, 70]])
+        trie = CM2.random_trie(rng, chars, depth=rng.choice([2, 3]), fan=(0, rng.choice([4, 9, 15])))
+        try:
+            comp, exp, nodes = CM2.build(trie, fmt1=bool(f1), entries=entries)
+        except AssertionError:
+            continue
+        data = bytes(rng.choice(chars) for _ in range(rng.randrange(1, 40)))
+        cbn = rng.randrange(0, 8)
+        res = ctest(f"cmpsc_c{seed}", comp, exp, data, cdss, f1, cbn)
+        if seed % 3 == 0:
+            ctest(f"cmpsc_c{seed}_room", comp, exp, data, cdss, f1, cbn, room=max(1, len(res["bits"]) // 16))
+        etest(f"cmpsc_e{seed}", exp, res["bits"], cdss, cbn)
+        etest(f"cmpsc_e{seed}_room", exp, res["bits"], cdss, cbn, room=max(1, len(data) // 2))
+        cases += 1
+        if cases >= 14:
+            break
+    # symbol translation, order preservation, entropy encoding
+    for seed in range(12):
+        rng = random.Random(2000 + seed)
+        cdss = rng.choice([1, 2, 3])
+        entries = 512 << (cdss - 1)
+        chars = rng.choice([[65, 66, 67], [65, 66, 67, 68, 69]])
+        trie = CM2.random_trie(rng, chars, depth=rng.choice([2, 3]), fan=(0, rng.choice([4, 9, 15])), allow_dup=(seed % 3 == 2))
+        mode = ("st", "op", "ee")[seed % 3]
+        try:
+            comp, exp, nodes = CM2.build(trie, fmt1=False, entries=entries, order_sort=(mode == "op"))
+        except AssertionError:
+            continue
+        data = bytes(rng.choice(chars) for _ in range(rng.randrange(1, 40)))
+        cbn = rng.randrange(0, 8)
+        if mode == "ee":
+            ed = CM2.ee_tables(rng, entries)
+            cws = CM2.ee_codewords(ed)
+            res = ctest(f"cmpsc_ee{seed}", comp, exp, data, cdss, 0, cbn, ee=(ed, cws[:entries]))
+            exp_ee = [bytes([1, c]) + bytes(6) for c in range(256)] + list(exp[256:])
+            etest(f"cmpsc_ee{seed}_x", exp_ee, res["bits"], cdss, cbn, ee=True, ed=ed)
+            ctest(f"cmpsc_ee{seed}_room", comp, exp, data, cdss, 0, cbn, room=max(1, len(res["bits"]) // 16), ee=(ed, cws[:entries]))
+        else:
+            w = cdss + 8
+            stt = rng.sample(range(1 << w), entries)
+            ctest(f"cmpsc_{mode}{seed}", comp, exp, data, cdss, 0, cbn, op=(mode == "op"), st=stt)
+    # the manual's "Set 2" dictionary for runs of one character: two children with the same child character
+    def setn(d):
+        if d == 0:
+            return []
+        return [CM2.Node([65, 65], setn(d - 1)), CM2.Node([65], [])]
+    comp, exp, nodes = CM2.build(CM2.alphabet({65: setn(4)}), entries=512)
+    for n in (1, 2, 3, 5, 9, 14, 20, 31):
+        res = ctest(f"cmpsc_arun{n}", comp, exp, b"A" * n, 1, 0, n % 8)
+        etest(f"cmpsc_arun{n}_x", exp, res["bits"], 1, n % 8)
+    # fixed-format-1 sibling descriptors with many children
+    kids = [CM2.Node([66 + (i % 20)], [CM2.Node([67])] if i % 3 == 0 else []) for i in range(18)]
+    for f1 in (0, 1):
+        comp, exp, nodes = CM2.build(CM2.alphabet({65: list(kids)}), fmt1=bool(f1), entries=512)
+        data = bytes([65, 66 + 17 % 20, 67, 65, 66 + 14, 65, 66 + 2, 67, 65, 66 + 5])
+        res = ctest(f"cmpsc_sd{f1}", comp, exp, data, 1, f1, 2)
+        etest(f"cmpsc_sd{f1}_x", exp, res["bits"], 1, 2)
+    # empty operands
+    comp, exp, nodes = CM2.build(CM2.alphabet({65: [CM2.Node([66])]}), entries=512)
+    ctest("cmpsc_empty_src", comp, exp, b"", 1, 0, 3)
+    ctest("cmpsc_empty_dst", comp, exp, b"AB", 1, 0, 0, room=0)
+_cmpsc_tests()
+
 
 def main():
     out = sys.argv[1]
     os.makedirs(out, exist_ok=True)
     mc = os.environ.get("LLVM_MC", "llvm-mc")
+    only = os.environ.get("EMU_ONLY")
+    if only:
+        import re
+        tests[:] = [t for t in tests if re.search(only, t[0])]
     src = []
     for i, (name, asm, _, _) in enumerate(tests):
         src.append(f".globl s{i}\n.globl e{i}\ns{i}:\n{asm}\ne{i}:\n  nopr\n")
