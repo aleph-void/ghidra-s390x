@@ -405,7 +405,11 @@ def build(e):
                          [pf for pi, pf in pairs.items() if items[pi] in its] +
                          [of for oi, of in ors.items() if items[oi] in its] +
                          ([VINDEX[0]] if VINDEX[0] else []) + xf)
-        out.append(f":{mn} {disp} is {pat} {{\n{semantics(e, its, items, lenfld, xf)}\n}}\n")
+        sem = semantics(e, its, items, lenfld, xf)
+        subs = list(dict.fromkeys(re.findall(r"\bbuild\s+(\w+);", sem)))   # engines (empty-pattern subtables)
+        if subs:
+            pat += " & " + " & ".join(subs)
+        out.append(f":{mn} {disp} is {pat} {{\n{sem}\n}}\n")
     return out
 
 CC_WRITE = re.compile(r"(?<![_A-Za-z0-9])(cc\s*=(?!=)[^;]*;)")

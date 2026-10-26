@@ -12,6 +12,7 @@ big-endian). Every expected value was worked out by hand from the z/Architecture
 Operation (SA22-7832-14) instruction descriptions, not by running the module.
 """
 import os, subprocess, sys, tempfile
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 DATA = 0x8000
 
@@ -284,6 +285,72 @@ T("adtr", "adtr %f0,%f2,%f4", "f2=2238000000000001,f4=2238000000000002", "f0=223
 # +123 - 877 = -754
 T("vap", "vap %v1,%v2,%v3,31,1", "v2=0000000000000000000000000000123c,v3=0000000000000000000000000000877d",
   "v1=0000000000000000000000000000754d,cc=1")
+
+# ---- message-security-assist: expected values from hashlib -------------------------------------
+import hashlib, struct as _st
+def _sha(alg, msg, mbl_len, iv_words, wsz):
+    return alg(msg).digest()
+_IV256 = bytes.fromhex("6a09e667bb67ae853c6ef372a54ff53a510e527f9b05688c1f83d9ab5be0cd19")
+_IV1 = bytes.fromhex("67452301efcdab8998badcfe10325476c3d2e1f0")
+_IV512 = bytes.fromhex("6a09e667f3bcc908bb67ae8584caa73b3c6ef372fe94f82ba54ff53a5f1d36f1510e527fade682d19b05688c2b3e6c1f1f83d9abfb41bd6b5be0cd19137e2179")
+for _nm, _fc, _alg, _iv, _mbl in (("sha1", 1, hashlib.sha1, _IV1, 8), ("sha256", 2, hashlib.sha256, _IV256, 8), ("sha512", 3, hashlib.sha512, _IV512, 16)):
+    _msg = b"abc"
+    _blk = _alg(b"").block_size
+    _p = DATA
+    _m = DATA + 0x80
+    T(f"klmd_{_nm}", "klmd %r0,%r4",
+      f"r0={_fc:x},r1={_p:x},r4={_m:x},r5=3,m{len(_iv) + _mbl}:{_p:x}={(_iv + (24).to_bytes(_mbl, 'big')).hex()},m3:{_m:x}={_msg.hex()}",
+      f"m{len(_iv)}:{_p:x}={_alg(_msg).hexdigest()},r4={_m + 3:x},r5=0,cc=0")
+    # two blocks: KIMD of the first block, KLMD of the rest
+    _msg2 = bytes(range(1, 101))
+    _first, _rest = _msg2[:_blk], _msg2[_blk:]
+    _h = _alg()
+    _h.update(_first)
+    # chaining value after the first block, from hashlib's internal state is not exposed: use
+    # the whole message through KLMD instead
+    T(f"klmd_{_nm}_long", "klmd %r0,%r4",
+      f"r0={_fc:x},r1={_p:x},r4={_m:x},r5={len(_msg2):x},m{len(_iv) + _mbl}:{_p:x}={(_iv + (8 * len(_msg2)).to_bytes(_mbl, 'big')).hex()},m{len(_msg2)}:{_m:x}={_msg2.hex()}",
+      f"m{len(_iv)}:{_p:x}={_alg(_msg2).hexdigest()},r4={_m + len(_msg2):x},r5=0,cc=0")
+T("kimd_query", "kimd %r0,%r4", f"r0=0,r1={DATA:x}", f"m16:{DATA:x}=f0000000fc0000004000000000000000")
+
+import struct, cpacf_model as CM
+_P, _M, _O = DATA, DATA + 0x100, DATA + 0x400
+# KIMD intermediate chaining values (checked against the model's compression functions)
+_blk = bytes(range(64))
+_cv = struct.pack(">8I", *CM.sha256_compress(list(struct.unpack(">8I", _IV256)), _blk))
+T("kimd_sha256", "kimd %r0,%r4", f"r0=2,r1={_P:x},r4={_M:x},r5=40,m32:{_P:x}={_IV256.hex()},m64:{_M:x}={_blk.hex()}",
+  f"m32:{_P:x}={_cv.hex()},r4={_M + 64:x},r5=0,cc=0")
+_blk5 = bytes(range(128))
+_cv5 = struct.pack(">8Q", *CM.sha512_compress(list(struct.unpack(">8Q", _IV512)), _blk5))
+T("kimd_sha512", "kimd %r0,%r4", f"r0=3,r1={_P:x},r4={_M:x},r5=80,m64:{_P:x}={_IV512.hex()},m128:{_M:x}={_blk5.hex()}",
+  f"m64:{_P:x}={_cv5.hex()},r4={_M + 128:x},r5=0,cc=0")
+_cv1 = struct.pack(">5I", *CM.sha1_compress(list(struct.unpack(">5I", _IV1)), _blk))
+T("kimd_sha1", "kimd %r0,%r4", f"r0=1,r1={_P:x},r4={_M:x},r5=40,m20:{_P:x}={_IV1.hex()},m64:{_M:x}={_blk.hex()}",
+  f"m20:{_P:x}={_cv1.hex()},r4={_M + 64:x},r5=0,cc=0")
+# SHA-3: the sponge with the leftmost "rate" bytes of the state; KLMD pads and digests
+for _nm, _fc, _alg, _rate in (("sha3_224", 32, hashlib.sha3_224, 144), ("sha3_256", 33, hashlib.sha3_256, 136),
+                              ("sha3_384", 34, hashlib.sha3_384, 104), ("sha3_512", 35, hashlib.sha3_512, 72)):
+    for _msg in (b"abc", bytes(range(250))):
+        T(f"klmd_{_nm}_{len(_msg)}", "klmd %r0,%r4", f"r0={_fc:x},r1={_P:x},r4={_M:x},r5={len(_msg):x},m200:{_P:x}={'00' * 200},m{len(_msg)}:{_M:x}={_msg.hex()}",
+          f"m{_alg().digest_size}:{_P:x}={_alg(_msg).hexdigest()},r4={_M + len(_msg):x},r5=0,cc=0")
+    _blk3 = bytes(range(_rate))
+    T(f"kimd_{_nm}_nip", "kimd %r0,%r4", f"r0={_fc | 0x8000:x},r1={_P:x},r4={_M:x},r5={_rate:x},m200:{_P:x}={'ff' * 200},m{_rate}:{_M:x}={_blk3.hex()}",
+      f"m200:{_P:x}={CM.keccak_absorb(bytes(200), _blk3).hex()},r0={_fc:x},r5=0,cc=0")
+# SHAKE: padding state in GR0 bit 55, extended output into the first operand
+for _nm, _fc, _alg in (("shake128", 36, hashlib.shake_128), ("shake256", 37, hashlib.shake_256)):
+    for _msg, _n in ((b"abc", 50), (bytes(range(200)), 400)):
+        T(f"klmd_{_nm}_{len(_msg)}_{_n}", "klmd %r2,%r4",
+          f"r0={_fc:x},r1={_P:x},r2={_O:x},r3={_n:x},r4={_M:x},r5={len(_msg):x},m200:{_P:x}={'00' * 200},m{len(_msg)}:{_M:x}={_msg.hex()}",
+          f"m{_n}:{_O:x}={_alg(_msg).hexdigest(_n)},r2={_O + _n:x},r3=0,r4={_M + len(_msg):x},r5=0,r0={_fc | 0x100:x},cc=0")
+# GHASH (KIMD 65): Y = ((Y ^ X0) * H ^ X1) * H
+_Y, _H = bytes(range(16)), bytes(range(100, 116))
+_X = bytes(range(200, 232))
+_y = int.from_bytes(_Y, "big")
+for _k in range(2):
+    _y = CM.ghash_mul(_y ^ int.from_bytes(_X[16 * _k:16 * _k + 16], "big"), int.from_bytes(_H, "big"))
+T("kimd_ghash", "kimd %r0,%r4", f"r0=41,r1={_P:x},r4={_M:x},r5=20,m32:{_P:x}={(_Y + _H).hex()},m32:{_M:x}={_X.hex()}",
+  f"m16:{_P:x}={_y.to_bytes(16, 'big').hex()},m16:{_P + 16:x}={_H.hex()},r5=0,cc=0")
+
 
 
 def main():

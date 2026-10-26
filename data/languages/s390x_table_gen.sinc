@@ -228,8 +228,6 @@ define pcodeop s390_irbm;
 define pcodeop s390_iske;
 define pcodeop s390_ivsk;
 define pcodeop s390_kdsa;
-define pcodeop s390_kimd;
-define pcodeop s390_klmd;
 define pcodeop s390_lasp;
 define pcodeop s390_lbear;
 define pcodeop s390_lcctl;
@@ -61677,21 +61675,221 @@ rel32_16_16: tgt is g32_s16_16 [ tgt = inst_start + 2 * g32_s16_16; ] { export *
   g32_gpr24_4 = (g32_gpr24_4 & 0xffffffff00000000) | zext(t41073_41100:4);
   gs_cc_flags(!t41073_41101 && (t41073_41078 == 0) && (t41073_41080 == 0), !t41073_41101 && (t41073_41077 != 0) && (t41073_41080 != 0), !t41073_41101 && (t41073_41077 == 0) && (t41073_41080 != 0), t41073_41101);
 }
-:KLMD g32_gpr24_4,g32_gpr28_4 is g32_u0_4=0xb & g32_u4_4=0x9 & g32_u8_4=0x3 & g32_u12_4=0xf & g32_u20_4=0x0 & g32_u16_4=0 & g32_gpr24_4 & g32_gpr28_4 {
-  local i2:8 = 0;
-  s390_klmd(g32_gpr24_4, g32_gpr28_4, i2);
+:KLMD g32_gpr24_4,g32_gpr28_4 is g32_u0_4=0xb & g32_u4_4=0x9 & g32_u8_4=0x3 & g32_u12_4=0xf & g32_u20_4=0x0 & g32_u16_4=0 & g32_gpr24_4 & g32_gpr28_4 & g32_gpro28_4 & g32_u28_4 & g32_u24_4 & g32_gpro24_4 & cp_sha1 & cp_sha256 & cp_sha512 & cp_keccak & cp_ghash {
+  local r2num:4 = g32_u28_4; local r1num:4 = g32_u24_4;
+  local fc:1 = r0:1 & 0x7f; local eid:1 = 0; local cvlen:4 = 0; local bsz:8 = 0; local mbl:4 = 0; local dom:1 = 0;
+  local len0:8 = g32_gpro28_4; local ci:4 = 0; local ps:1 = 0; local nip:1 = 0; local shake:1 = 0;
+  if (fc != 0) goto <L_fn>;
+  *:8 r1 = 0xf0000000fc000000:8; *:8 (r1 + 8) = 0x4000000000000000:8; cc = 0; cc_sync(); goto <L_done>;
+  <L_fn>
+  if (((r2num & 1) == 0) && (r2num != 0)) goto <L_r2ok>; trap_specification(); goto <L_done>;
+  <L_r2ok>
+  if (fc != 1) goto <L_g1>; eid = 1; cvlen = 20; bsz = 64; mbl = 8; dom = 0x0; shake = 0; <L_g1>
+  if (fc != 2) goto <L_g2>; eid = 2; cvlen = 32; bsz = 64; mbl = 8; dom = 0x0; shake = 0; <L_g2>
+  if (fc != 3) goto <L_g3>; eid = 3; cvlen = 64; bsz = 128; mbl = 16; dom = 0x0; shake = 0; <L_g3>
+  if (fc != 32) goto <L_g32>; eid = 4; cvlen = 200; bsz = 144; mbl = 0; dom = 0x6; shake = 0; <L_g32>
+  if (fc != 33) goto <L_g33>; eid = 4; cvlen = 200; bsz = 136; mbl = 0; dom = 0x6; shake = 0; <L_g33>
+  if (fc != 34) goto <L_g34>; eid = 4; cvlen = 200; bsz = 104; mbl = 0; dom = 0x6; shake = 0; <L_g34>
+  if (fc != 35) goto <L_g35>; eid = 4; cvlen = 200; bsz = 72; mbl = 0; dom = 0x6; shake = 0; <L_g35>
+  if (fc != 36) goto <L_g36>; eid = 4; cvlen = 200; bsz = 168; mbl = 0; dom = 0x1f; shake = 1; <L_g36>
+  if (fc != 37) goto <L_g37>; eid = 4; cvlen = 200; bsz = 136; mbl = 0; dom = 0x1f; shake = 1; <L_g37>
+  if (fc != 65) goto <L_g65>; eid = 5; cvlen = 32; bsz = 16; mbl = 0; dom = 0x0; shake = 0; <L_g65>
+  if (eid != 0) goto <L_valid>; trap_specification(); goto <L_done>;
+  <L_valid>
+  local fl:8 = r0 >> 8; nip = fl:1 >> 7; ps = fl:1 & 1; nip = nip & 1;
+  if (shake == 0) goto <L_klok>;
+  if (((r1num & 1) == 0) && (r1num != 0) && (r1num != r2num)) goto <L_r1ok>; trap_specification(); goto <L_done>;
+  <L_r1ok>
+  if ((ps == 0) || (g32_gpro28_4 == 0)) goto <L_klok>; trap_specification(); goto <L_done>;
+  <L_klok> if ((ps == 0) || (nip == 0)) goto <L_klok2>; trap_specification(); goto <L_done>;
+  <L_klok2>
+  cpa = g32_gpr28_4; cpl = g32_gpro28_4; cpfin = 1; cpbh = 0; cpbl = 0; cprt = bsz; cpdm = dom; cpps = ps; cpmd = shake;
+  cpo = 0; cpn = 0;
+  if (shake == 0) goto <L_nsh>; cpo = g32_gpr24_4; cpn = g32_gpro24_4;
+  <L_nsh>
+  ci = 0; if (nip == 0) goto <L_cin>; if (eid != 4) goto <L_cin>;
+  <L_zf> *[cpm]:4 (0x0:4 + ci) = 0; ci = ci + 4; if (ci < 200) goto <L_zf>; goto <L_cdone>;
+  <L_cin> *[cpm]:4 (0x0:4 + ci) = *:4 (r1 + zext(ci)); ci = ci + 4; if (ci < cvlen) goto <L_cin>;
+  <L_cdone>
+  if (mbl == 0) goto <L_nm>; if (mbl == 16) goto <L_m16>; cpbl = *:8 (r1 + zext(cvlen)); goto <L_nm>;
+  <L_m16> cpbh = *:8 (r1 + zext(cvlen)); cpbl = *:8 (r1 + zext(cvlen) + 8);
+  <L_nm>
+  if (eid != 1) goto <L_e1>; build cp_sha1; goto <L_aft>;
+  <L_e1>
+  if (eid != 2) goto <L_e2>; build cp_sha256; goto <L_aft>;
+  <L_e2>
+  if (eid != 3) goto <L_e3>; build cp_sha512; goto <L_aft>;
+  <L_e3>
+  if (eid != 4) goto <L_e4>; build cp_keccak; goto <L_aft>;
+  <L_e4>
+  if (eid != 5) goto <L_e5>; build cp_ghash; goto <L_aft>;
+  <L_e5>
+  <L_aft> ci = 0;
+  <L_cout> *:4 (r1 + zext(ci)) = *[cpm]:4 (0x0:4 + ci); ci = ci + 4; if (ci < cvlen) goto <L_cout>;
+  g32_gpr28_4 = cpa; g32_gpro28_4 = cpl;
+  if (shake == 0) goto <L_nsh2>; g32_gpr24_4 = cpo; g32_gpro24_4 = cpn;
+  <L_nsh2>
+  r0 = (r0 & ~0x8100) | (zext(cpps) << 8); 
+  cc = 0; cc_sync();
+  <L_done>
 }
-:KLMD g32_gpr24_4,g32_gpr28_4,g32_u16_4 is g32_u0_4=0xb & g32_u4_4=0x9 & g32_u8_4=0x3 & g32_u12_4=0xf & g32_u20_4=0x0 & g32_gpr24_4 & g32_gpr28_4 & g32_u16_4 {
-  local i2:8 = g32_u16_4;
-  s390_klmd(g32_gpr24_4, g32_gpr28_4, i2);
+:KLMD g32_gpr24_4,g32_gpr28_4,g32_u16_4 is g32_u0_4=0xb & g32_u4_4=0x9 & g32_u8_4=0x3 & g32_u12_4=0xf & g32_u20_4=0x0 & g32_gpr24_4 & g32_gpr28_4 & g32_u16_4 & g32_gpro28_4 & g32_u28_4 & g32_u24_4 & g32_gpro24_4 & cp_sha1 & cp_sha256 & cp_sha512 & cp_keccak & cp_ghash {
+  local r2num:4 = g32_u28_4; local r1num:4 = g32_u24_4;
+  local fc:1 = r0:1 & 0x7f; local eid:1 = 0; local cvlen:4 = 0; local bsz:8 = 0; local mbl:4 = 0; local dom:1 = 0;
+  local len0:8 = g32_gpro28_4; local ci:4 = 0; local ps:1 = 0; local nip:1 = 0; local shake:1 = 0;
+  if (fc != 0) goto <L_fn>;
+  *:8 r1 = 0xf0000000fc000000:8; *:8 (r1 + 8) = 0x4000000000000000:8; cc = 0; cc_sync(); goto <L_done>;
+  <L_fn>
+  if (((r2num & 1) == 0) && (r2num != 0)) goto <L_r2ok>; trap_specification(); goto <L_done>;
+  <L_r2ok>
+  if (fc != 1) goto <L_g1>; eid = 1; cvlen = 20; bsz = 64; mbl = 8; dom = 0x0; shake = 0; <L_g1>
+  if (fc != 2) goto <L_g2>; eid = 2; cvlen = 32; bsz = 64; mbl = 8; dom = 0x0; shake = 0; <L_g2>
+  if (fc != 3) goto <L_g3>; eid = 3; cvlen = 64; bsz = 128; mbl = 16; dom = 0x0; shake = 0; <L_g3>
+  if (fc != 32) goto <L_g32>; eid = 4; cvlen = 200; bsz = 144; mbl = 0; dom = 0x6; shake = 0; <L_g32>
+  if (fc != 33) goto <L_g33>; eid = 4; cvlen = 200; bsz = 136; mbl = 0; dom = 0x6; shake = 0; <L_g33>
+  if (fc != 34) goto <L_g34>; eid = 4; cvlen = 200; bsz = 104; mbl = 0; dom = 0x6; shake = 0; <L_g34>
+  if (fc != 35) goto <L_g35>; eid = 4; cvlen = 200; bsz = 72; mbl = 0; dom = 0x6; shake = 0; <L_g35>
+  if (fc != 36) goto <L_g36>; eid = 4; cvlen = 200; bsz = 168; mbl = 0; dom = 0x1f; shake = 1; <L_g36>
+  if (fc != 37) goto <L_g37>; eid = 4; cvlen = 200; bsz = 136; mbl = 0; dom = 0x1f; shake = 1; <L_g37>
+  if (fc != 65) goto <L_g65>; eid = 5; cvlen = 32; bsz = 16; mbl = 0; dom = 0x0; shake = 0; <L_g65>
+  if (eid != 0) goto <L_valid>; trap_specification(); goto <L_done>;
+  <L_valid>
+  local fl:8 = r0 >> 8; nip = fl:1 >> 7; ps = fl:1 & 1; nip = nip & 1;
+  if (shake == 0) goto <L_klok>;
+  if (((r1num & 1) == 0) && (r1num != 0) && (r1num != r2num)) goto <L_r1ok>; trap_specification(); goto <L_done>;
+  <L_r1ok>
+  if ((ps == 0) || (g32_gpro28_4 == 0)) goto <L_klok>; trap_specification(); goto <L_done>;
+  <L_klok> if ((ps == 0) || (nip == 0)) goto <L_klok2>; trap_specification(); goto <L_done>;
+  <L_klok2>
+  cpa = g32_gpr28_4; cpl = g32_gpro28_4; cpfin = 1; cpbh = 0; cpbl = 0; cprt = bsz; cpdm = dom; cpps = ps; cpmd = shake;
+  cpo = 0; cpn = 0;
+  if (shake == 0) goto <L_nsh>; cpo = g32_gpr24_4; cpn = g32_gpro24_4;
+  <L_nsh>
+  ci = 0; if (nip == 0) goto <L_cin>; if (eid != 4) goto <L_cin>;
+  <L_zf> *[cpm]:4 (0x0:4 + ci) = 0; ci = ci + 4; if (ci < 200) goto <L_zf>; goto <L_cdone>;
+  <L_cin> *[cpm]:4 (0x0:4 + ci) = *:4 (r1 + zext(ci)); ci = ci + 4; if (ci < cvlen) goto <L_cin>;
+  <L_cdone>
+  if (mbl == 0) goto <L_nm>; if (mbl == 16) goto <L_m16>; cpbl = *:8 (r1 + zext(cvlen)); goto <L_nm>;
+  <L_m16> cpbh = *:8 (r1 + zext(cvlen)); cpbl = *:8 (r1 + zext(cvlen) + 8);
+  <L_nm>
+  if (eid != 1) goto <L_e1>; build cp_sha1; goto <L_aft>;
+  <L_e1>
+  if (eid != 2) goto <L_e2>; build cp_sha256; goto <L_aft>;
+  <L_e2>
+  if (eid != 3) goto <L_e3>; build cp_sha512; goto <L_aft>;
+  <L_e3>
+  if (eid != 4) goto <L_e4>; build cp_keccak; goto <L_aft>;
+  <L_e4>
+  if (eid != 5) goto <L_e5>; build cp_ghash; goto <L_aft>;
+  <L_e5>
+  <L_aft> ci = 0;
+  <L_cout> *:4 (r1 + zext(ci)) = *[cpm]:4 (0x0:4 + ci); ci = ci + 4; if (ci < cvlen) goto <L_cout>;
+  g32_gpr28_4 = cpa; g32_gpro28_4 = cpl;
+  if (shake == 0) goto <L_nsh2>; g32_gpr24_4 = cpo; g32_gpro24_4 = cpn;
+  <L_nsh2>
+  r0 = (r0 & ~0x8100) | (zext(cpps) << 8); 
+  cc = 0; cc_sync();
+  <L_done>
 }
-:KIMD g32_gpr24_4,g32_gpr28_4 is g32_u0_4=0xb & g32_u4_4=0x9 & g32_u8_4=0x3 & g32_u12_4=0xe & g32_u20_4=0x0 & g32_u16_4=0 & g32_gpr24_4 & g32_gpr28_4 {
-  local i2:8 = 0;
-  s390_kimd(g32_gpr24_4, g32_gpr28_4, i2);
+:KIMD g32_gpr24_4,g32_gpr28_4 is g32_u0_4=0xb & g32_u4_4=0x9 & g32_u8_4=0x3 & g32_u12_4=0xe & g32_u20_4=0x0 & g32_u16_4=0 & g32_gpr24_4 & g32_gpr28_4 & g32_gpro28_4 & g32_u28_4 & g32_u24_4 & g32_gpro24_4 & cp_sha1 & cp_sha256 & cp_sha512 & cp_keccak & cp_ghash {
+  local r2num:4 = g32_u28_4; local r1num:4 = g32_u24_4;
+  local fc:1 = r0:1 & 0x7f; local eid:1 = 0; local cvlen:4 = 0; local bsz:8 = 0; local mbl:4 = 0; local dom:1 = 0;
+  local len0:8 = g32_gpro28_4; local ci:4 = 0; local ps:1 = 0; local nip:1 = 0; local shake:1 = 0;
+  if (fc != 0) goto <L_fn>;
+  *:8 r1 = 0xf0000000fc000000:8; *:8 (r1 + 8) = 0x4000000000000000:8; cc = 0; cc_sync(); goto <L_done>;
+  <L_fn>
+  if ((r0 & 0x80) == 0) goto <L_b56>; trap_specification(); goto <L_done>;
+  <L_b56>
+  if (((r2num & 1) == 0) && (r2num != 0)) goto <L_r2ok>; trap_specification(); goto <L_done>;
+  <L_r2ok>
+  if (fc != 1) goto <L_g1>; eid = 1; cvlen = 20; bsz = 64; mbl = 8; dom = 0x0; shake = 0; <L_g1>
+  if (fc != 2) goto <L_g2>; eid = 2; cvlen = 32; bsz = 64; mbl = 8; dom = 0x0; shake = 0; <L_g2>
+  if (fc != 3) goto <L_g3>; eid = 3; cvlen = 64; bsz = 128; mbl = 16; dom = 0x0; shake = 0; <L_g3>
+  if (fc != 32) goto <L_g32>; eid = 4; cvlen = 200; bsz = 144; mbl = 0; dom = 0x6; shake = 0; <L_g32>
+  if (fc != 33) goto <L_g33>; eid = 4; cvlen = 200; bsz = 136; mbl = 0; dom = 0x6; shake = 0; <L_g33>
+  if (fc != 34) goto <L_g34>; eid = 4; cvlen = 200; bsz = 104; mbl = 0; dom = 0x6; shake = 0; <L_g34>
+  if (fc != 35) goto <L_g35>; eid = 4; cvlen = 200; bsz = 72; mbl = 0; dom = 0x6; shake = 0; <L_g35>
+  if (fc != 36) goto <L_g36>; eid = 4; cvlen = 200; bsz = 168; mbl = 0; dom = 0x1f; shake = 1; <L_g36>
+  if (fc != 37) goto <L_g37>; eid = 4; cvlen = 200; bsz = 136; mbl = 0; dom = 0x1f; shake = 1; <L_g37>
+  if (fc != 65) goto <L_g65>; eid = 5; cvlen = 32; bsz = 16; mbl = 0; dom = 0x0; shake = 0; <L_g65>
+  if (eid != 0) goto <L_valid>; trap_specification(); goto <L_done>;
+  <L_valid>
+  local fl:8 = r0 >> 8; nip = fl:1 >> 7; ps = fl:1 & 1; nip = nip & 1;
+  if ((g32_gpro28_4 % bsz) == 0) goto <L_lenok>; trap_specification(); goto <L_done>;
+  <L_lenok>
+  cpa = g32_gpr28_4; cpl = g32_gpro28_4; cpfin = 0; cpbh = 0; cpbl = 0; cprt = bsz; cpdm = dom; cpps = ps; cpmd = shake;
+  cpo = 0; cpn = 0;
+  ci = 0; if (nip == 0) goto <L_cin>; if (eid != 4) goto <L_cin>;
+  <L_zf> *[cpm]:4 (0x0:4 + ci) = 0; ci = ci + 4; if (ci < 200) goto <L_zf>; goto <L_cdone>;
+  <L_cin> *[cpm]:4 (0x0:4 + ci) = *:4 (r1 + zext(ci)); ci = ci + 4; if (ci < cvlen) goto <L_cin>;
+  <L_cdone>
+  if (eid != 1) goto <L_e1>; build cp_sha1; goto <L_aft>;
+  <L_e1>
+  if (eid != 2) goto <L_e2>; build cp_sha256; goto <L_aft>;
+  <L_e2>
+  if (eid != 3) goto <L_e3>; build cp_sha512; goto <L_aft>;
+  <L_e3>
+  if (eid != 4) goto <L_e4>; build cp_keccak; goto <L_aft>;
+  <L_e4>
+  if (eid != 5) goto <L_e5>; build cp_ghash; goto <L_aft>;
+  <L_e5>
+  <L_aft> ci = 0;
+  <L_cout> *:4 (r1 + zext(ci)) = *[cpm]:4 (0x0:4 + ci); ci = ci + 4; if (ci < cvlen) goto <L_cout>;
+  g32_gpr28_4 = cpa; g32_gpro28_4 = cpl;
+  if (len0 == 0) goto <L_nn>; r0 = r0 & ~0x8000;
+  <L_nn>
+  cc = 0; cc_sync();
+  <L_done>
 }
-:KIMD g32_gpr24_4,g32_gpr28_4,g32_u16_4 is g32_u0_4=0xb & g32_u4_4=0x9 & g32_u8_4=0x3 & g32_u12_4=0xe & g32_u20_4=0x0 & g32_gpr24_4 & g32_gpr28_4 & g32_u16_4 {
-  local i2:8 = g32_u16_4;
-  s390_kimd(g32_gpr24_4, g32_gpr28_4, i2);
+:KIMD g32_gpr24_4,g32_gpr28_4,g32_u16_4 is g32_u0_4=0xb & g32_u4_4=0x9 & g32_u8_4=0x3 & g32_u12_4=0xe & g32_u20_4=0x0 & g32_gpr24_4 & g32_gpr28_4 & g32_u16_4 & g32_gpro28_4 & g32_u28_4 & g32_u24_4 & g32_gpro24_4 & cp_sha1 & cp_sha256 & cp_sha512 & cp_keccak & cp_ghash {
+  local r2num:4 = g32_u28_4; local r1num:4 = g32_u24_4;
+  local fc:1 = r0:1 & 0x7f; local eid:1 = 0; local cvlen:4 = 0; local bsz:8 = 0; local mbl:4 = 0; local dom:1 = 0;
+  local len0:8 = g32_gpro28_4; local ci:4 = 0; local ps:1 = 0; local nip:1 = 0; local shake:1 = 0;
+  if (fc != 0) goto <L_fn>;
+  *:8 r1 = 0xf0000000fc000000:8; *:8 (r1 + 8) = 0x4000000000000000:8; cc = 0; cc_sync(); goto <L_done>;
+  <L_fn>
+  if ((r0 & 0x80) == 0) goto <L_b56>; trap_specification(); goto <L_done>;
+  <L_b56>
+  if (((r2num & 1) == 0) && (r2num != 0)) goto <L_r2ok>; trap_specification(); goto <L_done>;
+  <L_r2ok>
+  if (fc != 1) goto <L_g1>; eid = 1; cvlen = 20; bsz = 64; mbl = 8; dom = 0x0; shake = 0; <L_g1>
+  if (fc != 2) goto <L_g2>; eid = 2; cvlen = 32; bsz = 64; mbl = 8; dom = 0x0; shake = 0; <L_g2>
+  if (fc != 3) goto <L_g3>; eid = 3; cvlen = 64; bsz = 128; mbl = 16; dom = 0x0; shake = 0; <L_g3>
+  if (fc != 32) goto <L_g32>; eid = 4; cvlen = 200; bsz = 144; mbl = 0; dom = 0x6; shake = 0; <L_g32>
+  if (fc != 33) goto <L_g33>; eid = 4; cvlen = 200; bsz = 136; mbl = 0; dom = 0x6; shake = 0; <L_g33>
+  if (fc != 34) goto <L_g34>; eid = 4; cvlen = 200; bsz = 104; mbl = 0; dom = 0x6; shake = 0; <L_g34>
+  if (fc != 35) goto <L_g35>; eid = 4; cvlen = 200; bsz = 72; mbl = 0; dom = 0x6; shake = 0; <L_g35>
+  if (fc != 36) goto <L_g36>; eid = 4; cvlen = 200; bsz = 168; mbl = 0; dom = 0x1f; shake = 1; <L_g36>
+  if (fc != 37) goto <L_g37>; eid = 4; cvlen = 200; bsz = 136; mbl = 0; dom = 0x1f; shake = 1; <L_g37>
+  if (fc != 65) goto <L_g65>; eid = 5; cvlen = 32; bsz = 16; mbl = 0; dom = 0x0; shake = 0; <L_g65>
+  if (eid != 0) goto <L_valid>; trap_specification(); goto <L_done>;
+  <L_valid>
+  local fl:8 = r0 >> 8; nip = fl:1 >> 7; ps = fl:1 & 1; nip = nip & 1;
+  if ((g32_gpro28_4 % bsz) == 0) goto <L_lenok>; trap_specification(); goto <L_done>;
+  <L_lenok>
+  cpa = g32_gpr28_4; cpl = g32_gpro28_4; cpfin = 0; cpbh = 0; cpbl = 0; cprt = bsz; cpdm = dom; cpps = ps; cpmd = shake;
+  cpo = 0; cpn = 0;
+  ci = 0; if (nip == 0) goto <L_cin>; if (eid != 4) goto <L_cin>;
+  <L_zf> *[cpm]:4 (0x0:4 + ci) = 0; ci = ci + 4; if (ci < 200) goto <L_zf>; goto <L_cdone>;
+  <L_cin> *[cpm]:4 (0x0:4 + ci) = *:4 (r1 + zext(ci)); ci = ci + 4; if (ci < cvlen) goto <L_cin>;
+  <L_cdone>
+  if (eid != 1) goto <L_e1>; build cp_sha1; goto <L_aft>;
+  <L_e1>
+  if (eid != 2) goto <L_e2>; build cp_sha256; goto <L_aft>;
+  <L_e2>
+  if (eid != 3) goto <L_e3>; build cp_sha512; goto <L_aft>;
+  <L_e3>
+  if (eid != 4) goto <L_e4>; build cp_keccak; goto <L_aft>;
+  <L_e4>
+  if (eid != 5) goto <L_e5>; build cp_ghash; goto <L_aft>;
+  <L_e5>
+  <L_aft> ci = 0;
+  <L_cout> *:4 (r1 + zext(ci)) = *[cpm]:4 (0x0:4 + ci); ci = ci + 4; if (ci < cvlen) goto <L_cout>;
+  g32_gpr28_4 = cpa; g32_gpro28_4 = cpl;
+  if (len0 == 0) goto <L_nn>; r0 = r0 & ~0x8000;
+  <L_nn>
+  cc = 0; cc_sync();
+  <L_done>
 }
 :NNPA  is g32_u0_4=0xb & g32_u4_4=0x9 & g32_u8_4=0x3 & g32_u12_4=0xb & g32_u16_4=0x0 & g32_u20_4=0x0 & g32_u24_4=0x0 & g32_u28_4=0x0 {
   s390_nnpa();

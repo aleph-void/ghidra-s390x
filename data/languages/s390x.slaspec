@@ -23,6 +23,8 @@ define alignment=2;
 # ram: 64-bit byte-addressable main storage. z/Architecture is big-endian.
 define space ram type=ram_space size=8 wordsize=1 default;
 define space register type=register_space size=8;
+# cpm: scratch memory of the message-security-assist engines (s390x_cpacf.sinc); not storage
+define space cpm type=ram_space size=4 wordsize=1;
 # 'register' space is implied by 'define register' below.
 # 'unique' and 'const' spaces are predefined by SLEIGH.
 
@@ -350,6 +352,12 @@ define register offset=0x12800 size=5120 [ pfw2 ];
 define register offset=0x13c00 size=5120 [ pfw3 ];
 define register offset=0x15000 size=5120 [ pfw4 ];
 
+# Scratch state of the message-security-assist (CPACF) engines: operand address and length,
+# the "last block" flag, the message bit length (cpbh:cpbl) and a pointer for the engines.
+define register offset=0x16400 size=8 [ cpa cpl cpbh cpbl cpo cpn ];
+define register offset=0x16430 size=8 [ cprt ];
+define register offset=0x16440 size=1 [ cpfin cpps cpmd cpdm ];
+
 # Disassembly context. xplink: set to 1 by the zos_xplink compiler spec, where "BR 7" and
 # "B 2(,7)"/"B 4(,7)" are function returns (the XPLINK return address is in R7, and a
 # 2- or 4-byte NOP after the call is skipped).
@@ -482,4 +490,5 @@ macro cc_hit(m, out) {
 @include "s390x_gaps.sinc"
 @include "s390x_gaps2.sinc"
 @include "s390x_cond.sinc"
+@include "s390x_cpacf.sinc"
 @include "s390x_table_gen.sinc"
