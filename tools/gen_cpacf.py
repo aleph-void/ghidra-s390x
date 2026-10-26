@@ -660,7 +660,7 @@ HMAC_E = {120: 112, 121: 113, 122: 114, 123: 115}     # the protected-key functi
 def hmac_code(r2a, r2l):
     """KMAC-HMAC-SHA-224 / 256 / 384 / 512 with a clear key (functions 112-115): flags IKP, IIMP, CCUP
     in bits 48-50 of general register 0 (0x8000, 0x4000, 0x2000)"""
-    t = ["local hv:1 = 0; local hbs:4 = 0; local hcv:4 = 0; local hdl:4 = 0; local hil:4 = 0; local hp:1 = 0; local fl2:8 = r0; local imbl:16 = 0; local imh:16 = 0; local hw:4 = 0; local hwk:1 = 0;"]
+    t = ["fl2 = r0;"]
     for fc, (v, bs, cv, dl, il) in sorted(HMAC.items()):
         t.append(f"if (fc != {fc}) goto <L_h{fc}>; hv = {v}; hbs = {bs}; hcv = {cv}; hdl = {dl}; hil = {il}; <L_h{fc}>")
     for fc, base in sorted(HMAC_E.items()):
@@ -876,6 +876,7 @@ def cipher_insn(n, o, x):
         t.append(f"local r3num:4 = {x[3]};")
     t.append("local fc:1 = r0:1 & 0x7f; local alg:1 = 0; local nk:1 = 0; local klen:4 = 0; local bsz:8 = 8; local ok:1 = 0; local ci:4 = 0; local lc:8 = 0;")
     t.append("local wk:1 = 0; local wv:32 = 0; local wt:32 = 0; local wb:1 = 0; local wl:8 = 0; local wsh:8 = 0; local vpo:4 = 0; local tauo:4 = 0; local kdst:4 = 0; local wlen:4 = 0; local hph:1 = 0;")
+    t.append("local hv:1 = 0; local hbs:4 = 0; local hcv:4 = 0; local hdl:4 = 0; local hil:4 = 0; local hp:1 = 0; local fl2:8 = 0; local imbl:16 = 0; local imh:16 = 0; local hw:4 = 0; local hwk:1 = 0;")
     t.append("if (fc != 0) goto <L_fn>;")
     fcs = dict(CIPHER)
     if n == "km":
@@ -1003,7 +1004,7 @@ def pcc_insn(x):
     """PCC: the CMAC of the last block (functions 1-3, 18-20): ML at 0, message at 8, ICV at 8 + bs
     (replaced by the CMAC), key at 8 + 2 bs"""
     t = ["local fc:1 = r0:1 & 0x7f; local alg:1 = 0; local nk:1 = 0; local klen:4 = 0; local bsz:8 = 8; local ok:1 = 0; local ci:4 = 0; local ml:8 = 0;"]
-    t.append("local wk:1 = 0; local wv:32 = 0; local wt:32 = 0; local wb:1 = 0; local wl:8 = 0; local wsh:8 = 0; local kdst:4 = 0; local xo:4 = 0; local ko:4 = 0;")
+    t.append("local wk:1 = 0; local wv:32 = 0; local wt:32 = 0; local wb:1 = 0; local wl:8 = 0; local wsh:8 = 0; local kdst:4 = 0; local xo:4 = 0; local ko:4 = 0; local jz:8 = 0; local th:8 = 0; local tl:8 = 0;")
     t.append("if (fc != 0) goto <L_fn>;")
     mask = fcmask([0] + sorted(CIPHER) + [50, 52] + sorted(ENC_FC) + sorted(ENC_XTS) + sorted(gen_ecc.PCC_FC))
     t.append(f"*:8 r1 = {mask >> 64:#x}:8; *:8 (r1 + 8) = {mask & ((1 << 64) - 1):#x}:8; cc = 0; goto <L_done>;")
@@ -1023,7 +1024,7 @@ def pcc_insn(x):
     t.append("if (ok == 2) goto <L_notmac>; ko = 8 + (2 * bsz:4);\n<L_notmac> if (ok != 2) goto <L_kmac>; ko = 0;\n<L_kmac>")
     t.append(vp_check("(zext(ko) + zext(klen))"))
     t.append("if (ok != 2) goto <L_notxts>;")
-    t.append("local jz:8 = *:8 (r1 + zext(klen) + zext(xo) + 16) | *:8 (r1 + zext(klen) + zext(xo) + 24); local th:8 = *:8 (r1 + zext(klen) + zext(xo) + 32); local tl:8 = *:8 (r1 + zext(klen) + zext(xo) + 40);")
+    t.append("jz = *:8 (r1 + zext(klen) + zext(xo) + 16) | *:8 (r1 + zext(klen) + zext(xo) + 24); th = *:8 (r1 + zext(klen) + zext(xo) + 32); tl = *:8 (r1 + zext(klen) + zext(xo) + 40);")
     t.append("if (jz == 0) goto <L_tok>; if ((th == 0) && (tl <= 127)) goto <L_tok>; cc = 2; goto <L_done>;\n<L_tok>")
     t.append(f"ci = 0; <L_xk> *[cpm]:4 (kdst + ci) = *:4 (r1 + zext(ci)); ci = ci + 4; if (ci < klen) goto <L_xk>;")
     t.append(f"*[cpm]:8 ({TAU:#x}:4) = *:8 (r1 + zext(klen) + zext(xo)); *[cpm]:8 ({TAU + 8:#x}:4) = *:8 (r1 + zext(klen) + zext(xo) + 8);")

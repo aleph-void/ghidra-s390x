@@ -205,7 +205,6 @@ define pcodeop s390_crdte;
 define pcodeop s390_csch;
 define pcodeop s390_csp;
 define pcodeop s390_cspg;
-define pcodeop s390_dfltcc;
 define pcodeop s390_ecag;
 define pcodeop s390_ecctr;
 define pcodeop s390_ecpga;
@@ -62149,8 +62148,141 @@ rel32_16_16: tgt is g32_s16_16 [ tgt = inst_start + 2 * g32_s16_16; ] { export *
   <L_kdhd> cpsm = 0; kd_ph = kd_hph; if (kd_ph == 12) goto <L_kp12>; if (kd_ph == 20) goto <L_kp20>; if (kd_ph == 22) goto <L_kp22>; if (kd_ph == 25) goto <L_kp25>; goto <L_kp26>;
   <L_done>
 }
-:DFLTCC g32_gpr24_4,g32_gpr28_4,g32_gpr16_4 is g32_u0_4=0xb & g32_u4_4=0x9 & g32_u8_4=0x3 & g32_u12_4=0x9 & g32_gpr24_4 & g32_gpr28_4 & g32_gpr16_4 {
-  g32_gpr24_4 = s390_dfltcc(g32_gpr28_4, g32_gpr16_4);
+:DFLTCC g32_gpr24_4,g32_gpr28_4,g32_gpr16_4 is g32_u0_4=0xb & g32_u4_4=0x9 & g32_u8_4=0x3 & g32_u12_4=0x9 & g32_gpr24_4 & g32_gpr28_4 & g32_gpr16_4 & g32_gpro24_4 & g32_u24_4 & g32_gpro28_4 & g32_u28_4 & g32_u16_4 {
+  local r1num:4 = g32_u24_4; local r2num:4 = g32_u28_4; local r3num:4 = g32_u16_4;
+  local fc:1 = r0:1 & 0x7f; local hbt:1 = (r0:1 >> 7) & 1;
+  local gq:8 = 0; local gs:8 = 0; local gw:8 = 0; local ix:4 = 0; local dfb:8 = 0; local dfw:8 = 0; local dfleft:8 = 0; local dfn:8 = 0; local dfret:1 = 0; local dfb4:4 = 0; local dfw4:4 = 0;
+  local dflb:4 = 0; local dfcc:4 = 0; local dfcs:4 = 0; local nt:1 = 0; local cf:1 = 0; local cvt:1 = 0; local sbb:8 = 0; local hl:8 = 0; local ho:8 = 0; local cv:8 = 0;
+  local rb:8 = 0; local rp:8 = 0; local rt:8 = 0; local sa:8 = 0; local sl:8 = 0; local da:8 = 0; local dl:8 = 0; local ebp:8 = 0; local st:1 = 0; local bfin:1 = 0; local ifl:8 = 0;
+  local oesc:1 = 0; local ccv:1 = 0; local sym:8 = 0; local dlen:8 = 0; local dist:8 = 0; local hv:8 = 0; local b:8 = 0; local produced:8 = 0; local xret:1 = 0;
+  local nlen:8 = 0; local ndist:8 = 0; local ncode:8 = 0; local sidx:8 = 0; local rep:8 = 0; local prevl:8 = 0; local ifs:1 = 0; local cdl:8 = 0; local dhs:8 = 0; local ctmp:8 = 0;
+  local bt:1 = 0; local hdr:8 = 0; local dcode:8 = 0; local dfirst:8 = 0; local dindex:8 = 0; local dcnt:8 = 0; local dl4:8 = 0; local cvx:8 = 0; local fromcd:1 = 0; local dynnew:1 = 0;
+  local pend:1 = 0; local resmc:1 = 0; local dtmp:8 = 0; local dret:1 = 0; local dfail:1 = 0; local dcc:4 = 0; local dcs:4 = 0; local sbp:8 = 0; local sbase:8 = 0; local stot:8 = 0; local cl:8 = 0; local ecb:8 = 0; local mc:8 = 0; local ixc:4 = 0; local prog:1 = 0; local b21:1 = 0;
+  if (fc != 0) goto <L_fn>;
+  *:8 r1 = 0xe800000000000000:8; *:8 (r1 + 8) = 0:8; *:8 (r1 + 16) = 0:8; *:8 (r1 + 24) = 0x8000000000000000:8; cc = 0; cc_sync(); goto <L_done>;
+  <L_fn> if ((fc == 1) || (fc == 2) || (fc == 4)) goto <L_fok>; trap_specification(); goto <L_done>;
+  <L_fok>
+  if ((((r1num & 1) == 0) && (r1num != 0)) && (((r2num & 1) == 0) && (r2num != 0)) && (r3num != 0) && (r3num != 1)) goto <L_rok>; trap_specification(); goto <L_done>;
+  <L_rok>
+  if (fc == 4) goto <L_xpnd>; if (fc == 1) goto <L_gdht>; cc = s390_dfltcc_cmpr(g32_gpr24_4, g32_gpro24_4, g32_gpr28_4, g32_gpro28_4, g32_gpr16_4); cc_sync(); goto <L_done>;
+  <L_gdht> cc = s390_dfltcc_gdht(g32_gpr28_4, g32_gpro28_4); cc_sync(); goto <L_done>;
+  <L_xpnd> nt = (*:1 (r1 + 16) >> 7) & 1; cf = *:1 (r1 + 7) & 1; cvt = (*:1 (r1 + 16) >> 5) & 1;
+  if ((cf == 0) && (g32_gpro28_4 == 0)) goto <L_xsp>; if ((hbt != 0) && ((g32_gpr16_4 & 0xfff) != 0)) goto <L_xsp>; goto <L_xok>; <L_xsp> trap_specification(); goto <L_done>;
+  <L_xok>
+  *[cpm]:8 (0x5900:4) = 0x3000400050006; *[cpm]:8 (0x5908:4) = 0x700080009000a; *[cpm]:8 (0x5910:4) = 0xb000d000f0011; *[cpm]:8 (0x5918:4) = 0x130017001b001f; *[cpm]:8 (0x5920:4) = 0x23002b0033003b; *[cpm]:8 (0x5928:4) = 0x43005300630073; *[cpm]:8 (0x5930:4) = 0x8300a300c300e3; *[cpm]:8 (0x5938:4) = 0x102000000000000; *[cpm]:8 (0x5980:4) = 0x0; *[cpm]:8 (0x5988:4) = 0x101010102020202; *[cpm]:8 (0x5990:4) = 0x303030304040404; *[cpm]:8 (0x5998:4) = 0x505050500000000; *[cpm]:8 (0x59a0:4) = 0x1000200030004; *[cpm]:8 (0x59a8:4) = 0x500070009000d; *[cpm]:8 (0x59b0:4) = 0x11001900210031; *[cpm]:8 (0x59b8:4) = 0x410061008100c1; *[cpm]:8 (0x59c0:4) = 0x101018102010301; *[cpm]:8 (0x59c8:4) = 0x401060108010c01; *[cpm]:8 (0x59d0:4) = 0x1001180120013001; *[cpm]:8 (0x59d8:4) = 0x4001600100000000; *[cpm]:8 (0x59e0:4) = 0x1010202; *[cpm]:8 (0x59e8:4) = 0x303040405050606; *[cpm]:8 (0x59f0:4) = 0x707080809090a0a; *[cpm]:8 (0x59f8:4) = 0xb0b0c0c0d0d0000; *[cpm]:8 (0x5a00:4) = 0x1011120008070906; *[cpm]:8 (0x5a08:4) = 0xa050b040c030d02; *[cpm]:8 (0x5a10:4) = 0xe010f0000000000;
+  pend = 0; sbb = zext(*:1 (r1 + 18) & 7); hl = zext(*:2 (r1 + 44)); ho = zext(*:2 (r1 + 46)) & 0x7fff; cv = 0;
+  if (nt == 0) goto <L_x1>; sbb = 0; hl = 0; ho = 0; if (cvt == 0) goto <L_x0>; cv = 1; <L_x0> goto <L_x4>;
+  <L_x1> if (hl > 32768) goto <L_xbad2>; if ((*:1 (r1 + 1) & 0xf) != 0) goto <L_xbad1>; if (cvt == 0) goto <L_xc1>;
+  cv = (zext(*:1 (r1 + 48)) << 24) | (zext(*:1 (r1 + 49)) << 16) | (zext(*:1 (r1 + 50)) << 8) | zext(*:1 (r1 + 51)); goto <L_x4>;
+  <L_xc1> cv = (zext(*:1 (r1 + 51)) << 24) | (zext(*:1 (r1 + 50)) << 16) | (zext(*:1 (r1 + 49)) << 8) | zext(*:1 (r1 + 48));
+  <L_x4> sa = g32_gpr28_4; sl = g32_gpro28_4; da = g32_gpr24_4; dl = g32_gpro24_4; rb = sa; rp = sbb; rt = sl * 8; produced = 0; ifl = 0; bfin = 0; st = 0; fromcd = 0; dynnew = 0; oesc = 0; prog = 0;
+  cvx = cv; if (cvt != 0) goto <L_x6>; cvx = cv ^ 0xffffffff; <L_x6>
+  if (cf == 0) goto <L_xs0>; if (nt != 0) goto <L_xs0>; ifs = *:1 (r1 + 21) & 0xf; if (ifs < 8) goto <L_xs0>; if (ifs >= 0xe) goto <L_xs0>; bfin = ifs & 1;
+  if (ifs >= 0xc) goto <L_xsd>; if (ifs >= 0xa) goto <L_xsf>; st = 1; ifl = zext(*:2 (r1 + 22)); goto <L_xs0>;
+  <L_xsf> st = 2; goto <L_xs0>; <L_xsd> st = 3; fromcd = 1;
+  <L_xs0> if (dl != 0) goto <L_xgo>; ccv = 1; goto <L_xsave>;
+  <L_xgo> if (cf == 0) goto <L_xg1>; if (nt != 0) goto <L_xg1>; if (*:1 (r1 + 384) == 0) goto <L_xg1>; mc = zext(*:2 (r1 + 385)); dist = zext(*:2 (r1 + 387)); *:1 (r1 + 384) = 0; resmc = 1;
+  <L_xg1> if (st == 0) goto <L_xblk>; if (st == 1) goto <L_xdata>; if (st == 2) goto <L_xfix>; goto <L_xdyn>;
+  <L_xblk> ebp = rp; if ((rp + 3) > rt) goto <L_xr2>; gq = rp >> 3; gs = rp & 7; gw = zext(*:1 (rb + gq)); if (((gs + 3 + 7) >> 3) < 2) goto <L_gb1>; gw = gw | (zext(*:1 (rb + gq + 1)) << 8); if (((gs + 3 + 7) >> 3) < 3) goto <L_gb1>; gw = gw | (zext(*:1 (rb + gq + 2)) << 16); <L_gb1> hdr = (gw >> gs) & ((1 << 3) - 1); rp = rp + 3; goto <L_ge1>; <L_ge1> bfin = hdr:1 & 1; bt = (hdr:1 >> 1) & 3; if (bt == 3) goto <L_xbadin>; if (bt == 0) goto <L_xsto>; if (bt == 1) goto <L_xfix>; goto <L_xdyn>;
+  <L_xsto> rp = (rp + 7) & ~7; if ((rp + 16) > rt) goto <L_xr2>; gq = rp >> 3; gs = rp & 7; gw = zext(*:1 (rb + gq)); if (((gs + 16 + 7) >> 3) < 2) goto <L_gb2>; gw = gw | (zext(*:1 (rb + gq + 1)) << 8); if (((gs + 16 + 7) >> 3) < 3) goto <L_gb2>; gw = gw | (zext(*:1 (rb + gq + 2)) << 16); <L_gb2> ifl = (gw >> gs) & ((1 << 16) - 1); rp = rp + 16; goto <L_ge2>; <L_ge2> if ((rp + 16) > rt) goto <L_xr2>; gq = rp >> 3; gs = rp & 7; gw = zext(*:1 (rb + gq)); if (((gs + 16 + 7) >> 3) < 2) goto <L_gb3>; gw = gw | (zext(*:1 (rb + gq + 1)) << 8); if (((gs + 16 + 7) >> 3) < 3) goto <L_gb3>; gw = gw | (zext(*:1 (rb + gq + 2)) << 16); <L_gb3> hv = (gw >> gs) & ((1 << 16) - 1); rp = rp + 16; goto <L_ge3>; <L_ge3>
+  if ((ifl ^ hv) != 0xffff) goto <L_xbadin>; st = 1;
+  <L_xdata> if (ifl == 0) goto <L_xbdone>; if (dl == 0) goto <L_xroom>; if ((rt - rp) < 8) goto <L_xr2d>; b = zext(*:1 (rb + (rp >> 3))); rp = rp + 8; ifl = ifl - 1; xret = 1; goto <L_xput>;
+  <L_xr2d> ccv = 2; goto <L_xsave>;
+  <L_xput> *:1 da = b:1; da = da + 1; dl = dl - 1; produced = produced + 1; prog = 1; if (cvt != 0) goto <L_xad>; cvx = cvx ^ b;
+  ctmp = 0 - (cvx & 1); cvx = (cvx >> 1) ^ (0xedb88320 & ctmp);
+  ctmp = 0 - (cvx & 1); cvx = (cvx >> 1) ^ (0xedb88320 & ctmp);
+  ctmp = 0 - (cvx & 1); cvx = (cvx >> 1) ^ (0xedb88320 & ctmp);
+  ctmp = 0 - (cvx & 1); cvx = (cvx >> 1) ^ (0xedb88320 & ctmp);
+  ctmp = 0 - (cvx & 1); cvx = (cvx >> 1) ^ (0xedb88320 & ctmp);
+  ctmp = 0 - (cvx & 1); cvx = (cvx >> 1) ^ (0xedb88320 & ctmp);
+  ctmp = 0 - (cvx & 1); cvx = (cvx >> 1) ^ (0xedb88320 & ctmp);
+  ctmp = 0 - (cvx & 1); cvx = (cvx >> 1) ^ (0xedb88320 & ctmp);
+  goto <L_xhist>; <L_xad> hv = cvx & 0xffff; ctmp = (cvx >> 16) & 0xffff; hv = (hv + b) % 65521; ctmp = (ctmp + hv) % 65521; cvx = (ctmp << 16) | hv;
+  <L_xhist> if (hbt == 0) goto <L_xh1>; hv = (ho + hl) & 0x7fff; *:1 (g32_gpr16_4 + hv) = b:1; if (hl < 32768) goto <L_xh1>; ho = (ho + 1) & 0x7fff; goto <L_xh2>;
+  <L_xh1> if (hl >= 32768) goto <L_xh2>; hl = hl + 1;
+  <L_xh2> if (xret == 1) goto <L_xdata>; if (xret == 2) goto <L_xlit>; goto <L_xcopy>;
+  <L_xfix> st = 2; ix = 0; <L_xf1> if (ix >= 288) goto <L_xf2>; *[cpm]:1 (0x5000:4 + ix) = 8; if (ix < 144) goto <L_xf3>; *[cpm]:1 (0x5000:4 + ix) = 9; if (ix < 256) goto <L_xf3>; *[cpm]:1 (0x5000:4 + ix) = 7; if (ix < 280) goto <L_xf3>; *[cpm]:1 (0x5000:4 + ix) = 8; <L_xf3> ix = ix + 1; goto <L_xf1>;
+  <L_xf2> ix = 0; <L_xf4> if (ix >= 30) goto <L_xf5>; *[cpm]:1 (0x5120:4 + ix) = 5; ix = ix + 1; goto <L_xf4>;
+  <L_xf5> dflb = 0x5000; dfcc = 0x5400; dfcs = 0x5420; dfn = 288; dfret = 1; goto <L_dfcon>;
+  <L_dfr1> dflb = 0x5120; dfcc = 0x5700; dfcs = 0x5720; dfn = 30; dfret = 2; goto <L_dfcon>;
+  <L_dfr2> goto <L_xfx>;
+  <L_xfx> 
+  <L_xhufl> if (resmc == 0) goto <L_xhf>; resmc = 0; goto <L_xcopy>; <L_xhf> ebp = rp; dcc = 0x5400; dcs = 0x5420; dret = 1; goto <L_dec>;
+  <L_dc1> if (dfail == 1) goto <L_xr2s>; if (dfail != 0) goto <L_xbadin>; if (sym >= 256) goto <L_xnl>; if (dl == 0) goto <L_xroomb>; b = sym; xret = 2; goto <L_xput>;
+  <L_xlit> goto <L_xhufl>;
+  <L_xnl> if (sym == 256) goto <L_xbdone>; sym = sym - 257; if (sym >= 29) goto <L_xbadin>;
+  ix = sym:4; dlen = zext(*[cpm]:2 (0x5900:4 + (ix * 2))); ecb = zext(*[cpm]:1 (0x5980:4 + ix));
+  if (ecb == 0) goto <L_gz4>; if ((rp + ecb) > rt) goto <L_xr2s>; gq = rp >> 3; gs = rp & 7; gw = zext(*:1 (rb + gq)); if (((gs + ecb + 7) >> 3) < 2) goto <L_gb4>; gw = gw | (zext(*:1 (rb + gq + 1)) << 8); if (((gs + ecb + 7) >> 3) < 3) goto <L_gb4>; gw = gw | (zext(*:1 (rb + gq + 2)) << 16); <L_gb4> hv = (gw >> gs) & ((1 << ecb) - 1); rp = rp + ecb; goto <L_ge4>; <L_gz4> hv = 0; <L_ge4> dlen = dlen + hv; dcc = 0x5700; dcs = 0x5720; dret = 2; goto <L_dec>;
+  <L_dc2> if (dfail == 1) goto <L_xr2s>; if (dfail != 0) goto <L_xbadin>; if (sym >= 30) goto <L_xbadin>;
+  ix = sym:4; dist = zext(*[cpm]:2 (0x59a0:4 + (ix * 2))); ecb = zext(*[cpm]:1 (0x59e0:4 + ix));
+  if (ecb == 0) goto <L_gz5>; if ((rp + ecb) > rt) goto <L_xr2s>; gq = rp >> 3; gs = rp & 7; gw = zext(*:1 (rb + gq)); if (((gs + ecb + 7) >> 3) < 2) goto <L_gb5>; gw = gw | (zext(*:1 (rb + gq + 1)) << 8); if (((gs + ecb + 7) >> 3) < 3) goto <L_gb5>; gw = gw | (zext(*:1 (rb + gq + 2)) << 16); <L_gb5> hv = (gw >> gs) & ((1 << ecb) - 1); rp = rp + ecb; goto <L_ge5>; <L_gz5> hv = 0; <L_ge5> dist = dist + hv; if (dist > hl) goto <L_xbadin>;
+  mc = dlen; <L_xcopy> if (mc == 0) goto <L_xhufl>; if (dl != 0) goto <L_xcp0>; pend = 1; ccv = 1; goto <L_xsave>; <L_xcp0> mc = mc - 1; if (hbt == 0) goto <L_xcp1>; hv = (ho + hl - dist) & 0x7fff; b = zext(*:1 (g32_gpr16_4 + hv)); goto <L_xput2>;
+  <L_xcp1> b = zext(*:1 (da - dist)); <L_xput2> xret = 3; goto <L_xput>;
+  <L_xr2s> rp = ebp; ccv = 2; goto <L_xsave>;
+  <L_xroomb> rp = ebp; <L_xroom> ccv = 1; goto <L_xsave>;
+  <L_xr2> rp = ebp; ccv = 2; goto <L_xsave>;
+  <L_xdyn> if (fromcd != 0) goto <L_xdcd>; dhs = rp; sbase = rb; stot = rt; goto <L_xdp>;
+  <L_xdcd> sbp = rp; sbase = rb; stot = rt; rb = r1 + 64; rp = 0; rt = 2304; goto <L_xdp>;
+  <L_xdp> if ((rp + 5) > rt) goto <L_xdsrc>; gq = rp >> 3; gs = rp & 7; gw = zext(*:1 (rb + gq)); if (((gs + 5 + 7) >> 3) < 2) goto <L_gb6>; gw = gw | (zext(*:1 (rb + gq + 1)) << 8); if (((gs + 5 + 7) >> 3) < 3) goto <L_gb6>; gw = gw | (zext(*:1 (rb + gq + 2)) << 16); <L_gb6> nlen = (gw >> gs) & ((1 << 5) - 1); rp = rp + 5; goto <L_ge6>; <L_ge6> if ((rp + 5) > rt) goto <L_xdsrc>; gq = rp >> 3; gs = rp & 7; gw = zext(*:1 (rb + gq)); if (((gs + 5 + 7) >> 3) < 2) goto <L_gb7>; gw = gw | (zext(*:1 (rb + gq + 1)) << 8); if (((gs + 5 + 7) >> 3) < 3) goto <L_gb7>; gw = gw | (zext(*:1 (rb + gq + 2)) << 16); <L_gb7> ndist = (gw >> gs) & ((1 << 5) - 1); rp = rp + 5; goto <L_ge7>; <L_ge7> if ((rp + 4) > rt) goto <L_xdsrc>; gq = rp >> 3; gs = rp & 7; gw = zext(*:1 (rb + gq)); if (((gs + 4 + 7) >> 3) < 2) goto <L_gb8>; gw = gw | (zext(*:1 (rb + gq + 1)) << 8); if (((gs + 4 + 7) >> 3) < 3) goto <L_gb8>; gw = gw | (zext(*:1 (rb + gq + 2)) << 16); <L_gb8> ncode = (gw >> gs) & ((1 << 4) - 1); rp = rp + 4; goto <L_ge8>; <L_ge8>
+  if (nlen > 29) goto <L_xdbad>; if (ndist > 29) goto <L_xdbad>; nlen = nlen + 257; ndist = ndist + 1; ncode = ncode + 4;
+  ix = 0; <L_xd1> if (ix >= 19) goto <L_xd2>; *[cpm]:1 (0x5200:4 + ix) = 0; ix = ix + 1; goto <L_xd1>;
+  <L_xd2> sidx = 0; <L_xd3> if (sidx >= ncode) goto <L_xd4>; if ((rp + 3) > rt) goto <L_xdsrc>; gq = rp >> 3; gs = rp & 7; gw = zext(*:1 (rb + gq)); if (((gs + 3 + 7) >> 3) < 2) goto <L_gb9>; gw = gw | (zext(*:1 (rb + gq + 1)) << 8); if (((gs + 3 + 7) >> 3) < 3) goto <L_gb9>; gw = gw | (zext(*:1 (rb + gq + 2)) << 16); <L_gb9> hv = (gw >> gs) & ((1 << 3) - 1); rp = rp + 3; goto <L_ge9>; <L_ge9> ix = sidx:4; dfb = zext(*[cpm]:1 (0x5a00:4 + ix)); ix = dfb:4; *[cpm]:1 (0x5200:4 + ix) = hv:1; sidx = sidx + 1; goto <L_xd3>;
+  <L_xd4> dflb = 0x5200; dfcc = 0x5300; dfcs = 0x5320; dfn = 19; dfret = 3; goto <L_dfcon>;
+  <L_dfr3> if (dfleft != 0) goto <L_xdbad>;
+  sidx = 0; prevl = 0; <L_xd5> if (sidx >= (nlen + ndist)) goto <L_xd9>; dcc = 0x5300; dcs = 0x5320; dret = 3; goto <L_dec>;
+  <L_dc3> if (dfail == 1) goto <L_xdsrc>; if (dfail != 0) goto <L_xdbad>; if (sym >= 16) goto <L_xd6>; ix = sidx:4; *[cpm]:1 (0x5000:4 + ix) = sym:1; prevl = sym; sidx = sidx + 1; goto <L_xd5>;
+  <L_xd6> if (sym != 16) goto <L_xd7>; if (sidx == 0) goto <L_xdbad>; if ((rp + 2) > rt) goto <L_xdsrc>; gq = rp >> 3; gs = rp & 7; gw = zext(*:1 (rb + gq)); if (((gs + 2 + 7) >> 3) < 2) goto <L_gb10>; gw = gw | (zext(*:1 (rb + gq + 1)) << 8); if (((gs + 2 + 7) >> 3) < 3) goto <L_gb10>; gw = gw | (zext(*:1 (rb + gq + 2)) << 16); <L_gb10> rep = (gw >> gs) & ((1 << 2) - 1); rp = rp + 2; goto <L_ge10>; <L_ge10> rep = rep + 3; goto <L_xd8>;
+  <L_xd7> prevl = 0; if (sym != 17) goto <L_xd7b>; if ((rp + 3) > rt) goto <L_xdsrc>; gq = rp >> 3; gs = rp & 7; gw = zext(*:1 (rb + gq)); if (((gs + 3 + 7) >> 3) < 2) goto <L_gb11>; gw = gw | (zext(*:1 (rb + gq + 1)) << 8); if (((gs + 3 + 7) >> 3) < 3) goto <L_gb11>; gw = gw | (zext(*:1 (rb + gq + 2)) << 16); <L_gb11> rep = (gw >> gs) & ((1 << 3) - 1); rp = rp + 3; goto <L_ge11>; <L_ge11> rep = rep + 3; goto <L_xd8>;
+  <L_xd7b> if ((rp + 7) > rt) goto <L_xdsrc>; gq = rp >> 3; gs = rp & 7; gw = zext(*:1 (rb + gq)); if (((gs + 7 + 7) >> 3) < 2) goto <L_gb12>; gw = gw | (zext(*:1 (rb + gq + 1)) << 8); if (((gs + 7 + 7) >> 3) < 3) goto <L_gb12>; gw = gw | (zext(*:1 (rb + gq + 2)) << 16); <L_gb12> rep = (gw >> gs) & ((1 << 7) - 1); rp = rp + 7; goto <L_ge12>; <L_ge12> rep = rep + 11;
+  <L_xd8> if ((sidx + rep) > (nlen + ndist)) goto <L_xdbad>; <L_xd8a> if (rep == 0) goto <L_xd5>; ix = sidx:4; *[cpm]:1 (0x5000:4 + ix) = prevl:1; sidx = sidx + 1; rep = rep - 1; goto <L_xd8a>;
+  <L_xd9> ix = 256; if (*[cpm]:1 (0x5000:4 + ix) == 0) goto <L_xdbad>;
+  sidx = 0; <L_xda> if (sidx >= ndist) goto <L_xdb>; ix = sidx:4; dtmp = nlen + sidx; dfb4 = dtmp:4; *[cpm]:1 (0x5140:4 + ix) = *[cpm]:1 (0x5000:4 + dfb4); sidx = sidx + 1; goto <L_xda>;
+  <L_xdb> dflb = 0x5000; dfcc = 0x5400; dfcs = 0x5420; dfn = nlen; dfret = 4; goto <L_dfcon>;
+  <L_dfr4> if (dfleft != 0) goto <L_xdbad>; dflb = 0x5140; dfcc = 0x5700; dfcs = 0x5720; dfn = ndist; dfret = 5; goto <L_dfcon>;
+  <L_dfr5> if (dfleft == 0) goto <L_xde>; if (dfleft != 0) goto <L_xde>;
+  <L_xde> if (fromcd != 0) goto <L_xdf>; cdl = rp - dhs; dynnew = 1; goto <L_xdg>;
+  <L_xdf> rb = sbase; rp = sbp; rt = stot; fromcd = 0;
+  <L_xdg> st = 3; goto <L_xhufl>;
+  <L_xdsrc> if (fromcd != 0) goto <L_xdbad>; rp = ebp; ccv = 2; goto <L_xsave>;
+  <L_xdbad> oesc = 0xff; if (fromcd != 0) goto <L_xdb2>; rp = ebp; <L_xdb2> ccv = 2; goto <L_xsave>;
+  <L_dfcon> ix = 0; <L_dfc0> *[cpm]:2 (dfcc + (ix * 2)) = 0; ix = ix + 1; if (ix < 16) goto <L_dfc0>; sidx = 0;
+  <L_dfc1> if (sidx >= dfn) goto <L_dfc2>; ix = sidx:4; dfb = zext(*[cpm]:1 (dflb + ix)); dfb4 = dfb:4; dfw = zext(*[cpm]:2 (dfcc + (dfb4 * 2))); dfw = dfw + 1; *[cpm]:2 (dfcc + (dfb4 * 2)) = dfw:2; sidx = sidx + 1; goto <L_dfc1>;
+  <L_dfc2> dfleft = 1; ix = 1; <L_dfc3> if (ix > 15) goto <L_dfc4>; dfleft = dfleft << 1; dfw = zext(*[cpm]:2 (dfcc + (ix * 2))); dfleft = dfleft - dfw; if (dfleft s< 0) goto <L_xdbad>; ix = ix + 1; goto <L_dfc3>;
+  <L_dfc4> *[cpm]:2 (0x5802:4) = 0; ix = 1; <L_dfc5> if (ix >= 15) goto <L_dfc6>; dfw = zext(*[cpm]:2 (0x5800:4 + (ix * 2))) + zext(*[cpm]:2 (dfcc + (ix * 2))); *[cpm]:2 (0x5800:4 + (ix * 2) + 2) = dfw:2; ix = ix + 1; goto <L_dfc5>;
+  <L_dfc6> sidx = 0; <L_dfc7> if (sidx >= dfn) goto <L_dfcr>; ix = sidx:4; dfb = zext(*[cpm]:1 (dflb + ix)); if (dfb == 0) goto <L_dfc8>; dfb4 = dfb:4; dfw = zext(*[cpm]:2 (0x5800:4 + (dfb4 * 2))); dfw4 = dfw:4; *[cpm]:2 (dfcs + (dfw4 * 2)) = sidx:2; dfw = dfw + 1; *[cpm]:2 (0x5800:4 + (dfb4 * 2)) = dfw:2;
+  <L_dfc8> sidx = sidx + 1; goto <L_dfc7>;
+  <L_dfcr> if (dfret == 1) goto <L_dfr1>; if (dfret == 2) goto <L_dfr2>; if (dfret == 3) goto <L_dfr3>; if (dfret == 4) goto <L_dfr4>; goto <L_dfr5>;
+  <L_dec> dcode = 0; dfirst = 0; dindex = 0; dl4 = 1; dfail = 0;
+  <L_decl> if (dl4 > 15) goto <L_decbad>; if (rp >= rt) goto <L_decsh>; hv = (zext(*:1 (rb + (rp >> 3))) >> (rp & 7)) & 1; rp = rp + 1; dcode = dcode | hv; ix = dl4:4; dcnt = zext(*[cpm]:2 (dcc + (ix * 2)));
+  if (dcode >= (dfirst + dcnt)) goto <L_decn>; dtmp = dindex + (dcode - dfirst); ix = dtmp:4; sym = zext(*[cpm]:2 (dcs + (ix * 2))); goto <L_decd>;
+  <L_decn> dindex = dindex + dcnt; dfirst = (dfirst + dcnt) << 1; dcode = dcode << 1; dl4 = dl4 + 1; goto <L_decl>;
+  <L_decbad> dfail = 2; goto <L_decd>; <L_decsh> dfail = 1;
+  <L_decd> if (dret == 1) goto <L_dc1>; if (dret == 2) goto <L_dc2>; goto <L_dc3>;
+  <L_xbdone> if (bfin != 0) goto <L_xfin>; st = 0; goto <L_xblk>;
+  <L_xfin> ccv = 0; goto <L_xsave>;
+  <L_xbad1> oesc = 1; ccv = 2; goto <L_xinv>; <L_xbad2> oesc = 2; ccv = 2; goto <L_xinv>;
+  <L_xbadin> oesc = 0xff; rp = ebp; ccv = 2; if (produced != 0) goto <L_xsave>; if (rp > sbb) goto <L_xsave>; goto <L_xinv>;
+  <L_xinv> *:1 (r1 + 19) = oesc; cc = ccv; cc_sync(); goto <L_done>;
+  <L_xsave> ifs = 0; if (ccv == 0) goto <L_xs2>; ifs = 0xe; if (st == 0) goto <L_xs2>; ifs = 8 | bfin; if (st == 1) goto <L_xs2>; ifs = 0xa | bfin; if (st == 2) goto <L_xs2>; ifs = 0xc | bfin;
+  <L_xs2> *:1 (r1 + 384) = pend; if (pend == 0) goto <L_xs2p>; hv = mc; ctmp = hv >> 8; *:1 (r1 + 385) = ctmp:1; *:1 (r1 + 386) = hv:1; hv = dist; ctmp = hv >> 8; *:1 (r1 + 387) = ctmp:1; *:1 (r1 + 388) = hv:1;
+  <L_xs2p> b21 = *:1 (r1 + 21); *:1 (r1 + 21) = (b21 & 0xf0) | ifs; *:1 (r1 + 2) = 0;
+  if (ccv != 0) goto <L_xs3>; ctmp = zext(*:1 (r1 + 7)) & 0xfe; goto <L_xs3b>; <L_xs3> ctmp = zext(*:1 (r1 + 7)) | 1; ctmp = ctmp & 0xff;
+  <L_xs3b> *:1 (r1 + 7) = ctmp:1; if (ccv == 0) goto <L_xs4>; ctmp = zext(*:1 (r1 + 16)) & 0x7f; *:1 (r1 + 16) = ctmp:1;
+  <L_xs4> ctmp = (zext(*:1 (r1 + 18)) & 0xf8) | (rp & 7); *:1 (r1 + 18) = ctmp:1; *:1 (r1 + 19) = oesc;
+  hv = 0; if (ccv == 0) goto <L_xs5>; if (st != 1) goto <L_xs5>; hv = ifl;
+  <L_xs5> ctmp = hv >> 8; *:1 (r1 + 22) = ctmp:1; *:1 (r1 + 23) = hv:1;
+  ctmp = hl >> 8; *:1 (r1 + 44) = ctmp:1; *:1 (r1 + 45) = hl:1; if (hbt == 0) goto <L_xs6>; ctmp = (zext(*:1 (r1 + 46)) & 0x80) | (ho >> 8); *:1 (r1 + 46) = ctmp:1; *:1 (r1 + 47) = ho:1;
+  <L_xs6> hv = cvx; if (cvt != 0) goto <L_xs7>; hv = cvx ^ 0xffffffff; *:1 (r1 + 48) = hv:1; ctmp = hv >> 8; *:1 (r1 + 49) = ctmp:1; ctmp = hv >> 16; *:1 (r1 + 50) = ctmp:1; ctmp = hv >> 24; *:1 (r1 + 51) = ctmp:1; goto <L_xs8>;
+  <L_xs7> *:1 (r1 + 51) = hv:1; ctmp = hv >> 8; *:1 (r1 + 50) = ctmp:1; ctmp = hv >> 16; *:1 (r1 + 49) = ctmp:1; ctmp = hv >> 24; *:1 (r1 + 48) = ctmp:1;
+  <L_xs8> if (ccv == 0) goto <L_xsz>; if (st != 3) goto <L_xsz>; if (dynnew != 0) goto <L_xsn>; goto <L_xskd>;
+  <L_xsz> ix = 0; <L_xsa> *:1 (r1 + 64 + zext(ix)) = 0; ix = ix + 1; if (ix < 288) goto <L_xsa>; cdl = 0; goto <L_xsw>;
+  <L_xsn> ix = 0; <L_xsc> *:1 (r1 + 64 + zext(ix)) = 0; ix = ix + 1; if (ix < 288) goto <L_xsc>; ecb = 0;
+  <L_xsl> if (ecb >= cdl) goto <L_xsw>; hv = (zext(*:1 (sa + ((dhs + ecb) >> 3))) >> ((dhs + ecb) & 7)) & 1; if (hv == 0) goto <L_xse>; ctmp = zext(*:1 (r1 + 64 + (ecb >> 3))) | (1 << (ecb & 7)); *:1 (r1 + 64 + (ecb >> 3)) = ctmp:1;
+  <L_xse> ecb = ecb + 1; goto <L_xsl>;
+  <L_xskd> cdl = zext(*:1 (r1 + 57)) | ((zext(*:1 (r1 + 56)) & 0xf) << 8);
+  <L_xsw> ctmp = (zext(*:1 (r1 + 56)) & 0xf0) | (cdl >> 8); *:1 (r1 + 56) = ctmp:1; *:1 (r1 + 57) = cdl:1;
+  hv = rp >> 3; g32_gpr24_4 = da; g32_gpro24_4 = dl; g32_gpr28_4 = sa + hv; g32_gpro28_4 = sl - hv; cc = ccv; cc_sync(); goto <L_done>;
+  <L_done>
 }
 :SORTL g32_gpr24_4,g32_gpr28_4 is g32_u0_4=0xb & g32_u4_4=0x9 & g32_u8_4=0x3 & g32_u12_4=0x8 & g32_u16_4=0x0 & g32_u20_4=0x0 & g32_gpr24_4 & g32_gpr28_4 & g32_gpro24_4 & g32_u24_4 & g32_gpro28_4 & g32_u28_4 {
   local r1num:4 = g32_u24_4; local r2num:4 = g32_u28_4;
@@ -62249,6 +62381,7 @@ rel32_16_16: tgt is g32_s16_16 [ tgt = inst_start + 2 * g32_s16_16; ] { export *
   local r2num:4 = g32_u28_4; local r1num:4 = g32_u24_4;
   local fc:1 = r0:1 & 0x7f; local alg:1 = 0; local nk:1 = 0; local klen:4 = 0; local bsz:8 = 8; local ok:1 = 0; local ci:4 = 0; local lc:8 = 0;
   local wk:1 = 0; local wv:32 = 0; local wt:32 = 0; local wb:1 = 0; local wl:8 = 0; local wsh:8 = 0; local vpo:4 = 0; local tauo:4 = 0; local kdst:4 = 0; local wlen:4 = 0; local hph:1 = 0;
+  local hv:1 = 0; local hbs:4 = 0; local hcv:4 = 0; local hdl:4 = 0; local hil:4 = 0; local hp:1 = 0; local fl2:8 = 0; local imbl:16 = 0; local imh:16 = 0; local hw:4 = 0; local hwk:1 = 0;
   if (fc != 0) goto <L_fn>;
   *:8 r1 = 0xf070383800000000:8; *:8 (r1 + 8) = 0x0:8; cc = 0; cc_sync(); goto <L_done>;
   <L_fn>
@@ -62295,6 +62428,7 @@ rel32_16_16: tgt is g32_s16_16 [ tgt = inst_start + 2 * g32_s16_16; ] { export *
   local r2num:4 = g32_u28_4; local r1num:4 = g32_u24_4;
   local fc:1 = r0:1 & 0x7f; local alg:1 = 0; local nk:1 = 0; local klen:4 = 0; local bsz:8 = 8; local ok:1 = 0; local ci:4 = 0; local lc:8 = 0;
   local wk:1 = 0; local wv:32 = 0; local wt:32 = 0; local wb:1 = 0; local wl:8 = 0; local wsh:8 = 0; local vpo:4 = 0; local tauo:4 = 0; local kdst:4 = 0; local wlen:4 = 0; local hph:1 = 0;
+  local hv:1 = 0; local hbs:4 = 0; local hcv:4 = 0; local hdl:4 = 0; local hil:4 = 0; local hp:1 = 0; local fl2:8 = 0; local imbl:16 = 0; local imh:16 = 0; local hw:4 = 0; local hwk:1 = 0;
   if (fc != 0) goto <L_fn>;
   *:8 r1 = 0xf070383800002828:8; *:8 (r1 + 8) = 0x282800000000:8; cc = 0; cc_sync(); goto <L_done>;
   <L_fn>
@@ -62360,6 +62494,7 @@ rel32_16_16: tgt is g32_s16_16 [ tgt = inst_start + 2 * g32_s16_16; ] { export *
   local r3num:4 = g32_u16_4;
   local fc:1 = r0:1 & 0x7f; local alg:1 = 0; local nk:1 = 0; local klen:4 = 0; local bsz:8 = 8; local ok:1 = 0; local ci:4 = 0; local lc:8 = 0;
   local wk:1 = 0; local wv:32 = 0; local wt:32 = 0; local wb:1 = 0; local wl:8 = 0; local wsh:8 = 0; local vpo:4 = 0; local tauo:4 = 0; local kdst:4 = 0; local wlen:4 = 0; local hph:1 = 0;
+  local hv:1 = 0; local hbs:4 = 0; local hcv:4 = 0; local hdl:4 = 0; local hil:4 = 0; local hp:1 = 0; local fl2:8 = 0; local imbl:16 = 0; local imh:16 = 0; local hw:4 = 0; local hwk:1 = 0;
   if (fc != 0) goto <L_fn>;
   *:8 r1 = 0xf070383800000000:8; *:8 (r1 + 8) = 0x0:8; cc = 0; cc_sync(); goto <L_done>;
   <L_fn>
@@ -62404,7 +62539,7 @@ rel32_16_16: tgt is g32_s16_16 [ tgt = inst_start + 2 * g32_s16_16; ] { export *
 }
 :PCC  is g32_u0_4=0xb & g32_u4_4=0x9 & g32_u8_4=0x2 & g32_u12_4=0xc & g32_u16_4=0x0 & g32_u20_4=0x0 & g32_u24_4=0x0 & g32_u28_4=0x0 & cp_ecc & cp_cipher {
   local fc:1 = r0:1 & 0x7f; local alg:1 = 0; local nk:1 = 0; local klen:4 = 0; local bsz:8 = 8; local ok:1 = 0; local ci:4 = 0; local ml:8 = 0;
-  local wk:1 = 0; local wv:32 = 0; local wt:32 = 0; local wb:1 = 0; local wl:8 = 0; local wsh:8 = 0; local kdst:4 = 0; local xo:4 = 0; local ko:4 = 0;
+  local wk:1 = 0; local wv:32 = 0; local wt:32 = 0; local wb:1 = 0; local wl:8 = 0; local wsh:8 = 0; local kdst:4 = 0; local xo:4 = 0; local ko:4 = 0; local jz:8 = 0; local th:8 = 0; local tl:8 = 0;
   if (fc != 0) goto <L_fn>;
   *:8 r1 = 0xf070383800002828:8; *:8 (r1 + 8) = 0xe0c0c00000000000:8; cc = 0; cc_sync(); goto <L_done>;
   <L_fn>
@@ -62488,7 +62623,7 @@ rel32_16_16: tgt is g32_s16_16 [ tgt = inst_start + 2 * g32_s16_16; ] { export *
   <L_vpbad> cc = 1; cc_sync(); goto <L_done>;
   <L_vpd>
   if (ok != 2) goto <L_notxts>;
-  local jz:8 = *:8 (r1 + zext(klen) + zext(xo) + 16) | *:8 (r1 + zext(klen) + zext(xo) + 24); local th:8 = *:8 (r1 + zext(klen) + zext(xo) + 32); local tl:8 = *:8 (r1 + zext(klen) + zext(xo) + 40);
+  jz = *:8 (r1 + zext(klen) + zext(xo) + 16) | *:8 (r1 + zext(klen) + zext(xo) + 24); th = *:8 (r1 + zext(klen) + zext(xo) + 32); tl = *:8 (r1 + zext(klen) + zext(xo) + 40);
   if (jz == 0) goto <L_tok>; if ((th == 0) && (tl <= 127)) goto <L_tok>; cc = 2; cc_sync(); goto <L_done>;
   <L_tok>
   ci = 0; <L_xk> *[cpm]:4 (kdst + ci) = *:4 (r1 + zext(ci)); ci = ci + 4; if (ci < klen) goto <L_xk>;
@@ -62520,6 +62655,7 @@ rel32_16_16: tgt is g32_s16_16 [ tgt = inst_start + 2 * g32_s16_16; ] { export *
   local r2num:4 = g32_u28_4; local r1num:4 = g32_u24_4;
   local fc:1 = r0:1 & 0x7f; local alg:1 = 0; local nk:1 = 0; local klen:4 = 0; local bsz:8 = 8; local ok:1 = 0; local ci:4 = 0; local lc:8 = 0;
   local wk:1 = 0; local wv:32 = 0; local wt:32 = 0; local wb:1 = 0; local wl:8 = 0; local wsh:8 = 0; local vpo:4 = 0; local tauo:4 = 0; local kdst:4 = 0; local wlen:4 = 0; local hph:1 = 0;
+  local hv:1 = 0; local hbs:4 = 0; local hcv:4 = 0; local hdl:4 = 0; local hil:4 = 0; local hp:1 = 0; local fl2:8 = 0; local imbl:16 = 0; local imh:16 = 0; local hw:4 = 0; local hwk:1 = 0;
   if (fc != 0) goto <L_fn>;
   *:8 r1 = 0xf070383800000000:8; *:8 (r1 + 8) = 0x0:8; cc = 0; cc_sync(); goto <L_done>;
   <L_fn>
@@ -62566,6 +62702,7 @@ rel32_16_16: tgt is g32_s16_16 [ tgt = inst_start + 2 * g32_s16_16; ] { export *
   local r2num:4 = g32_u28_4; local r1num:4 = g32_u24_4;
   local fc:1 = r0:1 & 0x7f; local alg:1 = 0; local nk:1 = 0; local klen:4 = 0; local bsz:8 = 8; local ok:1 = 0; local ci:4 = 0; local lc:8 = 0;
   local wk:1 = 0; local wv:32 = 0; local wt:32 = 0; local wb:1 = 0; local wl:8 = 0; local wsh:8 = 0; local vpo:4 = 0; local tauo:4 = 0; local kdst:4 = 0; local wlen:4 = 0; local hph:1 = 0;
+  local hv:1 = 0; local hbs:4 = 0; local hcv:4 = 0; local hdl:4 = 0; local hil:4 = 0; local hp:1 = 0; local fl2:8 = 0; local imbl:16 = 0; local imh:16 = 0; local hw:4 = 0; local hwk:1 = 0;
   if (fc != 0) goto <L_fn>;
   *:8 r1 = 0xf070383800000000:8; *:8 (r1 + 8) = 0x0:8; cc = 0; cc_sync(); goto <L_done>;
   <L_fn>
@@ -62710,6 +62847,7 @@ rel32_16_16: tgt is g32_s16_16 [ tgt = inst_start + 2 * g32_s16_16; ] { export *
   local r2num:4 = g32_u28_4; local r1num:4 = g32_u24_4;
   local fc:1 = r0:1 & 0x7f; local alg:1 = 0; local nk:1 = 0; local klen:4 = 0; local bsz:8 = 8; local ok:1 = 0; local ci:4 = 0; local lc:8 = 0;
   local wk:1 = 0; local wv:32 = 0; local wt:32 = 0; local wb:1 = 0; local wl:8 = 0; local wsh:8 = 0; local vpo:4 = 0; local tauo:4 = 0; local kdst:4 = 0; local wlen:4 = 0; local hph:1 = 0;
+  local hv:1 = 0; local hbs:4 = 0; local hcv:4 = 0; local hdl:4 = 0; local hil:4 = 0; local hp:1 = 0; local fl2:8 = 0; local imbl:16 = 0; local imh:16 = 0; local hw:4 = 0; local hwk:1 = 0;
   if (fc != 0) goto <L_fn>;
   *:8 r1 = 0xf070383800000000:8; *:8 (r1 + 8) = 0xf0f0:8; cc = 0; cc_sync(); goto <L_done>;
   <L_fn>
@@ -62739,7 +62877,7 @@ rel32_16_16: tgt is g32_s16_16 [ tgt = inst_start + 2 * g32_s16_16; ] { export *
   if (ok != 0) goto <L_valid>; trap_specification(); goto <L_done>;
   <L_valid>
   if (fc < 112) goto <L_nohmac>;
-  local hv:1 = 0; local hbs:4 = 0; local hcv:4 = 0; local hdl:4 = 0; local hil:4 = 0; local hp:1 = 0; local fl2:8 = r0; local imbl:16 = 0; local imh:16 = 0; local hw:4 = 0; local hwk:1 = 0;
+  fl2 = r0;
   if (fc != 112) goto <L_h112>; hv = 0; hbs = 64; hcv = 32; hdl = 28; hil = 8; <L_h112>
   if (fc != 113) goto <L_h113>; hv = 1; hbs = 64; hcv = 32; hdl = 32; hil = 8; <L_h113>
   if (fc != 114) goto <L_h114>; hv = 2; hbs = 128; hcv = 64; hdl = 48; hil = 16; <L_h114>

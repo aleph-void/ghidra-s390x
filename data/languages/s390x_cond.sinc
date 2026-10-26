@@ -54,6 +54,8 @@ define pcodeop trap_compare_data;
 define pcodeop trap_specification;
 define pcodeop trap_data_exception;
 define pcodeop s390_trng_byte;
+define pcodeop s390_dfltcc_gdht;
+define pcodeop s390_dfltcc_cmpr;
 
 # RRF-a: 4 bytes. OP(0-15), R3(16-19), M4(20-23), R1(24-27), R2(28-31).
 # Used by SELECT. M4 stays numeric (condition mask).

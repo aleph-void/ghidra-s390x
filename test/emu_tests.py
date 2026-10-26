@@ -1219,6 +1219,111 @@ def _pckmo_tests():
     T("pckmo_query", "pckmo", f"r0=0,r1={DATA:x}", f"m16:{DATA:x}=" + "%032x" % sum(1 << (127 - c) for c in [0] + sorted(pk)))
 _pckmo_tests()
 
+def _dfltcc_tests():
+    import zlib, random, dfltcc_model as DM
+    P, IN, OUT, RING = DATA, DATA + 0x800, DATA + 0x4000, 0x20000
+    rnd = random.Random(7)
+    def stream(data, level=6, strat=zlib.Z_DEFAULT_STRATEGY, zdict=None):
+        c = zlib.compressobj(level, zlib.DEFLATED, -15, 9, strat, zdict) if zdict else zlib.compressobj(level, zlib.DEFLATED, -15, 9, strat)
+        return c.compress(data) + c.flush()
+    def pblock(nt=1, cvt=0, hl=0, ho=0, cv=0, cf=0, ifs=0, ifl=0, sbb=0):
+        pb = bytearray(1536)
+        pb[7] = cf
+        pb[16] = (0x80 if nt else 0) | (0x20 if cvt else 0)
+        pb[18] = sbb
+        pb[21] = ifs
+        pb[22:24] = ifl.to_bytes(2, "big")
+        pb[44:46] = hl.to_bytes(2, "big")
+        pb[46:48] = ho.to_bytes(2, "big")
+        pb[48:52] = cv.to_bytes(4, "big" if cvt else "little")
+        return bytes(pb)
+    def check(data, cvt, base):
+        if cvt:
+            return zlib.adler32(data, base if base else 1).to_bytes(4, "big")
+        return zlib.crc32(data, base).to_bytes(4, "little")
+    def case(name, st, data, room=None, cvt=0, hist=b"", hbt=0, nt=1, base=0, rooms=None, split=None):
+        out_ref, endpos = DM.inflate(st, hist)
+        assert out_ref == data
+        n = len(data)
+        if rooms is None:
+            room = (n + 5) if room is None else room
+        r0 = 4 | (0x80 if hbt else 0)
+        hl0 = len(hist)
+        pb = pblock(nt, cvt, hl0 if not nt else 0, 0, base if not nt else 0)
+        init = f"r0={r0:x},r1={P:x},r2={OUT:x},r4={IN:x},r5={len(st):x},r6={RING:x},m{len(pb)}:{P:x}={pb.hex()},m{len(st)}:{IN:x}={st.hex()}"
+        if hist:
+            if hbt:
+                init += f",m{len(hist)}:{RING:x}={hist.hex()}"
+            else:
+                init += f",m{len(hist)}:{OUT - len(hist):x}={hist.hex()}"
+        idx = len(tests)
+        lines = []
+        if rooms is None:
+            lines.append(f"lghi %r3,{room}")
+            lines.append("dfltcc %r2,%r4,%r6")
+            asm = "\n".join(lines)
+        else:
+            for k, rm in enumerate(rooms):
+                lines.append(f"lghi %r3,{rm}")
+                if split is not None and k == 0:
+                    pass
+                lines.append("dfltcc %r2,%r4,%r6")
+                if k < len(rooms) - 1:
+                    lines.append(f"je df_{name}")
+            lines.append(f"df_{name}:")
+            asm = "\n".join(lines)
+        hl_end = min(32768, hl0 + n)
+        exp = f"cc=0,r2={OUT + n:x},r4={IN + (endpos >> 3):x},r5={len(st) - (endpos >> 3):x},m{n}:{OUT:x}={data.hex()},m4:{P + 48:x}={check(data, cvt, base).hex()},m2:{P + 44:x}={hl_end:04x},m1:{P + 18:x}={endpos & 7:02x},m1:{P + 7:x}=00"
+        if n == 0:
+            exp = exp.replace(f",m0:{OUT:x}=", ",m0:")
+        if rooms is None:
+            exp += f",r3={room - n:x}"
+        T(name, asm, init, exp)
+    texts = [b"hello hello hello world, hello again! " * 20, bytes(rnd.randrange(256) for _ in range(300)), bytes(2000), b"abc" * 700 + bytes(rnd.randrange(256) for _ in range(100))]
+    for ti, d in enumerate(texts):
+        for lvl, strat, nm in ((0, zlib.Z_DEFAULT_STRATEGY, "stored"), (1, zlib.Z_DEFAULT_STRATEGY, "l1"), (9, zlib.Z_DEFAULT_STRATEGY, "l9"),
+                               (6, zlib.Z_FIXED, "fixed"), (6, zlib.Z_HUFFMAN_ONLY, "huff"), (6, zlib.Z_RLE, "rle")):
+            st = stream(d, lvl, strat)
+            case(f"dfltcc_x_{ti}_{nm}", st, d, cvt=(ti + lvl) & 1)
+    # several blocks (full flushes) and a data set that starts mid-stream with a check-value base
+    c = zlib.compressobj(6, zlib.DEFLATED, -15)
+    parts = [bytes(rnd.randrange(97, 110) for _ in range(400)) for _ in range(3)]
+    st = c.compress(parts[0]) + c.flush(zlib.Z_FULL_FLUSH) + c.compress(parts[1]) + c.flush(zlib.Z_FULL_FLUSH) + c.compress(parts[2]) + c.flush()
+    case("dfltcc_x_blocks", st, b"".join(parts))
+    case("dfltcc_x_base_crc", stream(texts[0]), texts[0], nt=0, base=zlib.crc32(b"abc"))
+    case("dfltcc_x_base_adler", stream(texts[0]), texts[0], cvt=1, nt=0, base=zlib.adler32(b"abc"))
+    # history before the first operand (in-line) and in the circular buffer
+    dic = b"the quick brown fox jumps over the lazy dog " * 4
+    dd = b"jumps over the lazy dog, the quick brown fox! " * 5
+    st = stream(dd, 6, zlib.Z_DEFAULT_STRATEGY, dic)
+    case("dfltcc_x_hist_inline", st, dd, hist=dic, nt=0)
+    case("dfltcc_x_hist_circ", st, dd, hist=dic, hbt=1, nt=0)
+    # a small first operand: resume after every few bytes
+    d = texts[0][:200]
+    st = stream(d, 9)
+    case("dfltcc_x_resume7", st, d, rooms=[7] * (len(d) // 7 + 8))
+    case("dfltcc_x_resume1", stream(texts[3][:60], 6, zlib.Z_FIXED), texts[3][:60], rooms=[1] * 70)
+    case("dfltcc_x_resume_stored", stream(texts[1][:100], 0), texts[1][:100], rooms=[9] * 20)
+    case("dfltcc_x_resume_dyn", stream(texts[0][:300], 6), texts[0][:300], rooms=[40] * 14)
+    case("dfltcc_x_resume_circ", stream(dd, 6, zlib.Z_DEFAULT_STRATEGY, dic), dd, hist=dic, hbt=1, nt=0, rooms=[13] * 25)
+    case("dfltcc_x_resume_crc", stream(texts[0][:300], 6), texts[0][:300], cvt=1, rooms=[40] * 14)
+    # invalid input: a reserved block type, a stored block whose length check fails; a truncated source ends with
+    # condition code 2 (code 0) and the rest completes the operation
+    for nm, bad in (("btype3", bytes([0x07, 0, 0, 0])), ("storedlen", bytes([0x01, 0x05, 0x00, 0x00, 0x00, 1, 2, 3, 4, 5]))):
+        pb = pblock(1)
+        T(f"dfltcc_x_inv_{nm}", "lghi %r3,20\ndfltcc %r2,%r4,%r6", f"r0=4,r1={P:x},r2={OUT:x},r4={IN:x},r5={len(bad):x},r6={RING:x},m1536:{P:x}={pb.hex()},m{len(bad)}:{IN:x}={bad.hex()}",
+          f"cc=2,m1:{P + 19:x}=ff,r2={OUT:x},r4={IN:x}")
+    d = texts[0][:120]
+    st = stream(d, 6)
+    k = len(st) // 2
+    idx = len(tests)
+    pb = pblock(1)
+    T("dfltcc_x_trunc", f"lghi %r3,300\ndfltcc %r2,%r4,%r6\nagfi %r5,{len(st) - k}\nlghi %r3,300\ndfltcc %r2,%r4,%r6",
+      f"r0=4,r1={P:x},r2={OUT:x},r4={IN:x},r5={k:x},r6={RING:x},m1536:{P:x}={pb.hex()},m{len(st)}:{IN:x}={st.hex()}",
+      f"cc=0,m{len(d)}:{OUT:x}={d.hex()},m4:{P + 48:x}={zlib.crc32(d).to_bytes(4, 'little').hex()}")
+_dfltcc_tests()
+T("dfltcc_qaf", "dfltcc %r2,%r4,%r6", f"r0=0,r1={DATA:x}", f"cc=0,m16:{DATA:x}=e8000000000000000000000000000000,m2:{DATA + 24:x}=8000")
+
 
 def main():
     out = sys.argv[1]
