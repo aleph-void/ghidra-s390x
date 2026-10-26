@@ -388,7 +388,7 @@ def _cipher_tests():
         T(f"kmctr_{nm}", "kmctr %r2,%r6,%r4", f"r0={fc:x},r1={DATA:x},r2={_OUT:x},r4={_IN:x},r5={n:x},r6={_CTR:x},m{kl}:{DATA:x}={key.hex()},m{n}:{_IN:x}={data.hex()},m{n}:{_CTR:x}={ctrs.hex()}",
           f"m{n}:{_OUT:x}={out.hex()},r2={_OUT + n:x},r4={_IN + n:x},r5=0,r6={_CTR + n:x},cc=0")
 _cipher_tests()
-T("km_query", "km %r2,%r4", f"r0=0,r1={DATA:x}", f"m16:{DATA:x}=f0003800000028000000280000000000")
+T("km_query", "km %r2,%r4", f"r0=0,r1={DATA:x}", f"m16:{DATA:x}=" + "%032x" % sum(1 << (127 - c) for c in (0, 1, 2, 3, 9, 10, 11, 18, 19, 20, 26, 27, 28, 50, 52, 58, 60, 82, 84, 90, 92)))
 
 # ---- KMAC (CBC-MAC of full blocks) and PCC (CMAC of the last block), checked against CMAC ----------
 from cryptography.hazmat.primitives import cmac as _cmac
@@ -466,7 +466,7 @@ def _kma_tests():
         T(f"kma_{nm}_cc2text", "kma %r2,%r6,%r4", f"r0={fc | 0x600:x},r1={DATA:x},r2={_OUT:x},r4={_IN:x},r5=21,r6={AAD:x},r7=14,m{len(blk)}:{DATA:x}={blk.hex()},m32:{AAD:x}={aad.hex()},m33:{_IN:x}={pt.hex()}",
           f"cc=2,r5=1,r7=0,r2={_OUT + 32:x},r4={_IN + 32:x},r6={AAD + 20:x},m32:{_OUT:x}={ct[:32].hex()},m4:{DATA + 12:x}=00000003")
 _kma_tests()
-T("kma_query", "kma %r2,%r6,%r4", f"r0=0,r1={DATA:x}", f"m16:{DATA:x}=" + "%032x" % (sum(1 << (127 - c) for c in (0, 18, 19, 20))))
+T("kma_query", "kma %r2,%r6,%r4", f"r0=0,r1={DATA:x}", f"m16:{DATA:x}=" + "%032x" % (sum(1 << (127 - c) for c in (0, 18, 19, 20, 26, 27, 28))))
 
 def _gf_dbl(x):
     x <<= 1
@@ -539,6 +539,30 @@ def _xts_tests():
         T(f"pcc_xts{nm}_cc2", "pcc", f"r0={fc:x},r1={DATA:x},m{len(pb)}:{DATA:x}={pb.hex()}", "cc=2")
 _xts_tests()
 
+# ---- protected-key (encrypted) functions: the key is wrapped under the machine's wrapping key (AES-256 or
+#      TDEA-192 in CBC mode with a zero initial value; a 192-bit AES key is stored as C1 (8 bytes) || C2)
+_WKA = bytes((19 * i + 7) & 0xff for i in range(32))
+_WKAVP = bytes((23 * i + 11) & 0xff for i in range(32))
+_WKD = bytes((29 * i + 5) & 0xff for i in range(24))
+_WKDVP = bytes((31 * i + 13) & 0xff for i in range(24))
+_WKREGS = f"wka={_WKA.hex()},wkavp={_WKAVP.hex()},wkd={_WKD.hex()},wkdvp={_WKDVP.hex()}"
+def _wrap(key, kind):
+    from cryptography.hazmat.primitives.ciphers import Cipher, modes
+    import warnings
+    if kind == "a":
+        ecb = Cipher(algorithms.AES(_WKA), modes.ECB()).encryptor()
+        if len(key) == 24:
+            b1 = ecb.update(key[:16])
+            x2 = bytes(a ^ b for a, b in zip(key[16:] + bytes(8), b1))
+            return b1[:8] + Cipher(algorithms.AES(_WKA), modes.ECB()).encryptor().update(x2)
+        return Cipher(algorithms.AES(_WKA), modes.CBC(bytes(16))).encryptor().update(key)
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore")
+        return Cipher(algorithms.TripleDES(_WKD), modes.CBC(bytes(8))).encryptor().update(key)
+def _vp(kind):
+    return _WKAVP if kind == "a" else _WKDVP
+_ENCMAP = {"dea": (9, "d"), "tdea128": (10, "d"), "tdea192": (11, "d"), "aes128": (26, "a"), "aes192": (27, "a"), "aes256": (28, "a")}
+
 def _hmac_tests():
     import hmac as _hmac
     IV = {112: [0xc1059ed8, 0x367cd507, 0x3070dd17, 0xf70e5939, 0xffc00b31, 0x68581511, 0x64f98fa7, 0xbefa4fa4],
@@ -581,6 +605,15 @@ def _hmac_tests():
             if ln:
                 init += f",m{ln}:{_IN:x}={msg.hex()}"
             T(f"hmac_{name}_{ln}", "kmac %r0,%r4", init, f"m{cvl}:{DATA:x}={hmac_state(fc, key, msg).hex()},r0={r0 | 0x8000:x},r4={_IN + ln:x},r5=0,cc=0")
+        # protected key: the wrapped key and its verification pattern
+        for ln in (5, bs + 3):
+            msg = bytes((7 * i + 3) & 0xff for i in range(ln))
+            pbE = bytes(cvl) + (ln * 8).to_bytes(il, "big") + _wrap(key, "a") + _WKAVP
+            efc = fc + 8
+            initE = f"r0={efc:x},r1={DATA:x},r4={_IN:x},r5={ln:x},{_WKREGS},m{len(pbE)}:{DATA:x}={pbE.hex()},m{ln}:{_IN:x}={msg.hex()}"
+            T(f"hmacE_{name}_{ln}", "kmac %r0,%r4", initE, f"m{cvl}:{DATA:x}={hmac_state(fc, key, msg).hex()},r0={efc | 0x8000:x},r4={_IN + ln:x},r5=0,cc=0")
+        badvp = bytes([_WKAVP[0] ^ 1]) + _WKAVP[1:]
+        T(f"hmacE_{name}_vpbad", "kmac %r0,%r4", f"r0={fc + 8:x},r1={DATA:x},r4={_IN:x},r5=0,{_WKREGS},m{cvl + il + bs + 32}:{DATA:x}={(bytes(cvl) + bytes(il) + _wrap(key, 'a') + badvp).hex()}", "cc=1")
         # intermediate parts: first two blocks with IKP=0 / IIMP=1, then the rest with IKP=1 / IIMP=0
         msg = bytes((11 * i + 1) & 0xff for i in range(3 * bs + 9))
         part1, rest = msg[:2 * bs], msg[2 * bs:]
@@ -594,7 +627,7 @@ def _hmac_tests():
         T(f"hmac_{name}_part2", "kmac %r0,%r4", f"r0={fc | 0x8000:x},r1={DATA:x},r4={_IN:x},r5={len(rest):x},m{len(pb2)}:{DATA:x}={pb2.hex()},m{len(rest)}:{_IN:x}={rest.hex()}",
           f"m{cvl}:{DATA:x}={hmac_state(fc, key, msg).hex()},r0={fc | 0x8000:x},r4={_IN + len(rest):x},r5=0,cc=0")
 _hmac_tests()
-T("kmac_query", "kmac %r0,%r4", f"r0=0,r1={DATA:x}", f"m16:{DATA:x}=f0003800000000000000000000000f00".replace("f0003800000000000000000000000f00", "f000380000000000" + "0000000000" + "00f000"))
+T("kmac_query", "kmac %r0,%r4", f"r0=0,r1={DATA:x}", f"m16:{DATA:x}=" + "%032x" % sum(1 << (127 - c) for c in (0, 1, 2, 3, 9, 10, 11, 18, 19, 20, 26, 27, 28, 112, 113, 114, 115, 120, 121, 122, 123)))
 
 def _prno_tests():
     sha = lambda b: hashlib.sha512(b).digest()
@@ -945,7 +978,7 @@ def _pcc_ecc_tests():
               f"cc=0,m{nb}:{DATA + fs - nb:x}={ur.to_bytes(nb, 'big').hex()}")
         T(f"pcc_sm_{nm}_u0", "pcc", f"r0={fc:x},r1={DATA:x},m{3 * fs}:{DATA:x}={bytes(3 * fs).hex()}", "cc=1")
 _pcc_ecc_tests()
-T("pcc_query2", "pcc", f"r0=0,r1={DATA:x}", f"m16:{DATA:x}=" + "%032x" % sum(1 << (127 - c) for c in (0, 1, 2, 3, 18, 19, 20, 50, 52, 64, 65, 66, 72, 73, 80, 81)))
+T("pcc_query2", "pcc", f"r0=0,r1={DATA:x}", f"m16:{DATA:x}=" + "%032x" % sum(1 << (127 - c) for c in (0, 1, 2, 3, 9, 10, 11, 18, 19, 20, 26, 27, 28, 50, 52, 58, 60, 64, 65, 66, 72, 73, 80, 81)))
 
 def _kdsa_tests():
     import random, hashlib as _hl, ecc_model as EM
@@ -1041,7 +1074,150 @@ def _kdsa_tests():
         T(f"kdsa_{name}_badkey", "kdsa %r0,%r2", f"r0={fcv:x},r1={DATA:x},r2={MSG:x},r3=0,m{3 * fs}:{DATA:x}={(Rf + Sf + Kbad).hex()}", "cc=1")
         T(f"kdsa_{name}_S0", "kdsa %r0,%r2", f"r0={fcv:x},r1={DATA:x},r2={MSG:x},r3=0,m{3 * fs}:{DATA:x}={(Rf + bytes(fs) + Kf).hex()}", "cc=2")
 _kdsa_tests()
-T("kdsa_query", "kdsa %r0,%r2", f"r0=0,r1={DATA:x}", f"m16:{DATA:x}=" + "%032x" % sum(1 << (127 - c) for c in (0, 1, 2, 3, 9, 10, 11, 32, 36, 40, 44)))
+T("kdsa_query", "kdsa %r0,%r2", f"r0=0,r1={DATA:x}", f"m16:{DATA:x}=" + "%032x" % sum(1 << (127 - c) for c in (0, 1, 2, 3, 9, 10, 11, 17, 18, 19, 32, 36, 40, 44, 48, 52)))
+
+def _enc_cipher_tests():
+    for nm, (fc, kl) in _CF.items():
+        efc, kind = _ENCMAP[nm]
+        alg = "aes" if nm.startswith("aes") else nm
+        key = bytes((7 * i + fc) & 0xff for i in range(kl))
+        bs = 16 if alg == "aes" else 8
+        iv = bytes((11 * i + 3) & 0xff for i in range(bs))
+        data = bytes((5 * i + 1) & 0xff for i in range(4 * bs))
+        n = len(data)
+        wk, vp = _wrap(key, kind), _vp(kind)
+        assert len(wk) == kl
+        for dec in (0, 1):
+            m = 0x80 if dec else 0
+            end = f"r2={_OUT + n:x},r4={_IN + n:x},r5=0,cc=0"
+            regs = f"r0={efc | m:x},r1={DATA:x},r2={_OUT:x},r4={_IN:x},r5={n:x},{_WKREGS}"
+            out, _ = CM.mode_ecb(alg, key, data, dec)
+            T(f"kmE_{nm}_{'dec' if dec else 'enc'}", "km %r2,%r4", f"{regs},m{kl + len(vp)}:{DATA:x}={(wk + vp).hex()},m{n}:{_IN:x}={data.hex()}", f"m{n}:{_OUT:x}={out.hex()},{end}")
+            out, cv = CM.mode_cbc(alg, key, iv, data, dec)
+            T(f"kmcE_{nm}_{'dec' if dec else 'enc'}", "kmc %r2,%r4", f"{regs},m{bs + kl + len(vp)}:{DATA:x}={(iv + wk + vp).hex()},m{n}:{_IN:x}={data.hex()}",
+              f"m{n}:{_OUT:x}={out.hex()},m{bs}:{DATA:x}={cv.hex()},{end}")
+        s_ = bs
+        out, cv = CM.mode_cfb(alg, key, iv, data, 0, s_)
+        T(f"kmfE_{nm}", "kmf %r2,%r4", f"r0={efc | (s_ << 24):x},r1={DATA:x},r2={_OUT:x},r4={_IN:x},r5={n:x},{_WKREGS},m{bs + kl + len(vp)}:{DATA:x}={(iv + wk + vp).hex()},m{n}:{_IN:x}={data.hex()}",
+          f"m{n}:{_OUT:x}={out.hex()},m{bs}:{DATA:x}={cv.hex()},r2={_OUT + n:x},r4={_IN + n:x},r5=0,cc=0")
+        out, cv = CM.mode_ofb(alg, key, iv, data)
+        T(f"kmoE_{nm}", "kmo %r2,%r4", f"r0={efc:x},r1={DATA:x},r2={_OUT:x},r4={_IN:x},r5={n:x},{_WKREGS},m{bs + kl + len(vp)}:{DATA:x}={(iv + wk + vp).hex()},m{n}:{_IN:x}={data.hex()}",
+          f"m{n}:{_OUT:x}={out.hex()},m{bs}:{DATA:x}={cv.hex()},r2={_OUT + n:x},r4={_IN + n:x},r5=0,cc=0")
+        ctrs = b"".join(((0x0123456789abcdef0011223344556677 + i) & ((1 << (8 * bs)) - 1)).to_bytes(bs, "big") for i in range(4))
+        out, _ = CM.mode_ctr(alg, key, ctrs, data)
+        T(f"kmctrE_{nm}", "kmctr %r2,%r6,%r4", f"r0={efc:x},r1={DATA:x},r2={_OUT:x},r4={_IN:x},r5={n:x},r6={_CTR:x},{_WKREGS},m{kl + len(vp)}:{DATA:x}={(wk + vp).hex()},m{n}:{_IN:x}={data.hex()},m{n}:{_CTR:x}={ctrs.hex()}",
+          f"m{n}:{_OUT:x}={out.hex()},r2={_OUT + n:x},r4={_IN + n:x},r5=0,r6={_CTR + n:x},cc=0")
+        mdata = data[:2 * bs]
+        zero = bytes(bs)
+        out, cv = CM.mode_cbc(alg, key, zero, mdata, 0)
+        T(f"kmacE_{nm}", "kmac %r0,%r4", f"r0={efc:x},r1={DATA:x},r4={_IN:x},r5={len(mdata):x},{_WKREGS},m{bs + kl + len(vp)}:{DATA:x}={(zero + wk + vp).hex()},m{len(mdata)}:{_IN:x}={mdata.hex()}",
+          f"m{bs}:{DATA:x}={cv.hex()},r4={_IN + len(mdata):x},r5=0,cc=0")
+        # verification pattern mismatch: condition code 1, nothing stored
+        bad = bytes([vp[0] ^ 1]) + vp[1:]
+        T(f"kmE_{nm}_vpbad", "km %r2,%r4", f"r0={efc:x},r1={DATA:x},r2={_OUT:x},r4={_IN:x},r5={n:x},{_WKREGS},m{kl + len(vp)}:{DATA:x}={(wk + bad).hex()},m{n}:{_IN:x}={data.hex()},m{n}:{_OUT:x}={'ee' * n}",
+          f"cc=1,m{n}:{_OUT:x}={'ee' * n},r5={n:x}")
+    # XTS and full XTS with protected keys
+    from cryptography.hazmat.primitives.ciphers import Cipher, modes
+    for nm, fcp, fcf, kl in (("128", 58, 90, 16), ("256", 60, 92, 32)):
+        k1 = bytes((9 * i + fcp) & 0xff for i in range(kl))
+        k2 = bytes((17 * i + 3) & 0xff for i in range(kl))
+        tw = bytes((23 * i + 5) & 0xff for i in range(16))
+        n = 3 * 16
+        data = bytes((29 * i + 11) & 0xff for i in range(n))
+        ci = Cipher(algorithms.AES(k1 + k2), modes.XTS(tw))
+        out = ci.encryptor().update(data)
+        t0 = Cipher(algorithms.AES(k2), modes.ECB()).encryptor().update(tw)
+        outp = _leb(_gf_mul(_le(t0), _gf_pow2(3)))
+        wk = _wrap(k1, "a")
+        T(f"kmxtsE_{nm}", "km %r2,%r4", f"r0={fcp:x},r1={DATA:x},r2={_OUT:x},r4={_IN:x},r5={n:x},{_WKREGS},m{kl + 48}:{DATA:x}={(wk + _WKAVP + t0).hex()},m{n}:{_IN:x}={data.hex()}",
+          f"m{n}:{_OUT:x}={out.hex()},m16:{DATA + kl + 32:x}={outp.hex()},cc=0")
+        wk2 = _wrap(k1 + k2, "a")
+        nap = _leb(1)
+        T(f"kmfullE_{nm}", "km %r2,%r4", f"r0={fcf:x},r1={DATA:x},r2={_OUT:x},r4={_IN:x},r5={n:x},{_WKREGS},m{2 * kl + 64}:{DATA:x}={(wk2 + tw + nap + _WKAVP).hex()},m{n}:{_IN:x}={data.hex()}",
+          f"m{n}:{_OUT:x}={out.hex()},m16:{DATA + 2 * kl + 16:x}={_leb(_gf_mul(1, _gf_pow2(3))).hex()},cc=0")
+_enc_cipher_tests()
+
+def _enc_misc_tests():
+    from cryptography.hazmat.primitives.ciphers.aead import AESGCM
+    from cryptography.hazmat.primitives.ciphers import Cipher, modes
+    from cryptography.hazmat.primitives import cmac as _cm
+    # KMA with protected keys: the hash subkey is always computed and the H field and HS flag are left alone
+    AAD = DATA + 0x700
+    for nm, fc, efc, kl in (("aes128", 18, 26, 16), ("aes192", 19, 27, 24), ("aes256", 20, 28, 32)):
+        key = bytes((5 * i + fc) & 0xff for i in range(kl))
+        iv = bytes((11 * i + 3) & 0xff for i in range(12))
+        aad, pt = bytes(range(20)), bytes(range(40, 75))
+        ct = AESGCM(key).encrypt(iv, pt, aad)
+        c, tag = ct[:-16], ct[-16:]
+        wk = _wrap(key, "a")
+        blk = bytes(12) + (1).to_bytes(4, "big") + bytes(16) + bytes(16) + (len(aad) * 8).to_bytes(8, "big") + (len(pt) * 8).to_bytes(8, "big") + iv + (1).to_bytes(4, "big") + wk + _WKAVP
+        r0 = efc | 0x200 | 0x100
+        T(f"kmaE_{nm}", "kma %r2,%r6,%r4", f"r0={r0:x},r1={DATA:x},r2={_OUT:x},r4={_IN:x},r5={len(pt):x},r6={AAD:x},r7={len(aad):x},{_WKREGS},m{len(blk)}:{DATA:x}={blk.hex()},m{len(pt)}:{_IN:x}={pt.hex()},m{len(aad)}:{AAD:x}={aad.hex()}",
+          f"cc=0,r0={r0:x},m{len(pt)}:{_OUT:x}={c.hex()},m16:{DATA + 16:x}={tag.hex()},m16:{DATA + 32:x}={'00' * 16}")
+    # PCC CMAC and XTS parameter with protected keys
+    for nm, (fc, kl) in _CF.items():
+        efc, kind = _ENCMAP[nm]
+        alg = "aes" if nm.startswith("aes") else nm
+        key = bytes((13 * i + fc) & 0xff for i in range(kl))
+        bs = 16 if alg == "aes" else 8
+        zero = bytes(bs)
+        data = bytes((3 * i + 7) & 0xff for i in range(3 * bs))
+        pre = data[:2 * bs]
+        _, cv2 = CM.mode_cbc(alg, key, zero, pre, 0)
+        ml = bs * 8 - 8
+        last = bytes((17 * i + 5) & 0xff for i in range(bs - 1)) + bytes(1)
+        expect = CM.cmac_last(alg, key, cv2, last, ml)
+        blk = bytes([ml]) + bytes(7) + last + cv2 + _wrap(key, kind) + _vp(kind)
+        T(f"pccE_{nm}", "pcc", f"r0={efc:x},r1={DATA:x},{_WKREGS},m{len(blk)}:{DATA:x}={blk.hex()}", f"m{bs}:{DATA + 8 + bs:x}={expect.hex()},cc=0")
+    for nm, fcp, kl in (("128", 58, 16), ("256", 60, 32)):
+        k1 = bytes((9 * i + fcp) & 0xff for i in range(kl))
+        tw = bytes((23 * i + 5) & 0xff for i in range(16))
+        e = _le(Cipher(algorithms.AES(k1), modes.ECB()).encryptor().update(tw))
+        j = 1000003
+        pb = _wrap(k1, "a") + _WKAVP + tw + j.to_bytes(16, "big") + bytes(16) + bytes(16)
+        T(f"pccxtsE_{nm}", "pcc", f"r0={fcp:x},r1={DATA:x},{_WKREGS},m{len(pb)}:{DATA:x}={pb.hex()}",
+          f"m16:{DATA + kl + 32 + 48:x}={_leb(_gf_mul(e, _gf_pow2(j))).hex()},cc=0")
+_enc_misc_tests()
+
+def _kdsa_enc_tests():
+    import random, ecc_model as EM
+    from cryptography.hazmat.primitives.asymmetric import ed25519 as _e25, ed448 as _e448
+    rnd = random.Random(99)
+    MSG = DATA + 0x1000
+    for name, fcs, el, fs, mod in (("Ed25519", 48, 32, 32, _e25), ("Ed448", 52, 57, 64, _e448)):
+        keycls = mod.Ed25519PrivateKey if name == "Ed25519" else mod.Ed448PrivateKey
+        for t, mlen in enumerate((0, 9)):
+            seed = bytes(rnd.randrange(256) for _ in range(el))
+            msg = bytes(rnd.randrange(256) for _ in range(mlen))
+            sig = keycls.from_private_bytes(seed).sign(msg)
+            Renc, Senc = sig[:el], sig[el:]
+            pad = bytes(fs - el)
+            Rf, Sf = pad + bytes(reversed(Renc)), pad + bytes(reversed(Senc))
+            field = pad + seed
+            blk = bytes(2 * fs) + _wrap(field, "a") + _WKAVP
+            T(f"kdsaE_{name}_sign{t}", "kdsa %r0,%r2", f"r0={fcs:x},r1={DATA:x},r2={MSG:x},r3={mlen:x},{_WKREGS},m{len(blk)}:{DATA:x}={blk.hex()}" + (f",m{mlen}:{MSG:x}={msg.hex()}" if mlen else ""),
+              f"cc=0,m{fs}:{DATA:x}={Rf.hex()},m{fs}:{DATA + fs:x}={Sf.hex()}")
+        bad = bytes([_WKAVP[0] ^ 1]) + _WKAVP[1:]
+        blk = bytes(2 * fs) + _wrap(bytes(fs), "a") + bad + bytes(8)
+        T(f"kdsaE_{name}_vpbad", "kdsa %r0,%r2", f"r0={fcs:x},r1={DATA:x},r2={MSG:x},r3=0,{_WKREGS},m{len(blk)}:{DATA:x}={blk.hex()}", f"cc=1,m1:{DATA + 3 * fs + 32 + 7:x}=01")
+    for name, fcs, nb, fs in (("P256", 17, 32, 32), ("P384", 18, 48, 48), ("P521", 19, 66, 80)):
+        blk = bytes(3 * fs) + _wrap(bytes(fs), "a") + bytes(fs) + _WKAVP + bytes(8)
+        T(f"kdsaE_{name}_d0", "kdsa %r0,%r2", f"r0={fcs:x},r1={DATA:x},r2={MSG:x},r3=0,{_WKREGS},m{len(blk)}:{DATA:x}={blk.hex()}", "cc=1")
+        bad = bytes([_WKAVP[0] ^ 1]) + _WKAVP[1:]
+        blk = bytes(3 * fs) + _wrap(bytes(fs), "a") + bytes(fs) + bad + bytes(8)
+        T(f"kdsaE_{name}_vpbad", "kdsa %r0,%r2", f"r0={fcs:x},r1={DATA:x},r2={MSG:x},r3=0,{_WKREGS},m{len(blk)}:{DATA:x}={blk.hex()}", f"cc=1,m1:{DATA + 5 * fs + 32 + 7:x}=01")
+_kdsa_enc_tests()
+
+def _pckmo_tests():
+    pk = {1: ("dea", "d", 8), 2: ("tdea128", "d", 16), 3: ("tdea192", "d", 24), 18: ("aes128", "a", 16), 19: ("aes192", "a", 24), 20: ("aes256", "a", 32),
+          21: ("xts128", "a", 32), 22: ("xts256", "a", 64), 32: ("p256", "a", 32), 33: ("p384", "a", 48), 34: ("p521", "a", 80),
+          40: ("ed25519", "a", 32), 41: ("ed448", "a", 64), 118: ("hmac512", "a", 64), 122: ("hmac1024", "a", 128)}
+    for fc, (nm, kind, kl) in pk.items():
+        key = bytes((37 * i + fc) & 0xff for i in range(kl))
+        vp = _vp(kind)
+        T(f"pckmo_{nm}", "pckmo", f"r0={fc:x},r1={DATA:x},{_WKREGS},m{kl}:{DATA:x}={key.hex()}", f"cc=0,m{kl}:{DATA:x}={_wrap(key, kind).hex()},m{len(vp)}:{DATA + kl:x}={vp.hex()}")
+    T("pckmo_query", "pckmo", f"r0=0,r1={DATA:x}", f"m16:{DATA:x}=" + "%032x" % sum(1 << (127 - c) for c in [0] + sorted(pk)))
+_pckmo_tests()
 
 
 def main():

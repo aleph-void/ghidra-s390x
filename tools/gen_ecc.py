@@ -333,11 +333,13 @@ def pcc_ecc_code(fc_local="fc"):
 # ---------------------------------------------------------------- KDSA
 import math
 IV512 = [math.isqrt(q << 128) & 0xffffffffffffffff for q in (2, 3, 5, 7, 11, 13, 17, 19)]
+KDSA_ENC = {17: ("S", "P256"), 18: ("S", "P384"), 19: ("S", "P521"), 48: ("ES", "Ed25519"), 52: ("ES", "Ed448")}
 KDSA_FC = {1: ("V", "P256"), 2: ("V", "P384"), 3: ("V", "P521"), 9: ("S", "P256"), 10: ("S", "P384"), 11: ("S", "P521"),
            32: ("EV", "Ed25519"), 36: ("EV", "Ed448"), 40: ("ES", "Ed25519"), 44: ("ES", "Ed448")}
 KDSA_CURVE = {"P256": (P256, 32, 32), "P384": (P384, 48, 48), "P521": (P521, 66, 80),
               "Ed25519": (ED25519, 32, 32), "Ed448": (ED448, 57, 64)}
 CPM_AENC, CPM_RENC, CPM_PREF, CPM_DOM = 0x4200, 0x4240, 0x4280, 0x4300
+WRAPB, KEYA = 0x1b00, 0x040
 DOM4 = b"SigEd448" + b"\x00\x00"
 
 
@@ -408,17 +410,20 @@ def kdsa_insn(o, x):
     S(f"local r2num:4 = {x[1]};")
     S("local fc:1 = r0:1 & 0x7f; local kd_j:8 = 0; local kd_t:8 = 0; local kd_i:4 = 0; local kd_sh:8 = 0; local kd_b:1 = 0; local kd_n:8 = 0; local kd_fs:8 = 0; local kd_pad:8 = 0; "
       "local kd_op:1 = 0; local kd_ph:1 = 0; local kd_el:8 = 0; local kd_dl:8 = 0; local kd_hl:8 = 0; local kd_h:1 = 0; local kd_ml:8 = 0; local kd_hs:8 = 0; "
-      "local kd_hn:8 = 0; local kd_at:4 = 0; local kd_off:8 = 0; local kd_ok:1 = 0; local kd_nb:4 = 0; local kd_cc:1 = 0; local kd_hph:1 = 0;")
+      "local kd_hn:8 = 0; local kd_at:4 = 0; local kd_off:8 = 0; local kd_ok:1 = 0; local kd_nb:4 = 0; local kd_cc:1 = 0; local kd_hph:1 = 0; local kd_enc:1 = 0; local kd_vo:8 = 0; local kd_ko:8 = 0; "
+      "local wv:32 = 0; local wt:32 = 0; local wb:1 = 0; local wl:8 = 0; local wsh:8 = 0; local ci:4 = 0; local wk:1 = 0;")
     S("if (fc != 0) goto <L_fn>;")
     mask = 0
-    for c in [0] + sorted(KDSA_FC):
+    for c in [0] + sorted(KDSA_FC) + sorted(KDSA_ENC):
         mask |= 1 << (127 - c)
     S(f"*:8 r1 = {mask >> 64:#x}:8; *:8 (r1 + 8) = {mask & ((1 << 64) - 1):#x}:8; cc = 0; goto <L_done>;")
     S("<L_fn> if (((r2num & 1) == 0) && (r2num != 0)) goto <L_rok>; trap_specification(); goto <L_done>;\n<L_rok>")
-    for fc, (kind, cn) in sorted(KDSA_FC.items()):
+    allf = dict(KDSA_FC)
+    allf.update(KDSA_ENC)
+    for fc, (kind, cn) in sorted(allf.items()):
         c, n, fs = KDSA_CURVE[cn]
         opn = {"V": 1, "S": 2, "EV": 3, "ES": 4}[kind]
-        S(f"if (fc != {fc}) goto <L_kf{fc}>; kd_op = {opn}; kd_n = {n}; kd_fs = {fs}; kd_ok = 1; kd_el = {n}; ep_nb = {c['n'].bit_length() if kind in ('V', 'S') else (255 if cn == 'Ed25519' else 448)}; ")
+        S(f"if (fc != {fc}) goto <L_kf{fc}>; kd_op = {opn}; kd_n = {n}; kd_fs = {fs}; kd_ok = 1; kd_el = {n}; {'kd_enc = 1; ' if fc in KDSA_ENC else ''}ep_nb = {c['n'].bit_length() if kind in ('V', 'S') else (255 if cn == 'Ed25519' else 448)}; ")
         S(curve_stmts(c))
         if kind in ("EV", "ES"):
             ed448 = cn == "Ed448"
@@ -429,6 +434,12 @@ def kdsa_insn(o, x):
                 S(const_stmts("ep_m1", (1 << 254) - 8) + " " + const_stmts("ep_m2", 1 << 254))
         S(f"<L_kf{fc}>")
     S("if (kd_ok != 0) goto <L_kv>; trap_specification(); goto <L_done>;\n<L_kv> kd_pad = kd_fs - kd_n; ep_st = 0;")
+    S("if (kd_enc == 0) goto <L_kdnoenc>; wk = 1; kd_vo = kd_fs * 3; if (kd_op != 2) goto <L_kdv1>; kd_vo = kd_fs * 5;\n<L_kdv1>")
+    S("wv = wkavp; wl = 31; ci = 0; <L_kdvl> wsh = (wl - zext(ci)) * 8; wt = wv >> wsh; wb = wt:1; if (*:1 (r1 + kd_vo + zext(ci)) != wb) goto <L_kdvb>; ci = ci + 1; if (zext(ci) <= wl) goto <L_kdvl>; goto <L_kdvd>;")
+    S("<L_kdvb> kd_b = *:1 (r1 + kd_vo + 39); kd_b = (kd_b & 0xf0) | 1; *:1 (r1 + kd_vo + 39) = kd_b; cc = 1; goto <L_done>;\n<L_kdvd>")
+    S(f"kd_ko = kd_fs * 2; if (kd_op != 2) goto <L_kdk1>; kd_ko = kd_fs * 3; <L_kdk1> ci = 0; <L_kdwc> *[cpm]:4 ({WRAPB:#x}:4 + ci) = *:4 (r1 + kd_ko + zext(ci)); ci = ci + 4; if (zext(ci) < kd_fs) goto <L_kdwc>;")
+    S(f"cpmd = 13; cpwk = 1; cpwl = kd_fs; cpwa = 3; cpwn = 8; cpalg = 3; cpnk = 8; *[cpm]:32 ({KEYA:#x}:4) = wka; build cp_cipher; cpwk = 0;")
+    S("<L_kdnoenc>")
     S("if (kd_op == 1) goto <L_kver>; if (kd_op == 2) goto <L_ksig>; if (kd_op == 3) goto <L_kev>; goto <L_kes>;")
     # ---- ECDSA verify
     S("<L_kver> ")
@@ -442,9 +453,11 @@ def kdsa_insn(o, x):
     # ---- ECDSA sign
     S("<L_ksig> ")
     S(load_be("ep_e", "(r1 + (2 * kd_fs) + kd_pad)", "kd_n", "k6"))
+    S("if (kd_enc != 0) goto <L_kdd1>;")
     S(load_be("ep_dd", "(r1 + (3 * kd_fs) + kd_pad)", "kd_n", "k7"))
+    S("goto <L_kdd2>; <L_kdd1> ep_dd = 0; kd_j = 0; <L_kdd3> kd_i = kd_j:4; kd_b = *[cpm]:1 (" + f"{WRAPB:#x}" + " + kd_i); ep_tm = zext(kd_b); ep_dd = (ep_dd << 8) | ep_tm; kd_j = kd_j + 1; if (kd_j < kd_fs) goto <L_kdd3>; <L_kdd2>")
     S(load_be("ep_kk", "(r1 + (4 * kd_fs) + kd_pad)", "kd_n", "k8"))
-    S("if (ep_dd == 0) goto <L_ks1>; if (ep_dd < ep_n) goto <L_ks2>; <L_ks1> cc = 1; goto <L_done>;\n<L_ks2> ep_rnd = 0; if ((r0 & 0x80) == 0) goto <L_ks3>;")
+    S("if (ep_dd == 0) goto <L_ks1>; if (ep_dd < ep_n) goto <L_ks2>; <L_ks1> if (kd_enc == 0) goto <L_ks0>; kd_b = *:1 (r1 + kd_vo + 39); kd_b = kd_b & 0xf0; *:1 (r1 + kd_vo + 39) = kd_b; <L_ks0> cc = 1; goto <L_done>;\n<L_ks2> ep_rnd = 0; if (kd_enc != 0) goto <L_ks3>; if ((r0 & 0x80) == 0) goto <L_ks3>;")
     S("if (ep_kk == 0) goto <L_ks4>; if (ep_kk < ep_n) goto <L_ks5>; <L_ks4> cc = 2; goto <L_done>;\n<L_ks3> ep_rnd = 1; kd_j = 0; <L_ks6> if (kd_j >= kd_n) goto <L_ks5>; kd_b = s390_trng_byte(); kd_sh = kd_j * 8; ep_tm = zext(kd_b); ep_tm = ep_tm << kd_sh; ep_kk = ep_kk ^ ep_tm; kd_j = kd_j + 1; goto <L_ks6>;")
     S("<L_ks5> ep_mode = 4; kd_ph = 2; goto <L_kdrun>;")
     S("<L_kp2> ")
@@ -475,7 +488,11 @@ def kdsa_insn(o, x):
     # ---- EdDSA sign
     S("<L_kes> kd_pad = kd_fs - kd_el; kd_ml = r2l_PLACEHOLDER;")
     K.ram_to_cpm(f"{CPM_MOFF:#x}", f"{r2a}", "kd_ml")
+    S("if (kd_enc != 0) goto <L_kde1>;")
     K.ram_to_cpm(f"{CPM_MOFF:#x} - kd_el:4", "r1 + (2 * kd_fs) + kd_pad", "kd_el")
+    S("goto <L_kde2>; <L_kde1>")
+    K.cp_cpm(f"{CPM_MOFF:#x} - kd_el:4", f"{WRAPB:#x} + kd_pad:4", "kd_el")
+    S("<L_kde2>")
     S(f"kd_hs = {CPM_MOFF:#x} - kd_el; kd_hn = kd_el; kd_hph = 20; goto <L_kdhash>;")
     S("<L_kp20> ")
     K.le_load("ep_dd", f"{CPM_DIG:#x}", "kd_el")

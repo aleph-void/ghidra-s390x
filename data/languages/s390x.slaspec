@@ -358,7 +358,12 @@ define register offset=0x16400 size=8 [ cpa cpl cpbh cpbl cpo cpn ];
 define register offset=0x16430 size=8 [ cprt ];
 define register offset=0x16440 size=1 [ cpfin cpps cpmd cpdm cpalg cpdec cpnk ];
 define register offset=0x16460 size=8 [ cps cpc ];
-define register offset=0x16470 size=1 [ cpcc cphs cplaad cplpc cphf cpsm ];
+define register offset=0x16470 size=1 [ cpcc cphs cplaad cplpc cphf cpsm cpwk cpwa cpwn ];
+define register offset=0x16480 size=8 [ cpwl ];
+# the machine's wrapping keys and their verification patterns (hardware state no program can read; the
+# protected-key functions of the message-security-assist instructions use them)
+define register offset=0x24000 size=32 [ wka wkavp ];
+define register offset=0x24100 size=24 [ wkd wkdvp ];
 # ECC engine scratch (tools/gen_ecc.py)
 define register offset=0x20000 size=72 [ ep_p ep_a ep_b ep_b3 ep_d ep_n ep_gx ep_gy ep_x1 ep_y1 ep_z1 ep_x2 ep_y2 ep_z2 ep_x3 ep_y3 ep_z3 ep_rx ep_ry ep_rz ep_bx ep_by ep_bz ep_t0 ep_t1 ep_t2 ep_t3 ep_t4 ep_t5 ep_t6 ep_t7 ep_t8 ep_tm ep_k ep_e ep_r ep_s ep_w ep_u1 ep_u2 ep_dd ep_kk ep_ex ep_v ep_u ep_m ep_sq ep_sq2 ep_pp1 ep_pp2 ep_pp3 ep_pp4 ep_pp5 ep_ax ep_ay ep_cx ep_cy ep_m1 ep_m2 ];
 define register offset=0x22000 size=144 [ ep_pr ep_pm ];
