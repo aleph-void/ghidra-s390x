@@ -502,3 +502,7 @@ lmh
 stmh
 efpc
 sfpc
+troo
+trot
+trto
+trtt

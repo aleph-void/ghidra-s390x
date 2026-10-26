@@ -423,6 +423,26 @@ def clst(o):
         f"<part> {o[0]} = a; {o[1]} = b; cc = 3;",
         "<done>"])
 
+def trxx(o, p, ssize, dsize):
+    """TROO/TROT/TRTO/TRTT: translate the second operand (address R2, length R1+1, ssize-byte
+    characters) through the table at GR1 (doubleword aligned) into the first operand (R1,
+    dsize-byte characters), stopping before a function character equal to the test character
+    in GR0 (cc 1) unless M3 bit 3 is set; cc 0 at the end of the operand."""
+    m3 = o[2] if len(o) > 2 else "0"
+    return "\n".join([
+        f"local dst:8 = {o[0]}; local len:8 = {p[0]}; local src:8 = {o[1]}; local tbl:8 = r1 & ~7;",
+        f"local m3:8 = {m3}; local notest:1 = (m3 & 1) != 0; local tst:{dsize} = r0:{dsize};",
+        "cc = 0;",
+        "if (len == 0) goto <done>;",
+        "<lp>",
+        f"local sv:{ssize} = *:{ssize} src; local fv:{dsize} = *:{dsize} (tbl + zext(sv) * {dsize});",
+        "if (!notest && (fv == tst)) goto <hit>;",
+        f"*:{dsize} dst = fv; len = len - {ssize}; src = src + {ssize}; dst = dst + {dsize};",
+        "if (len != 0) goto <lp>; goto <done>;",
+        "<hit> cc = 1;",
+        "<done>",
+        f"{o[0]} = dst; {p[0]} = len; {o[1]} = src;"])
+
 # ---- PSW, FPC and access-register state --------------------------------------------------------
 def epsw(o, r2n):
     """EXTRACT PSW: R1 bits 32-63 = PSW bits 0-31 (with the condition code, which this module
@@ -516,6 +536,9 @@ def semantics(ctx):
         return pkau(o, x, 1 if n == "pka" else 2)
     if n in ("unpka", "unpku") and x:
         return unpkau(o, x, 1 if n == "unpka" else 2)
+    m = re.fullmatch(r"tr(o|t)(o|t)", n)
+    if m and 0 in p:
+        return trxx(o, p, 1 if m.group(1) == "o" else 2, 1 if m.group(2) == "o" else 2)
     if n == "mvst":
         return mvst(o)
     if n == "srst":
