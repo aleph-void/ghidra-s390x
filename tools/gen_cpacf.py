@@ -296,7 +296,7 @@ DES_S = [
 ]
 
 # cipher scratch layout (cpm)
-KEYA, SBOX, ISBOX, RK, BLK, TMP, TMP2 = 0x040, 0x1000, 0x1100, 0x1200, 0x1300, 0x1310, 0x1320
+KEYA, SBOX, ISBOX, RK, BLK, TMP, TMP2, MSG, J0A, LENS = 0x040, 0x1000, 0x1100, 0x1200, 0x1300, 0x1310, 0x1320, 0x1330, 0x1340, 0x1350
 T_IP, T_FP, T_E, T_P, T_PC1, T_PC2, T_SH, T_SB, KS = 0x1400, 0x1440, 0x1480, 0x14c0, 0x14e0, 0x1520, 0x1560, 0x1600, 0x1800
 
 def store_table(base, data):
@@ -332,7 +332,9 @@ def cipher_engine():
          "  local u:4 = 0; local v:4 = 0; local rcon:1 = 1; local dflag:1 = 0; local bret:1 = 0; local sh8:8 = 0;",
          "  local lh:4 = 0; local rh:4 = 0; local e48:8 = 0; local f32:8 = 0; local sbo:8 = 0; local bit:8 = 0; local pi:4 = 0; local pt:1 = 0;",
          "  local cd:8 = 0; local kk:8 = 0; local d1:8 = 0; local npass:1 = 0; local pass:1 = 0; local kidx:1 = 0; local rr:4 = 0; local six:8 = 0; local tq:8 = 0;",
-         "  local a:1 = 0; local b:1 = 0; local c:1 = 0; local dd:1 = 0; local sg:4 = 0; local seg:4 = 0; local ptrc:8 = 0; local rv8:8 = 0; local d1x:8 = 0;"]
+         "  local a:1 = 0; local b:1 = 0; local c:1 = 0; local dd:1 = 0; local sg:4 = 0; local seg:4 = 0; local ptrc:8 = 0; local rv8:8 = 0; local d1x:8 = 0;",
+         "  local cvv:4 = 0; local gh:16 = 0; local gt:16 = 0; local gx:16 = 0; local gz:16 = 0; local gv:16 = 0; local gin:16 = 0; local gout:16 = 0; local gct:16 = 0; local cb:16 = 0; local gbit:16 = 0; local gi:4 = 0; local gret:1 = 0;",
+         "  local rpoly:16 = 0xe1; local lv:16 = 0; local rc16:16 = 0; local msg16:16 = 0; local icv16:16 = 0; local kx16:16 = 0; local msk16:16 = 0; local one16:16 = 1; local sh16:16 = 0; local m1:16 = 0;"]
     t.append(store_table(SBOX, SBOX_T))
     t.append(store_table(ISBOX, ISBOX_T))
     t.append(store_table(T_IP, IP)); t.append(store_table(T_FP, FP)); t.append(store_table(T_E, DES_E)); t.append(store_table(T_P, DES_P))
@@ -365,6 +367,7 @@ def cipher_engine():
     t.append("  kidx = kidx + 1; if (kidx < npass) goto <L_dk1>;")
     t.append("  <L_ksdone>")
     # ---- the operand loop ----------------------------------------------------------------------
+    t.append("  rpoly = rpoly << 120; if (cpmd == 6) goto <L_m6>;")
     t.append("  <L_top> if (cpl == 0) goto <L_exit>;")
     t.append("  if (cpmd != 0) goto <L_m1>;")
     # ECB
@@ -404,11 +407,72 @@ def cipher_engine():
     t.append("  <L_r6> " + f"*:8 cpo = *:8 cpa ^ *[cpm]:8 ({BLK:#x}:4); if (bs == 8) goto <L_c6>; *:8 (cpo + 8) = *:8 (cpa + 8) ^ *[cpm]:8 ({BLK + 8:#x}:4);")
     t.append("  <L_c6> cpc = cpc + zext(bs); goto <L_adv>;")
     # CBC-MAC
-    t.append("  <L_m7> " + ld_blk("cpa").format(u=U()))
+    t.append("  <L_m7> if (cpmd != 7) goto <L_m8>;")
+    t.append("  " + ld_blk("cpa").format(u=U()))
     t.append(f"  *[cpm]:8 ({BLK:#x}:4) = *[cpm]:8 ({BLK:#x}:4) ^ *[cpm]:8 ({CV:#x}:4); if (bs == 8) goto <L_g1>; *[cpm]:8 ({BLK + 8:#x}:4) = *[cpm]:8 ({BLK + 8:#x}:4) ^ *[cpm]:8 ({CV + 8:#x}:4);")
     t.append("  <L_g1> dflag = 0; bret = 7; goto <L_blk>;")
     t.append("  <L_r7> " + f"*[cpm]:8 ({CV:#x}:4) = *[cpm]:8 ({BLK:#x}:4); if (bs == 8) goto <L_adv>; *[cpm]:8 ({CV + 8:#x}:4) = *[cpm]:8 ({BLK + 8:#x}:4);")
     t.append("  <L_adv> cpa = cpa + zext(bs); cpo = cpo + zext(bs); cpl = cpl - zext(bs); goto <L_top>;")
+    # ---- GCM (KMA): mode 6. Tag at CV, hash subkey at CV+16, J0 at J0A, the lengths block at LENS;
+    #      counter value in cpbh; third operand (AAD) cpc / cpn; flags cphs cplaad cplpc cpdec (M)
+    t.append("  <L_m6> if (cpmd != 6) goto <L_m8>;")
+    t.append(f"  cvv = cpbh:4; gh = *[cpm]:16 ({CV + 16:#x}:4); cpcc = 0; cphf = 0;")
+    t.append(f"  if (cphs != 0) goto <L_gh1>; *[cpm]:8 ({BLK:#x}:4) = 0; *[cpm]:8 ({BLK + 8:#x}:4) = 0; dflag = 0; bret = 10; goto <L_blk>;")
+    t.append(f"  <L_r10> gh = *[cpm]:16 ({BLK:#x}:4); *[cpm]:16 ({CV + 16:#x}:4) = gh; cphf = 1;")
+    t.append(f"  <L_gh1> gt = *[cpm]:16 ({CV:#x}:4);")
+    # AAD: full blocks
+    t.append("  <L_gA> if (cpn < 16) goto <L_gAt>; gx = gt ^ *:16 cpc; gret = 1; goto <L_ghm>;")
+    t.append("  <L_gr1> gt = gz; cpc = cpc + 16; cpn = cpn - 16; goto <L_gA>;")
+    t.append("  <L_gAt> if (cplaad == 0) goto <L_gstop>; if (cpn == 0) goto <L_gT>;")
+    t.append(f"  *[cpm]:8 ({TMP:#x}:4) = 0; *[cpm]:8 ({TMP + 8:#x}:4) = 0; j = 0; <L_gA2> a = *:1 (cpc + zext(j)); *[cpm]:1 ({TMP:#x}:4 + j) = a; j = j + 1; if (zext(j) < cpn) goto <L_gA2>;")
+    t.append(f"  gx = gt ^ *[cpm]:16 ({TMP:#x}:4); gret = 2; goto <L_ghm>;")
+    t.append("  <L_gr2> gt = gz; cpc = cpc + cpn; cpn = 0;")
+    # text: full blocks
+    t.append("  <L_gT> if (cpl >= 16) goto <L_gTf>; if (cplpc == 0) goto <L_gstop>; if (cpl == 0) goto <L_gL>; goto <L_gTp>;")
+    t.append(f"  <L_gTf> cvv = cvv + 1; cb = *[cpm]:16 ({J0A:#x}:4); cb = ((cb >> 32) << 32) | zext(cvv); *[cpm]:16 ({BLK:#x}:4) = cb; dflag = 0; bret = 11; goto <L_blk>;")
+    t.append("  <L_r11> gin = *:16 cpa; gout = gin ^ *[cpm]:16 (" + f"{BLK:#x}:4); *:16 cpo = gout; gct = gout; if (cpdec == 0) goto <L_gc1>; gct = gin;")
+    t.append("  <L_gc1> gx = gt ^ gct; gret = 3; goto <L_ghm>;")
+    t.append("  <L_gr3> gt = gz; cpa = cpa + 16; cpo = cpo + 16; cpl = cpl - 16; goto <L_gT>;")
+    # text: last partial block
+    t.append("  <L_gTp> if (cplpc == 0) goto <L_gstop>;")
+    t.append(f"  cvv = cvv + 1; cb = *[cpm]:16 ({J0A:#x}:4); cb = ((cb >> 32) << 32) | zext(cvv); *[cpm]:16 ({BLK:#x}:4) = cb; dflag = 0; bret = 12; goto <L_blk>;")
+    t.append(f"  <L_r12> *[cpm]:8 ({TMP:#x}:4) = 0; *[cpm]:8 ({TMP + 8:#x}:4) = 0; *[cpm]:8 ({TMP2:#x}:4) = 0; *[cpm]:8 ({TMP2 + 8:#x}:4) = 0; j = 0;")
+    t.append(f"  <L_gP> a = *:1 (cpa + zext(j)); b = *[cpm]:1 ({BLK:#x}:4 + j); c = a ^ b; *:1 (cpo + zext(j)) = c; *[cpm]:1 ({TMP:#x}:4 + j) = c; *[cpm]:1 ({TMP2:#x}:4 + j) = a; j = j + 1; if (zext(j) < cpl) goto <L_gP>;")
+    t.append(f"  gct = *[cpm]:16 ({TMP:#x}:4); if (cpdec == 0) goto <L_gc2>; gct = *[cpm]:16 ({TMP2:#x}:4);")
+    t.append("  <L_gc2> gx = gt ^ gct; gret = 4; goto <L_ghm>;")
+    t.append("  <L_gr4> gt = gz; cpa = cpa + cpl; cpo = cpo + cpl; cpl = 0;")
+    # last tag
+    t.append(f"  <L_gL> gx = gt ^ *[cpm]:16 ({LENS:#x}:4); gret = 5; goto <L_ghm>;")
+    t.append(f"  <L_gr5> gt = gz; *[cpm]:16 ({BLK:#x}:4) = *[cpm]:16 ({J0A:#x}:4); dflag = 0; bret = 13; goto <L_blk>;")
+    t.append(f"  <L_r13> gt = gt ^ *[cpm]:16 ({BLK:#x}:4); cpcc = 0; goto <L_gend>;")
+    t.append("  <L_gstop> cpcc = 2;")
+    t.append(f"  <L_gend> *[cpm]:16 ({CV:#x}:4) = gt; cpbh = zext(cvv); goto <L_exit>;")
+    # the GCM multiplication gz = gx * gh (bit 0 is the most significant bit)
+    t.append("  <L_ghm> gz = 0; gv = gh; gi = 0;")
+    t.append("  <L_gb> gbit = (gx >> (127 - gi)) & 1; if (gbit == 0) goto <L_gs>; gz = gz ^ gv;")
+    t.append("  <L_gs> if ((gv & 1) == 0) goto <L_gn>; gv = (gv >> 1) ^ rpoly; goto <L_gm>;")
+    t.append("  <L_gn> gv = gv >> 1;")
+    t.append("  <L_gm> gi = gi + 1; if (gi < 128) goto <L_gb>;")
+    t.append("  if (gret != 1) goto <L_gq2>; goto <L_gr1>;")
+    t.append("  <L_gq2> if (gret != 2) goto <L_gq3>; goto <L_gr2>;")
+    t.append("  <L_gq3> if (gret != 3) goto <L_gq4>; goto <L_gr3>;")
+    t.append("  <L_gq4> if (gret != 4) goto <L_gq5>; goto <L_gr4>;")
+    t.append("  <L_gq5> goto <L_gr5>;")
+    # CMAC of the last block (PCC): subkeys from E(0), the (padded) message block at MSG
+    t.append(f"  <L_m8> *[cpm]:8 ({BLK:#x}:4) = 0; *[cpm]:8 ({BLK + 8:#x}:4) = 0; dflag = 0; bret = 8; goto <L_blk>;")
+    t.append("  <L_r8> if (bs == 8) goto <L_c8a>;")
+    t.append(f"  lv = *[cpm]:16 ({BLK:#x}:4); rc16 = 0x87; msg16 = *[cpm]:16 ({MSG:#x}:4); icv16 = *[cpm]:16 ({CV:#x}:4); goto <L_c8b>;")
+    t.append(f"  <L_c8a> lv = zext(*[cpm]:8 ({BLK:#x}:4)) << 64; rc16 = 0x1b; rc16 = rc16 << 64; msg16 = zext(*[cpm]:8 ({MSG:#x}:4)) << 64; icv16 = zext(*[cpm]:8 ({CV:#x}:4)) << 64;")
+    t.append("  <L_c8b> m1 = lv >> 127; lv = lv << 1; if (m1 == 0) goto <L_c8c>; lv = lv ^ rc16;")
+    t.append("  <L_c8c> kx16 = lv; m1 = lv >> 127; lv = lv << 1; if (m1 == 0) goto <L_c8d>; lv = lv ^ rc16;")
+    t.append("  <L_c8d> sh8 = cps; if (sh8 == (zext(bs) << 3)) goto <L_c8e>;")
+    t.append("  msk16 = 1; msk16 = msk16 << (128 - sh8); msk16 = msk16 - 1; msk16 = ~msk16; msg16 = (msg16 & msk16) | (one16 << (127 - sh8)); msg16 = msg16 ^ lv; goto <L_c8f>;")
+    t.append("  <L_c8e> msg16 = msg16 ^ kx16;")
+    t.append("  <L_c8f> msg16 = msg16 ^ icv16; if (bs == 8) goto <L_c8g>;")
+    t.append(f"  *[cpm]:16 ({BLK:#x}:4) = msg16; goto <L_c8h>;")
+    t.append(f"  <L_c8g> sh16 = msg16 >> 64; *[cpm]:8 ({BLK:#x}:4) = sh16:8;")
+    t.append("  <L_c8h> dflag = 0; bret = 9; goto <L_blk>;")
+    t.append(f"  <L_r9> *[cpm]:8 ({CV:#x}:4) = *[cpm]:8 ({BLK:#x}:4); if (bs == 8) goto <L_exit>; *[cpm]:8 ({CV + 8:#x}:4) = *[cpm]:8 ({BLK + 8:#x}:4); goto <L_exit>;")
     # ---- the block cipher ------------------------------------------------------------------------
     t.append("  <L_blk> if (cpalg != 3) goto <L_des>;")
     t.append("  nr = zext(cpnk) + 6; if (dflag != 0) goto <L_adec>;")
@@ -470,8 +534,8 @@ def cipher_engine():
     t.append("  pass = pass + 1; if (pass < npass) goto <L_dps>;")
     t.append(f"  *[cpm]:8 ({BLK:#x}:4) = tq;")
     t.append("  <L_bdone> if (bret != 1) goto <L_b2>; goto <L_r1>;")
-    for k in range(2, 8):
-        t.append(f"  <L_b{k}> if (bret != {k}) goto <L_b{k + 1}>; goto <L_r{k}>;" if k < 7 else f"  <L_b7> goto <L_r7>;")
+    for k in range(2, 14):
+        t.append(f"  <L_b{k}> if (bret != {k}) goto <L_b{k + 1}>; goto <L_r{k}>;" if k < 13 else f"  <L_b13> goto <L_r13>;")
     t.append("  <L_exit>")
     t.append("}")
     return "\n".join(t)
@@ -502,9 +566,11 @@ ENGINE = {1: "cp_sha1", 2: "cp_sha256", 3: "cp_sha512", 4: "cp_keccak", 5: "cp_g
 # cipher functions: code -> (cpalg, cpnk, key bytes)
 CIPHER = {1: (0, 0, 8), 2: (1, 0, 16), 3: (2, 0, 24), 18: (3, 4, 16), 19: (3, 6, 24), 20: (3, 8, 32)}
 # instruction -> (mode, has chaining value in the parameter block)
-CIPHER_INSN = {"km": (0, False), "kmc": (1, True), "kmf": (2, True), "kmo": (3, True), "kmctr": (4, False)}
+CIPHER_INSN = {"km": (0, False), "kmc": (1, True), "kmf": (2, True), "kmo": (3, True), "kmctr": (4, False),
+               "kmac": (7, True)}
+KMA_FC = {18: (3, 4, 16), 19: (3, 6, 24), 20: (3, 8, 32)}
 
-NAMES = {"kimd", "klmd", "km", "kmc", "kmf", "kmo", "kmctr"}
+NAMES = {"kimd", "klmd", "km", "kmc", "kmf", "kmo", "kmctr", "kmac", "pcc", "kma"}
 
 def semantics(ctx):
     n, o = ctx["name"], ctx["ops"]
@@ -513,6 +579,10 @@ def semantics(ctx):
         return md_insn(n == "klmd", o, x)
     if n in CIPHER_INSN and len(x) >= 3:
         return cipher_insn(n, o, x)
+    if n == "pcc":
+        return pcc_insn(x)
+    if n == "kma" and len(x) >= 5:
+        return kma_insn(o, x)
     return None
 
 def cipher_insn(n, o, x):
@@ -521,6 +591,7 @@ def cipher_insn(n, o, x):
     (KMCTR) R3 number."""
     mode, has_cv = CIPHER_INSN[n]
     ctr = n == "kmctr"
+    mac = n == "kmac"                   # no first operand
     r1a, r2a, r3a = o[0], (o[2] if ctr else o[1]), (o[1] if ctr else None)
     r2l = x[0]
     t = [f"local r2num:4 = {x[1]}; local r1num:4 = {x[2]};"]
@@ -531,7 +602,7 @@ def cipher_insn(n, o, x):
     mask = fcmask([0] + sorted(CIPHER))
     t.append(f"*:8 r1 = {mask >> 64:#x}:8; *:8 (r1 + 8) = {mask & ((1 << 64) - 1):#x}:8; cc = 0; goto <L_done>;")
     t.append("<L_fn>")
-    regs_ok = "(((r2num & 1) == 0) && (r2num != 0) && ((r1num & 1) == 0) && (r1num != 0)"
+    regs_ok = "(((r2num & 1) == 0) && (r2num != 0)" + ("" if mac else " && ((r1num & 1) == 0) && (r1num != 0)")
     if ctr:
         regs_ok += " && ((r3num & 1) == 0) && (r3num != 0) && (r3num != r1num) && (r3num != r2num)"
     regs_ok += ")"
@@ -556,9 +627,61 @@ def cipher_insn(n, o, x):
     t.append("build cp_cipher;")
     if has_cv:
         t.append(f"ci = 0; <L_cvo> *:4 (r1 + zext(ci)) = *[cpm]:4 ({CV:#x}:4 + ci); ci = ci + 4; if (zext(ci) < bsz) goto <L_cvo>;")
-    t.append(f"{r2a} = cpa; {r2l} = cpl; {r1a} = cpo;")
+    t.append(f"{r2a} = cpa; {r2l} = cpl;" + ("" if mac else f" {r1a} = cpo;"))
     if ctr:
         t.append(f"{r3a} = cpc;")
+    t.append("cc = 0;\n<L_done>")
+    return "\n".join(t)
+
+def kma_insn(o, x):
+    """KMA (GCM-AES): R1 output address, R2 / R2+1 text, R3 / R3+1 additional authenticated data.
+    x: R2+1, R2 number, R1 number, R3 number, R3+1."""
+    r1a, r3a, r2a = o[0], o[1], o[2]
+    r2l, r3l = x[0], x[4]
+    t = [f"local r2num:4 = {x[1]}; local r1num:4 = {x[2]}; local r3num:4 = {x[3]};"]
+    t.append("local fc:1 = r0:1 & 0x7f; local nk:1 = 0; local klen:4 = 0; local ok:1 = 0; local ci:4 = 0; local fl:8 = r0;")
+    t.append("if (fc != 0) goto <L_fn>;")
+    mask = fcmask([0] + sorted(KMA_FC))
+    t.append(f"*:8 r1 = {mask >> 64:#x}:8; *:8 (r1 + 8) = {mask & ((1 << 64) - 1):#x}:8; cc = 0; goto <L_done>;")
+    t.append("<L_fn>")
+    t.append("if (((r1num & 1) == 0) && (r1num != 0) && ((r2num & 1) == 0) && (r2num != 0) && ((r3num & 1) == 0) && (r3num != 0) && (r3num != r1num) && (r3num != r2num)) goto <L_regok>; trap_specification(); goto <L_done>;\n<L_regok>")
+    for fc, (alg, nk, klen) in sorted(KMA_FC.items()):
+        t.append(f"if (fc != {fc}) goto <L_g{fc}>; nk = {nk}; klen = {klen}; ok = 1; <L_g{fc}>")
+    t.append("if (ok != 0) goto <L_valid>; trap_specification(); goto <L_done>;\n<L_valid>")
+    t.append("if (((fl & 0x200) != 0) || ((fl & 0x100) == 0)) goto <L_flok>; trap_specification(); goto <L_done>;\n<L_flok>")
+    t.append(f"ci = 0; <L_t> *[cpm]:4 ({CV:#x}:4 + ci) = *:4 (r1 + 16 + zext(ci)); ci = ci + 4; if (ci < 32) goto <L_t>;")
+    t.append(f"ci = 0; <L_l> *[cpm]:4 ({LENS:#x}:4 + ci) = *:4 (r1 + 48 + zext(ci)); ci = ci + 4; if (ci < 16) goto <L_l>;")
+    t.append(f"ci = 0; <L_j> *[cpm]:4 ({J0A:#x}:4 + ci) = *:4 (r1 + 64 + zext(ci)); ci = ci + 4; if (ci < 16) goto <L_j>;")
+    t.append(f"ci = 0; <L_k> *[cpm]:4 ({KEYA:#x}:4 + ci) = *:4 (r1 + 80 + zext(ci)); ci = ci + 4; if (ci < klen) goto <L_k>;")
+    t.append(f"cpa = {r2a}; cpl = {r2l}; cpo = {r1a}; cpc = {r3a}; cpn = {r3l}; cpmd = 6; cpdec = r0:1 >> 7; cpalg = 3; cpnk = nk;")
+    t.append("cpbh = zext(*:4 (r1 + 12)); local sh10:8 = fl >> 10; local sh9:8 = fl >> 9; local sh8x:8 = fl >> 8; cphs = sh10:1 & 1; cplaad = sh9:1 & 1; cplpc = sh8x:1 & 1;")
+    t.append("build cp_cipher;")
+    t.append(f"ci = 0; <L_o> *:4 (r1 + 16 + zext(ci)) = *[cpm]:4 ({CV:#x}:4 + ci); ci = ci + 4; if (ci < 32) goto <L_o>;")
+    t.append("*:4 (r1 + 12) = cpbh:4;")
+    t.append(f"if (cphf == 0) goto <L_nh>; r0 = r0 | 0x400;\n<L_nh>")
+    t.append(f"{r2a} = cpa; {r2l} = cpl; {r1a} = cpo; {r3a} = cpc; {r3l} = cpn;")
+    t.append("cc = cpcc;\n<L_done>")
+    return "\n".join(t)
+
+def pcc_insn(x):
+    """PCC: the CMAC of the last block (functions 1-3, 18-20): ML at 0, message at 8, ICV at 8 + bs
+    (replaced by the CMAC), key at 8 + 2 bs"""
+    t = ["local fc:1 = r0:1 & 0x7f; local alg:1 = 0; local nk:1 = 0; local klen:4 = 0; local bsz:8 = 8; local ok:1 = 0; local ci:4 = 0; local ml:8 = 0;"]
+    t.append("if (fc != 0) goto <L_fn>;")
+    mask = fcmask([0] + sorted(CIPHER))
+    t.append(f"*:8 r1 = {mask >> 64:#x}:8; *:8 (r1 + 8) = {mask & ((1 << 64) - 1):#x}:8; cc = 0; goto <L_done>;")
+    t.append("<L_fn>")
+    for fc, (alg, nk, klen) in sorted(CIPHER.items()):
+        t.append(f"if (fc != {fc}) goto <L_g{fc}>; alg = {alg}; nk = {nk}; klen = {klen}; ok = 1; <L_g{fc}>")
+    t.append("if (ok != 0) goto <L_valid>; trap_specification(); goto <L_done>;\n<L_valid>")
+    t.append("if (alg != 3) goto <L_bs>; bsz = 16;\n<L_bs>")
+    t.append("ml = zext(*:1 r1); if (ml <= (bsz << 3)) goto <L_mlok>; cc = 2; goto <L_done>;\n<L_mlok>")
+    t.append(f"ci = 0; <L_m> *[cpm]:4 ({MSG:#x}:4 + ci) = *:4 (r1 + 8 + zext(ci)); ci = ci + 4; if (zext(ci) < bsz) goto <L_m>;")
+    t.append(f"ci = 0; <L_i> *[cpm]:4 ({CV:#x}:4 + ci) = *:4 (r1 + 8 + bsz + zext(ci)); ci = ci + 4; if (zext(ci) < bsz) goto <L_i>;")
+    t.append(f"ci = 0; <L_k> *[cpm]:4 ({KEYA:#x}:4 + ci) = *:4 (r1 + 8 + (2 * bsz) + zext(ci)); ci = ci + 4; if (ci < klen) goto <L_k>;")
+    t.append("cpl = 1; cpmd = 8; cpalg = alg; cpnk = nk; cps = ml; cpdec = 0;")
+    t.append("build cp_cipher;")
+    t.append(f"ci = 0; <L_o> *:4 (r1 + 8 + bsz + zext(ci)) = *[cpm]:4 ({CV:#x}:4 + ci); ci = ci + 4; if (zext(ci) < bsz) goto <L_o>;")
     t.append("cc = 0;\n<L_done>")
     return "\n".join(t)
 

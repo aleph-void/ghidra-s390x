@@ -358,6 +358,7 @@ define register offset=0x16400 size=8 [ cpa cpl cpbh cpbl cpo cpn ];
 define register offset=0x16430 size=8 [ cprt ];
 define register offset=0x16440 size=1 [ cpfin cpps cpmd cpdm cpalg cpdec cpnk ];
 define register offset=0x16460 size=8 [ cps cpc ];
+define register offset=0x16470 size=1 [ cpcc cphs cplaad cplpc cphf ];
 
 # Disassembly context. xplink: set to 1 by the zos_xplink compiler spec, where "BR 7" and
 # "B 2(,7)"/"B 4(,7)" are function returns (the XPLINK return address is in R7, and a

@@ -195,3 +195,26 @@ def mode_ofb(alg, key, cv, data):
 def mode_ctr(alg, key, counters, data):
     e, d, bs = ecb_block(alg, key)
     return b"".join(bytes(x ^ y for x, y in zip(data[i:i + bs], e(counters[i:i + bs]))) for i in range(0, len(data), bs)), None
+
+def cmac_last(alg, key, icv, msg, ml):
+    """PCC compute-last-block-CMAC: msg: the block (bs bytes, leftmost ml bits significant)"""
+    e, d, bs = ecb_block(alg, key)
+    n = bs * 8
+    R = 0x1b if bs == 8 else 0x87
+    L = int.from_bytes(e(bytes(bs)), "big")
+    def dbl(v):
+        v <<= 1
+        if v >> n:
+            v = (v & ((1 << n) - 1)) ^ R
+        return v
+    kx = dbl(L)
+    ky = dbl(kx)
+    m = int.from_bytes(msg, "big")
+    if ml == n:
+        m ^= kx
+    else:
+        m = (m >> (n - ml) << (n - ml)) if ml else 0
+        m |= 1 << (n - 1 - ml)
+        m ^= ky
+    m ^= int.from_bytes(icv, "big")
+    return e(m.to_bytes(bs, "big"))

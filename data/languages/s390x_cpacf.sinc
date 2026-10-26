@@ -360,6 +360,8 @@ cp_cipher: is epsilon {
   local lh:4 = 0; local rh:4 = 0; local e48:8 = 0; local f32:8 = 0; local sbo:8 = 0; local bit:8 = 0; local pi:4 = 0; local pt:1 = 0;
   local cd:8 = 0; local kk:8 = 0; local d1:8 = 0; local npass:1 = 0; local pass:1 = 0; local kidx:1 = 0; local rr:4 = 0; local six:8 = 0; local tq:8 = 0;
   local a:1 = 0; local b:1 = 0; local c:1 = 0; local dd:1 = 0; local sg:4 = 0; local seg:4 = 0; local ptrc:8 = 0; local rv8:8 = 0; local d1x:8 = 0;
+  local cvv:4 = 0; local gh:16 = 0; local gt:16 = 0; local gx:16 = 0; local gz:16 = 0; local gv:16 = 0; local gin:16 = 0; local gout:16 = 0; local gct:16 = 0; local cb:16 = 0; local gbit:16 = 0; local gi:4 = 0; local gret:1 = 0;
+  local rpoly:16 = 0xe1; local lv:16 = 0; local rc16:16 = 0; local msg16:16 = 0; local icv16:16 = 0; local kx16:16 = 0; local msk16:16 = 0; local one16:16 = 1; local sh16:16 = 0; local m1:16 = 0;
   *[cpm]:8 (0x1000:4) = 0x637c777bf26b6fc5;
   *[cpm]:8 (0x1008:4) = 0x3001672bfed7ab76;
   *[cpm]:8 (0x1010:4) = 0xca82c97dfa5947f0;
@@ -555,6 +557,7 @@ cp_cipher: is epsilon {
   *[cpm]:8 (0x1800:4 + (zext(kidx) * 128) + (rr * 8)) = kk; rr = rr + 1; if (rr < 16) goto <L_dk2>;
   kidx = kidx + 1; if (kidx < npass) goto <L_dk1>;
   <L_ksdone>
+  rpoly = rpoly << 120; if (cpmd == 6) goto <L_m6>;
   <L_top> if (cpl == 0) goto <L_exit>;
   if (cpmd != 0) goto <L_m1>;
   *[cpm]:8 (0x1300:4) = *:8 (cpa); if (bs == 8) goto <L_lb1>; *[cpm]:8 (0x1308:4) = *:8 (cpa + 8); <L_lb1>
@@ -588,11 +591,64 @@ cp_cipher: is epsilon {
   dflag = 0; bret = 6; goto <L_blk>;
   <L_r6> *:8 cpo = *:8 cpa ^ *[cpm]:8 (0x1300:4); if (bs == 8) goto <L_c6>; *:8 (cpo + 8) = *:8 (cpa + 8) ^ *[cpm]:8 (0x1308:4);
   <L_c6> cpc = cpc + zext(bs); goto <L_adv>;
-  <L_m7> *[cpm]:8 (0x1300:4) = *:8 (cpa); if (bs == 8) goto <L_lb4>; *[cpm]:8 (0x1308:4) = *:8 (cpa + 8); <L_lb4>
+  <L_m7> if (cpmd != 7) goto <L_m8>;
+  *[cpm]:8 (0x1300:4) = *:8 (cpa); if (bs == 8) goto <L_lb4>; *[cpm]:8 (0x1308:4) = *:8 (cpa + 8); <L_lb4>
   *[cpm]:8 (0x1300:4) = *[cpm]:8 (0x1300:4) ^ *[cpm]:8 (0x0:4); if (bs == 8) goto <L_g1>; *[cpm]:8 (0x1308:4) = *[cpm]:8 (0x1308:4) ^ *[cpm]:8 (0x8:4);
   <L_g1> dflag = 0; bret = 7; goto <L_blk>;
   <L_r7> *[cpm]:8 (0x0:4) = *[cpm]:8 (0x1300:4); if (bs == 8) goto <L_adv>; *[cpm]:8 (0x8:4) = *[cpm]:8 (0x1308:4);
   <L_adv> cpa = cpa + zext(bs); cpo = cpo + zext(bs); cpl = cpl - zext(bs); goto <L_top>;
+  <L_m6> if (cpmd != 6) goto <L_m8>;
+  cvv = cpbh:4; gh = *[cpm]:16 (0x10:4); cpcc = 0; cphf = 0;
+  if (cphs != 0) goto <L_gh1>; *[cpm]:8 (0x1300:4) = 0; *[cpm]:8 (0x1308:4) = 0; dflag = 0; bret = 10; goto <L_blk>;
+  <L_r10> gh = *[cpm]:16 (0x1300:4); *[cpm]:16 (0x10:4) = gh; cphf = 1;
+  <L_gh1> gt = *[cpm]:16 (0x0:4);
+  <L_gA> if (cpn < 16) goto <L_gAt>; gx = gt ^ *:16 cpc; gret = 1; goto <L_ghm>;
+  <L_gr1> gt = gz; cpc = cpc + 16; cpn = cpn - 16; goto <L_gA>;
+  <L_gAt> if (cplaad == 0) goto <L_gstop>; if (cpn == 0) goto <L_gT>;
+  *[cpm]:8 (0x1310:4) = 0; *[cpm]:8 (0x1318:4) = 0; j = 0; <L_gA2> a = *:1 (cpc + zext(j)); *[cpm]:1 (0x1310:4 + j) = a; j = j + 1; if (zext(j) < cpn) goto <L_gA2>;
+  gx = gt ^ *[cpm]:16 (0x1310:4); gret = 2; goto <L_ghm>;
+  <L_gr2> gt = gz; cpc = cpc + cpn; cpn = 0;
+  <L_gT> if (cpl >= 16) goto <L_gTf>; if (cplpc == 0) goto <L_gstop>; if (cpl == 0) goto <L_gL>; goto <L_gTp>;
+  <L_gTf> cvv = cvv + 1; cb = *[cpm]:16 (0x1340:4); cb = ((cb >> 32) << 32) | zext(cvv); *[cpm]:16 (0x1300:4) = cb; dflag = 0; bret = 11; goto <L_blk>;
+  <L_r11> gin = *:16 cpa; gout = gin ^ *[cpm]:16 (0x1300:4); *:16 cpo = gout; gct = gout; if (cpdec == 0) goto <L_gc1>; gct = gin;
+  <L_gc1> gx = gt ^ gct; gret = 3; goto <L_ghm>;
+  <L_gr3> gt = gz; cpa = cpa + 16; cpo = cpo + 16; cpl = cpl - 16; goto <L_gT>;
+  <L_gTp> if (cplpc == 0) goto <L_gstop>;
+  cvv = cvv + 1; cb = *[cpm]:16 (0x1340:4); cb = ((cb >> 32) << 32) | zext(cvv); *[cpm]:16 (0x1300:4) = cb; dflag = 0; bret = 12; goto <L_blk>;
+  <L_r12> *[cpm]:8 (0x1310:4) = 0; *[cpm]:8 (0x1318:4) = 0; *[cpm]:8 (0x1320:4) = 0; *[cpm]:8 (0x1328:4) = 0; j = 0;
+  <L_gP> a = *:1 (cpa + zext(j)); b = *[cpm]:1 (0x1300:4 + j); c = a ^ b; *:1 (cpo + zext(j)) = c; *[cpm]:1 (0x1310:4 + j) = c; *[cpm]:1 (0x1320:4 + j) = a; j = j + 1; if (zext(j) < cpl) goto <L_gP>;
+  gct = *[cpm]:16 (0x1310:4); if (cpdec == 0) goto <L_gc2>; gct = *[cpm]:16 (0x1320:4);
+  <L_gc2> gx = gt ^ gct; gret = 4; goto <L_ghm>;
+  <L_gr4> gt = gz; cpa = cpa + cpl; cpo = cpo + cpl; cpl = 0;
+  <L_gL> gx = gt ^ *[cpm]:16 (0x1350:4); gret = 5; goto <L_ghm>;
+  <L_gr5> gt = gz; *[cpm]:16 (0x1300:4) = *[cpm]:16 (0x1340:4); dflag = 0; bret = 13; goto <L_blk>;
+  <L_r13> gt = gt ^ *[cpm]:16 (0x1300:4); cpcc = 0; goto <L_gend>;
+  <L_gstop> cpcc = 2;
+  <L_gend> *[cpm]:16 (0x0:4) = gt; cpbh = zext(cvv); goto <L_exit>;
+  <L_ghm> gz = 0; gv = gh; gi = 0;
+  <L_gb> gbit = (gx >> (127 - gi)) & 1; if (gbit == 0) goto <L_gs>; gz = gz ^ gv;
+  <L_gs> if ((gv & 1) == 0) goto <L_gn>; gv = (gv >> 1) ^ rpoly; goto <L_gm>;
+  <L_gn> gv = gv >> 1;
+  <L_gm> gi = gi + 1; if (gi < 128) goto <L_gb>;
+  if (gret != 1) goto <L_gq2>; goto <L_gr1>;
+  <L_gq2> if (gret != 2) goto <L_gq3>; goto <L_gr2>;
+  <L_gq3> if (gret != 3) goto <L_gq4>; goto <L_gr3>;
+  <L_gq4> if (gret != 4) goto <L_gq5>; goto <L_gr4>;
+  <L_gq5> goto <L_gr5>;
+  <L_m8> *[cpm]:8 (0x1300:4) = 0; *[cpm]:8 (0x1308:4) = 0; dflag = 0; bret = 8; goto <L_blk>;
+  <L_r8> if (bs == 8) goto <L_c8a>;
+  lv = *[cpm]:16 (0x1300:4); rc16 = 0x87; msg16 = *[cpm]:16 (0x1330:4); icv16 = *[cpm]:16 (0x0:4); goto <L_c8b>;
+  <L_c8a> lv = zext(*[cpm]:8 (0x1300:4)) << 64; rc16 = 0x1b; rc16 = rc16 << 64; msg16 = zext(*[cpm]:8 (0x1330:4)) << 64; icv16 = zext(*[cpm]:8 (0x0:4)) << 64;
+  <L_c8b> m1 = lv >> 127; lv = lv << 1; if (m1 == 0) goto <L_c8c>; lv = lv ^ rc16;
+  <L_c8c> kx16 = lv; m1 = lv >> 127; lv = lv << 1; if (m1 == 0) goto <L_c8d>; lv = lv ^ rc16;
+  <L_c8d> sh8 = cps; if (sh8 == (zext(bs) << 3)) goto <L_c8e>;
+  msk16 = 1; msk16 = msk16 << (128 - sh8); msk16 = msk16 - 1; msk16 = ~msk16; msg16 = (msg16 & msk16) | (one16 << (127 - sh8)); msg16 = msg16 ^ lv; goto <L_c8f>;
+  <L_c8e> msg16 = msg16 ^ kx16;
+  <L_c8f> msg16 = msg16 ^ icv16; if (bs == 8) goto <L_c8g>;
+  *[cpm]:16 (0x1300:4) = msg16; goto <L_c8h>;
+  <L_c8g> sh16 = msg16 >> 64; *[cpm]:8 (0x1300:4) = sh16:8;
+  <L_c8h> dflag = 0; bret = 9; goto <L_blk>;
+  <L_r9> *[cpm]:8 (0x0:4) = *[cpm]:8 (0x1300:4); if (bs == 8) goto <L_exit>; *[cpm]:8 (0x8:4) = *[cpm]:8 (0x1308:4); goto <L_exit>;
   <L_blk> if (cpalg != 3) goto <L_des>;
   nr = zext(cpnk) + 6; if (dflag != 0) goto <L_adec>;
   rnd = 0; i = 0; <L_arke0> *[cpm]:4 (0x1300:4 + (i * 4)) = *[cpm]:4 (0x1300:4 + (i * 4)) ^ *[cpm]:4 (0x1200:4 + (rnd * 16) + (i * 4)); i = i + 1; if (i < 4) goto <L_arke0>;
@@ -653,6 +709,12 @@ cp_cipher: is epsilon {
   <L_b4> if (bret != 4) goto <L_b5>; goto <L_r4>;
   <L_b5> if (bret != 5) goto <L_b6>; goto <L_r5>;
   <L_b6> if (bret != 6) goto <L_b7>; goto <L_r6>;
-  <L_b7> goto <L_r7>;
+  <L_b7> if (bret != 7) goto <L_b8>; goto <L_r7>;
+  <L_b8> if (bret != 8) goto <L_b9>; goto <L_r8>;
+  <L_b9> if (bret != 9) goto <L_b10>; goto <L_r9>;
+  <L_b10> if (bret != 10) goto <L_b11>; goto <L_r10>;
+  <L_b11> if (bret != 11) goto <L_b12>; goto <L_r11>;
+  <L_b12> if (bret != 12) goto <L_b13>; goto <L_r12>;
+  <L_b13> goto <L_r13>;
   <L_exit>
 }

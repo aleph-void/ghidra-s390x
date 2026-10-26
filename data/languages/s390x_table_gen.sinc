@@ -36,6 +36,7 @@ define token g32(32)
     g32_fprp224_4 = (4,7)
     g32_fpr28_4 = (0,3)
     g32_fprp228_4 = (0,3)
+    g32_gpro16_4 = (12,15)
     g32_cr8_4 = (20,23)
     g32_cr12_4 = (16,19)
     g32_fpr16_4 = (12,15)
@@ -175,6 +176,7 @@ attach variables [ g32_fpr24_4 ] [ f0 f1 f2 f3 f4 f5 f6 f7 f8 f9 f10 f11 f12 f13
 attach variables [ g32_fprp224_4 ] [ f2 f3 f4 f5 f6 f7 f8 f9 f10 f11 f12 f13 f14 f15 f0 f1 ];
 attach variables [ g32_fpr28_4 ] [ f0 f1 f2 f3 f4 f5 f6 f7 f8 f9 f10 f11 f12 f13 f14 f15 ];
 attach variables [ g32_fprp228_4 ] [ f2 f3 f4 f5 f6 f7 f8 f9 f10 f11 f12 f13 f14 f15 f0 f1 ];
+attach variables [ g32_gpro16_4 ] [ r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14 r15 r0 ];
 attach variables [ g32_cr8_4 ] [ c0 c1 c2 c3 c4 c5 c6 c7 c8 c9 c10 c11 c12 c13 c14 c15 ];
 attach variables [ g32_cr12_4 ] [ c0 c1 c2 c3 c4 c5 c6 c7 c8 c9 c10 c11 c12 c13 c14 c15 ];
 attach variables [ g32_fpr16_4 ] [ f0 f1 f2 f3 f4 f5 f6 f7 f8 f9 f10 f11 f12 f13 f14 f15 ];
@@ -228,8 +230,6 @@ define pcodeop s390_irbm;
 define pcodeop s390_iske;
 define pcodeop s390_ivsk;
 define pcodeop s390_kdsa;
-define pcodeop s390_kma;
-define pcodeop s390_kmac;
 define pcodeop s390_lasp;
 define pcodeop s390_lbear;
 define pcodeop s390_lcctl;
@@ -251,7 +251,6 @@ define pcodeop s390_msta;
 define pcodeop s390_mvcl;
 define pcodeop s390_nnpa;
 define pcodeop s390_palb;
-define pcodeop s390_pcc;
 define pcodeop s390_pckmo;
 define pcodeop s390_pfcr;
 define pcodeop s390_pfmf;
@@ -62009,8 +62008,31 @@ rel32_16_16: tgt is g32_s16_16 [ tgt = inst_start + 2 * g32_s16_16; ] { export *
   cc = 0; cc_sync();
   <L_done>
 }
-:PCC  is g32_u0_4=0xb & g32_u4_4=0x9 & g32_u8_4=0x2 & g32_u12_4=0xc & g32_u16_4=0x0 & g32_u20_4=0x0 & g32_u24_4=0x0 & g32_u28_4=0x0 {
-  s390_pcc();
+:PCC  is g32_u0_4=0xb & g32_u4_4=0x9 & g32_u8_4=0x2 & g32_u12_4=0xc & g32_u16_4=0x0 & g32_u20_4=0x0 & g32_u24_4=0x0 & g32_u28_4=0x0 & cp_cipher {
+  local fc:1 = r0:1 & 0x7f; local alg:1 = 0; local nk:1 = 0; local klen:4 = 0; local bsz:8 = 8; local ok:1 = 0; local ci:4 = 0; local ml:8 = 0;
+  if (fc != 0) goto <L_fn>;
+  *:8 r1 = 0xf000380000000000:8; *:8 (r1 + 8) = 0x0:8; cc = 0; cc_sync(); goto <L_done>;
+  <L_fn>
+  if (fc != 1) goto <L_g1>; alg = 0; nk = 0; klen = 8; ok = 1; <L_g1>
+  if (fc != 2) goto <L_g2>; alg = 1; nk = 0; klen = 16; ok = 1; <L_g2>
+  if (fc != 3) goto <L_g3>; alg = 2; nk = 0; klen = 24; ok = 1; <L_g3>
+  if (fc != 18) goto <L_g18>; alg = 3; nk = 4; klen = 16; ok = 1; <L_g18>
+  if (fc != 19) goto <L_g19>; alg = 3; nk = 6; klen = 24; ok = 1; <L_g19>
+  if (fc != 20) goto <L_g20>; alg = 3; nk = 8; klen = 32; ok = 1; <L_g20>
+  if (ok != 0) goto <L_valid>; trap_specification(); goto <L_done>;
+  <L_valid>
+  if (alg != 3) goto <L_bs>; bsz = 16;
+  <L_bs>
+  ml = zext(*:1 r1); if (ml <= (bsz << 3)) goto <L_mlok>; cc = 2; cc_sync(); goto <L_done>;
+  <L_mlok>
+  ci = 0; <L_m> *[cpm]:4 (0x1330:4 + ci) = *:4 (r1 + 8 + zext(ci)); ci = ci + 4; if (zext(ci) < bsz) goto <L_m>;
+  ci = 0; <L_i> *[cpm]:4 (0x0:4 + ci) = *:4 (r1 + 8 + bsz + zext(ci)); ci = ci + 4; if (zext(ci) < bsz) goto <L_i>;
+  ci = 0; <L_k> *[cpm]:4 (0x40:4 + ci) = *:4 (r1 + 8 + (2 * bsz) + zext(ci)); ci = ci + 4; if (ci < klen) goto <L_k>;
+  cpl = 1; cpmd = 8; cpalg = alg; cpnk = nk; cps = ml; cpdec = 0;
+  build cp_cipher;
+  ci = 0; <L_o> *:4 (r1 + 8 + bsz + zext(ci)) = *[cpm]:4 (0x0:4 + ci); ci = ci + 4; if (zext(ci) < bsz) goto <L_o>;
+  cc = 0; cc_sync();
+  <L_done>
 }
 :KMO g32_gpr24_4,g32_gpr28_4 is g32_u0_4=0xb & g32_u4_4=0x9 & g32_u8_4=0x2 & g32_u12_4=0xb & g32_u16_4=0x0 & g32_u20_4=0x0 & g32_gpr24_4 & g32_gpr28_4 & g32_gpro28_4 & g32_u28_4 & g32_u24_4 & cp_cipher {
   local r2num:4 = g32_u28_4; local r1num:4 = g32_u24_4;
@@ -62076,8 +62098,35 @@ rel32_16_16: tgt is g32_s16_16 [ tgt = inst_start + 2 * g32_s16_16; ] { export *
   cc = 0; cc_sync();
   <L_done>
 }
-:KMA g32_gpr24_4,g32_gpr16_4,g32_gpr28_4 is g32_u0_4=0xb & g32_u4_4=0x9 & g32_u8_4=0x2 & g32_u12_4=0x9 & g32_gpr24_4 & g32_gpr16_4 & g32_gpr28_4 {
-  s390_kma(g32_gpr24_4, g32_gpr16_4, g32_gpr28_4);
+:KMA g32_gpr24_4,g32_gpr16_4,g32_gpr28_4 is g32_u0_4=0xb & g32_u4_4=0x9 & g32_u8_4=0x2 & g32_u12_4=0x9 & g32_gpr24_4 & g32_gpr16_4 & g32_gpr28_4 & g32_gpro28_4 & g32_u28_4 & g32_u24_4 & g32_u16_4 & g32_gpro16_4 & cp_cipher {
+  local r2num:4 = g32_u28_4; local r1num:4 = g32_u24_4; local r3num:4 = g32_u16_4;
+  local fc:1 = r0:1 & 0x7f; local nk:1 = 0; local klen:4 = 0; local ok:1 = 0; local ci:4 = 0; local fl:8 = r0;
+  if (fc != 0) goto <L_fn>;
+  *:8 r1 = 0x8000380000000000:8; *:8 (r1 + 8) = 0x0:8; cc = 0; cc_sync(); goto <L_done>;
+  <L_fn>
+  if (((r1num & 1) == 0) && (r1num != 0) && ((r2num & 1) == 0) && (r2num != 0) && ((r3num & 1) == 0) && (r3num != 0) && (r3num != r1num) && (r3num != r2num)) goto <L_regok>; trap_specification(); goto <L_done>;
+  <L_regok>
+  if (fc != 18) goto <L_g18>; nk = 4; klen = 16; ok = 1; <L_g18>
+  if (fc != 19) goto <L_g19>; nk = 6; klen = 24; ok = 1; <L_g19>
+  if (fc != 20) goto <L_g20>; nk = 8; klen = 32; ok = 1; <L_g20>
+  if (ok != 0) goto <L_valid>; trap_specification(); goto <L_done>;
+  <L_valid>
+  if (((fl & 0x200) != 0) || ((fl & 0x100) == 0)) goto <L_flok>; trap_specification(); goto <L_done>;
+  <L_flok>
+  ci = 0; <L_t> *[cpm]:4 (0x0:4 + ci) = *:4 (r1 + 16 + zext(ci)); ci = ci + 4; if (ci < 32) goto <L_t>;
+  ci = 0; <L_l> *[cpm]:4 (0x1350:4 + ci) = *:4 (r1 + 48 + zext(ci)); ci = ci + 4; if (ci < 16) goto <L_l>;
+  ci = 0; <L_j> *[cpm]:4 (0x1340:4 + ci) = *:4 (r1 + 64 + zext(ci)); ci = ci + 4; if (ci < 16) goto <L_j>;
+  ci = 0; <L_k> *[cpm]:4 (0x40:4 + ci) = *:4 (r1 + 80 + zext(ci)); ci = ci + 4; if (ci < klen) goto <L_k>;
+  cpa = g32_gpr28_4; cpl = g32_gpro28_4; cpo = g32_gpr24_4; cpc = g32_gpr16_4; cpn = g32_gpro16_4; cpmd = 6; cpdec = r0:1 >> 7; cpalg = 3; cpnk = nk;
+  cpbh = zext(*:4 (r1 + 12)); local sh10:8 = fl >> 10; local sh9:8 = fl >> 9; local sh8x:8 = fl >> 8; cphs = sh10:1 & 1; cplaad = sh9:1 & 1; cplpc = sh8x:1 & 1;
+  build cp_cipher;
+  ci = 0; <L_o> *:4 (r1 + 16 + zext(ci)) = *[cpm]:4 (0x0:4 + ci); ci = ci + 4; if (ci < 32) goto <L_o>;
+  *:4 (r1 + 12) = cpbh:4;
+  if (cphf == 0) goto <L_nh>; r0 = r0 | 0x400;
+  <L_nh>
+  g32_gpr28_4 = cpa; g32_gpro28_4 = cpl; g32_gpr24_4 = cpo; g32_gpr16_4 = cpc; g32_gpro16_4 = cpn;
+  cc = cpcc; cc_sync();
+  <L_done>
 }
 :PCKMO  is g32_u0_4=0xb & g32_u4_4=0x9 & g32_u8_4=0x2 & g32_u12_4=0x8 & g32_u16_4=0x0 & g32_u20_4=0x0 & g32_u24_4=0x0 & g32_u28_4=0x0 {
   s390_pckmo();
@@ -62104,8 +62153,36 @@ rel32_16_16: tgt is g32_s16_16 [ tgt = inst_start + 2 * g32_s16_16; ] { export *
 :LRVR g32_gpr24_4,g32_gpr28_4 is g32_u0_4=0xb & g32_u4_4=0x9 & g32_u8_4=0x1 & g32_u12_4=0xf & g32_u16_4=0x0 & g32_u20_4=0x0 & g32_gpr24_4 & g32_gpr28_4 {
   local v:4 = g32_gpr28_4:4; local r:4 = (zext(v[0,8]) << 24) | (zext(v[8,8]) << 16) | (zext(v[16,8]) << 8) | (zext(v[24,8]) << 0); local w32_92:4 = r; gs_set32(g32_gpr24_4, w32_92);
 }
-:KMAC g32_gpr24_4,g32_gpr28_4 is g32_u0_4=0xb & g32_u4_4=0x9 & g32_u8_4=0x1 & g32_u12_4=0xe & g32_u16_4=0x0 & g32_u20_4=0x0 & g32_gpr24_4 & g32_gpr28_4 {
-  s390_kmac(g32_gpr24_4, g32_gpr28_4);
+:KMAC g32_gpr24_4,g32_gpr28_4 is g32_u0_4=0xb & g32_u4_4=0x9 & g32_u8_4=0x1 & g32_u12_4=0xe & g32_u16_4=0x0 & g32_u20_4=0x0 & g32_gpr24_4 & g32_gpr28_4 & g32_gpro28_4 & g32_u28_4 & g32_u24_4 & cp_cipher {
+  local r2num:4 = g32_u28_4; local r1num:4 = g32_u24_4;
+  local fc:1 = r0:1 & 0x7f; local alg:1 = 0; local nk:1 = 0; local klen:4 = 0; local bsz:8 = 8; local ok:1 = 0; local ci:4 = 0; local lc:8 = 0;
+  if (fc != 0) goto <L_fn>;
+  *:8 r1 = 0xf000380000000000:8; *:8 (r1 + 8) = 0x0:8; cc = 0; cc_sync(); goto <L_done>;
+  <L_fn>
+  if ((((r2num & 1) == 0) && (r2num != 0))) goto <L_regok>; trap_specification(); goto <L_done>;
+  <L_regok>
+  if (fc != 1) goto <L_g1>; alg = 0; nk = 0; klen = 8; ok = 1; <L_g1>
+  if (fc != 2) goto <L_g2>; alg = 1; nk = 0; klen = 16; ok = 1; <L_g2>
+  if (fc != 3) goto <L_g3>; alg = 2; nk = 0; klen = 24; ok = 1; <L_g3>
+  if (fc != 18) goto <L_g18>; alg = 3; nk = 4; klen = 16; ok = 1; <L_g18>
+  if (fc != 19) goto <L_g19>; alg = 3; nk = 6; klen = 24; ok = 1; <L_g19>
+  if (fc != 20) goto <L_g20>; alg = 3; nk = 8; klen = 32; ok = 1; <L_g20>
+  if (ok != 0) goto <L_valid>; trap_specification(); goto <L_done>;
+  <L_valid>
+  if (alg != 3) goto <L_bs>; bsz = 16;
+  <L_bs>
+  lc = bsz;
+  if ((g32_gpro28_4 % lc) == 0) goto <L_lenok>; trap_specification(); goto <L_done>;
+  <L_lenok>
+  ci = 0;
+  <L_cvc> *[cpm]:4 (0x0:4 + ci) = *:4 (r1 + zext(ci)); ci = ci + 4; if (zext(ci) < bsz) goto <L_cvc>;
+  ci = 0; <L_kc> *[cpm]:4 (0x40:4 + ci) = *:4 (r1 + bsz + zext(ci)); ci = ci + 4; if (ci < klen) goto <L_kc>;
+  cpa = g32_gpr28_4; cpl = g32_gpro28_4; cpo = g32_gpr24_4; cpmd = 7; cpdec = r0:1 >> 7; cpalg = alg; cpnk = nk; cps = lc;
+  build cp_cipher;
+  ci = 0; <L_cvo> *:4 (r1 + zext(ci)) = *[cpm]:4 (0x0:4 + ci); ci = ci + 4; if (zext(ci) < bsz) goto <L_cvo>;
+  g32_gpr28_4 = cpa; g32_gpro28_4 = cpl;
+  cc = 0; cc_sync();
+  <L_done>
 }
 :MSGFR g32_gpr24_4,g32_gpr28_4 is g32_u0_4=0xb & g32_u4_4=0x9 & g32_u8_4=0x1 & g32_u12_4=0xc & g32_u16_4=0x0 & g32_u20_4=0x0 & g32_gpr24_4 & g32_gpr28_4 {
   local x:8 = g32_gpr24_4; local y:8 = sext(g32_gpr28_4:4);

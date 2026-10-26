@@ -314,6 +314,7 @@ for _nm, _fc, _alg, _iv, _mbl in (("sha1", 1, hashlib.sha1, _IV1, 8), ("sha256",
 T("kimd_query", "kimd %r0,%r4", f"r0=0,r1={DATA:x}", f"m16:{DATA:x}=f0000000fc0000004000000000000000")
 
 import struct, cpacf_model as CM
+from cryptography.hazmat.primitives.ciphers import algorithms
 _P, _M, _O = DATA, DATA + 0x100, DATA + 0x400
 # KIMD intermediate chaining values (checked against the model's compression functions)
 _blk = bytes(range(64))
@@ -388,6 +389,84 @@ def _cipher_tests():
           f"m{n}:{_OUT:x}={out.hex()},r2={_OUT + n:x},r4={_IN + n:x},r5=0,r6={_CTR + n:x},cc=0")
 _cipher_tests()
 T("km_query", "km %r2,%r4", f"r0=0,r1={DATA:x}", f"m16:{DATA:x}=f0003800000000000000000000000000")
+
+# ---- KMAC (CBC-MAC of full blocks) and PCC (CMAC of the last block), checked against CMAC ----------
+from cryptography.hazmat.primitives import cmac as _cmac
+def _mac_tests():
+    for nm, (fc, kl) in _CF.items():
+        alg = "aes" if nm.startswith("aes") else nm
+        key = bytes((13 * i + fc) & 0xff for i in range(kl))
+        bs = 16 if alg == "aes" else 8
+        data = bytes((3 * i + 7) & 0xff for i in range(3 * bs))
+        zero = bytes(bs)
+        out, cv = CM.mode_cbc(alg, key, zero, data, 0)
+        T(f"kmac_{nm}", "kmac %r0,%r4", f"r0={fc:x},r1={DATA:x},r4={_IN:x},r5={len(data):x},m{bs + kl}:{DATA:x}={(zero + key).hex()},m{len(data)}:{_IN:x}={data.hex()}",
+          f"m{bs}:{DATA:x}={cv.hex()},r4={_IN + len(data):x},r5=0,cc=0")
+        # PCC over the last (partial) block after KMAC over two blocks: equals the CMAC of the whole message
+        if alg == "aes":
+            ca = algorithms.AES(key)
+        else:
+            ca = CM.TripleDES({"dea": key * 3, "tdea128": key + key[:8], "tdea192": key}[alg])
+        for ml in (0, 8, bs * 8 - 8, bs * 8, 5, bs * 8 - 3):
+            nb = (ml + 7) // 8
+            last = bytes((17 * i + 5) & 0xff for i in range(nb)) + bytes(bs - nb)
+            if ml % 8:
+                last = last[:nb - 1] + bytes([last[nb - 1] & (0xff << (8 - ml % 8)) & 0xff]) + bytes(bs - nb)
+            pre = data[:2 * bs]
+            _, cv2 = CM.mode_cbc(alg, key, zero, pre, 0)
+            expect = CM.cmac_last(alg, key, cv2, last, ml)
+            if ml % 8 == 0 and ml > 0:       # (an empty last block after full blocks is not a CMAC message)
+                c = _cmac.CMAC(ca)
+                c.update(pre + last[:nb])
+                assert c.finalize() == expect, (nm, ml)
+            blk = bytes([ml]) + bytes(7) + last + cv2 + key
+            T(f"pcc_{nm}_ml{ml}", "pcc", f"r0={fc:x},r1={DATA:x},m{len(blk)}:{DATA:x}={blk.hex()}",
+              f"m{bs}:{DATA + 8 + bs:x}={expect.hex()},cc=0")
+        T(f"pcc_{nm}_toolong", "pcc", f"r0={fc:x},r1={DATA:x},m1:{DATA:x}={bs * 8 + 1:02x}", "cc=2")
+_mac_tests()
+T("pcc_query", "pcc", f"r0=0,r1={DATA:x}", f"m16:{DATA:x}=f0003800000000000000000000000000")
+
+def _kma_tests():
+    from cryptography.hazmat.primitives.ciphers.aead import AESGCM
+    from cryptography.hazmat.primitives.ciphers import Cipher, modes
+    AAD = DATA + 0x700
+    for nm, (fc, kl) in (("aes128", (18, 16)), ("aes192", (19, 24)), ("aes256", (20, 32))):
+        key = bytes((5 * i + fc) & 0xff for i in range(kl))
+        iv = bytes((11 * i + 3) & 0xff for i in range(12))
+        hk = Cipher(algorithms.AES(key), modes.ECB()).encryptor().update(bytes(16))
+        for na, npt in ((0, 0), (5, 0), (16, 16), (33, 35), (20, 1), (0, 17), (48, 64)):
+            aad = bytes((7 * i + 1) & 0xff for i in range(na))
+            pt = bytes((13 * i + 9) & 0xff for i in range(npt))
+            ct = AESGCM(key).encrypt(iv, pt, aad)
+            c, tag = ct[:-16], ct[-16:]
+            for dec in (0, 1):
+                for hs in (0, 1):
+                    src, dst = (c, pt) if dec else (pt, c)
+                    blk = bytes(12) + (1).to_bytes(4, "big") + bytes(16) + (hk if hs else bytes(16)) + (na * 8).to_bytes(8, "big") \
+                        + (npt * 8).to_bytes(8, "big") + iv + (1).to_bytes(4, "big") + key
+                    r0 = fc | 0x200 | 0x100 | (0x80 if dec else 0) | (0x400 if hs else 0)
+                    init = f"r0={r0:x},r1={DATA:x},r2={_OUT:x},r4={_IN:x},r5={npt:x},r6={AAD:x},r7={na:x},m{len(blk)}:{DATA:x}={blk.hex()}"
+                    if npt:
+                        init += f",m{npt}:{_IN:x}={src.hex()}"
+                    if na:
+                        init += f",m{na}:{AAD:x}={aad.hex()}"
+                    # the counter value after the last block is 1 + the number of blocks
+                    cvend = 1 + (npt + 15) // 16
+                    exp = f"r0={r0 | 0x400:x},r2={_OUT + npt:x},r4={_IN + npt:x},r5=0,r6={AAD + na:x},r7=0,cc=0,m16:{DATA + 16:x}={tag.hex()},m4:{DATA + 12:x}={cvend:08x},m16:{DATA + 32:x}={hk.hex()}"
+                    if npt:
+                        exp += f",m{npt}:{_OUT:x}={dst.hex()}"
+                    T(f"kma_{nm}_a{na}_p{npt}_d{dec}_h{hs}", "kma %r2,%r6,%r4", init, exp)
+        # partial processing: AAD < 16 without LAAD -> cc 2 and nothing consumed except full blocks; text < 16 without LPC
+        blk = bytes(12) + (1).to_bytes(4, "big") + bytes(16) + hk + bytes(16) + iv + (1).to_bytes(4, "big") + key
+        T(f"kma_{nm}_cc2aad", "kma %r2,%r6,%r4", f"r0={fc | 0x400:x},r1={DATA:x},r2={_OUT:x},r4={_IN:x},r5=10,r6={AAD:x},r7=7,m{len(blk)}:{DATA:x}={blk.hex()}",
+          f"cc=2,r5=10,r7=7,r2={_OUT:x},r4={_IN:x},r6={AAD:x}")
+        aad = bytes(range(32)); pt = bytes(range(50, 83))
+        ct = AESGCM(key).encrypt(iv, pt, aad)
+        # LAAD but not LPC: the 32 text bytes (two blocks) are processed, one byte remains, cc 2
+        T(f"kma_{nm}_cc2text", "kma %r2,%r6,%r4", f"r0={fc | 0x600:x},r1={DATA:x},r2={_OUT:x},r4={_IN:x},r5=21,r6={AAD:x},r7=14,m{len(blk)}:{DATA:x}={blk.hex()},m32:{AAD:x}={aad.hex()},m33:{_IN:x}={pt.hex()}",
+          f"cc=2,r5=1,r7=0,r2={_OUT + 32:x},r4={_IN + 32:x},r6={AAD + 20:x},m32:{_OUT:x}={ct[:32].hex()},m4:{DATA + 12:x}=00000003")
+_kma_tests()
+T("kma_query", "kma %r2,%r6,%r4", f"r0=0,r1={DATA:x}", f"m16:{DATA:x}=" + "%032x" % (sum(1 << (127 - c) for c in (0, 18, 19, 20))))
 
 
 def main():

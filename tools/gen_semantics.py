@@ -916,8 +916,9 @@ EXTRA_FIELDS.update(gen_misc.EXTRA)
 for _n in ("cxstr", "cxutr"):
     EXTRA_FIELDS[_n] = [(28, 4, "gpro")]                          # R2 + 1
 EXTRA_FIELDS["cuxtr"] = [(24, 4, "gpro")]
-for _n in ("km", "kmc", "kmf", "kmo"):
+for _n in ("km", "kmc", "kmf", "kmo", "kmac"):
     EXTRA_FIELDS[_n] = [(28, 4, "gpro"), (28, 4, "u"), (24, 4, "u")]                  # R2 + 1, R2, R1
+EXTRA_FIELDS["kma"] = [(28, 4, "gpro"), (28, 4, "u"), (24, 4, "u"), (16, 4, "u"), (16, 4, "gpro")]   # R2 + 1, R2, R1, R3, R3 + 1
 EXTRA_FIELDS["kmctr"] = [(28, 4, "gpro"), (28, 4, "u"), (24, 4, "u"), (16, 4, "u")]   # R2 + 1, R2, R1, R3
 for _n in ("kimd", "klmd"):
     EXTRA_FIELDS[_n] = [(28, 4, "gpro"), (28, 4, "u"), (24, 4, "u"), (24, 4, "gpro")]   # R2 + 1, R2, R1, R1 + 1                         # R1 + 1
