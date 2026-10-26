@@ -179,6 +179,130 @@ def ident(name):
 
 VINDEX = [None]
 
+# register-range instructions: one constructor per register range, unrolled
+RANGE = {   # name: (register kind, bytes per register, load/store/lmd)
+    "lmy": ("r", 4, "l"), "lamy": ("a", 4, "l"), "stamy": ("a", 4, "s"),
+    "lctl": ("c", 4, "l"), "stctl": ("c", 4, "s"), "lctlg": ("c", 8, "l"), "stctg": ("c", 8, "s"),
+    "vlm": ("v", 16, "l"), "vstm": ("v", 16, "s"), "lmd": ("r", 4, "d"),
+    "lam": ("a", 4, "l"), "stam": ("a", 4, "s"), "stmy": ("r", 4, "s"),
+}
+
+# Ranges are emitted as one constructor per mnemonic: a guarded block per register, whose
+# guard depends only on the R1/R3 fields. The guards are constants for each decoded instruction
+# (the decompiler folds them away); one constructor per register range would cost about 6 MB of
+# the 16 MiB a .sla may decode to (SlaFormat.MAX_FILE_SIZE).
+COMPACT_RANGE = True
+
+def build_range_compact(e, items, cons):
+    name, L = e["name"], e["len"]
+    kind, w, op = RANGE[name]
+    vec = kind == "v"
+    addrs = [it[1] for it in items if it[0] == "addr"]
+    u1, u3 = field(L, 8, 4, "u"), field(L, 12, 4, "u")
+    pat = list(cons)
+    if vec:
+        x1, x3 = rxb_bit(L, 8), rxb_bit(L, 12)
+        d1, d3 = vr_subtable(L, 8), vr_subtable(L, 12)
+        m4 = field(L, 32, 4, "u")
+        st = f"optm{L}_32"
+        if st not in subtables:
+            subtables[st] = f"{st}: is {m4}=0 {{ }}\n{st}: \",\"{m4} is {m4} {{ }}\n"
+        disp = f"{d1},{d3},{','.join(addrs)}^{st}"
+        pat += [d1, d3, u1, u3, x1, x3] + addrs + [st]
+        first, nreg = f"({u1} + 16 * {x1})", 32
+        last = f"({u3} + 16 * {x3})"
+    else:
+        rk = {"r": "gpr", "h": "gpr", "a": "ar", "c": "cr"}[kind]
+        d1, d3 = field(L, 8, 4, rk), field(L, 12, 4, rk)
+        disp = f"{d1},{d3},{','.join(addrs)}"
+        pat += [d1, d3, u1, u3] + addrs
+        first, last, nreg = u1, u3, 16
+    t = uid_range()
+    body = [f"  local ea:8 = {addrs[0]};"]
+    if op == "d":
+        body.append(f"  local eb:8 = {addrs[1]};")
+    if vec:
+        body.append(f"  local n:8 = {last} - {first};")
+    else:
+        body.append(f"  local n:8 = ({last} - {first}) & 15;")
+    for r in range(nreg):
+        reg = f"{'r' if kind == 'h' else kind}{r}"
+        k = f"k{r}"
+        body.append(f"  local {k}:8 = ({r} - {first})" + ("" if vec else " & 15") + ";")
+        body.append(f"  if ({k} > n) goto <s{t}_{r}>;")
+        a = f"(ea + {k} * {w})"
+        if op == "l":
+            if kind == "h":
+                body.append(f"  {reg} = ({reg} & 0xffffffff) | (zext(*:4 {a}) << 32);")
+            elif w == 4 and kind in "rc":
+                body.append(f"  {reg} = ({reg} & 0xffffffff00000000) | zext(*:4 {a});")
+            else:
+                body.append(f"  {reg} = *:{w} {a};")
+        elif op == "s":
+            if kind == "h":
+                body.append(f"  *:4 {a} = {reg}(4);")
+            else:
+                body.append(f"  *:{w} {a} = {reg}:4;" if w == 4 and kind in "rc" else f"  *:{w} {a} = {reg};")
+        else:
+            body.append(f"  {reg} = (zext(*:4 {a}) << 32) | zext(*:4 (eb + {k} * 4));")
+        body.append(f"  <s{t}_{r}>")
+    m, v = int.from_bytes(e["mask"], "big"), int.from_bytes(e["opcode"], "big")
+    if any(n == name for n, _ in range_done):
+        return []           # an older, shorter-displacement entry of the same mnemonic
+    range_done.add((name, (m, v & m)))
+    return [f":{name.upper()} {disp} is {' & '.join(pat)} {{\n" + "\n".join(body) + "\n}\n"]
+
+range_done = set()
+_rid = [0]
+def uid_range():
+    _rid[0] += 1
+    return _rid[0]
+
+def build_range(e, items, cons):
+    if COMPACT_RANGE:
+        return build_range_compact(e, items, cons)
+    name, L = e["name"], e["len"]
+    kind, w, op = RANGE[name]
+    vec = kind == "v"
+    f1, f3 = field(L, 8, 4, "u"), field(L, 12, 4, "u")
+    x1, x3 = (rxb_bit(L, 8), rxb_bit(L, 12)) if vec else (None, None)
+    addrs = [it[1] for it in items if it[0] == "addr"]
+    tail = ""
+    if vec:     # optional alignment hint M4
+        m4 = field(L, 32, 4, "u")
+        st = f"optm{L}_32"
+        if st not in subtables:
+            subtables[st] = f"{st}: is {m4}=0 {{ }}\n{st}: \",\"{m4} is {m4} {{ }}\n"
+        tail = "^" + st
+    out = []
+    pairs_ = ([(a, b) for a in range(32) for b in range(a, min(a + 16, 32))] if vec else
+              [(a, b) for a in range(16) for b in range(16)])
+    for a, b in pairs_:
+        # GPR/AR/CR ranges wrap from 15 to 0; vector ranges need V3 >= V1 (at most 16 registers)
+        regs = list(range(a, b + 1)) if vec or b >= a else list(range(a, 16)) + list(range(0, b + 1))
+        pat = list(cons) + [f"{f1}={a & 15}", f"{f3}={b & 15}"]
+        if vec:
+            pat += [f"{x1}={a >> 4}", f"{x3}={b >> 4}"]
+        pat += addrs + ([tail[1:]] if tail else [])
+        disp = f'"{kind}{a}" "," "{kind}{b}" "," ' + ' "," '.join(addrs) + tail
+        body = ["  local ea:8 = " + addrs[0] + ";"]
+        if op == "d":
+            body.append("  local eb:8 = " + addrs[1] + ";")
+        for r in regs:
+            reg = f"{kind}{r}"
+            if op == "l":
+                if w == 4 and kind in "rc":
+                    body.append(f"  {reg} = ({reg} & 0xffffffff00000000) | zext(*:4 ea);")
+                else:
+                    body.append(f"  {reg} = *:{w} ea;")
+            elif op == "s":
+                body.append(f"  *:{w} ea = {reg}:4;" if w == 4 and kind == "c" else f"  *:{w} ea = {reg};")
+            else:
+                body.append(f"  {reg} = (zext(*:4 ea) << 32) | zext(*:4 eb); eb = eb + 4;")
+            body.append(f"  ea = ea + {w};")
+        out.append(f":{name.upper()} {disp} is {' & '.join(pat)} {{\n" + "\n".join(body) + "\n}\n")
+    return out
+
 def build(e):
     name, opcode, mask, L, operands, flags = e["name"], e["opcode"], e["mask"], e["len"], e["ops"], e["flags"]
     cons = mask_constraints(L, opcode, mask)
@@ -246,6 +370,8 @@ def build(e):
             else:
                 items.append(("imm", f, f, [f"{field(L, shift, bits, 'u')}=0"]))
         i += 1
+    if name in RANGE:
+        return build_range(e, items, cons)
     # optional trailing operands
     variants = [(items, [])]
     if flags & (OPTPARM | OPTPARM2) and items and items[-1][0] not in ("addr",):
@@ -256,6 +382,9 @@ def build(e):
                 variants.insert(0, (items[:-2], list(last[3]) + list(items[-2][3])))
     out = []
     mn = name.upper()
+    # extra fields the semantics need beyond the table operands (e.g. the access register named
+    # by an R field): gen_semantics.EXTRA_FIELDS[name] = [(shift, bits, kind), ...]
+    xf = [field(L, sh, bt, kd) for sh, bt, kd in gen_semantics.EXTRA_FIELDS.get(name, [])]
     for its, extra in variants:
         # identical bit pattern already generated (e.g. an older entry of the same mnemonic
         # without the optional operand): the first one wins, as in the disassembler
@@ -271,11 +400,11 @@ def build(e):
         pat = " & ".join(cons + extra + [it[1] for it in its if it[1] not in cons] +
                          [pf for pi, pf in pairs.items() if items[pi] in its] +
                          [of for oi, of in ors.items() if items[oi] in its] +
-                         ([VINDEX[0]] if VINDEX[0] else []))
-        out.append(f":{mn} {disp} is {pat} {{\n{semantics(e, its, items, lenfld)}\n}}\n")
+                         ([VINDEX[0]] if VINDEX[0] else []) + xf)
+        out.append(f":{mn} {disp} is {pat} {{\n{semantics(e, its, items, lenfld, xf)}\n}}\n")
     return out
 
-def semantics(e, its, items, lenfld):
+def semantics(e, its, items, lenfld, xf=()):
     name, flags = e["name"], e["flags"]
     syms = [it[2] for it in items]
     kinds = [it[0] for it in items]
@@ -285,7 +414,7 @@ def semantics(e, its, items, lenfld):
         fm, fv = fixed_bits(e["opcode"], e["mask"], bits, shift)
         if fm == (1 << bits) - 1 and not fl & (DISP | BASE | INDEX):
             fixed[shift] = fv
-    ctx = dict(name=name, kinds=kinds, fixed=fixed, pairs=dict(pairs), ors=dict(ors), vindex=VINDEX[0],
+    ctx = dict(name=name, kinds=kinds, fixed=fixed, pairs=dict(pairs), ors=dict(ors), vindex=VINDEX[0], extra=list(xf),
                ops=[it[2] if it in its else "0" for it in items])
     try:
         t = gen_semantics.semantics(ctx)

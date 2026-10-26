@@ -603,6 +603,12 @@ _c("chhr", "h", 4, "s", False); _c("clhhr", "h", 4, "z", True); _c("chlr", "hl",
 
 NEEDS_OR = {"brxh", "brxhg", "brxle", "brxlg", "bxh", "bxhg", "bxle", "bxleg"}
 
+# fields the semantics need beyond the table operands: name -> [(shift, bits, kind)]
+EXTRA_FIELDS = {
+    "lae": [(8, 4, "ar"), (16, 4, "ar"), (16, 4, "u")],
+    "laey": [(8, 4, "ar"), (16, 4, "ar"), (16, 4, "u")],
+}
+
 def core(ctx):
     n, o, k = ctx["name"], ctx["ops"], ctx["kinds"]
     if n in NEEDS_OR:
@@ -794,8 +800,13 @@ def core(ctx):
         if n == "lzrf":
             return f"local v:4 = *:4 {o[1]}; local r:4 = v & 0xffffff00;\n" + put(o[0], 4, "r")
         return f"local v:4 = *:4 {o[1]}; {o[0]} = zext(v & 0xffffff00);"
-    if n == "laey":
-        return f"{o[0]} = {o[1]};"
+    if n in ("lae", "laey"):
+        # access register R1 from the address-space control (PSW bits 16-17): primary 0,
+        # access-register mode the contents of AR B2 (0 when B2 is 0), secondary 1, home 2
+        ar1, arb, b2 = ctx["extra"]
+        return (f"{o[0]} = {o[1]};\nlocal asc:8 = (pswm >> 46) & 3;\n"
+                f"local sec:4 = zext(asc == 2); local home:4 = zext(asc == 3); local arm:1 = (asc == 1) && ({b2}:1 != 0);\n"
+                f"{ar1} = sec + home * 2 + zext(arm) * {arb};")
     if n == "flogr" and ctx["pairs"].get(0):
         odd = ctx["pairs"][0]
         return (f"local v:8 = {o[1]}; local z:8 = lzcount(v); {o[0]} = z;\n"

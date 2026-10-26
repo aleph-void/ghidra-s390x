@@ -91,6 +91,15 @@
     <register name="pswm"/>
     <register name="pswia"/>
     <register name="cc"/>
+    <register name="zero" hidden="true"/>
   </register_data>
+
+  <!-- "zero" stands for a base or index field of 0 in address computations; it is never
+       written, so tell the analyzers and decompiler it is the constant 0. -->
+  <context_data>
+    <tracked_set space="ram">
+      <set name="zero" val="0"/>
+    </tracked_set>
+  </context_data>
 
 </processor_spec>

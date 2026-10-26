@@ -828,6 +828,65 @@ RILb_Target: RILb_TargetLoc is RILb_TargetLoc { export *:8 RILb_TargetLoc; }
     call [t];
 }
 
+# BRANCH AND SET MODE / BRANCH AND SAVE AND SET MODE (PoP 7-38, 7-39). These replace the
+# 2 x 256 unrolled constructors of s390x_gaps2.sinc, which wrote the target into pswia instead of
+# branching and cleared the wrong bit of a 64-bit target.
+#   bsm_link: R1 gets the current addressing mode (64-bit: a one in bit 63; 24/31-bit: the
+#             basic-addressing-mode bit in bit 32).
+#   bassm_link: R1 gets the link information (64-bit: updated address with a one in bit 63;
+#             24/31-bit: the mode bit in bit 32 and the 31-bit updated address).
+#   set_mode: the new mode from bit 63 (64-bit) or bit 32 (31-bit) of the target register and
+#             the target address with the mode bits removed.
+macro bsm_link(R) {
+    local is64:1 = ((pswm >> 32) & 1) != 0;
+    R = zext(is64) * (R | 1) + zext(!is64) * ((R & 0xFFFFFFFF7FFFFFFF) | (((pswm >> 31) & 1) << 31));
+}
+macro bassm_link(R) {
+    local is64:1 = ((pswm >> 32) & 1) != 0;
+    R = zext(is64) * (inst_next | 1) +
+        zext(!is64) * ((R & 0xFFFFFFFF00000000) | (((pswm >> 31) & 1) << 31) | (inst_next & 0x7FFFFFFF));
+}
+macro set_mode(t, tgt) {
+    local m64:8 = t & 1;
+    local ba:8 = m64 | ((t >> 31) & 1);
+    pswm = (pswm & 0xFFFFFFFE7FFFFFFF) | (m64 << 32) | (ba << 31);
+    tgt = m64 * (t & 0xFFFFFFFFFFFFFFFE) + (1 - m64) * (ba * (t & 0x7FFFFFFF) + (1 - ba) * (t & 0xFFFFFF));
+}
+
+:BSM RR_R1 "," RR_R2 is RR_OP=0x0B & RR_R1 & RR_R2 & RR_R1=0 & RR_R2=0 { }
+:BSM RR_R1 "," RR_R2 is RR_OP=0x0B & RR_R1 & RR_R2 & RR_R2=0 { bsm_link(RR_R1); }
+:BSM RR_R1 "," RR_R2 is RR_OP=0x0B & RR_R1 & RR_R2 & RR_R1=0 & RR_R2=14
+{
+    local tgt:8; set_mode(RR_R2, tgt);
+    return [tgt];
+}
+:BSM RR_R1 "," RR_R2 is RR_OP=0x0B & RR_R1 & RR_R2 & RR_R1=0
+{
+    local tgt:8; set_mode(RR_R2, tgt);
+    goto [tgt];
+}
+:BSM RR_R1 "," RR_R2 is RR_OP=0x0B & RR_R1 & RR_R2
+{
+    local t:8 = RR_R2;
+    bsm_link(RR_R1);
+    local tgt:8; set_mode(t, tgt);
+    goto [tgt];
+}
+:BASSM RR_R1 "," RR_R2 is RR_OP=0x0C & RR_R1 & RR_R2 & RR_R1=0 & RR_R2=0 { }
+:BASSM RR_R1 "," RR_R2 is RR_OP=0x0C & RR_R1 & RR_R2 & RR_R2=0 { bassm_link(RR_R1); }
+:BASSM RR_R1 "," RR_R2 is RR_OP=0x0C & RR_R1 & RR_R2 & RR_R1=0
+{
+    local tgt:8; set_mode(RR_R2, tgt);
+    call [tgt];
+}
+:BASSM RR_R1 "," RR_R2 is RR_OP=0x0C & RR_R1 & RR_R2
+{
+    local t:8 = RR_R2;
+    bassm_link(RR_R1);
+    local tgt:8; set_mode(t, tgt);
+    call [tgt];
+}
+
 :BAL RXa_R1 "," dxb_RXa_D2_RXa_X2_RXa_B2 is RXa_OP=0x45 & RXa_R1 & RXa_X2 & RXa_B2 & RXa_D2 & dxb_RXa_D2_RXa_X2_RXa_B2
 {
     # PoP 7-36: the branch address (EA) is computed BEFORE RXa_R1 is changed.

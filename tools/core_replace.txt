@@ -476,3 +476,7 @@ sxbr
 tcdb
 tceb
 tcxb
+lae
+lam
+stam
+stmy
