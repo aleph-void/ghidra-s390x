@@ -20,6 +20,7 @@ exceptions and the 24/31-bit addressing-mode wrap are not modelled; invalid func
 and operand lengths are specification exceptions (trap_specification).
 """
 import sys
+import gen_ecc
 
 # ---- constants (computed, not copied: checked against hashlib) -----------------------------
 def primes(n):
@@ -200,18 +201,18 @@ def keccak_engine():
         t.append(f"  *[cpm]:8 ({RCT + 8 * i:#x}:4) = {c:#x};")
     t.append(f"  i = 0; <L_n1> v = {lane('i')}; {bswap64('v')} {lane('i')} = v; i = i + 8; if (i < 200) goto <L_n1>;")
     t.append("  <L_top> if (cpl < cprt) goto <L_tail>;")
-    t.append(f"  i = 0; <L_a1> v = *:8 (cpa + zext(i)); {bswap64('v')} {lane('i')} = {lane('i')} ^ v; i = i + 8; if (zext(i) < cprt) goto <L_a1>;")
+    t.append(f"  i = 0; <L_a1> if (cpsm != 0) goto <L_a1k>; v = *:8 (cpa + zext(i)); goto <L_a1e>; <L_a1k> v = *[cpm]:8 (cpa:4 + i); <L_a1e> {bswap64('v')} {lane('i')} = {lane('i')} ^ v; i = i + 8; if (zext(i) < cprt) goto <L_a1>;")
     t.append("  cpa = cpa + cprt; cpl = cpl - cprt; ret = 0; goto <L_perm>;")
     t.append("  <L_tail> if (cpfin == 0) goto <L_exit>; if (cpps != 0) goto <L_xof>;")
     t.append(f"  i = 0; <L_z> *[cpm]:8 ({PB:#x}:4 + i) = 0; i = i + 8; if (i < 200) goto <L_z>;")
-    t.append(f"  i = 0; <L_c> if (zext(i) >= cpl) goto <L_cd>; b = *:1 (cpa + zext(i)); *[cpm]:1 ({PB:#x}:4 + i) = b; i = i + 1; goto <L_c>;")
+    t.append(f"  i = 0; <L_c> if (zext(i) >= cpl) goto <L_cd>; b = *:1 (cpa + zext(i)); if (cpsm == 0) goto <L_cq>; b = *[cpm]:1 (cpa:4 + i); <L_cq> *[cpm]:1 ({PB:#x}:4 + i) = b; i = i + 1; goto <L_c>;")
     t.append(f"  <L_cd> *[cpm]:1 ({PB:#x}:4 + i) = cpdm; j = cprt:4 - 1; b = *[cpm]:1 ({PB:#x}:4 + j); *[cpm]:1 ({PB:#x}:4 + j) = b ^ 0x80;")
     t.append(f"  i = 0; <L_a2> v = *[cpm]:8 ({PB:#x}:4 + i); {bswap64('v')} {lane('i')} = {lane('i')} ^ v; i = i + 8; if (zext(i) < cprt) goto <L_a2>;")
     t.append("  cpa = cpa + cpl; cpl = 0; if (cpmd != 0) goto <L_shk>; ret = 1; goto <L_perm>;")
     t.append("  <L_shk> cpps = 1;")
     t.append("  <L_xof> if (cpn == 0) goto <L_exit>; ret = 2; goto <L_perm>;")
     t.append("  <L_xo2> n = cpn; if (n <= cprt) goto <L_n2>; n = cprt;")
-    t.append(f"  <L_n2> i = 0; <L_o1> if (zext(i) >= n) goto <L_o2>; sh = zext(i & 7) << 3; v = {lane('(i & 0xf8)')}; v = v >> sh; b = v:1; *:1 (cpo + zext(i)) = b; i = i + 1; goto <L_o1>;")
+    t.append(f"  <L_n2> i = 0; <L_o1> if (zext(i) >= n) goto <L_o2>; sh = zext(i & 7) << 3; v = {lane('(i & 0xf8)')}; v = v >> sh; b = v:1; if (cpsm != 0) goto <L_o1k>; *:1 (cpo + zext(i)) = b; goto <L_o1e>; <L_o1k> *[cpm]:1 (cpo:4 + i) = b; <L_o1e> i = i + 1; goto <L_o1>;")
     t.append("  <L_o2> cpo = cpo + n; cpn = cpn - n; goto <L_xof>;")
     # the permutation
     t.append("  <L_perm> r = 0;")
@@ -596,6 +597,7 @@ def engines():
     out.append(keccak_engine())
     out.append(ghash_engine())
     out.append(cipher_engine())
+    out.append(gen_ecc.engine())
     return "\n".join(out) + "\n"
 
 # ---- instruction semantics --------------------------------------------------------------------
@@ -879,9 +881,12 @@ def pcc_insn(x):
     (replaced by the CMAC), key at 8 + 2 bs"""
     t = ["local fc:1 = r0:1 & 0x7f; local alg:1 = 0; local nk:1 = 0; local klen:4 = 0; local bsz:8 = 8; local ok:1 = 0; local ci:4 = 0; local ml:8 = 0;"]
     t.append("if (fc != 0) goto <L_fn>;")
-    mask = fcmask([0] + sorted(CIPHER) + [50, 52])
+    mask = fcmask([0] + sorted(CIPHER) + [50, 52] + sorted(gen_ecc.PCC_FC))
     t.append(f"*:8 r1 = {mask >> 64:#x}:8; *:8 (r1 + 8) = {mask & ((1 << 64) - 1):#x}:8; cc = 0; goto <L_done>;")
     t.append("<L_fn>")
+    t.append("if (fc < 64) goto <L_nec>;")
+    t.append(gen_ecc.pcc_ecc_code("fc"))
+    t.append("<L_nec>")
     for fc, (alg, nk, klen) in sorted(CIPHER.items()):
         t.append(f"if (fc != {fc}) goto <L_g{fc}>; alg = {alg}; nk = {nk}; klen = {klen}; ok = 1; <L_g{fc}>")
     for fc, klen, nk in ((50, 16, 4), (52, 32, 8)):
@@ -938,7 +943,7 @@ def md_insn(last, o, x):
         t.append(f"if ((({r1n} & 1) == 0) && ({r1n} != 0) && ({r1n} != {r2n})) goto <L_r1ok>; trap_specification(); goto <L_done>;\n<L_r1ok>")
         t.append(f"if ((ps == 0) || ({r2l} == 0)) goto <L_klok>; trap_specification(); goto <L_done>;")
         t.append("<L_klok> if ((ps == 0) || (nip == 0)) goto <L_klok2>; trap_specification(); goto <L_done>;\n<L_klok2>")
-    t.append(f"cpa = {r2a}; cpl = {r2l}; cpfin = {1 if last else 0}; cpbh = 0; cpbl = 0; cprt = bsz; cpdm = dom; cpps = ps; cpmd = shake;")
+    t.append(f"cpa = {r2a}; cpl = {r2l}; cpfin = {1 if last else 0}; cpbh = 0; cpbl = 0; cprt = bsz; cpdm = dom; cpps = ps; cpmd = shake; cpsm = 0;")
     t.append("cpo = 0; cpn = 0;")
     if last:
         t.append(f"if (shake == 0) goto <L_nsh>; cpo = {r1a}; cpn = {r1l};\n<L_nsh>")

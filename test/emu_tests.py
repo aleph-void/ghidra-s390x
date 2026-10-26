@@ -424,7 +424,7 @@ def _mac_tests():
               f"m{bs}:{DATA + 8 + bs:x}={expect.hex()},cc=0")
         T(f"pcc_{nm}_toolong", "pcc", f"r0={fc:x},r1={DATA:x},m1:{DATA:x}={bs * 8 + 1:02x}", "cc=2")
 _mac_tests()
-T("pcc_query", "pcc", f"r0=0,r1={DATA:x}", f"m16:{DATA:x}=f0003800000028000000000000000000")
+
 
 def _kma_tests():
     from cryptography.hazmat.primitives.ciphers.aead import AESGCM
@@ -886,6 +886,66 @@ def _cmpsc_tests():
     ctest("cmpsc_empty_src", comp, exp, b"", 1, 0, 3)
     ctest("cmpsc_empty_dst", comp, exp, b"AB", 1, 0, 0, room=0)
 _cmpsc_tests()
+
+def _pcc_ecc_tests():
+    import random, ecc_model as EM
+    from cryptography.hazmat.primitives.asymmetric import x25519, x448
+    from cryptography.hazmat.primitives import serialization as _S
+    rnd = random.Random(77)
+    layout = {64: ("P256", 32, 32, 256), 65: ("P384", 48, 48, 384), 66: ("P521", 66, 80, 521), 72: ("Ed25519", 32, 32, 255), 73: ("Ed448", 56, 64, 448)}
+    def blk(fs, nb, xr, yr, xs, ys, d, fill=0x00):
+        b = bytearray([fill]) * (5 * fs)
+        for i, v in enumerate((xr, yr, xs, ys, d)):
+            b[i * fs + fs - nb: (i + 1) * fs] = v.to_bytes(nb, "big")
+        return bytes(b)
+    for fc, (name, nb, fs, bits) in layout.items():
+        c = EM.CURVES[name]
+        G0 = (c["gx"], c["gy"])
+        n = c["n"]
+        def case(label, P, d, expect_cc, junk=0x5a):
+            init = blk(fs, nb, 0, 0, P[0], P[1], d, junk)
+            if expect_cc == 0:
+                R = EM.mul(c, d, P)
+                exp = f"cc=0,m{nb}:{DATA + fs - nb:x}={R[0].to_bytes(nb, 'big').hex()},m{nb}:{DATA + 2 * fs - nb:x}={R[1].to_bytes(nb, 'big').hex()}"
+            else:
+                exp = f"cc={expect_cc},m{nb}:{DATA + fs - nb:x}={bytes([junk]) .hex() * 0 or (init[fs - nb:fs]).hex()}"
+            T(f"pcc_sm_{name}_{label}", "pcc", f"r0={fc:x},r1={DATA:x},m{len(init)}:{DATA:x}={init.hex()}", exp)
+        dmax = (1 << bits) - 1 if name in ("Ed25519",) else n
+        case("base", G0, rnd.randrange(1, min(n, 1 << 200)), 0)
+        P2 = EM.mul(c, rnd.randrange(2, 1 << 60), G0)
+        case("point", P2, rnd.randrange(1, (n if c["kind"] == 0 else 1 << (bits - 1))), 0)
+        case("d1", P2, 1, 0)
+        case("zero", P2, 0, 2)
+        case("offcurve", (P2[0], (P2[1] + 1) % c["p"]), 5, 1)
+        if c["kind"] == 0:
+            case("dn", P2, n, 1)
+            case("dbig", P2, n + 3, 1)
+        if name == "Ed25519":
+            case("msb", P2, (1 << 255) | 5, 1)
+    # Montgomery
+    for fc, nm, nb, fs, cls, bits in ((80, "X25519", 32, 32, x25519, 255), (81, "X448", 56, 64, x448, 448)):
+        pcls = cls.X25519PrivateKey if nm == "X25519" else cls.X448PrivateKey
+        pubcls = cls.X25519PublicKey if nm == "X25519" else cls.X448PublicKey
+        for t in range(2):
+            kb = bytearray(rnd.randrange(256) for _ in range(nb))
+            if nm == "X25519":
+                kb[0] &= 248; kb[31] &= 127; kb[31] |= 64
+            else:
+                kb[0] &= 252; kb[55] |= 128
+            peer = pcls.generate().public_key().public_bytes(_S.Encoding.Raw, _S.PublicFormat.Raw)
+            out = pcls.from_private_bytes(bytes(kb)).exchange(pubcls.from_public_bytes(peer))
+            d = int.from_bytes(kb, "little")
+            u = int.from_bytes(peer, "little")
+            b = bytearray([0x5a]) * (3 * fs)
+            b[2 * fs - nb + fs: 3 * fs] = b""
+            b[fs + fs - nb: 2 * fs] = u.to_bytes(nb, "big")
+            b[2 * fs + fs - nb: 3 * fs] = d.to_bytes(nb, "big")
+            ur = int.from_bytes(out, "little")
+            T(f"pcc_sm_{nm}_{t}", "pcc", f"r0={fc:x},r1={DATA:x},m{len(b)}:{DATA:x}={bytes(b).hex()}",
+              f"cc=0,m{nb}:{DATA + fs - nb:x}={ur.to_bytes(nb, 'big').hex()}")
+        T(f"pcc_sm_{nm}_u0", "pcc", f"r0={fc:x},r1={DATA:x},m{3 * fs}:{DATA:x}={bytes(3 * fs).hex()}", "cc=1")
+_pcc_ecc_tests()
+T("pcc_query2", "pcc", f"r0=0,r1={DATA:x}", f"m16:{DATA:x}=" + "%032x" % sum(1 << (127 - c) for c in (0, 1, 2, 3, 18, 19, 20, 50, 52, 64, 65, 66, 72, 73, 80, 81)))
 
 
 def main():

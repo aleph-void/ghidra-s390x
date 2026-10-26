@@ -313,18 +313,18 @@ cp_keccak: is epsilon {
   *[cpm]:8 (0x4f8:4) = 0x8000000080008008;
   i = 0; <L_n1> v = *[cpm]:8 (0x0:4 + i); v = ((v & 0x00ff00ff00ff00ff) << 8) | ((v >> 8) & 0x00ff00ff00ff00ff); v = ((v & 0x0000ffff0000ffff) << 16) | ((v >> 16) & 0x0000ffff0000ffff); v = (v << 32) | (v >> 32); *[cpm]:8 (0x0:4 + i) = v; i = i + 8; if (i < 200) goto <L_n1>;
   <L_top> if (cpl < cprt) goto <L_tail>;
-  i = 0; <L_a1> v = *:8 (cpa + zext(i)); v = ((v & 0x00ff00ff00ff00ff) << 8) | ((v >> 8) & 0x00ff00ff00ff00ff); v = ((v & 0x0000ffff0000ffff) << 16) | ((v >> 16) & 0x0000ffff0000ffff); v = (v << 32) | (v >> 32); *[cpm]:8 (0x0:4 + i) = *[cpm]:8 (0x0:4 + i) ^ v; i = i + 8; if (zext(i) < cprt) goto <L_a1>;
+  i = 0; <L_a1> if (cpsm != 0) goto <L_a1k>; v = *:8 (cpa + zext(i)); goto <L_a1e>; <L_a1k> v = *[cpm]:8 (cpa:4 + i); <L_a1e> v = ((v & 0x00ff00ff00ff00ff) << 8) | ((v >> 8) & 0x00ff00ff00ff00ff); v = ((v & 0x0000ffff0000ffff) << 16) | ((v >> 16) & 0x0000ffff0000ffff); v = (v << 32) | (v >> 32); *[cpm]:8 (0x0:4 + i) = *[cpm]:8 (0x0:4 + i) ^ v; i = i + 8; if (zext(i) < cprt) goto <L_a1>;
   cpa = cpa + cprt; cpl = cpl - cprt; ret = 0; goto <L_perm>;
   <L_tail> if (cpfin == 0) goto <L_exit>; if (cpps != 0) goto <L_xof>;
   i = 0; <L_z> *[cpm]:8 (0x800:4 + i) = 0; i = i + 8; if (i < 200) goto <L_z>;
-  i = 0; <L_c> if (zext(i) >= cpl) goto <L_cd>; b = *:1 (cpa + zext(i)); *[cpm]:1 (0x800:4 + i) = b; i = i + 1; goto <L_c>;
+  i = 0; <L_c> if (zext(i) >= cpl) goto <L_cd>; b = *:1 (cpa + zext(i)); if (cpsm == 0) goto <L_cq>; b = *[cpm]:1 (cpa:4 + i); <L_cq> *[cpm]:1 (0x800:4 + i) = b; i = i + 1; goto <L_c>;
   <L_cd> *[cpm]:1 (0x800:4 + i) = cpdm; j = cprt:4 - 1; b = *[cpm]:1 (0x800:4 + j); *[cpm]:1 (0x800:4 + j) = b ^ 0x80;
   i = 0; <L_a2> v = *[cpm]:8 (0x800:4 + i); v = ((v & 0x00ff00ff00ff00ff) << 8) | ((v >> 8) & 0x00ff00ff00ff00ff); v = ((v & 0x0000ffff0000ffff) << 16) | ((v >> 16) & 0x0000ffff0000ffff); v = (v << 32) | (v >> 32); *[cpm]:8 (0x0:4 + i) = *[cpm]:8 (0x0:4 + i) ^ v; i = i + 8; if (zext(i) < cprt) goto <L_a2>;
   cpa = cpa + cpl; cpl = 0; if (cpmd != 0) goto <L_shk>; ret = 1; goto <L_perm>;
   <L_shk> cpps = 1;
   <L_xof> if (cpn == 0) goto <L_exit>; ret = 2; goto <L_perm>;
   <L_xo2> n = cpn; if (n <= cprt) goto <L_n2>; n = cprt;
-  <L_n2> i = 0; <L_o1> if (zext(i) >= n) goto <L_o2>; sh = zext(i & 7) << 3; v = *[cpm]:8 (0x0:4 + (i & 0xf8)); v = v >> sh; b = v:1; *:1 (cpo + zext(i)) = b; i = i + 1; goto <L_o1>;
+  <L_n2> i = 0; <L_o1> if (zext(i) >= n) goto <L_o2>; sh = zext(i & 7) << 3; v = *[cpm]:8 (0x0:4 + (i & 0xf8)); v = v >> sh; b = v:1; if (cpsm != 0) goto <L_o1k>; *:1 (cpo + zext(i)) = b; goto <L_o1e>; <L_o1k> *[cpm]:1 (cpo:4 + i) = b; <L_o1e> i = i + 1; goto <L_o1>;
   <L_o2> cpo = cpo + n; cpn = cpn - n; goto <L_xof>;
   <L_perm> r = 0;
   <L_r>
@@ -749,5 +749,190 @@ cp_cipher: is epsilon {
   <L_b14> if (bret != 14) goto <L_b15>; goto <L_r14>;
   <L_b15> if (bret != 15) goto <L_b16>; goto <L_r15>;
   <L_b16> goto <L_r16>;
+  <L_exit>
+}
+cp_ecc: is epsilon {
+  local i4:4 = 0; local bt:8 = 0;
+  if (ep_mode == 1) goto <L_mul>; if (ep_mode == 2) goto <L_mont>; if (ep_mode == 3) goto <L_ver>; if (ep_mode == 4) goto <L_sig>; if (ep_mode == 5) goto <L_edv>; if (ep_mode == 6) goto <L_dec>; if (ep_mode == 7) goto <L_red>; if (ep_mode == 9) goto <L_eds>; goto <L_exit>;
+  <L_padd> if (ep_kind != 0) goto <L_eadd>;
+ep_pr = zext(ep_x1); ep_pm = zext(ep_x2); ep_pr = ep_pr * ep_pm; ep_pm = zext(ep_p); ep_pr = ep_pr % ep_pm; ep_t0 = ep_pr:72;
+ep_pr = zext(ep_y1); ep_pm = zext(ep_y2); ep_pr = ep_pr * ep_pm; ep_pm = zext(ep_p); ep_pr = ep_pr % ep_pm; ep_t1 = ep_pr:72;
+ep_pr = zext(ep_z1); ep_pm = zext(ep_z2); ep_pr = ep_pr * ep_pm; ep_pm = zext(ep_p); ep_pr = ep_pr % ep_pm; ep_t2 = ep_pr:72;
+ep_t3 = ep_x1 + ep_y1; if (ep_t3 < ep_p) goto <L_ad1>; ep_t3 = ep_t3 - ep_p; <L_ad1>
+ep_t4 = ep_x2 + ep_y2; if (ep_t4 < ep_p) goto <L_ad2>; ep_t4 = ep_t4 - ep_p; <L_ad2>
+ep_pr = zext(ep_t3); ep_pm = zext(ep_t4); ep_pr = ep_pr * ep_pm; ep_pm = zext(ep_p); ep_pr = ep_pr % ep_pm; ep_t3 = ep_pr:72;
+ep_t4 = ep_t0 + ep_t1; if (ep_t4 < ep_p) goto <L_ad3>; ep_t4 = ep_t4 - ep_p; <L_ad3>
+if (ep_t3 < ep_t4) goto <L_sb4>; ep_t3 = ep_t3 - ep_t4; goto <L_se4>; <L_sb4> ep_tm = ep_t3 + ep_p; ep_t3 = ep_tm - ep_t4; <L_se4>
+ep_t4 = ep_x1 + ep_z1; if (ep_t4 < ep_p) goto <L_ad5>; ep_t4 = ep_t4 - ep_p; <L_ad5>
+ep_t5 = ep_x2 + ep_z2; if (ep_t5 < ep_p) goto <L_ad6>; ep_t5 = ep_t5 - ep_p; <L_ad6>
+ep_pr = zext(ep_t4); ep_pm = zext(ep_t5); ep_pr = ep_pr * ep_pm; ep_pm = zext(ep_p); ep_pr = ep_pr % ep_pm; ep_t4 = ep_pr:72;
+ep_t5 = ep_t0 + ep_t2; if (ep_t5 < ep_p) goto <L_ad7>; ep_t5 = ep_t5 - ep_p; <L_ad7>
+if (ep_t4 < ep_t5) goto <L_sb8>; ep_t4 = ep_t4 - ep_t5; goto <L_se8>; <L_sb8> ep_tm = ep_t4 + ep_p; ep_t4 = ep_tm - ep_t5; <L_se8>
+ep_t5 = ep_y1 + ep_z1; if (ep_t5 < ep_p) goto <L_ad9>; ep_t5 = ep_t5 - ep_p; <L_ad9>
+ep_x3 = ep_y2 + ep_z2; if (ep_x3 < ep_p) goto <L_ad10>; ep_x3 = ep_x3 - ep_p; <L_ad10>
+ep_pr = zext(ep_t5); ep_pm = zext(ep_x3); ep_pr = ep_pr * ep_pm; ep_pm = zext(ep_p); ep_pr = ep_pr % ep_pm; ep_t5 = ep_pr:72;
+ep_x3 = ep_t1 + ep_t2; if (ep_x3 < ep_p) goto <L_ad11>; ep_x3 = ep_x3 - ep_p; <L_ad11>
+if (ep_t5 < ep_x3) goto <L_sb12>; ep_t5 = ep_t5 - ep_x3; goto <L_se12>; <L_sb12> ep_tm = ep_t5 + ep_p; ep_t5 = ep_tm - ep_x3; <L_se12>
+ep_pr = zext(ep_a); ep_pm = zext(ep_t4); ep_pr = ep_pr * ep_pm; ep_pm = zext(ep_p); ep_pr = ep_pr % ep_pm; ep_z3 = ep_pr:72;
+ep_pr = zext(ep_b3); ep_pm = zext(ep_t2); ep_pr = ep_pr * ep_pm; ep_pm = zext(ep_p); ep_pr = ep_pr % ep_pm; ep_x3 = ep_pr:72;
+ep_z3 = ep_x3 + ep_z3; if (ep_z3 < ep_p) goto <L_ad13>; ep_z3 = ep_z3 - ep_p; <L_ad13>
+if (ep_t1 < ep_z3) goto <L_sb14>; ep_x3 = ep_t1 - ep_z3; goto <L_se14>; <L_sb14> ep_tm = ep_t1 + ep_p; ep_x3 = ep_tm - ep_z3; <L_se14>
+ep_z3 = ep_t1 + ep_z3; if (ep_z3 < ep_p) goto <L_ad15>; ep_z3 = ep_z3 - ep_p; <L_ad15>
+ep_pr = zext(ep_x3); ep_pm = zext(ep_z3); ep_pr = ep_pr * ep_pm; ep_pm = zext(ep_p); ep_pr = ep_pr % ep_pm; ep_y3 = ep_pr:72;
+ep_t1 = ep_t0 + ep_t0; if (ep_t1 < ep_p) goto <L_ad16>; ep_t1 = ep_t1 - ep_p; <L_ad16>
+ep_t1 = ep_t1 + ep_t0; if (ep_t1 < ep_p) goto <L_ad17>; ep_t1 = ep_t1 - ep_p; <L_ad17>
+ep_pr = zext(ep_a); ep_pm = zext(ep_t2); ep_pr = ep_pr * ep_pm; ep_pm = zext(ep_p); ep_pr = ep_pr % ep_pm; ep_t2 = ep_pr:72;
+ep_pr = zext(ep_b3); ep_pm = zext(ep_t4); ep_pr = ep_pr * ep_pm; ep_pm = zext(ep_p); ep_pr = ep_pr % ep_pm; ep_t4 = ep_pr:72;
+ep_t1 = ep_t1 + ep_t2; if (ep_t1 < ep_p) goto <L_ad18>; ep_t1 = ep_t1 - ep_p; <L_ad18>
+if (ep_t0 < ep_t2) goto <L_sb19>; ep_t2 = ep_t0 - ep_t2; goto <L_se19>; <L_sb19> ep_tm = ep_t0 + ep_p; ep_t2 = ep_tm - ep_t2; <L_se19>
+ep_pr = zext(ep_a); ep_pm = zext(ep_t2); ep_pr = ep_pr * ep_pm; ep_pm = zext(ep_p); ep_pr = ep_pr % ep_pm; ep_t2 = ep_pr:72;
+ep_t4 = ep_t4 + ep_t2; if (ep_t4 < ep_p) goto <L_ad20>; ep_t4 = ep_t4 - ep_p; <L_ad20>
+ep_pr = zext(ep_t1); ep_pm = zext(ep_t4); ep_pr = ep_pr * ep_pm; ep_pm = zext(ep_p); ep_pr = ep_pr % ep_pm; ep_t0 = ep_pr:72;
+ep_y3 = ep_y3 + ep_t0; if (ep_y3 < ep_p) goto <L_ad21>; ep_y3 = ep_y3 - ep_p; <L_ad21>
+ep_pr = zext(ep_t5); ep_pm = zext(ep_t4); ep_pr = ep_pr * ep_pm; ep_pm = zext(ep_p); ep_pr = ep_pr % ep_pm; ep_t0 = ep_pr:72;
+ep_pr = zext(ep_t3); ep_pm = zext(ep_x3); ep_pr = ep_pr * ep_pm; ep_pm = zext(ep_p); ep_pr = ep_pr % ep_pm; ep_x3 = ep_pr:72;
+if (ep_x3 < ep_t0) goto <L_sb22>; ep_x3 = ep_x3 - ep_t0; goto <L_se22>; <L_sb22> ep_tm = ep_x3 + ep_p; ep_x3 = ep_tm - ep_t0; <L_se22>
+ep_pr = zext(ep_t3); ep_pm = zext(ep_t1); ep_pr = ep_pr * ep_pm; ep_pm = zext(ep_p); ep_pr = ep_pr % ep_pm; ep_t0 = ep_pr:72;
+ep_pr = zext(ep_t5); ep_pm = zext(ep_z3); ep_pr = ep_pr * ep_pm; ep_pm = zext(ep_p); ep_pr = ep_pr % ep_pm; ep_z3 = ep_pr:72;
+ep_z3 = ep_z3 + ep_t0; if (ep_z3 < ep_p) goto <L_ad23>; ep_z3 = ep_z3 - ep_p; <L_ad23>
+  goto <L_padd_ret>;
+  <L_eadd>
+ep_pr = zext(ep_z1); ep_pm = zext(ep_z2); ep_pr = ep_pr * ep_pm; ep_pm = zext(ep_p); ep_pr = ep_pr % ep_pm; ep_t0 = ep_pr:72;
+ep_pr = zext(ep_t0); ep_pm = zext(ep_t0); ep_pr = ep_pr * ep_pm; ep_pm = zext(ep_p); ep_pr = ep_pr % ep_pm; ep_t1 = ep_pr:72;
+ep_pr = zext(ep_x1); ep_pm = zext(ep_x2); ep_pr = ep_pr * ep_pm; ep_pm = zext(ep_p); ep_pr = ep_pr % ep_pm; ep_t2 = ep_pr:72;
+ep_pr = zext(ep_y1); ep_pm = zext(ep_y2); ep_pr = ep_pr * ep_pm; ep_pm = zext(ep_p); ep_pr = ep_pr % ep_pm; ep_t3 = ep_pr:72;
+ep_pr = zext(ep_t2); ep_pm = zext(ep_t3); ep_pr = ep_pr * ep_pm; ep_pm = zext(ep_p); ep_pr = ep_pr % ep_pm; ep_t4 = ep_pr:72;
+ep_pr = zext(ep_d); ep_pm = zext(ep_t4); ep_pr = ep_pr * ep_pm; ep_pm = zext(ep_p); ep_pr = ep_pr % ep_pm; ep_t4 = ep_pr:72;
+if (ep_t1 < ep_t4) goto <L_sb24>; ep_t5 = ep_t1 - ep_t4; goto <L_se24>; <L_sb24> ep_tm = ep_t1 + ep_p; ep_t5 = ep_tm - ep_t4; <L_se24>
+ep_t6 = ep_t1 + ep_t4; if (ep_t6 < ep_p) goto <L_ad25>; ep_t6 = ep_t6 - ep_p; <L_ad25>
+ep_t7 = ep_x1 + ep_y1; if (ep_t7 < ep_p) goto <L_ad26>; ep_t7 = ep_t7 - ep_p; <L_ad26>
+ep_t8 = ep_x2 + ep_y2; if (ep_t8 < ep_p) goto <L_ad27>; ep_t8 = ep_t8 - ep_p; <L_ad27>
+ep_pr = zext(ep_t7); ep_pm = zext(ep_t8); ep_pr = ep_pr * ep_pm; ep_pm = zext(ep_p); ep_pr = ep_pr % ep_pm; ep_t7 = ep_pr:72;
+if (ep_t7 < ep_t2) goto <L_sb28>; ep_t7 = ep_t7 - ep_t2; goto <L_se28>; <L_sb28> ep_tm = ep_t7 + ep_p; ep_t7 = ep_tm - ep_t2; <L_se28>
+if (ep_t7 < ep_t3) goto <L_sb29>; ep_t7 = ep_t7 - ep_t3; goto <L_se29>; <L_sb29> ep_tm = ep_t7 + ep_p; ep_t7 = ep_tm - ep_t3; <L_se29>
+ep_pr = zext(ep_t0); ep_pm = zext(ep_t5); ep_pr = ep_pr * ep_pm; ep_pm = zext(ep_p); ep_pr = ep_pr % ep_pm; ep_x3 = ep_pr:72;
+ep_pr = zext(ep_x3); ep_pm = zext(ep_t7); ep_pr = ep_pr * ep_pm; ep_pm = zext(ep_p); ep_pr = ep_pr % ep_pm; ep_x3 = ep_pr:72;
+ep_pr = zext(ep_a); ep_pm = zext(ep_t2); ep_pr = ep_pr * ep_pm; ep_pm = zext(ep_p); ep_pr = ep_pr % ep_pm; ep_t7 = ep_pr:72;
+if (ep_t3 < ep_t7) goto <L_sb30>; ep_t7 = ep_t3 - ep_t7; goto <L_se30>; <L_sb30> ep_tm = ep_t3 + ep_p; ep_t7 = ep_tm - ep_t7; <L_se30>
+ep_pr = zext(ep_t0); ep_pm = zext(ep_t6); ep_pr = ep_pr * ep_pm; ep_pm = zext(ep_p); ep_pr = ep_pr % ep_pm; ep_y3 = ep_pr:72;
+ep_pr = zext(ep_y3); ep_pm = zext(ep_t7); ep_pr = ep_pr * ep_pm; ep_pm = zext(ep_p); ep_pr = ep_pr % ep_pm; ep_y3 = ep_pr:72;
+ep_pr = zext(ep_t5); ep_pm = zext(ep_t6); ep_pr = ep_pr * ep_pm; ep_pm = zext(ep_p); ep_pr = ep_pr % ep_pm; ep_z3 = ep_pr:72;
+  <L_padd_ret> if (ep_rw == 1) goto <L_pw1>; if (ep_rw == 2) goto <L_pw2>; if (ep_rw == 3) goto <L_pw3>; goto <L_pw4>;
+  <L_smul> ep_rx = 0; ep_ry = 1; ep_rz = 0; if (ep_kind == 0) goto <L_sm0>; ep_rz = 1; <L_sm0> i4 = ep_nb;
+  <L_sml> if (i4 == 0) goto <L_smd>; i4 = i4 - 1; ep_x1 = ep_rx; ep_y1 = ep_ry; ep_z1 = ep_rz; ep_x2 = ep_rx; ep_y2 = ep_ry; ep_z2 = ep_rz; ep_rw = 1; goto <L_padd>;
+  <L_pw1> ep_rx = ep_x3; ep_ry = ep_y3; ep_rz = ep_z3; if (((ep_k >> i4) & 1) == 0) goto <L_sml>; ep_x1 = ep_rx; ep_y1 = ep_ry; ep_z1 = ep_rz; ep_x2 = ep_bx; ep_y2 = ep_by; ep_z2 = ep_bz; ep_rw = 2; goto <L_padd>;
+  <L_pw2> ep_rx = ep_x3; ep_ry = ep_y3; ep_rz = ep_z3; goto <L_sml>;
+  <L_smd> if (ep_rm == 1) goto <L_sm1>; if (ep_rm == 2) goto <L_sm2>; if (ep_rm == 3) goto <L_sm3>; if (ep_rm == 4) goto <L_sm4>; if (ep_rm == 5) goto <L_sm5>; goto <L_sm6>;
+  <L_pow> ep_v = 1; i4 = 576;
+  <L_pwl> if (i4 == 0) goto <L_pwd>; i4 = i4 - 1;
+ep_pr = zext(ep_v); ep_pm = zext(ep_v); ep_pr = ep_pr * ep_pm; ep_pm = zext(ep_m); ep_pr = ep_pr % ep_pm; ep_v = ep_pr:72;
+  if (((ep_ex >> i4) & 1) == 0) goto <L_pwl>;
+ep_pr = zext(ep_v); ep_pm = zext(ep_u); ep_pr = ep_pr * ep_pm; ep_pm = zext(ep_m); ep_pr = ep_pr % ep_pm; ep_v = ep_pr:72;
+  goto <L_pwl>;
+  <L_pwd> if (ep_ri == 1) goto <L_pi1>; if (ep_ri == 2) goto <L_pi2>; if (ep_ri == 3) goto <L_pi3>; if (ep_ri == 4) goto <L_pi4>; if (ep_ri == 5) goto <L_pi5>; goto <L_pi6>;
+  <L_inv> ep_ex = ep_m - 2; goto <L_pow>;
+  <L_chk> ep_ok = 0; if (ep_x1 >= ep_p) goto <L_chkd>; if (ep_y1 >= ep_p) goto <L_chkd>; if (ep_kind != 0) goto <L_chke>;
+ep_pr = zext(ep_y1); ep_pm = zext(ep_y1); ep_pr = ep_pr * ep_pm; ep_pm = zext(ep_p); ep_pr = ep_pr % ep_pm; ep_t0 = ep_pr:72;
+ep_pr = zext(ep_x1); ep_pm = zext(ep_x1); ep_pr = ep_pr * ep_pm; ep_pm = zext(ep_p); ep_pr = ep_pr % ep_pm; ep_t1 = ep_pr:72;
+ep_pr = zext(ep_t1); ep_pm = zext(ep_x1); ep_pr = ep_pr * ep_pm; ep_pm = zext(ep_p); ep_pr = ep_pr % ep_pm; ep_t1 = ep_pr:72;
+ep_pr = zext(ep_a); ep_pm = zext(ep_x1); ep_pr = ep_pr * ep_pm; ep_pm = zext(ep_p); ep_pr = ep_pr % ep_pm; ep_t2 = ep_pr:72;
+ep_t1 = ep_t1 + ep_t2; if (ep_t1 < ep_p) goto <L_ad31>; ep_t1 = ep_t1 - ep_p; <L_ad31>
+ep_t1 = ep_t1 + ep_b; if (ep_t1 < ep_p) goto <L_ad32>; ep_t1 = ep_t1 - ep_p; <L_ad32>
+  if (ep_t0 != ep_t1) goto <L_chkd>; ep_ok = 1; goto <L_chkd>;
+  <L_chke>
+ep_pr = zext(ep_x1); ep_pm = zext(ep_x1); ep_pr = ep_pr * ep_pm; ep_pm = zext(ep_p); ep_pr = ep_pr % ep_pm; ep_t0 = ep_pr:72;
+ep_pr = zext(ep_y1); ep_pm = zext(ep_y1); ep_pr = ep_pr * ep_pm; ep_pm = zext(ep_p); ep_pr = ep_pr % ep_pm; ep_t1 = ep_pr:72;
+ep_pr = zext(ep_a); ep_pm = zext(ep_t0); ep_pr = ep_pr * ep_pm; ep_pm = zext(ep_p); ep_pr = ep_pr % ep_pm; ep_t2 = ep_pr:72;
+ep_t2 = ep_t2 + ep_t1; if (ep_t2 < ep_p) goto <L_ad33>; ep_t2 = ep_t2 - ep_p; <L_ad33>
+ep_pr = zext(ep_t0); ep_pm = zext(ep_t1); ep_pr = ep_pr * ep_pm; ep_pm = zext(ep_p); ep_pr = ep_pr % ep_pm; ep_t3 = ep_pr:72;
+ep_pr = zext(ep_d); ep_pm = zext(ep_t3); ep_pr = ep_pr * ep_pm; ep_pm = zext(ep_p); ep_pr = ep_pr % ep_pm; ep_t3 = ep_pr:72;
+  ep_t4 = 1; ep_t3 = ep_t3 + ep_t4; if (ep_t3 < ep_p) goto <L_chkf>; ep_t3 = ep_t3 - ep_p; <L_chkf> if (ep_t2 != ep_t3) goto <L_chkd>; ep_ok = 1;
+  <L_chkd> if (ep_ret == 1) goto <L_ck1>; goto <L_ck2>;
+  <L_aff> ep_m = ep_p; ep_u = ep_rz; ep_ri = 1; goto <L_inv>;
+  <L_pi1> ep_pr = zext(ep_rx); ep_pm = zext(ep_v); ep_pr = ep_pr * ep_pm; ep_pm = zext(ep_p); ep_pr = ep_pr % ep_pm; ep_x3 = ep_pr:72;
+ep_pr = zext(ep_ry); ep_pm = zext(ep_v); ep_pr = ep_pr * ep_pm; ep_pm = zext(ep_p); ep_pr = ep_pr % ep_pm; ep_y3 = ep_pr:72;
+  if (ep_ret == 4) goto <L_af4>; if (ep_ret == 5) goto <L_af5>; goto <L_af6>;
+  <L_mul> ep_st = 0; ep_ret = 1; goto <L_chk>;
+  <L_ck1> if (ep_ok != 0) goto <L_mul2>; ep_st = 1; goto <L_exit>;
+  <L_mul2> if (ep_k != 0) goto <L_mul4>; ep_st = 2; goto <L_exit>;
+  <L_mul4> ep_bx = ep_x1; ep_by = ep_y1; ep_bz = 1; ep_rm = 1; goto <L_smul>;
+  <L_sm1> if (ep_rz != 0) goto <L_mul3>; ep_st = 2; goto <L_exit>;
+  <L_mul3> ep_ret = 4; goto <L_aff>;
+  <L_af4> goto <L_exit>;
+  <L_mont> ep_x1 = ep_u; ep_x2 = 1; ep_z2 = 0; ep_x3 = ep_u; ep_z3 = 1; ep_k25 = 0; i4 = ep_nb;
+  <L_mtl> if (i4 == 0) goto <L_mtd>; i4 = i4 - 1; ep_t0 = (ep_k >> i4) & 1; ep_sg = ep_t0:1; ep_k25 = ep_k25 ^ ep_sg; if (ep_k25 == 0) goto <L_mts>;
+  ep_t0 = ep_x2; ep_x2 = ep_x3; ep_x3 = ep_t0; ep_t0 = ep_z2; ep_z2 = ep_z3; ep_z3 = ep_t0; <L_mts> ep_k25 = ep_sg;
+ep_t0 = ep_x2 + ep_z2; if (ep_t0 < ep_p) goto <L_ad34>; ep_t0 = ep_t0 - ep_p; <L_ad34>
+ep_pr = zext(ep_t0); ep_pm = zext(ep_t0); ep_pr = ep_pr * ep_pm; ep_pm = zext(ep_p); ep_pr = ep_pr % ep_pm; ep_t1 = ep_pr:72;
+if (ep_x2 < ep_z2) goto <L_sb35>; ep_t2 = ep_x2 - ep_z2; goto <L_se35>; <L_sb35> ep_tm = ep_x2 + ep_p; ep_t2 = ep_tm - ep_z2; <L_se35>
+ep_pr = zext(ep_t2); ep_pm = zext(ep_t2); ep_pr = ep_pr * ep_pm; ep_pm = zext(ep_p); ep_pr = ep_pr % ep_pm; ep_t3 = ep_pr:72;
+if (ep_t1 < ep_t3) goto <L_sb36>; ep_t4 = ep_t1 - ep_t3; goto <L_se36>; <L_sb36> ep_tm = ep_t1 + ep_p; ep_t4 = ep_tm - ep_t3; <L_se36>
+ep_t5 = ep_x3 + ep_z3; if (ep_t5 < ep_p) goto <L_ad37>; ep_t5 = ep_t5 - ep_p; <L_ad37>
+if (ep_x3 < ep_z3) goto <L_sb38>; ep_t6 = ep_x3 - ep_z3; goto <L_se38>; <L_sb38> ep_tm = ep_x3 + ep_p; ep_t6 = ep_tm - ep_z3; <L_se38>
+ep_pr = zext(ep_t6); ep_pm = zext(ep_t0); ep_pr = ep_pr * ep_pm; ep_pm = zext(ep_p); ep_pr = ep_pr % ep_pm; ep_t6 = ep_pr:72;
+ep_pr = zext(ep_t5); ep_pm = zext(ep_t2); ep_pr = ep_pr * ep_pm; ep_pm = zext(ep_p); ep_pr = ep_pr % ep_pm; ep_t5 = ep_pr:72;
+ep_t7 = ep_t6 + ep_t5; if (ep_t7 < ep_p) goto <L_ad39>; ep_t7 = ep_t7 - ep_p; <L_ad39>
+ep_pr = zext(ep_t7); ep_pm = zext(ep_t7); ep_pr = ep_pr * ep_pm; ep_pm = zext(ep_p); ep_pr = ep_pr % ep_pm; ep_x3 = ep_pr:72;
+if (ep_t6 < ep_t5) goto <L_sb40>; ep_t7 = ep_t6 - ep_t5; goto <L_se40>; <L_sb40> ep_tm = ep_t6 + ep_p; ep_t7 = ep_tm - ep_t5; <L_se40>
+ep_pr = zext(ep_t7); ep_pm = zext(ep_t7); ep_pr = ep_pr * ep_pm; ep_pm = zext(ep_p); ep_pr = ep_pr % ep_pm; ep_t7 = ep_pr:72;
+ep_pr = zext(ep_x1); ep_pm = zext(ep_t7); ep_pr = ep_pr * ep_pm; ep_pm = zext(ep_p); ep_pr = ep_pr % ep_pm; ep_z3 = ep_pr:72;
+ep_pr = zext(ep_t1); ep_pm = zext(ep_t3); ep_pr = ep_pr * ep_pm; ep_pm = zext(ep_p); ep_pr = ep_pr % ep_pm; ep_x2 = ep_pr:72;
+ep_pr = zext(ep_d); ep_pm = zext(ep_t4); ep_pr = ep_pr * ep_pm; ep_pm = zext(ep_p); ep_pr = ep_pr % ep_pm; ep_t7 = ep_pr:72;
+ep_t7 = ep_t7 + ep_t1; if (ep_t7 < ep_p) goto <L_ad41>; ep_t7 = ep_t7 - ep_p; <L_ad41>
+ep_pr = zext(ep_t4); ep_pm = zext(ep_t7); ep_pr = ep_pr * ep_pm; ep_pm = zext(ep_p); ep_pr = ep_pr % ep_pm; ep_z2 = ep_pr:72;
+  goto <L_mtl>;
+  <L_mtd> if (ep_k25 == 0) goto <L_mtf>; ep_t0 = ep_x2; ep_x2 = ep_x3; ep_x3 = ep_t0; ep_t0 = ep_z2; ep_z2 = ep_z3; ep_z3 = ep_t0;
+  <L_mtf> ep_m = ep_p; ep_u = ep_z2; ep_ri = 2; goto <L_inv>;
+  <L_pi2> ep_pr = zext(ep_x2); ep_pm = zext(ep_v); ep_pr = ep_pr * ep_pm; ep_pm = zext(ep_p); ep_pr = ep_pr % ep_pm; ep_x3 = ep_pr:72; goto <L_exit>;
+  <L_ver> ep_st = 0; ep_x1 = ep_x2; ep_y1 = ep_y2; ep_ret = 2; goto <L_chk>;
+  <L_ck2> if (ep_ok != 0) goto <L_ver2>; ep_st = 1; goto <L_exit>;
+  <L_ver2> ep_st = 2; if (ep_r == 0) goto <L_exit>; if (ep_s == 0) goto <L_exit>; if (ep_r >= ep_n) goto <L_exit>; if (ep_s >= ep_n) goto <L_exit>;
+  ep_m = ep_n; ep_u = ep_s; ep_ri = 3; goto <L_inv>;
+  <L_pi3> ep_w = ep_v; ep_e = ep_e % ep_n;
+ep_pr = zext(ep_e); ep_pm = zext(ep_w); ep_pr = ep_pr * ep_pm; ep_pm = zext(ep_n); ep_pr = ep_pr % ep_pm; ep_u1 = ep_pr:72;
+ep_pr = zext(ep_r); ep_pm = zext(ep_w); ep_pr = ep_pr * ep_pm; ep_pm = zext(ep_n); ep_pr = ep_pr % ep_pm; ep_u2 = ep_pr:72;
+  ep_bx = ep_gx; ep_by = ep_gy; ep_bz = 1; ep_k = ep_u1; ep_rm = 2; goto <L_smul>;
+  <L_sm2> ep_pp1 = ep_rx; ep_pp2 = ep_ry; ep_pp3 = ep_rz; ep_bx = ep_x2; ep_by = ep_y2; ep_bz = 1; ep_k = ep_u2; ep_rm = 3; goto <L_smul>;
+  <L_sm3> ep_x1 = ep_pp1; ep_y1 = ep_pp2; ep_z1 = ep_pp3; ep_x2 = ep_rx; ep_y2 = ep_ry; ep_z2 = ep_rz; ep_rw = 3; goto <L_padd>;
+  <L_pw3> if (ep_z3 == 0) goto <L_exit>; ep_rx = ep_x3; ep_ry = ep_y3; ep_rz = ep_z3; ep_ret = 5; goto <L_aff>;
+  <L_af5> ep_x3 = ep_x3 % ep_n; if (ep_x3 != ep_r) goto <L_exit>; ep_st = 0; goto <L_exit>;
+  <L_sig> ep_st = 0; if (ep_rnd == 0) goto <L_sg0>; ep_t0 = ep_n - 1; ep_kk = ep_kk % ep_t0; ep_kk = ep_kk + 1; <L_sg0> ep_bx = ep_gx; ep_by = ep_gy; ep_bz = 1; ep_k = ep_kk; ep_rm = 4; goto <L_smul>;
+  <L_sm4> ep_ret = 6; goto <L_aff>;
+  <L_af6> ep_r = ep_x3 % ep_n; ep_m = ep_n; ep_u = ep_kk; ep_ri = 4; goto <L_inv>;
+  <L_pi4> ep_w = ep_v; ep_e = ep_e % ep_n;
+ep_pr = zext(ep_r); ep_pm = zext(ep_dd); ep_pr = ep_pr * ep_pm; ep_pm = zext(ep_n); ep_pr = ep_pr % ep_pm; ep_t0 = ep_pr:72;
+ep_t0 = ep_t0 + ep_e; if (ep_t0 < ep_n) goto <L_ad42>; ep_t0 = ep_t0 - ep_n; <L_ad42>
+ep_pr = zext(ep_t0); ep_pm = zext(ep_w); ep_pr = ep_pr * ep_pm; ep_pm = zext(ep_n); ep_pr = ep_pr % ep_pm; ep_s = ep_pr:72;
+  goto <L_exit>;
+  <L_edv> ep_ok = 0; ep_bx = ep_x1; ep_by = ep_y1; ep_bz = 1; ep_pp4 = ep_x2; ep_pp5 = ep_y2; ep_k = ep_e; ep_rm = 5; goto <L_smul>;
+  <L_sm5> ep_pp1 = ep_rx; ep_pp2 = ep_ry; ep_pp3 = ep_rz; ep_bx = ep_gx; ep_by = ep_gy; ep_bz = 1; ep_k = ep_s; ep_rm = 6; goto <L_smul>;
+  <L_sm6> ep_x1 = ep_pp1; ep_y1 = ep_pp2; ep_z1 = ep_pp3; ep_x2 = ep_pp4; ep_y2 = ep_pp5; ep_z2 = 1; ep_rw = 4; goto <L_padd>;
+  <L_pw4> 
+ep_pr = zext(ep_rx); ep_pm = zext(ep_z3); ep_pr = ep_pr * ep_pm; ep_pm = zext(ep_p); ep_pr = ep_pr % ep_pm; ep_t0 = ep_pr:72;
+ep_pr = zext(ep_x3); ep_pm = zext(ep_rz); ep_pr = ep_pr * ep_pm; ep_pm = zext(ep_p); ep_pr = ep_pr % ep_pm; ep_t1 = ep_pr:72;
+ep_pr = zext(ep_ry); ep_pm = zext(ep_z3); ep_pr = ep_pr * ep_pm; ep_pm = zext(ep_p); ep_pr = ep_pr % ep_pm; ep_t2 = ep_pr:72;
+ep_pr = zext(ep_y3); ep_pm = zext(ep_rz); ep_pr = ep_pr * ep_pm; ep_pm = zext(ep_p); ep_pr = ep_pr % ep_pm; ep_t3 = ep_pr:72;
+  if (ep_t0 != ep_t1) goto <L_exit>; if (ep_t2 != ep_t3) goto <L_exit>; ep_ok = 1; goto <L_exit>;
+  <L_dec> ep_ok = 0; if (ep_y1 >= ep_p) goto <L_exit>;
+ep_pr = zext(ep_y1); ep_pm = zext(ep_y1); ep_pr = ep_pr * ep_pm; ep_pm = zext(ep_p); ep_pr = ep_pr % ep_pm; ep_t0 = ep_pr:72;
+  ep_t4 = 1;
+if (ep_t0 < ep_t4) goto <L_sb43>; ep_t5 = ep_t0 - ep_t4; goto <L_se43>; <L_sb43> ep_tm = ep_t0 + ep_p; ep_t5 = ep_tm - ep_t4; <L_se43>
+ep_pr = zext(ep_d); ep_pm = zext(ep_t0); ep_pr = ep_pr * ep_pm; ep_pm = zext(ep_p); ep_pr = ep_pr % ep_pm; ep_t6 = ep_pr:72;
+if (ep_t6 < ep_a) goto <L_sb44>; ep_t6 = ep_t6 - ep_a; goto <L_se44>; <L_sb44> ep_tm = ep_t6 + ep_p; ep_t6 = ep_tm - ep_a; <L_se44>
+  ep_m = ep_p; ep_u = ep_t6; ep_ri = 5; goto <L_inv>;
+  <L_pi5> 
+ep_pr = zext(ep_t5); ep_pm = zext(ep_v); ep_pr = ep_pr * ep_pm; ep_pm = zext(ep_p); ep_pr = ep_pr % ep_pm; ep_t7 = ep_pr:72;
+  ep_u = ep_t7; ep_ex = ep_sq; ep_m = ep_p; ep_ri = 6; goto <L_pow>;
+  <L_pi6> ep_x1 = ep_v;
+ep_pr = zext(ep_x1); ep_pm = zext(ep_x1); ep_pr = ep_pr * ep_pm; ep_pm = zext(ep_p); ep_pr = ep_pr % ep_pm; ep_t0 = ep_pr:72;
+  if (ep_t0 == ep_t7) goto <L_dx>; if (ep_k25 == 0) goto <L_exit>; ep_t1 = ep_p - ep_t7; if (ep_t0 != ep_t1) goto <L_exit>; ep_t1 = ep_sq2;
+ep_pr = zext(ep_x1); ep_pm = zext(ep_t1); ep_pr = ep_pr * ep_pm; ep_pm = zext(ep_p); ep_pr = ep_pr % ep_pm; ep_x1 = ep_pr:72;
+  <L_dx> if (ep_x1 != 0) goto <L_dy>; if (ep_sg != 0) goto <L_exit>; ep_ok = 1; goto <L_exit>;
+  <L_dy> ep_t0 = ep_x1 & 1; ep_b1 = ep_t0:1; if (ep_b1 == ep_sg) goto <L_dz>; ep_x1 = ep_p - ep_x1; <L_dz> ep_ok = 1; goto <L_exit>;
+  <L_red> ep_pm = zext(ep_n); ep_pr = ep_pr % ep_pm; ep_r = ep_pr:72; goto <L_exit>;
+  <L_eds>
+ep_pr = zext(ep_k); ep_pm = zext(ep_dd); ep_pr = ep_pr * ep_pm; ep_pm = zext(ep_n); ep_pr = ep_pr % ep_pm; ep_t0 = ep_pr:72;
+ep_s = ep_r + ep_t0; if (ep_s < ep_n) goto <L_ad45>; ep_s = ep_s - ep_n; <L_ad45>
+  goto <L_exit>;
   <L_exit>
 }

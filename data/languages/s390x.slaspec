@@ -359,6 +359,11 @@ define register offset=0x16430 size=8 [ cprt ];
 define register offset=0x16440 size=1 [ cpfin cpps cpmd cpdm cpalg cpdec cpnk ];
 define register offset=0x16460 size=8 [ cps cpc ];
 define register offset=0x16470 size=1 [ cpcc cphs cplaad cplpc cphf cpsm ];
+# ECC engine scratch (tools/gen_ecc.py)
+define register offset=0x20000 size=72 [ ep_p ep_a ep_b ep_b3 ep_d ep_n ep_gx ep_gy ep_x1 ep_y1 ep_z1 ep_x2 ep_y2 ep_z2 ep_x3 ep_y3 ep_z3 ep_rx ep_ry ep_rz ep_bx ep_by ep_bz ep_t0 ep_t1 ep_t2 ep_t3 ep_t4 ep_t5 ep_t6 ep_t7 ep_t8 ep_tm ep_k ep_e ep_r ep_s ep_w ep_u1 ep_u2 ep_dd ep_kk ep_ex ep_v ep_u ep_m ep_sq ep_sq2 ep_pp1 ep_pp2 ep_pp3 ep_pp4 ep_pp5 ep_ax ep_ay ep_cx ep_cy ];
+define register offset=0x21000 size=144 [ ep_pr ep_pm ];
+define register offset=0x22000 size=1 [ ep_mode ep_kind ep_ok ep_st ep_rnd ep_ret ep_rm ep_rw ep_ri ep_sg ep_k25 ep_b1 ];
+define register offset=0x22020 size=4 [ ep_nb ep_pb ];
 
 # Disassembly context. xplink: set to 1 by the zos_xplink compiler spec, where "BR 7" and
 # "B 2(,7)"/"B 4(,7)" are function returns (the XPLINK return address is in R7, and a
