@@ -18,8 +18,11 @@ EXTRA = {
 }
 for _n in ("pack", "unpk", "mvo"):      # SS-b: L1, L2 (lengths - 1)
     EXTRA[_n] = [(8, 4, "u"), (12, 4, "u")]
-for _n in ("mvcin", "unpka", "unpku", "pka", "pku"):   # one 8-bit length - 1
+for _n in ("mvcin", "unpka", "unpku", "pka", "pku", "ed", "edmk"):   # one 8-bit length - 1
     EXTRA[_n] = [(8, 8, "u")]
+for _n in ("ap", "sp", "zap", "cp", "mp", "dp"):       # SS-b: L1, L2
+    EXTRA[_n] = [(8, 4, "u"), (12, 4, "u")]
+EXTRA["srp"] = [(8, 4, "u")]                          # L1 (I3 is an operand)
 
 CAP = 0x1000   # unbounded string searches stop after this many units with cc 3 (CPU-determined)
 
@@ -443,6 +446,139 @@ def trxx(o, p, ssize, dsize):
         "<done>",
         f"{o[0]} = dst; {p[0]} = len; {o[1]} = src;"])
 
+# ---- packed-decimal arithmetic -----------------------------------------------------------------
+# Operands are converted to 16-byte binary (31 digits < 2^104), computed, and stored back with
+# the preferred signs C (plus) and D (minus). Data and decimal-divide exceptions are not raised.
+def pd_load(t, addr, nexpr, tag):
+    """p-code reading the packed operand at addr (nexpr bytes) into v{tag} (magnitude, 16 bytes)
+    and n{tag} (negative)."""
+    return "\n".join([
+        f"local v{tag}:16 = zext(0:8); local k{tag}:8 = 0; local nb{tag}:8 = {nexpr};",
+        f"<ld{tag}>",
+        f"local b{tag}:1 = *:1 ({addr} + k{tag});",
+        f"if (k{tag} + 1 == nb{tag}) goto <ls{tag}>;",
+        f"v{tag} = v{tag} * 100 + zext(b{tag} >> 4) * 10 + zext(b{tag} & 0xf); k{tag} = k{tag} + 1; goto <ld{tag}>;",
+        f"<ls{tag}>",
+        f"v{tag} = v{tag} * 10 + zext(b{tag} >> 4);",
+        f"local sg{tag}:1 = b{tag} & 0xf; local n{tag}:1 = (sg{tag} == 0xb) || (sg{tag} == 0xd);"])
+
+def pd_store(addr, nexpr, mag, neg, tag):
+    """p-code storing magnitude mag (16 bytes, already < 10^(2n-1)) and sign neg at addr."""
+    return "\n".join([
+        f"local m{tag}:16 = {mag}; local j{tag}:8 = {nexpr} - 1;",
+        f"local d0{tag}:16 = m{tag} % 10; m{tag} = m{tag} / 10;",
+        f"*:1 ({addr} + j{tag}) = (d0{tag}:1 << 4) | (0xc + zext({neg}));",
+        f"<st{tag}>",
+        f"if (j{tag} == 0) goto <sd{tag}>; j{tag} = j{tag} - 1;",
+        f"local lo{tag}:16 = m{tag} % 10; m{tag} = m{tag} / 10; local hi{tag}:16 = m{tag} % 10; m{tag} = m{tag} / 10;",
+        f"*:1 ({addr} + j{tag}) = (hi{tag}:1 << 4) | lo{tag}:1; goto <st{tag}>;",
+        f"<sd{tag}>"])
+
+def pow10(var, digits):
+    """p-code: var (16 bytes) = 10^digits (digits an 8-byte expression)."""
+    return (f"local {var}:16 = zext(1:8); local pc{var}:8 = {digits};\n<pw{var}>\n"
+            f"if (pc{var} == 0) goto <pd{var}>; {var} = {var} * 10; pc{var} = pc{var} - 1; goto <pw{var}>;\n<pd{var}>")
+
+def dec_arith(n, o, x):
+    """AP, SP, ZAP, CP, MP, DP (SS-b; x = L1, L2 fields)."""
+    t = [f"local pa1:8 = {o[0]}; local pa2:8 = {o[1]}; local l1:8 = {x[0]} + 1; local l2:8 = {x[1]} + 1;",
+         pd_load(None, "pa2", "l2", "b")]
+    if n != "zap":
+        t.append(pd_load(None, "pa1", "l1", "a"))
+    if n == "cp":
+        t += ["local s1:16 = zext(!na) * va - zext(na) * va; local s2:16 = zext(!nb) * vb - zext(nb) * vb;",
+              "gs_cc_flags(s1 == s2, s1 s< s2, s1 s> s2, 0:1);"]
+        return "\n".join(t)
+    if n == "mp":
+        t += [pow10("cap", "2 * l1 - 1"),
+              "local pr:16 = (va * vb) % cap;",
+              pd_store("pa1", "l1", "pr", "na != nb", "p")]
+        return "\n".join(t)
+    if n == "dp":
+        t += ["if (vb == 0) goto <dz>;",
+              "local q:16 = va / vb; local r:16 = va % vb;",
+              pow10("capq", "2 * (l1 - l2) - 1"),
+              "q = q % capq;",
+              pd_store("pa1", "l1 - l2", "q", "na != nb", "q"),
+              pd_store("(pa1 + l1 - l2)", "l2", "r", "na", "r"),
+              "<dz>"]
+        return "\n".join(t)
+    expr = {"ap": "s1 + s2", "sp": "s1 - s2", "zap": "s2"}[n]
+    if n != "zap":
+        t.append("local s1:16 = zext(!na) * va - zext(na) * va;")
+    t += ["local s2:16 = zext(!nb) * vb - zext(nb) * vb;",
+          f"local sv:16 = {expr}; local ng:1 = sv s< 0; local mg:16 = zext(!ng) * sv - zext(ng) * sv;",
+          pow10("cap", "2 * l1 - 1"),
+          "local ov:1 = mg >= cap; mg = mg % cap; local rn:1 = ng && ((mg != 0) || ov);",
+          pd_store("pa1", "l1", "mg", "rn", "s"),
+          "gs_cc_flags(!ov && (mg == 0), !ov && (mg != 0) && rn, !ov && (mg != 0) && !rn, ov);"]
+    return "\n".join(t)
+
+def srp(o, x):
+    """SRP: shift the packed first operand by the 6-bit signed amount in the second-operand
+    address (left: multiply, overflow when nonzero digits are lost; right: round with the
+    digit I3 added to the leftmost digit shifted out); a zero result is positive."""
+    return "\n".join([
+        f"local pa1:8 = {o[0]}; local l1:8 = {x[0]} + 1; local amt:8 = {o[1]} & 63; local rd:8 = {o[2]};",
+        pd_load(None, "pa1", "l1", "a"),
+        pow10("cap", "2 * l1 - 1"),
+        "local mg:16 = va; local ov:1 = 0;",
+        "if (amt >= 32) goto <right>;",
+        pow10("pl", "amt"),
+        "if (pl < cap) goto <fits>; ov = mg != 0; mg = 0; goto <st>;",
+        "<fits>",
+        "local lim:16 = cap / pl; ov = mg >= lim; mg = (mg % lim) * pl; goto <st>;",
+        "<right>",
+        pow10("pr", "64 - amt - 1"),
+        "mg = (mg / pr + zext(rd & 0xf)) / 10;",
+        "<st>",
+        "local rn:1 = na && ((mg != 0) || ov);",
+        pd_store("pa1", "l1", "mg", "rn", "s"),
+        "gs_cc_flags(!ov && (mg == 0), !ov && (mg != 0) && rn, !ov && (mg != 0) && !rn, ov);"])
+
+def edit(o, x, mark):
+    """ED/EDMK: edit packed digits of the second operand into the pattern (first operand,
+    length L+1): digit selector 20, significance starter 21, field separator 22, other bytes
+    are message characters; the leftmost byte is the fill character. A plus sign in the right
+    half of a source byte turns significance off. cc: 0 last field zero, 1 nonzero with
+    significance on (minus), 2 nonzero with significance off (plus). EDMK puts the address of
+    the first digit made significant by a nonzero digit into GR1."""
+    t = [f"local pa1:8 = {o[0]}; local pa2:8 = {o[1]}; local n:8 = {x[0]} + 1;",
+         "local fill:1 = *:1 pa1; local sig:1 = 0; local nz:1 = 0; local half:1 = 0; local sb:1 = 0;",
+         "local k:8 = 0;",
+         "<lp>",
+         "local pc:1 = *:1 (pa1 + k); local res:1 = pc;",
+         "if ((pc == 0x20) || (pc == 0x21)) goto <dig>;",
+         "if (pc == 0x22) goto <fs>;",
+         "res = zext(sig) * pc + zext(!sig) * fill; goto <put>;",
+         "<fs>",
+         "res = fill; sig = 0; nz = 0; goto <put>;",
+         "<dig>",
+         "if (half != 0) goto <right>;",
+         "sb = *:1 pa2; pa2 = pa2 + 1;",
+         "local d:1 = sb >> 4; goto <use>;",
+         "<right>",
+         "d = sb & 0xf;",
+         "<use>",
+         "local was:1 = sig;",
+         "res = zext(sig || (d != 0)) * (0xf0 | d) + zext(!(sig || (d != 0))) * fill;"]
+    if mark:
+        t.append("if (was || (d == 0)) goto <nm>; r1 = pa1 + k;\n<nm>")
+    t += ["nz = nz || (d != 0); sig = sig || (d != 0) || (pc == 0x21);",
+          "if (half != 0) goto <took>;",
+          "local rs:1 = sb & 0xf;",
+          "if (rs < 0xa) goto <keep>;",
+          "sig = sig && ((rs == 0xb) || (rs == 0xd)); half = 0; goto <put>;",
+          "<keep>",
+          "half = 1; goto <put>;",
+          "<took>",
+          "half = 0;",
+          "<put>",
+          "*:1 (pa1 + k) = res; k = k + 1;",
+          "if (k < n) goto <lp>;",
+          "gs_cc_flags(!nz, nz && sig, nz && !sig, 0:1);"]
+    return "\n".join(t)
+
 # ---- PSW, FPC and access-register state --------------------------------------------------------
 def epsw(o, r2n):
     """EXTRACT PSW: R1 bits 32-63 = PSW bits 0-31 (with the condition code, which this module
@@ -530,6 +666,12 @@ def semantics(ctx):
         return f"local v:4 = *:4 {o[0]}; fpc = v | (fpc & 0x00ff0000);"
     if n == "sfasr":
         return f"local v:4 = {o[0]}:4; fpc = v | (fpc & 0x00ff0000);"
+    if n in ("ap", "sp", "zap", "cp", "mp", "dp") and x:
+        return dec_arith(n, o, x)
+    if n == "srp" and x:
+        return srp(o, x)
+    if n in ("ed", "edmk") and x:
+        return edit(o, x, n == "edmk")
     if n in ("pack", "unpk", "mvo", "mvcin") and x:
         return {"pack": pack, "unpk": unpk, "mvo": mvo, "mvcin": mvcin}[n](o, x)
     if n in ("pka", "pku") and x:

@@ -576,3 +576,12 @@ crthe
 crtl
 crtle
 crtlh
+ap
+sp
+zap
+cp
+mp
+dp
+srp
+ed
+edmk
