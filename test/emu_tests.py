@@ -947,6 +947,102 @@ def _pcc_ecc_tests():
 _pcc_ecc_tests()
 T("pcc_query2", "pcc", f"r0=0,r1={DATA:x}", f"m16:{DATA:x}=" + "%032x" % sum(1 << (127 - c) for c in (0, 1, 2, 3, 18, 19, 20, 50, 52, 64, 65, 66, 72, 73, 80, 81)))
 
+def _kdsa_tests():
+    import random, hashlib as _hl, ecc_model as EM
+    from cryptography.hazmat.primitives.asymmetric import ec as _ec, ed25519 as _e25, ed448 as _e448, utils as _u
+    from cryptography.hazmat.primitives import hashes as _h, serialization as _S
+    rnd = random.Random(4242)
+    def fields(fs, nb, values):
+        b = bytearray([0x33]) * (len(values) * fs)
+        for i, v in enumerate(values):
+            if v is not None:
+                b[i * fs: (i + 1) * fs] = bytes(fs - nb) + v.to_bytes(nb, "big")
+        return bytes(b)
+    nist = {"P256": (1, 9, 32, 32, _h.SHA256, _hl.sha256), "P384": (2, 10, 48, 48, _h.SHA384, _hl.sha384), "P521": (3, 11, 66, 80, _h.SHA512, _hl.sha512)}
+    for name, (fcv, fcs, nb, fs, H, hf) in nist.items():
+        c = EM.CURVES[name]
+        n = c["n"]
+        d = rnd.randrange(1, n)
+        priv = _ec.derive_private_key(d, c["curve"])
+        pub = priv.public_key().public_numbers()
+        for t in range(2):
+            digest = hf(bytes([t]) * 10).digest()
+            e = int.from_bytes(digest, "big")
+            k0 = rnd.randrange(1, n)
+            r = EM.mul(c, k0, (c["gx"], c["gy"]))[0] % n
+            s_ = pow(k0, -1, n) * (e + r * d) % n
+            priv.public_key().verify(_u.encode_dss_signature(r, s_), digest, _ec.ECDSA(_u.Prehashed(H())))
+            blk = fields(fs, nb, [r, s_, e, pub.x, pub.y])
+            T(f"kdsa_ver_{name}_{t}", "kdsa %r0,%r4", f"r0={fcv:x},r1={DATA:x},m{len(blk)}:{DATA:x}={blk.hex()}", "cc=0")
+        blk = fields(fs, nb, [r, (s_ + 1) % n or 1, e, pub.x, pub.y])
+        T(f"kdsa_ver_{name}_badsig", "kdsa %r0,%r4", f"r0={fcv:x},r1={DATA:x},m{len(blk)}:{DATA:x}={blk.hex()}", "cc=2")
+        blk = fields(fs, nb, [0, s_, e, pub.x, pub.y])
+        T(f"kdsa_ver_{name}_r0", "kdsa %r0,%r4", f"r0={fcv:x},r1={DATA:x},m{len(blk)}:{DATA:x}={blk.hex()}", "cc=2")
+        blk = fields(fs, nb, [r, n, e, pub.x, pub.y])
+        T(f"kdsa_ver_{name}_sn", "kdsa %r0,%r4", f"r0={fcv:x},r1={DATA:x},m{len(blk)}:{DATA:x}={blk.hex()}", "cc=2")
+        blk = fields(fs, nb, [r, s_, e, pub.x, (pub.y + 1) % c["p"]])
+        T(f"kdsa_ver_{name}_offcurve", "kdsa %r0,%r4", f"r0={fcv:x},r1={DATA:x},m{len(blk)}:{DATA:x}={blk.hex()}", "cc=1")
+        # signing with the deterministic bit: the random number is used as given
+        digest = hf(b"sign me").digest()
+        e = int.from_bytes(digest, "big")
+        k = rnd.randrange(1, n)
+        Rp = EM.mul(c, k, (c["gx"], c["gy"]))
+        r = Rp[0] % n
+        s_ = pow(k, -1, n) * (e + r * d) % n
+        priv.public_key().verify(_u.encode_dss_signature(r, s_), digest, _ec.ECDSA(_u.Prehashed(H())))
+        blk = fields(fs, nb, [0, 0, e, d, k])
+        T(f"kdsa_sign_{name}", "kdsa %r0,%r4", f"r0={fcs | 0x80:x},r1={DATA:x},m{len(blk)}:{DATA:x}={blk.hex()}",
+          f"cc=0,m{nb}:{DATA + fs - nb:x}={r.to_bytes(nb, 'big').hex()},m{nb}:{DATA + 2 * fs - nb:x}={s_.to_bytes(nb, 'big').hex()}")
+        blk = fields(fs, nb, [0, 0, e, d, 0])
+        T(f"kdsa_sign_{name}_k0", "kdsa %r0,%r4", f"r0={fcs | 0x80:x},r1={DATA:x},m{len(blk)}:{DATA:x}={blk.hex()}", "cc=2")
+        blk = fields(fs, nb, [0, 0, e, 0, k])
+        T(f"kdsa_sign_{name}_d0", "kdsa %r0,%r4", f"r0={fcs | 0x80:x},r1={DATA:x},m{len(blk)}:{DATA:x}={blk.hex()}", "cc=1")
+        blk = fields(fs, nb, [0, 0, e, n, k])
+        T(f"kdsa_sign_{name}_dn", "kdsa %r0,%r4", f"r0={fcs | 0x80:x},r1={DATA:x},m{len(blk)}:{DATA:x}={blk.hex()}", "cc=1")
+    # EdDSA
+    MSG = DATA + 0x1000
+    def rev(b):
+        return bytes(reversed(b))
+    for name, fcv, fcs, el, fs, mod, hashf in (("Ed25519", 32, 40, 32, 32, _e25, None), ("Ed448", 36, 44, 57, 64, _e448, None)):
+        keycls = mod.Ed25519PrivateKey if name == "Ed25519" else mod.Ed448PrivateKey
+        pubcls = mod.Ed25519PublicKey if name == "Ed25519" else mod.Ed448PublicKey
+        for t, mlen in enumerate((0, 5, 70)):
+            seed = bytes(rnd.randrange(256) for _ in range(el))
+            msg = bytes(rnd.randrange(256) for _ in range(mlen))
+            sk = keycls.from_private_bytes(seed)
+            sig = sk.sign(msg)
+            pk = sk.public_key().public_bytes(_S.Encoding.Raw, _S.PublicFormat.Raw)
+            Renc, Senc = sig[:el], sig[el:]
+            pad = bytes(fs - el)
+            Rf, Sf, Kf = pad + rev(Renc), pad + rev(Senc), pad + rev(pk)
+            S0 = int.from_bytes(Senc, "little")
+            base = f"r0={fcv:x},r1={DATA:x},r2={MSG:x},r3={mlen:x}"
+            mem = lambda R, S, K: f"m{3 * fs}:{DATA:x}={(R + S + K).hex()}" + (f",m{mlen}:{MSG:x}={msg.hex()}" if mlen else "")
+            T(f"kdsa_{name}_ver{t}", "kdsa %r0,%r2", base + "," + mem(Rf, Sf, Kf), f"cc=0,r2={MSG:x},r3={mlen:x}")
+            Sbad = pad + rev(((S0 + 1) % EM.CURVES[name]["n"]).to_bytes(el, "little"))
+            T(f"kdsa_{name}_verbad{t}", "kdsa %r0,%r2", base + "," + mem(Rf, Sbad, Kf), "cc=2")
+            if mlen:
+                T(f"kdsa_{name}_vermsg{t}", "kdsa %r0,%r2", base.replace(f"r3={mlen:x}", f"r3={mlen - 1:x}") + "," + mem(Rf, Sf, Kf), "cc=2")
+            # signing
+            Kseed = pad + seed
+            T(f"kdsa_{name}_sign{t}", "kdsa %r0,%r2", f"r0={fcs:x},r1={DATA:x},r2={MSG:x},r3={mlen:x}," + mem(bytes(fs), bytes(fs), Kseed),
+              f"cc=0,m{fs}:{DATA:x}={Rf.hex()},m{fs}:{DATA + fs:x}={Sf.hex()}")
+        # an undecompressable public key (cc 1) and an invalid S (cc 2)
+        c = EM.CURVES[name]
+        bad = None
+        for yy in range(2, 100):
+            u = (yy * yy - 1) % c["p"]
+            v = (c["d"] * yy * yy - c["a"]) % c["p"]
+            x2 = u * pow(v, -1, c["p"]) % c["p"]
+            if pow(x2, (c["p"] - 1) // 2, c["p"]) != 1:
+                bad = yy
+                break
+        Kbad = bytes(fs - el) + rev(bad.to_bytes(el, "little"))
+        T(f"kdsa_{name}_badkey", "kdsa %r0,%r2", f"r0={fcv:x},r1={DATA:x},r2={MSG:x},r3=0,m{3 * fs}:{DATA:x}={(Rf + Sf + Kbad).hex()}", "cc=1")
+        T(f"kdsa_{name}_S0", "kdsa %r0,%r2", f"r0={fcv:x},r1={DATA:x},r2={MSG:x},r3=0,m{3 * fs}:{DATA:x}={(Rf + bytes(fs) + Kf).hex()}", "cc=2")
+_kdsa_tests()
+T("kdsa_query", "kdsa %r0,%r2", f"r0=0,r1={DATA:x}", f"m16:{DATA:x}=" + "%032x" % sum(1 << (127 - c) for c in (0, 1, 2, 3, 9, 10, 11, 32, 36, 40, 44)))
+
 
 def main():
     out = sys.argv[1]

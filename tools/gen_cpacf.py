@@ -756,7 +756,7 @@ def prno_insn(o, x):
     t.append("*:4 (r1 + 4) = 1; *:8 (r1 + 8) = strm; cc = 0;\n<L_done>")
     return "\n".join(t)
 
-NAMES = {"kimd", "klmd", "km", "kmc", "kmf", "kmo", "kmctr", "kmac", "pcc", "kma", "prno"}
+NAMES = {"kimd", "klmd", "km", "kmc", "kmf", "kmo", "kmctr", "kmac", "pcc", "kma", "prno", "kdsa"}
 
 def semantics(ctx):
     n, o = ctx["name"], ctx["ops"]
@@ -767,6 +767,8 @@ def semantics(ctx):
         return cipher_insn(n, o, x)
     if n == "pcc":
         return pcc_insn(x)
+    if n == "kdsa" and len(x) >= 2:
+        return gen_ecc.kdsa_insn(o, x)
     if n == "prno" and len(x) >= 4:
         return prno_insn(o, x)
     if n == "kma" and len(x) >= 5:

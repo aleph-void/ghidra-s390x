@@ -56,16 +56,16 @@ X448 = dict(p=_P448, a24=39081, bits=448)
 
 NREG = 72   # bytes per value register
 REGS = ("p a b b3 d n gx gy x1 y1 z1 x2 y2 z2 x3 y3 z3 rx ry rz bx by bz t0 t1 t2 t3 t4 t5 t6 t7 t8 tm "
-        "k e r s w u1 u2 dd kk ex v u m sq sq2 pp1 pp2 pp3 pp4 pp5 ax ay cx cy").split()
+        "k e r s w u1 u2 dd kk ex v u m sq sq2 pp1 pp2 pp3 pp4 pp5 ax ay cx cy m1 m2").split()
 BIG = ("pr", "pm")
 
 
 def regs_decl(offset=0x20000):
     """the slaspec lines declaring the ECC scratch registers"""
     out = [f"define register offset={offset:#x} size={NREG} [ " + " ".join("ep_" + r for r in REGS) + " ];"]
-    out.append(f"define register offset={offset + 0x1000:#x} size=144 [ ep_pr ep_pm ];")
-    out.append(f"define register offset={offset + 0x2000:#x} size=1 [ ep_mode ep_kind ep_ok ep_st ep_rnd ep_ret ep_rm ep_rw ep_ri ep_sg ep_k25 ep_b1 ];")
-    out.append(f"define register offset={offset + 0x2020:#x} size=4 [ ep_nb ep_pb ];")
+    out.append(f"define register offset={offset + 0x2000:#x} size=144 [ ep_pr ep_pm ];")
+    out.append(f"define register offset={offset + 0x3000:#x} size=1 [ ep_mode ep_kind ep_ok ep_st ep_rnd ep_ret ep_rm ep_rw ep_ri ep_sg ep_k25 ep_b1 ];")
+    out.append(f"define register offset={offset + 0x3020:#x} size=4 [ ep_nb ep_pb ];")
     return out
 
 
@@ -194,14 +194,14 @@ def engine():
     S("  <L_mtf> ep_m = ep_p; ep_u = ep_z2; ep_ri = 2; goto <L_inv>;")
     S("  <L_pi2> ep_pr = zext(ep_x2); ep_pm = zext(ep_v); ep_pr = ep_pr * ep_pm; ep_pm = zext(ep_p); ep_pr = ep_pr % ep_pm; ep_x3 = ep_pr:72; goto <L_exit>;")
     # ================================================================= mode 3: ECDSA verify; inputs e r s, public key x2 y2, curve; ep_st 0 valid, 1 bad key, 2 bad signature
-    S("  <L_ver> ep_st = 0; ep_x1 = ep_x2; ep_y1 = ep_y2; ep_ret = 2; goto <L_chk>;")
+    S("  <L_ver> ep_st = 0; ep_cx = ep_x2; ep_cy = ep_y2; ep_x1 = ep_x2; ep_y1 = ep_y2; ep_ret = 2; goto <L_chk>;")
     S("  <L_ck2> if (ep_ok != 0) goto <L_ver2>; ep_st = 1; goto <L_exit>;")
     S("  <L_ver2> ep_st = 2; if (ep_r == 0) goto <L_exit>; if (ep_s == 0) goto <L_exit>; if (ep_r >= ep_n) goto <L_exit>; if (ep_s >= ep_n) goto <L_exit>;")
     S("  ep_m = ep_n; ep_u = ep_s; ep_ri = 3; goto <L_inv>;")
     S("  <L_pi3> ep_w = ep_v; ep_e = ep_e % ep_n;")
     mm("ep_u1", "ep_e", "ep_w", "ep_n"); mm("ep_u2", "ep_r", "ep_w", "ep_n")
     S("  ep_bx = ep_gx; ep_by = ep_gy; ep_bz = 1; ep_k = ep_u1; ep_rm = 2; goto <L_smul>;")
-    S("  <L_sm2> ep_pp1 = ep_rx; ep_pp2 = ep_ry; ep_pp3 = ep_rz; ep_bx = ep_x2; ep_by = ep_y2; ep_bz = 1; ep_k = ep_u2; ep_rm = 3; goto <L_smul>;")
+    S("  <L_sm2> ep_pp1 = ep_rx; ep_pp2 = ep_ry; ep_pp3 = ep_rz; ep_bx = ep_cx; ep_by = ep_cy; ep_bz = 1; ep_k = ep_u2; ep_rm = 3; goto <L_smul>;")
     S("  <L_sm3> ep_x1 = ep_pp1; ep_y1 = ep_pp2; ep_z1 = ep_pp3; ep_x2 = ep_rx; ep_y2 = ep_ry; ep_z2 = ep_rz; ep_rw = 3; goto <L_padd>;")
     S("  <L_pw3> if (ep_z3 == 0) goto <L_exit>; ep_rx = ep_x3; ep_ry = ep_y3; ep_rz = ep_z3; ep_ret = 5; goto <L_aff>;")
     S("  <L_af5> ep_x3 = ep_x3 % ep_n; if (ep_x3 != ep_r) goto <L_exit>; ep_st = 0; goto <L_exit>;")
@@ -328,3 +328,188 @@ def pcc_ecc_code(fc_local="fc"):
     A(store_be("ep_x3", "(r1 + ec_pad)", "ec_n", "h"))
     A("cc = 0; goto <L_done>;")
     return "\n".join(t)
+
+
+# ---------------------------------------------------------------- KDSA
+import math
+IV512 = [math.isqrt(q << 128) & 0xffffffffffffffff for q in (2, 3, 5, 7, 11, 13, 17, 19)]
+KDSA_FC = {1: ("V", "P256"), 2: ("V", "P384"), 3: ("V", "P521"), 9: ("S", "P256"), 10: ("S", "P384"), 11: ("S", "P521"),
+           32: ("EV", "Ed25519"), 36: ("EV", "Ed448"), 40: ("ES", "Ed25519"), 44: ("ES", "Ed448")}
+KDSA_CURVE = {"P256": (P256, 32, 32), "P384": (P384, 48, 48), "P521": (P521, 66, 80),
+              "Ed25519": (ED25519, 32, 32), "Ed448": (ED448, 57, 64)}
+CPM_AENC, CPM_RENC, CPM_PREF, CPM_DOM = 0x4200, 0x4240, 0x4280, 0x4300
+DOM4 = b"SigEd448" + b"\x00\x00"
+
+
+class KD:
+    def __init__(self):
+        self.n = 0
+        self.t = []
+
+    def tag(self):
+        self.n += 1
+        return str(self.n)
+
+    def s(self, text):
+        self.t.append(text)
+
+    def cp_cpm(self, dst, src, n):
+        g = self.tag()
+        self.s(f"kd_i = 0; <L_kc{g}> if (zext(kd_i) >= {n}) goto <L_kd{g}>; *[cpm]:1 (({dst}) + kd_i) = *[cpm]:1 (({src}) + kd_i); kd_i = kd_i + 1; goto <L_kc{g}>; <L_kd{g}>")
+
+    def ram_to_cpm(self, dst, src, n, rev=False):
+        g = self.tag()
+        idx = f"({n} - 1 - kd_j)" if rev else "kd_j"
+        self.s(f"kd_j = 0; <L_kr{g}> if (kd_j >= {n}) goto <L_ke{g}>; kd_i = kd_j:4; *[cpm]:1 (({dst}) + kd_i) = *:1 (({src}) + {idx}); kd_j = kd_j + 1; goto <L_kr{g}>; <L_ke{g}>")
+
+    def cpm_to_ram(self, dst, src, n, rev=False):
+        g = self.tag()
+        if rev:
+            self.s(f"kd_j = 0; <L_kw{g}> if (kd_j >= {n}) goto <L_kx{g}>; kd_t = {n} - 1 - kd_j; kd_i = kd_t:4; *:1 (({dst}) + kd_j) = *[cpm]:1 (({src}) + kd_i); kd_j = kd_j + 1; goto <L_kw{g}>; <L_kx{g}>")
+        else:
+            self.s(f"kd_j = 0; <L_kw{g}> if (kd_j >= {n}) goto <L_kx{g}>; kd_i = kd_j:4; *:1 (({dst}) + kd_j) = *[cpm]:1 (({src}) + kd_i); kd_j = kd_j + 1; goto <L_kw{g}>; <L_kx{g}>")
+
+    def le_load(self, reg, src, n):
+        """reg = little-endian integer of n bytes at cpm src (reg 72 bytes or ep_pr 144 bytes)"""
+        g = self.tag()
+        self.s(f"{reg} = 0; kd_j = 0; <L_kl{g}> if (kd_j >= {n}) goto <L_km{g}>; kd_i = kd_j:4; kd_b = *[cpm]:1 (({src}) + kd_i); kd_sh = kd_j * 8; "
+               f"{'ep_pm' if reg == 'ep_pr' else 'ep_tm'} = zext(kd_b); {'ep_pm' if reg == 'ep_pr' else 'ep_tm'} = {'ep_pm' if reg == 'ep_pr' else 'ep_tm'} << kd_sh; "
+               f"{reg} = {reg} | {'ep_pm' if reg == 'ep_pr' else 'ep_tm'}; kd_j = kd_j + 1; goto <L_kl{g}>; <L_km{g}>")
+
+    def le_store(self, reg, dst, n):
+        g = self.tag()
+        self.s(f"kd_j = 0; <L_kn{g}> if (kd_j >= {n}) goto <L_ko{g}>; kd_sh = kd_j * 8; ep_tm = {reg} >> kd_sh; kd_b = ep_tm:1; kd_i = kd_j:4; *[cpm]:1 (({dst}) + kd_i) = kd_b; kd_j = kd_j + 1; goto <L_kn{g}>; <L_ko{g}>")
+
+    def encode_point(self, dst):
+        """compressed encoding of the affine point (ep_x3, ep_y3): y with the sign bit of x in the top bit, little-endian, kd_el bytes"""
+        g = self.tag()
+        self.s(f"ep_tm = ep_x3 & 1; kd_sh = (kd_el * 8) - 1; ep_tm = ep_tm << kd_sh; ep_t0 = ep_y3 | ep_tm; ")
+        self.le_store("ep_t0", dst, "kd_el")
+
+    def hash_input(self, hdr_parts, hdr_len_expr):
+        """assemble [dom][parts...] ending at the message start (CPM_MOFF); sets kd_hs (start) and kd_hn (length)"""
+        self.s(f"kd_hs = {CPM_MOFF:#x} - ({hdr_len_expr}); kd_hn = ({hdr_len_expr}) + kd_ml; kd_at = kd_hs:4;")
+        self.s("if (kd_dl == 0) goto <L_hnd%s>;" % self.n)
+        # dom4 bytes
+        for i, b in enumerate(DOM4):
+            self.s(f"*[cpm]:1 (kd_at + {i}) = {b:#x};")
+        self.s("<L_hnd%s> kd_off = kd_dl;" % self.n)
+        for src in hdr_parts:
+            g = self.tag()
+            self.s(f"kd_i = 0; <L_hp{g}> if (zext(kd_i) >= kd_el) goto <L_hq{g}>; *[cpm]:1 (kd_at + (kd_off:4 + kd_i)) = *[cpm]:1 ({src} + kd_i); kd_i = kd_i + 1; goto <L_hp{g}>; <L_hq{g}> kd_off = kd_off + kd_el;")
+        self.n += 1
+
+
+def kdsa_insn(o, x):
+    """KDSA: x = R2 + 1, R2 number"""
+    r2a, r2l = o[1], x[0]
+    K = KD()
+    S = K.s
+    S(f"local r2num:4 = {x[1]};")
+    S("local fc:1 = r0:1 & 0x7f; local kd_j:8 = 0; local kd_t:8 = 0; local kd_i:4 = 0; local kd_sh:8 = 0; local kd_b:1 = 0; local kd_n:8 = 0; local kd_fs:8 = 0; local kd_pad:8 = 0; "
+      "local kd_op:1 = 0; local kd_ph:1 = 0; local kd_el:8 = 0; local kd_dl:8 = 0; local kd_hl:8 = 0; local kd_h:1 = 0; local kd_ml:8 = 0; local kd_hs:8 = 0; "
+      "local kd_hn:8 = 0; local kd_at:4 = 0; local kd_off:8 = 0; local kd_ok:1 = 0; local kd_nb:4 = 0; local kd_cc:1 = 0; local kd_hph:1 = 0;")
+    S("if (fc != 0) goto <L_fn>;")
+    mask = 0
+    for c in [0] + sorted(KDSA_FC):
+        mask |= 1 << (127 - c)
+    S(f"*:8 r1 = {mask >> 64:#x}:8; *:8 (r1 + 8) = {mask & ((1 << 64) - 1):#x}:8; cc = 0; goto <L_done>;")
+    S("<L_fn> if (((r2num & 1) == 0) && (r2num != 0)) goto <L_rok>; trap_specification(); goto <L_done>;\n<L_rok>")
+    for fc, (kind, cn) in sorted(KDSA_FC.items()):
+        c, n, fs = KDSA_CURVE[cn]
+        opn = {"V": 1, "S": 2, "EV": 3, "ES": 4}[kind]
+        S(f"if (fc != {fc}) goto <L_kf{fc}>; kd_op = {opn}; kd_n = {n}; kd_fs = {fs}; kd_ok = 1; kd_el = {n}; ep_nb = {c['n'].bit_length() if kind in ('V', 'S') else (255 if cn == 'Ed25519' else 448)}; ")
+        S(curve_stmts(c))
+        if kind in ("EV", "ES"):
+            ed448 = cn == "Ed448"
+            S(f"kd_dl = {10 if ed448 else 0}; kd_hl = {114 if ed448 else 64}; kd_h = {1 if ed448 else 0}; kd_nb = {448 if ed448 else 255};")
+            if ed448:
+                S(const_stmts("ep_m1", (1 << 448) - 4) + " " + const_stmts("ep_m2", 1 << 447))
+            else:
+                S(const_stmts("ep_m1", (1 << 254) - 8) + " " + const_stmts("ep_m2", 1 << 254))
+        S(f"<L_kf{fc}>")
+    S("if (kd_ok != 0) goto <L_kv>; trap_specification(); goto <L_done>;\n<L_kv> kd_pad = kd_fs - kd_n; ep_st = 0;")
+    S("if (kd_op == 1) goto <L_kver>; if (kd_op == 2) goto <L_ksig>; if (kd_op == 3) goto <L_kev>; goto <L_kes>;")
+    # ---- ECDSA verify
+    S("<L_kver> ")
+    S(load_be("ep_r", "(r1 + kd_pad)", "kd_n", "k1"))
+    S(load_be("ep_s", "(r1 + kd_fs + kd_pad)", "kd_n", "k2"))
+    S(load_be("ep_e", "(r1 + (2 * kd_fs) + kd_pad)", "kd_n", "k3"))
+    S(load_be("ep_x2", "(r1 + (3 * kd_fs) + kd_pad)", "kd_n", "k4"))
+    S(load_be("ep_y2", "(r1 + (4 * kd_fs) + kd_pad)", "kd_n", "k5"))
+    S("ep_mode = 3; kd_ph = 1; goto <L_kdrun>;")
+    S("<L_kp1> cc = ep_st; goto <L_done>;")
+    # ---- ECDSA sign
+    S("<L_ksig> ")
+    S(load_be("ep_e", "(r1 + (2 * kd_fs) + kd_pad)", "kd_n", "k6"))
+    S(load_be("ep_dd", "(r1 + (3 * kd_fs) + kd_pad)", "kd_n", "k7"))
+    S(load_be("ep_kk", "(r1 + (4 * kd_fs) + kd_pad)", "kd_n", "k8"))
+    S("if (ep_dd == 0) goto <L_ks1>; if (ep_dd < ep_n) goto <L_ks2>; <L_ks1> cc = 1; goto <L_done>;\n<L_ks2> ep_rnd = 0; if ((r0 & 0x80) == 0) goto <L_ks3>;")
+    S("if (ep_kk == 0) goto <L_ks4>; if (ep_kk < ep_n) goto <L_ks5>; <L_ks4> cc = 2; goto <L_done>;\n<L_ks3> ep_rnd = 1; kd_j = 0; <L_ks6> if (kd_j >= kd_n) goto <L_ks5>; kd_b = s390_trng_byte(); kd_sh = kd_j * 8; ep_tm = zext(kd_b); ep_tm = ep_tm << kd_sh; ep_kk = ep_kk ^ ep_tm; kd_j = kd_j + 1; goto <L_ks6>;")
+    S("<L_ks5> ep_mode = 4; kd_ph = 2; goto <L_kdrun>;")
+    S("<L_kp2> ")
+    S(store_be("ep_r", "(r1 + kd_pad)", "kd_n", "k9"))
+    S(store_be("ep_s", "(r1 + kd_fs + kd_pad)", "kd_n", "ka"))
+    S("cc = 0; goto <L_done>;")
+    # ---- EdDSA verify
+    S("<L_kev> kd_pad = kd_fs - kd_el; ")
+    S(load_be("ep_s", "(r1 + kd_fs + kd_pad)", "kd_el", "kb"))
+    K.ram_to_cpm(CPM_AENC, "r1 + (2 * kd_fs) + kd_pad", "kd_el", rev=True)
+    K.ram_to_cpm(CPM_RENC, "r1 + kd_pad", "kd_el", rev=True)
+    S(load_be("ep_t1", "(r1 + (2 * kd_fs) + kd_pad)", "kd_el", "kc"))
+    S("kd_sh = (kd_el * 8) - 1; ep_t0 = ep_t1 >> kd_sh; ep_sg = ep_t0:1; ep_t0 = ep_t0 << kd_sh; ep_y1 = ep_t1 - ep_t0; ep_mode = 6; kd_ph = 10; goto <L_kdrun>;")
+    S("<L_kp10> if (ep_ok != 0) goto <L_kv1>; cc = 1; goto <L_done>;\n<L_kv1> ep_ax = ep_x1; ep_ay = ep_y1; ")
+    S(load_be("ep_t1", "(r1 + kd_pad)", "kd_el", "kd"))
+    S("kd_sh = (kd_el * 8) - 1; ep_t0 = ep_t1 >> kd_sh; ep_sg = ep_t0:1; ep_t0 = ep_t0 << kd_sh; ep_y1 = ep_t1 - ep_t0; ep_mode = 6; kd_ph = 11; goto <L_kdrun>;")
+    S("<L_kp11> if (ep_ok != 0) goto <L_kv2>; cc = 2; goto <L_done>;\n<L_kv2> ep_cx = ep_x1; ep_cy = ep_y1; if (ep_s == 0) goto <L_kv3>; if (ep_s < ep_n) goto <L_kv4>; <L_kv3> cc = 2; goto <L_done>;")
+    S("<L_kv4> kd_ml = r2l_PLACEHOLDER;")
+    S("kd_at = " + f"{CPM_MOFF:#x}; ")
+    K.ram_to_cpm(f"{CPM_MOFF:#x}", f"{r2a}", "kd_ml")
+    K.hash_input([CPM_RENC, CPM_AENC], "kd_dl + (2 * kd_el)")
+    S("kd_hph = 12; goto <L_kdhash>;")
+    S("<L_kp12> ")
+    K.le_load("ep_pr", f"{CPM_DIG:#x}", "kd_hl")
+    S("ep_mode = 7; kd_ph = 13; goto <L_kdrun>;")
+    S("<L_kp13> ep_e = ep_r; ep_x1 = ep_ax; ep_y1 = ep_ay; ep_x2 = ep_cx; ep_y2 = ep_cy; ep_mode = 5; kd_ph = 14; goto <L_kdrun>;")
+    S("<L_kp14> if (ep_ok != 0) goto <L_kv5>; cc = 2; goto <L_done>;\n<L_kv5> cc = 0; goto <L_done>;")
+    # ---- EdDSA sign
+    S("<L_kes> kd_pad = kd_fs - kd_el; kd_ml = r2l_PLACEHOLDER;")
+    K.ram_to_cpm(f"{CPM_MOFF:#x}", f"{r2a}", "kd_ml")
+    K.ram_to_cpm(f"{CPM_MOFF:#x} - kd_el:4", "r1 + (2 * kd_fs) + kd_pad", "kd_el")
+    S(f"kd_hs = {CPM_MOFF:#x} - kd_el; kd_hn = kd_el; kd_hph = 20; goto <L_kdhash>;")
+    S("<L_kp20> ")
+    K.le_load("ep_dd", f"{CPM_DIG:#x}", "kd_el")
+    S("ep_dd = ep_dd & ep_m1; ep_dd = ep_dd | ep_m2; ")
+    K.cp_cpm(CPM_PREF, f"{CPM_DIG:#x} + kd_el:4", "kd_el")
+    S("ep_x1 = ep_gx; ep_y1 = ep_gy; ep_k = ep_dd; ep_nb = kd_nb; ep_mode = 1; kd_ph = 21; goto <L_kdrun>;")
+    S("<L_kp21> ")
+    K.encode_point(CPM_AENC)
+    K.hash_input([CPM_PREF], "kd_dl + kd_el")
+    S("kd_hph = 22; goto <L_kdhash>;")
+    S("<L_kp22> ")
+    K.le_load("ep_pr", f"{CPM_DIG:#x}", "kd_hl")
+    S("ep_mode = 7; kd_ph = 23; goto <L_kdrun>;")
+    S("<L_kp23> ep_u1 = ep_r; ep_x1 = ep_gx; ep_y1 = ep_gy; ep_k = ep_r; ep_nb = kd_nb; ep_mode = 1; kd_ph = 24; goto <L_kdrun>;")
+    S("<L_kp24> ")
+    K.encode_point(CPM_RENC)
+    K.hash_input([CPM_RENC, CPM_AENC], "kd_dl + (2 * kd_el)")
+    S("kd_hph = 25; goto <L_kdhash>;")
+    S("<L_kp25> ")
+    K.le_load("ep_pr", f"{CPM_DIG:#x}", "kd_hl")
+    S("ep_mode = 7; kd_ph = 26; goto <L_kdrun>;")
+    S("<L_kp26> ep_k = ep_r; ep_r = ep_u1; ep_mode = 9; kd_ph = 27; goto <L_kdrun>;")
+    S("<L_kp27> ")
+    K.cpm_to_ram("r1 + kd_pad", str(CPM_RENC), "kd_el", rev=True)
+    S(store_be("ep_s", "(r1 + kd_fs + kd_pad)", "kd_el", "ke"))
+    S("cc = 0; goto <L_done>;")
+    # ---- the engines
+    S("<L_kdrun> build cp_ecc;")
+    S("if (kd_ph == 1) goto <L_kp1>; if (kd_ph == 2) goto <L_kp2>; if (kd_ph == 10) goto <L_kp10>; if (kd_ph == 11) goto <L_kp11>; if (kd_ph == 13) goto <L_kp13>; if (kd_ph == 14) goto <L_kp14>;")
+    S("if (kd_ph == 21) goto <L_kp21>; if (kd_ph == 23) goto <L_kp23>; if (kd_ph == 24) goto <L_kp24>; if (kd_ph == 26) goto <L_kp26>; goto <L_kp27>;")
+    iv = " ".join(f"*[cpm]:8 ({0 + 8 * i:#x}:4) = {w:#x};" for i, w in enumerate(IV512))
+    S(f"<L_kdhash> cpa = kd_hs; cpl = kd_hn; cpfin = 1; cpsm = 1; cpbh = 0; cpbl = kd_hn * 8; if (kd_h != 0) goto <L_kdsh>; {iv} build cp_sha512; kd_i = 0; "
+      f"<L_kdc> *[cpm]:8 ({CPM_DIG:#x}:4 + kd_i) = *[cpm]:8 (kd_i); kd_i = kd_i + 8; if (kd_i < 64) goto <L_kdc>; goto <L_kdhd>;")
+    S(f"<L_kdsh> kd_i = 0; <L_kdz> *[cpm]:8 (kd_i) = 0; kd_i = kd_i + 8; if (kd_i < 200) goto <L_kdz>; cprt = 136; cpdm = 0x1f; cpps = 0; cpmd = 1; cpo = {CPM_DIG:#x}; cpn = 114; build cp_keccak;")
+    S("<L_kdhd> cpsm = 0; kd_ph = kd_hph; if (kd_ph == 12) goto <L_kp12>; if (kd_ph == 20) goto <L_kp20>; if (kd_ph == 22) goto <L_kp22>; if (kd_ph == 25) goto <L_kp25>; goto <L_kp26>;")
+    S("<L_done>")
+    return "\n".join(K.t).replace("r2l_PLACEHOLDER", r2l)

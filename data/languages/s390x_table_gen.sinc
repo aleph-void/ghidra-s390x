@@ -228,7 +228,6 @@ define pcodeop s390_ipte;
 define pcodeop s390_irbm;
 define pcodeop s390_iske;
 define pcodeop s390_ivsk;
-define pcodeop s390_kdsa;
 define pcodeop s390_lasp;
 define pcodeop s390_lbear;
 define pcodeop s390_lcctl;
@@ -61946,8 +61945,177 @@ rel32_16_16: tgt is g32_s16_16 [ tgt = inst_start + 2 * g32_s16_16; ] { export *
 :NNPA  is g32_u0_4=0xb & g32_u4_4=0x9 & g32_u8_4=0x3 & g32_u12_4=0xb & g32_u16_4=0x0 & g32_u20_4=0x0 & g32_u24_4=0x0 & g32_u28_4=0x0 {
   s390_nnpa();
 }
-:KDSA g32_gpr24_4,g32_gpr28_4 is g32_u0_4=0xb & g32_u4_4=0x9 & g32_u8_4=0x3 & g32_u12_4=0xa & g32_u16_4=0x0 & g32_u20_4=0x0 & g32_gpr24_4 & g32_gpr28_4 {
-  s390_kdsa(g32_gpr24_4, g32_gpr28_4);
+:KDSA g32_gpr24_4,g32_gpr28_4 is g32_u0_4=0xb & g32_u4_4=0x9 & g32_u8_4=0x3 & g32_u12_4=0xa & g32_u16_4=0x0 & g32_u20_4=0x0 & g32_gpr24_4 & g32_gpr28_4 & g32_gpro28_4 & g32_u28_4 & cp_ecc & cp_sha512 & cp_keccak {
+  local r2num:4 = g32_u28_4;
+  local fc:1 = r0:1 & 0x7f; local kd_j:8 = 0; local kd_t:8 = 0; local kd_i:4 = 0; local kd_sh:8 = 0; local kd_b:1 = 0; local kd_n:8 = 0; local kd_fs:8 = 0; local kd_pad:8 = 0; local kd_op:1 = 0; local kd_ph:1 = 0; local kd_el:8 = 0; local kd_dl:8 = 0; local kd_hl:8 = 0; local kd_h:1 = 0; local kd_ml:8 = 0; local kd_hs:8 = 0; local kd_hn:8 = 0; local kd_at:4 = 0; local kd_off:8 = 0; local kd_ok:1 = 0; local kd_nb:4 = 0; local kd_cc:1 = 0; local kd_hph:1 = 0;
+  if (fc != 0) goto <L_fn>;
+  *:8 r1 = 0xf070000088880000:8; *:8 (r1 + 8) = 0x0:8; cc = 0; cc_sync(); goto <L_done>;
+  <L_fn> if (((r2num & 1) == 0) && (r2num != 0)) goto <L_rok>; trap_specification(); goto <L_done>;
+  <L_rok>
+  if (fc != 1) goto <L_kf1>; kd_op = 1; kd_n = 32; kd_fs = 32; kd_ok = 1; kd_el = 32; ep_nb = 256; 
+  ep_kind = 0; ep_p = 0xffffffff00000001; ep_p = (ep_p << 64) | 0x0; ep_p = (ep_p << 64) | 0xffffffff; ep_p = (ep_p << 64) | 0xffffffffffffffff; ep_a = 0xffffffff00000001; ep_a = (ep_a << 64) | 0x0; ep_a = (ep_a << 64) | 0xffffffff; ep_a = (ep_a << 64) | 0xfffffffffffffffc; ep_b = 0x5ac635d8aa3a93e7; ep_b = (ep_b << 64) | 0xb3ebbd55769886bc; ep_b = (ep_b << 64) | 0x651d06b0cc53b0f6; ep_b = (ep_b << 64) | 0x3bce3c3e27d2604b; ep_b3 = 0x1052a18afeafbbb6; ep_b3 = (ep_b3 << 64) | 0x1bc3380063c99435; ep_b3 = (ep_b3 << 64) | 0x2f57141164fb12e2; ep_b3 = (ep_b3 << 64) | 0xb36ab4ba777720e2; ep_n = 0xffffffff00000000; ep_n = (ep_n << 64) | 0xffffffffffffffff; ep_n = (ep_n << 64) | 0xbce6faada7179e84; ep_n = (ep_n << 64) | 0xf3b9cac2fc632551; ep_gx = 0x6b17d1f2e12c4247; ep_gx = (ep_gx << 64) | 0xf8bce6e563a440f2; ep_gx = (ep_gx << 64) | 0x77037d812deb33a0; ep_gx = (ep_gx << 64) | 0xf4a13945d898c296; ep_gy = 0x4fe342e2fe1a7f9b; ep_gy = (ep_gy << 64) | 0x8ee7eb4a7c0f9e16; ep_gy = (ep_gy << 64) | 0x2bce33576b315ece; ep_gy = (ep_gy << 64) | 0xcbb6406837bf51f5;
+  <L_kf1>
+  if (fc != 2) goto <L_kf2>; kd_op = 1; kd_n = 48; kd_fs = 48; kd_ok = 1; kd_el = 48; ep_nb = 384; 
+  ep_kind = 0; ep_p = 0xffffffffffffffff; ep_p = (ep_p << 64) | 0xffffffffffffffff; ep_p = (ep_p << 64) | 0xffffffffffffffff; ep_p = (ep_p << 64) | 0xfffffffffffffffe; ep_p = (ep_p << 64) | 0xffffffff00000000; ep_p = (ep_p << 64) | 0xffffffff; ep_a = 0xffffffffffffffff; ep_a = (ep_a << 64) | 0xffffffffffffffff; ep_a = (ep_a << 64) | 0xffffffffffffffff; ep_a = (ep_a << 64) | 0xfffffffffffffffe; ep_a = (ep_a << 64) | 0xffffffff00000000; ep_a = (ep_a << 64) | 0xfffffffc; ep_b = 0xb3312fa7e23ee7e4; ep_b = (ep_b << 64) | 0x988e056be3f82d19; ep_b = (ep_b << 64) | 0x181d9c6efe814112; ep_b = (ep_b << 64) | 0x314088f5013875a; ep_b = (ep_b << 64) | 0xc656398d8a2ed19d; ep_b = (ep_b << 64) | 0x2a85c8edd3ec2aef; ep_b3 = 0x19938ef7a6bcb7ad; ep_b3 = (ep_b3 << 64) | 0xc9aa1043abe8874b; ep_b3 = (ep_b3 << 64) | 0x4858d54cfb83c336; ep_b3 = (ep_b3 << 64) | 0x93c19adf03a9612; ep_b3 = (ep_b3 << 64) | 0x5302acaa9e8c74d7; ep_b3 = (ep_b3 << 64) | 0x7f915ac77bc480cf; ep_n = 0xffffffffffffffff; ep_n = (ep_n << 64) | 0xffffffffffffffff; ep_n = (ep_n << 64) | 0xffffffffffffffff; ep_n = (ep_n << 64) | 0xc7634d81f4372ddf; ep_n = (ep_n << 64) | 0x581a0db248b0a77a; ep_n = (ep_n << 64) | 0xecec196accc52973; ep_gx = 0xaa87ca22be8b0537; ep_gx = (ep_gx << 64) | 0x8eb1c71ef320ad74; ep_gx = (ep_gx << 64) | 0x6e1d3b628ba79b98; ep_gx = (ep_gx << 64) | 0x59f741e082542a38; ep_gx = (ep_gx << 64) | 0x5502f25dbf55296c; ep_gx = (ep_gx << 64) | 0x3a545e3872760ab7; ep_gy = 0x3617de4a96262c6f; ep_gy = (ep_gy << 64) | 0x5d9e98bf9292dc29; ep_gy = (ep_gy << 64) | 0xf8f41dbd289a147c; ep_gy = (ep_gy << 64) | 0xe9da3113b5f0b8c0; ep_gy = (ep_gy << 64) | 0xa60b1ce1d7e819d; ep_gy = (ep_gy << 64) | 0x7a431d7c90ea0e5f;
+  <L_kf2>
+  if (fc != 3) goto <L_kf3>; kd_op = 1; kd_n = 66; kd_fs = 80; kd_ok = 1; kd_el = 66; ep_nb = 521; 
+  ep_kind = 0; ep_p = 0x1ff; ep_p = (ep_p << 64) | 0xffffffffffffffff; ep_p = (ep_p << 64) | 0xffffffffffffffff; ep_p = (ep_p << 64) | 0xffffffffffffffff; ep_p = (ep_p << 64) | 0xffffffffffffffff; ep_p = (ep_p << 64) | 0xffffffffffffffff; ep_p = (ep_p << 64) | 0xffffffffffffffff; ep_p = (ep_p << 64) | 0xffffffffffffffff; ep_p = (ep_p << 64) | 0xffffffffffffffff; ep_a = 0x1ff; ep_a = (ep_a << 64) | 0xffffffffffffffff; ep_a = (ep_a << 64) | 0xffffffffffffffff; ep_a = (ep_a << 64) | 0xffffffffffffffff; ep_a = (ep_a << 64) | 0xffffffffffffffff; ep_a = (ep_a << 64) | 0xffffffffffffffff; ep_a = (ep_a << 64) | 0xffffffffffffffff; ep_a = (ep_a << 64) | 0xffffffffffffffff; ep_a = (ep_a << 64) | 0xfffffffffffffffc; ep_b = 0x51; ep_b = (ep_b << 64) | 0x953eb9618e1c9a1f; ep_b = (ep_b << 64) | 0x929a21a0b68540ee; ep_b = (ep_b << 64) | 0xa2da725b99b315f3; ep_b = (ep_b << 64) | 0xb8b489918ef109e1; ep_b = (ep_b << 64) | 0x56193951ec7e937b; ep_b = (ep_b << 64) | 0x1652c0bd3bb1bf07; ep_b = (ep_b << 64) | 0x3573df883d2c34f1; ep_b = (ep_b << 64) | 0xef451fd46b503f00; ep_b3 = 0xf4; ep_b3 = (ep_b3 << 64) | 0xbfbc2c24aa55ce5e; ep_b3 = (ep_b3 << 64) | 0xb7ce64e2238fc2cb; ep_b3 = (ep_b3 << 64) | 0xe88f5712cd1941db; ep_b3 = (ep_b3 << 64) | 0x2a1d9cb4acd31da4; ep_b3 = (ep_b3 << 64) | 0x24babf5c57bba71; ep_b3 = (ep_b3 << 64) | 0x42f84237b3153d15; ep_b3 = (ep_b3 << 64) | 0xa05b9e98b7849ed5; ep_b3 = (ep_b3 << 64) | 0xcdcf5f7d41f0bd00; ep_n = 0x1ff; ep_n = (ep_n << 64) | 0xffffffffffffffff; ep_n = (ep_n << 64) | 0xffffffffffffffff; ep_n = (ep_n << 64) | 0xffffffffffffffff; ep_n = (ep_n << 64) | 0xfffffffffffffffa; ep_n = (ep_n << 64) | 0x51868783bf2f966b; ep_n = (ep_n << 64) | 0x7fcc0148f709a5d0; ep_n = (ep_n << 64) | 0x3bb5c9b8899c47ae; ep_n = (ep_n << 64) | 0xbb6fb71e91386409; ep_gx = 0xc6; ep_gx = (ep_gx << 64) | 0x858e06b70404e9cd; ep_gx = (ep_gx << 64) | 0x9e3ecb662395b442; ep_gx = (ep_gx << 64) | 0x9c648139053fb521; ep_gx = (ep_gx << 64) | 0xf828af606b4d3dba; ep_gx = (ep_gx << 64) | 0xa14b5e77efe75928; ep_gx = (ep_gx << 64) | 0xfe1dc127a2ffa8de; ep_gx = (ep_gx << 64) | 0x3348b3c1856a429b; ep_gx = (ep_gx << 64) | 0xf97e7e31c2e5bd66; ep_gy = 0x118; ep_gy = (ep_gy << 64) | 0x39296a789a3bc004; ep_gy = (ep_gy << 64) | 0x5c8a5fb42c7d1bd9; ep_gy = (ep_gy << 64) | 0x98f54449579b4468; ep_gy = (ep_gy << 64) | 0x17afbd17273e662c; ep_gy = (ep_gy << 64) | 0x97ee72995ef42640; ep_gy = (ep_gy << 64) | 0xc550b9013fad0761; ep_gy = (ep_gy << 64) | 0x353c7086a272c240; ep_gy = (ep_gy << 64) | 0x88be94769fd16650;
+  <L_kf3>
+  if (fc != 9) goto <L_kf9>; kd_op = 2; kd_n = 32; kd_fs = 32; kd_ok = 1; kd_el = 32; ep_nb = 256; 
+  ep_kind = 0; ep_p = 0xffffffff00000001; ep_p = (ep_p << 64) | 0x0; ep_p = (ep_p << 64) | 0xffffffff; ep_p = (ep_p << 64) | 0xffffffffffffffff; ep_a = 0xffffffff00000001; ep_a = (ep_a << 64) | 0x0; ep_a = (ep_a << 64) | 0xffffffff; ep_a = (ep_a << 64) | 0xfffffffffffffffc; ep_b = 0x5ac635d8aa3a93e7; ep_b = (ep_b << 64) | 0xb3ebbd55769886bc; ep_b = (ep_b << 64) | 0x651d06b0cc53b0f6; ep_b = (ep_b << 64) | 0x3bce3c3e27d2604b; ep_b3 = 0x1052a18afeafbbb6; ep_b3 = (ep_b3 << 64) | 0x1bc3380063c99435; ep_b3 = (ep_b3 << 64) | 0x2f57141164fb12e2; ep_b3 = (ep_b3 << 64) | 0xb36ab4ba777720e2; ep_n = 0xffffffff00000000; ep_n = (ep_n << 64) | 0xffffffffffffffff; ep_n = (ep_n << 64) | 0xbce6faada7179e84; ep_n = (ep_n << 64) | 0xf3b9cac2fc632551; ep_gx = 0x6b17d1f2e12c4247; ep_gx = (ep_gx << 64) | 0xf8bce6e563a440f2; ep_gx = (ep_gx << 64) | 0x77037d812deb33a0; ep_gx = (ep_gx << 64) | 0xf4a13945d898c296; ep_gy = 0x4fe342e2fe1a7f9b; ep_gy = (ep_gy << 64) | 0x8ee7eb4a7c0f9e16; ep_gy = (ep_gy << 64) | 0x2bce33576b315ece; ep_gy = (ep_gy << 64) | 0xcbb6406837bf51f5;
+  <L_kf9>
+  if (fc != 10) goto <L_kf10>; kd_op = 2; kd_n = 48; kd_fs = 48; kd_ok = 1; kd_el = 48; ep_nb = 384; 
+  ep_kind = 0; ep_p = 0xffffffffffffffff; ep_p = (ep_p << 64) | 0xffffffffffffffff; ep_p = (ep_p << 64) | 0xffffffffffffffff; ep_p = (ep_p << 64) | 0xfffffffffffffffe; ep_p = (ep_p << 64) | 0xffffffff00000000; ep_p = (ep_p << 64) | 0xffffffff; ep_a = 0xffffffffffffffff; ep_a = (ep_a << 64) | 0xffffffffffffffff; ep_a = (ep_a << 64) | 0xffffffffffffffff; ep_a = (ep_a << 64) | 0xfffffffffffffffe; ep_a = (ep_a << 64) | 0xffffffff00000000; ep_a = (ep_a << 64) | 0xfffffffc; ep_b = 0xb3312fa7e23ee7e4; ep_b = (ep_b << 64) | 0x988e056be3f82d19; ep_b = (ep_b << 64) | 0x181d9c6efe814112; ep_b = (ep_b << 64) | 0x314088f5013875a; ep_b = (ep_b << 64) | 0xc656398d8a2ed19d; ep_b = (ep_b << 64) | 0x2a85c8edd3ec2aef; ep_b3 = 0x19938ef7a6bcb7ad; ep_b3 = (ep_b3 << 64) | 0xc9aa1043abe8874b; ep_b3 = (ep_b3 << 64) | 0x4858d54cfb83c336; ep_b3 = (ep_b3 << 64) | 0x93c19adf03a9612; ep_b3 = (ep_b3 << 64) | 0x5302acaa9e8c74d7; ep_b3 = (ep_b3 << 64) | 0x7f915ac77bc480cf; ep_n = 0xffffffffffffffff; ep_n = (ep_n << 64) | 0xffffffffffffffff; ep_n = (ep_n << 64) | 0xffffffffffffffff; ep_n = (ep_n << 64) | 0xc7634d81f4372ddf; ep_n = (ep_n << 64) | 0x581a0db248b0a77a; ep_n = (ep_n << 64) | 0xecec196accc52973; ep_gx = 0xaa87ca22be8b0537; ep_gx = (ep_gx << 64) | 0x8eb1c71ef320ad74; ep_gx = (ep_gx << 64) | 0x6e1d3b628ba79b98; ep_gx = (ep_gx << 64) | 0x59f741e082542a38; ep_gx = (ep_gx << 64) | 0x5502f25dbf55296c; ep_gx = (ep_gx << 64) | 0x3a545e3872760ab7; ep_gy = 0x3617de4a96262c6f; ep_gy = (ep_gy << 64) | 0x5d9e98bf9292dc29; ep_gy = (ep_gy << 64) | 0xf8f41dbd289a147c; ep_gy = (ep_gy << 64) | 0xe9da3113b5f0b8c0; ep_gy = (ep_gy << 64) | 0xa60b1ce1d7e819d; ep_gy = (ep_gy << 64) | 0x7a431d7c90ea0e5f;
+  <L_kf10>
+  if (fc != 11) goto <L_kf11>; kd_op = 2; kd_n = 66; kd_fs = 80; kd_ok = 1; kd_el = 66; ep_nb = 521; 
+  ep_kind = 0; ep_p = 0x1ff; ep_p = (ep_p << 64) | 0xffffffffffffffff; ep_p = (ep_p << 64) | 0xffffffffffffffff; ep_p = (ep_p << 64) | 0xffffffffffffffff; ep_p = (ep_p << 64) | 0xffffffffffffffff; ep_p = (ep_p << 64) | 0xffffffffffffffff; ep_p = (ep_p << 64) | 0xffffffffffffffff; ep_p = (ep_p << 64) | 0xffffffffffffffff; ep_p = (ep_p << 64) | 0xffffffffffffffff; ep_a = 0x1ff; ep_a = (ep_a << 64) | 0xffffffffffffffff; ep_a = (ep_a << 64) | 0xffffffffffffffff; ep_a = (ep_a << 64) | 0xffffffffffffffff; ep_a = (ep_a << 64) | 0xffffffffffffffff; ep_a = (ep_a << 64) | 0xffffffffffffffff; ep_a = (ep_a << 64) | 0xffffffffffffffff; ep_a = (ep_a << 64) | 0xffffffffffffffff; ep_a = (ep_a << 64) | 0xfffffffffffffffc; ep_b = 0x51; ep_b = (ep_b << 64) | 0x953eb9618e1c9a1f; ep_b = (ep_b << 64) | 0x929a21a0b68540ee; ep_b = (ep_b << 64) | 0xa2da725b99b315f3; ep_b = (ep_b << 64) | 0xb8b489918ef109e1; ep_b = (ep_b << 64) | 0x56193951ec7e937b; ep_b = (ep_b << 64) | 0x1652c0bd3bb1bf07; ep_b = (ep_b << 64) | 0x3573df883d2c34f1; ep_b = (ep_b << 64) | 0xef451fd46b503f00; ep_b3 = 0xf4; ep_b3 = (ep_b3 << 64) | 0xbfbc2c24aa55ce5e; ep_b3 = (ep_b3 << 64) | 0xb7ce64e2238fc2cb; ep_b3 = (ep_b3 << 64) | 0xe88f5712cd1941db; ep_b3 = (ep_b3 << 64) | 0x2a1d9cb4acd31da4; ep_b3 = (ep_b3 << 64) | 0x24babf5c57bba71; ep_b3 = (ep_b3 << 64) | 0x42f84237b3153d15; ep_b3 = (ep_b3 << 64) | 0xa05b9e98b7849ed5; ep_b3 = (ep_b3 << 64) | 0xcdcf5f7d41f0bd00; ep_n = 0x1ff; ep_n = (ep_n << 64) | 0xffffffffffffffff; ep_n = (ep_n << 64) | 0xffffffffffffffff; ep_n = (ep_n << 64) | 0xffffffffffffffff; ep_n = (ep_n << 64) | 0xfffffffffffffffa; ep_n = (ep_n << 64) | 0x51868783bf2f966b; ep_n = (ep_n << 64) | 0x7fcc0148f709a5d0; ep_n = (ep_n << 64) | 0x3bb5c9b8899c47ae; ep_n = (ep_n << 64) | 0xbb6fb71e91386409; ep_gx = 0xc6; ep_gx = (ep_gx << 64) | 0x858e06b70404e9cd; ep_gx = (ep_gx << 64) | 0x9e3ecb662395b442; ep_gx = (ep_gx << 64) | 0x9c648139053fb521; ep_gx = (ep_gx << 64) | 0xf828af606b4d3dba; ep_gx = (ep_gx << 64) | 0xa14b5e77efe75928; ep_gx = (ep_gx << 64) | 0xfe1dc127a2ffa8de; ep_gx = (ep_gx << 64) | 0x3348b3c1856a429b; ep_gx = (ep_gx << 64) | 0xf97e7e31c2e5bd66; ep_gy = 0x118; ep_gy = (ep_gy << 64) | 0x39296a789a3bc004; ep_gy = (ep_gy << 64) | 0x5c8a5fb42c7d1bd9; ep_gy = (ep_gy << 64) | 0x98f54449579b4468; ep_gy = (ep_gy << 64) | 0x17afbd17273e662c; ep_gy = (ep_gy << 64) | 0x97ee72995ef42640; ep_gy = (ep_gy << 64) | 0xc550b9013fad0761; ep_gy = (ep_gy << 64) | 0x353c7086a272c240; ep_gy = (ep_gy << 64) | 0x88be94769fd16650;
+  <L_kf11>
+  if (fc != 32) goto <L_kf32>; kd_op = 3; kd_n = 32; kd_fs = 32; kd_ok = 1; kd_el = 32; ep_nb = 255; 
+  ep_kind = 1; ep_p = 0x7fffffffffffffff; ep_p = (ep_p << 64) | 0xffffffffffffffff; ep_p = (ep_p << 64) | 0xffffffffffffffff; ep_p = (ep_p << 64) | 0xffffffffffffffed; ep_a = 0x7fffffffffffffff; ep_a = (ep_a << 64) | 0xffffffffffffffff; ep_a = (ep_a << 64) | 0xffffffffffffffff; ep_a = (ep_a << 64) | 0xffffffffffffffec; ep_d = 0x52036cee2b6ffe73; ep_d = (ep_d << 64) | 0x8cc740797779e898; ep_d = (ep_d << 64) | 0x700a4d4141d8ab; ep_d = (ep_d << 64) | 0x75eb4dca135978a3; ep_n = 0x1000000000000000; ep_n = (ep_n << 64) | 0x0; ep_n = (ep_n << 64) | 0x14def9dea2f79cd6; ep_n = (ep_n << 64) | 0x5812631a5cf5d3ed; ep_gx = 0x216936d3cd6e53fe; ep_gx = (ep_gx << 64) | 0xc0a4e231fdd6dc5c; ep_gx = (ep_gx << 64) | 0x692cc7609525a7b2; ep_gx = (ep_gx << 64) | 0xc9562d608f25d51a; ep_gy = 0x6666666666666666; ep_gy = (ep_gy << 64) | 0x6666666666666666; ep_gy = (ep_gy << 64) | 0x6666666666666666; ep_gy = (ep_gy << 64) | 0x6666666666666658; ep_sq = 0xfffffffffffffff; ep_sq = (ep_sq << 64) | 0xffffffffffffffff; ep_sq = (ep_sq << 64) | 0xffffffffffffffff; ep_sq = (ep_sq << 64) | 0xfffffffffffffffe; ep_sq2 = 0x2b8324804fc1df0b; ep_sq2 = (ep_sq2 << 64) | 0x2b4d00993dfbd7a7; ep_sq2 = (ep_sq2 << 64) | 0x2f431806ad2fe478; ep_sq2 = (ep_sq2 << 64) | 0xc4ee1b274a0ea0b0; ep_k25 = 1;
+  kd_dl = 0; kd_hl = 64; kd_h = 0; kd_nb = 255;
+  ep_m1 = 0x3fffffffffffffff; ep_m1 = (ep_m1 << 64) | 0xffffffffffffffff; ep_m1 = (ep_m1 << 64) | 0xffffffffffffffff; ep_m1 = (ep_m1 << 64) | 0xfffffffffffffff8; ep_m2 = 0x4000000000000000; ep_m2 = (ep_m2 << 64) | 0x0; ep_m2 = (ep_m2 << 64) | 0x0; ep_m2 = (ep_m2 << 64) | 0x0;
+  <L_kf32>
+  if (fc != 36) goto <L_kf36>; kd_op = 3; kd_n = 57; kd_fs = 64; kd_ok = 1; kd_el = 57; ep_nb = 448; 
+  ep_kind = 1; ep_p = 0xffffffffffffffff; ep_p = (ep_p << 64) | 0xffffffffffffffff; ep_p = (ep_p << 64) | 0xffffffffffffffff; ep_p = (ep_p << 64) | 0xfffffffeffffffff; ep_p = (ep_p << 64) | 0xffffffffffffffff; ep_p = (ep_p << 64) | 0xffffffffffffffff; ep_p = (ep_p << 64) | 0xffffffffffffffff; ep_a = 0x1; ep_d = 0xffffffffffffffff; ep_d = (ep_d << 64) | 0xffffffffffffffff; ep_d = (ep_d << 64) | 0xffffffffffffffff; ep_d = (ep_d << 64) | 0xfffffffeffffffff; ep_d = (ep_d << 64) | 0xffffffffffffffff; ep_d = (ep_d << 64) | 0xffffffffffffffff; ep_d = (ep_d << 64) | 0xffffffffffff6756; ep_n = 0x3fffffffffffffff; ep_n = (ep_n << 64) | 0xffffffffffffffff; ep_n = (ep_n << 64) | 0xffffffffffffffff; ep_n = (ep_n << 64) | 0xffffffff7cca23e9; ep_n = (ep_n << 64) | 0xc44edb49aed63690; ep_n = (ep_n << 64) | 0x216cc2728dc58f55; ep_n = (ep_n << 64) | 0x2378c292ab5844f3; ep_gx = 0x4f1970c66bed0ded; ep_gx = (ep_gx << 64) | 0x221d15a622bf36da; ep_gx = (ep_gx << 64) | 0x9e146570470f1767; ep_gx = (ep_gx << 64) | 0xea6de324a3d3a464; ep_gx = (ep_gx << 64) | 0x12ae1af72ab66511; ep_gx = (ep_gx << 64) | 0x433b80e18b00938e; ep_gx = (ep_gx << 64) | 0x2626a82bc70cc05e; ep_gy = 0x693f46716eb6bc24; ep_gy = (ep_gy << 64) | 0x8876203756c9c762; ep_gy = (ep_gy << 64) | 0x4bea73736ca39840; ep_gy = (ep_gy << 64) | 0x87789c1e05a0c2d7; ep_gy = (ep_gy << 64) | 0x3ad3ff1ce67c39c4; ep_gy = (ep_gy << 64) | 0xfdbd132c4ed7c8ad; ep_gy = (ep_gy << 64) | 0x9808795bf230fa14; ep_sq = 0x3fffffffffffffff; ep_sq = (ep_sq << 64) | 0xffffffffffffffff; ep_sq = (ep_sq << 64) | 0xffffffffffffffff; ep_sq = (ep_sq << 64) | 0xffffffffc0000000; ep_sq = (ep_sq << 64) | 0x0; ep_sq = (ep_sq << 64) | 0x0; ep_sq = (ep_sq << 64) | 0x0; ep_sq2 = 0; ep_k25 = 0;
+  kd_dl = 10; kd_hl = 114; kd_h = 1; kd_nb = 448;
+  ep_m1 = 0xffffffffffffffff; ep_m1 = (ep_m1 << 64) | 0xffffffffffffffff; ep_m1 = (ep_m1 << 64) | 0xffffffffffffffff; ep_m1 = (ep_m1 << 64) | 0xffffffffffffffff; ep_m1 = (ep_m1 << 64) | 0xffffffffffffffff; ep_m1 = (ep_m1 << 64) | 0xffffffffffffffff; ep_m1 = (ep_m1 << 64) | 0xfffffffffffffffc; ep_m2 = 0x8000000000000000; ep_m2 = (ep_m2 << 64) | 0x0; ep_m2 = (ep_m2 << 64) | 0x0; ep_m2 = (ep_m2 << 64) | 0x0; ep_m2 = (ep_m2 << 64) | 0x0; ep_m2 = (ep_m2 << 64) | 0x0; ep_m2 = (ep_m2 << 64) | 0x0;
+  <L_kf36>
+  if (fc != 40) goto <L_kf40>; kd_op = 4; kd_n = 32; kd_fs = 32; kd_ok = 1; kd_el = 32; ep_nb = 255; 
+  ep_kind = 1; ep_p = 0x7fffffffffffffff; ep_p = (ep_p << 64) | 0xffffffffffffffff; ep_p = (ep_p << 64) | 0xffffffffffffffff; ep_p = (ep_p << 64) | 0xffffffffffffffed; ep_a = 0x7fffffffffffffff; ep_a = (ep_a << 64) | 0xffffffffffffffff; ep_a = (ep_a << 64) | 0xffffffffffffffff; ep_a = (ep_a << 64) | 0xffffffffffffffec; ep_d = 0x52036cee2b6ffe73; ep_d = (ep_d << 64) | 0x8cc740797779e898; ep_d = (ep_d << 64) | 0x700a4d4141d8ab; ep_d = (ep_d << 64) | 0x75eb4dca135978a3; ep_n = 0x1000000000000000; ep_n = (ep_n << 64) | 0x0; ep_n = (ep_n << 64) | 0x14def9dea2f79cd6; ep_n = (ep_n << 64) | 0x5812631a5cf5d3ed; ep_gx = 0x216936d3cd6e53fe; ep_gx = (ep_gx << 64) | 0xc0a4e231fdd6dc5c; ep_gx = (ep_gx << 64) | 0x692cc7609525a7b2; ep_gx = (ep_gx << 64) | 0xc9562d608f25d51a; ep_gy = 0x6666666666666666; ep_gy = (ep_gy << 64) | 0x6666666666666666; ep_gy = (ep_gy << 64) | 0x6666666666666666; ep_gy = (ep_gy << 64) | 0x6666666666666658; ep_sq = 0xfffffffffffffff; ep_sq = (ep_sq << 64) | 0xffffffffffffffff; ep_sq = (ep_sq << 64) | 0xffffffffffffffff; ep_sq = (ep_sq << 64) | 0xfffffffffffffffe; ep_sq2 = 0x2b8324804fc1df0b; ep_sq2 = (ep_sq2 << 64) | 0x2b4d00993dfbd7a7; ep_sq2 = (ep_sq2 << 64) | 0x2f431806ad2fe478; ep_sq2 = (ep_sq2 << 64) | 0xc4ee1b274a0ea0b0; ep_k25 = 1;
+  kd_dl = 0; kd_hl = 64; kd_h = 0; kd_nb = 255;
+  ep_m1 = 0x3fffffffffffffff; ep_m1 = (ep_m1 << 64) | 0xffffffffffffffff; ep_m1 = (ep_m1 << 64) | 0xffffffffffffffff; ep_m1 = (ep_m1 << 64) | 0xfffffffffffffff8; ep_m2 = 0x4000000000000000; ep_m2 = (ep_m2 << 64) | 0x0; ep_m2 = (ep_m2 << 64) | 0x0; ep_m2 = (ep_m2 << 64) | 0x0;
+  <L_kf40>
+  if (fc != 44) goto <L_kf44>; kd_op = 4; kd_n = 57; kd_fs = 64; kd_ok = 1; kd_el = 57; ep_nb = 448; 
+  ep_kind = 1; ep_p = 0xffffffffffffffff; ep_p = (ep_p << 64) | 0xffffffffffffffff; ep_p = (ep_p << 64) | 0xffffffffffffffff; ep_p = (ep_p << 64) | 0xfffffffeffffffff; ep_p = (ep_p << 64) | 0xffffffffffffffff; ep_p = (ep_p << 64) | 0xffffffffffffffff; ep_p = (ep_p << 64) | 0xffffffffffffffff; ep_a = 0x1; ep_d = 0xffffffffffffffff; ep_d = (ep_d << 64) | 0xffffffffffffffff; ep_d = (ep_d << 64) | 0xffffffffffffffff; ep_d = (ep_d << 64) | 0xfffffffeffffffff; ep_d = (ep_d << 64) | 0xffffffffffffffff; ep_d = (ep_d << 64) | 0xffffffffffffffff; ep_d = (ep_d << 64) | 0xffffffffffff6756; ep_n = 0x3fffffffffffffff; ep_n = (ep_n << 64) | 0xffffffffffffffff; ep_n = (ep_n << 64) | 0xffffffffffffffff; ep_n = (ep_n << 64) | 0xffffffff7cca23e9; ep_n = (ep_n << 64) | 0xc44edb49aed63690; ep_n = (ep_n << 64) | 0x216cc2728dc58f55; ep_n = (ep_n << 64) | 0x2378c292ab5844f3; ep_gx = 0x4f1970c66bed0ded; ep_gx = (ep_gx << 64) | 0x221d15a622bf36da; ep_gx = (ep_gx << 64) | 0x9e146570470f1767; ep_gx = (ep_gx << 64) | 0xea6de324a3d3a464; ep_gx = (ep_gx << 64) | 0x12ae1af72ab66511; ep_gx = (ep_gx << 64) | 0x433b80e18b00938e; ep_gx = (ep_gx << 64) | 0x2626a82bc70cc05e; ep_gy = 0x693f46716eb6bc24; ep_gy = (ep_gy << 64) | 0x8876203756c9c762; ep_gy = (ep_gy << 64) | 0x4bea73736ca39840; ep_gy = (ep_gy << 64) | 0x87789c1e05a0c2d7; ep_gy = (ep_gy << 64) | 0x3ad3ff1ce67c39c4; ep_gy = (ep_gy << 64) | 0xfdbd132c4ed7c8ad; ep_gy = (ep_gy << 64) | 0x9808795bf230fa14; ep_sq = 0x3fffffffffffffff; ep_sq = (ep_sq << 64) | 0xffffffffffffffff; ep_sq = (ep_sq << 64) | 0xffffffffffffffff; ep_sq = (ep_sq << 64) | 0xffffffffc0000000; ep_sq = (ep_sq << 64) | 0x0; ep_sq = (ep_sq << 64) | 0x0; ep_sq = (ep_sq << 64) | 0x0; ep_sq2 = 0; ep_k25 = 0;
+  kd_dl = 10; kd_hl = 114; kd_h = 1; kd_nb = 448;
+  ep_m1 = 0xffffffffffffffff; ep_m1 = (ep_m1 << 64) | 0xffffffffffffffff; ep_m1 = (ep_m1 << 64) | 0xffffffffffffffff; ep_m1 = (ep_m1 << 64) | 0xffffffffffffffff; ep_m1 = (ep_m1 << 64) | 0xffffffffffffffff; ep_m1 = (ep_m1 << 64) | 0xffffffffffffffff; ep_m1 = (ep_m1 << 64) | 0xfffffffffffffffc; ep_m2 = 0x8000000000000000; ep_m2 = (ep_m2 << 64) | 0x0; ep_m2 = (ep_m2 << 64) | 0x0; ep_m2 = (ep_m2 << 64) | 0x0; ep_m2 = (ep_m2 << 64) | 0x0; ep_m2 = (ep_m2 << 64) | 0x0; ep_m2 = (ep_m2 << 64) | 0x0;
+  <L_kf44>
+  if (kd_ok != 0) goto <L_kv>; trap_specification(); goto <L_done>;
+  <L_kv> kd_pad = kd_fs - kd_n; ep_st = 0;
+  if (kd_op == 1) goto <L_kver>; if (kd_op == 2) goto <L_ksig>; if (kd_op == 3) goto <L_kev>; goto <L_kes>;
+  <L_kver> 
+  ep_r = 0; ec_j = 0; <L_ldk1> ep_r = (ep_r << 8) | zext(*:1 ((r1 + kd_pad) + ec_j)); ec_j = ec_j + 1; if (ec_j < kd_n) goto <L_ldk1>;
+  ep_s = 0; ec_j = 0; <L_ldk2> ep_s = (ep_s << 8) | zext(*:1 ((r1 + kd_fs + kd_pad) + ec_j)); ec_j = ec_j + 1; if (ec_j < kd_n) goto <L_ldk2>;
+  ep_e = 0; ec_j = 0; <L_ldk3> ep_e = (ep_e << 8) | zext(*:1 ((r1 + (2 * kd_fs) + kd_pad) + ec_j)); ec_j = ec_j + 1; if (ec_j < kd_n) goto <L_ldk3>;
+  ep_x2 = 0; ec_j = 0; <L_ldk4> ep_x2 = (ep_x2 << 8) | zext(*:1 ((r1 + (3 * kd_fs) + kd_pad) + ec_j)); ec_j = ec_j + 1; if (ec_j < kd_n) goto <L_ldk4>;
+  ep_y2 = 0; ec_j = 0; <L_ldk5> ep_y2 = (ep_y2 << 8) | zext(*:1 ((r1 + (4 * kd_fs) + kd_pad) + ec_j)); ec_j = ec_j + 1; if (ec_j < kd_n) goto <L_ldk5>;
+  ep_mode = 3; kd_ph = 1; goto <L_kdrun>;
+  <L_kp1> cc = ep_st; cc_sync(); goto <L_done>;
+  <L_ksig> 
+  ep_e = 0; ec_j = 0; <L_ldk6> ep_e = (ep_e << 8) | zext(*:1 ((r1 + (2 * kd_fs) + kd_pad) + ec_j)); ec_j = ec_j + 1; if (ec_j < kd_n) goto <L_ldk6>;
+  ep_dd = 0; ec_j = 0; <L_ldk7> ep_dd = (ep_dd << 8) | zext(*:1 ((r1 + (3 * kd_fs) + kd_pad) + ec_j)); ec_j = ec_j + 1; if (ec_j < kd_n) goto <L_ldk7>;
+  ep_kk = 0; ec_j = 0; <L_ldk8> ep_kk = (ep_kk << 8) | zext(*:1 ((r1 + (4 * kd_fs) + kd_pad) + ec_j)); ec_j = ec_j + 1; if (ec_j < kd_n) goto <L_ldk8>;
+  if (ep_dd == 0) goto <L_ks1>; if (ep_dd < ep_n) goto <L_ks2>; <L_ks1> cc = 1; cc_sync(); goto <L_done>;
+  <L_ks2> ep_rnd = 0; if ((r0 & 0x80) == 0) goto <L_ks3>;
+  if (ep_kk == 0) goto <L_ks4>; if (ep_kk < ep_n) goto <L_ks5>; <L_ks4> cc = 2; cc_sync(); goto <L_done>;
+  <L_ks3> ep_rnd = 1; kd_j = 0; <L_ks6> if (kd_j >= kd_n) goto <L_ks5>; kd_b = s390_trng_byte(); kd_sh = kd_j * 8; ep_tm = zext(kd_b); ep_tm = ep_tm << kd_sh; ep_kk = ep_kk ^ ep_tm; kd_j = kd_j + 1; goto <L_ks6>;
+  <L_ks5> ep_mode = 4; kd_ph = 2; goto <L_kdrun>;
+  <L_kp2> 
+  ec_j = 0; <L_stk9> ec_sh = (kd_n - 1 - ec_j) * 8; ep_tm = ep_r >> ec_sh; ec_b = ep_tm:1; *:1 ((r1 + kd_pad) + ec_j) = ec_b; ec_j = ec_j + 1; if (ec_j < kd_n) goto <L_stk9>;
+  ec_j = 0; <L_stka> ec_sh = (kd_n - 1 - ec_j) * 8; ep_tm = ep_s >> ec_sh; ec_b = ep_tm:1; *:1 ((r1 + kd_fs + kd_pad) + ec_j) = ec_b; ec_j = ec_j + 1; if (ec_j < kd_n) goto <L_stka>;
+  cc = 0; cc_sync(); goto <L_done>;
+  <L_kev> kd_pad = kd_fs - kd_el; 
+  ep_s = 0; ec_j = 0; <L_ldkb> ep_s = (ep_s << 8) | zext(*:1 ((r1 + kd_fs + kd_pad) + ec_j)); ec_j = ec_j + 1; if (ec_j < kd_el) goto <L_ldkb>;
+  kd_j = 0; <L_kr1> if (kd_j >= kd_el) goto <L_ke1>; kd_i = kd_j:4; *[cpm]:1 ((16896) + kd_i) = *:1 ((r1 + (2 * kd_fs) + kd_pad) + (kd_el - 1 - kd_j)); kd_j = kd_j + 1; goto <L_kr1>; <L_ke1>
+  kd_j = 0; <L_kr2> if (kd_j >= kd_el) goto <L_ke2>; kd_i = kd_j:4; *[cpm]:1 ((16960) + kd_i) = *:1 ((r1 + kd_pad) + (kd_el - 1 - kd_j)); kd_j = kd_j + 1; goto <L_kr2>; <L_ke2>
+  ep_t1 = 0; ec_j = 0; <L_ldkc> ep_t1 = (ep_t1 << 8) | zext(*:1 ((r1 + (2 * kd_fs) + kd_pad) + ec_j)); ec_j = ec_j + 1; if (ec_j < kd_el) goto <L_ldkc>;
+  kd_sh = (kd_el * 8) - 1; ep_t0 = ep_t1 >> kd_sh; ep_sg = ep_t0:1; ep_t0 = ep_t0 << kd_sh; ep_y1 = ep_t1 - ep_t0; ep_mode = 6; kd_ph = 10; goto <L_kdrun>;
+  <L_kp10> if (ep_ok != 0) goto <L_kv1>; cc = 1; cc_sync(); goto <L_done>;
+  <L_kv1> ep_ax = ep_x1; ep_ay = ep_y1; 
+  ep_t1 = 0; ec_j = 0; <L_ldkd> ep_t1 = (ep_t1 << 8) | zext(*:1 ((r1 + kd_pad) + ec_j)); ec_j = ec_j + 1; if (ec_j < kd_el) goto <L_ldkd>;
+  kd_sh = (kd_el * 8) - 1; ep_t0 = ep_t1 >> kd_sh; ep_sg = ep_t0:1; ep_t0 = ep_t0 << kd_sh; ep_y1 = ep_t1 - ep_t0; ep_mode = 6; kd_ph = 11; goto <L_kdrun>;
+  <L_kp11> if (ep_ok != 0) goto <L_kv2>; cc = 2; cc_sync(); goto <L_done>;
+  <L_kv2> ep_cx = ep_x1; ep_cy = ep_y1; if (ep_s == 0) goto <L_kv3>; if (ep_s < ep_n) goto <L_kv4>; <L_kv3> cc = 2; cc_sync(); goto <L_done>;
+  <L_kv4> kd_ml = g32_gpro28_4;
+  kd_at = 0x100100; 
+  kd_j = 0; <L_kr3> if (kd_j >= kd_ml) goto <L_ke3>; kd_i = kd_j:4; *[cpm]:1 ((0x100100) + kd_i) = *:1 ((g32_gpr28_4) + kd_j); kd_j = kd_j + 1; goto <L_kr3>; <L_ke3>
+  kd_hs = 0x100100 - (kd_dl + (2 * kd_el)); kd_hn = (kd_dl + (2 * kd_el)) + kd_ml; kd_at = kd_hs:4;
+  if (kd_dl == 0) goto <L_hnd3>;
+  *[cpm]:1 (kd_at + 0) = 0x53;
+  *[cpm]:1 (kd_at + 1) = 0x69;
+  *[cpm]:1 (kd_at + 2) = 0x67;
+  *[cpm]:1 (kd_at + 3) = 0x45;
+  *[cpm]:1 (kd_at + 4) = 0x64;
+  *[cpm]:1 (kd_at + 5) = 0x34;
+  *[cpm]:1 (kd_at + 6) = 0x34;
+  *[cpm]:1 (kd_at + 7) = 0x38;
+  *[cpm]:1 (kd_at + 8) = 0x0;
+  *[cpm]:1 (kd_at + 9) = 0x0;
+  <L_hnd3> kd_off = kd_dl;
+  kd_i = 0; <L_hp4> if (zext(kd_i) >= kd_el) goto <L_hq4>; *[cpm]:1 (kd_at + (kd_off:4 + kd_i)) = *[cpm]:1 (16960 + kd_i); kd_i = kd_i + 1; goto <L_hp4>; <L_hq4> kd_off = kd_off + kd_el;
+  kd_i = 0; <L_hp5> if (zext(kd_i) >= kd_el) goto <L_hq5>; *[cpm]:1 (kd_at + (kd_off:4 + kd_i)) = *[cpm]:1 (16896 + kd_i); kd_i = kd_i + 1; goto <L_hp5>; <L_hq5> kd_off = kd_off + kd_el;
+  kd_hph = 12; goto <L_kdhash>;
+  <L_kp12> 
+  ep_pr = 0; kd_j = 0; <L_kl7> if (kd_j >= kd_hl) goto <L_km7>; kd_i = kd_j:4; kd_b = *[cpm]:1 ((0x4100) + kd_i); kd_sh = kd_j * 8; ep_pm = zext(kd_b); ep_pm = ep_pm << kd_sh; ep_pr = ep_pr | ep_pm; kd_j = kd_j + 1; goto <L_kl7>; <L_km7>
+  ep_mode = 7; kd_ph = 13; goto <L_kdrun>;
+  <L_kp13> ep_e = ep_r; ep_x1 = ep_ax; ep_y1 = ep_ay; ep_x2 = ep_cx; ep_y2 = ep_cy; ep_mode = 5; kd_ph = 14; goto <L_kdrun>;
+  <L_kp14> if (ep_ok != 0) goto <L_kv5>; cc = 2; cc_sync(); goto <L_done>;
+  <L_kv5> cc = 0; cc_sync(); goto <L_done>;
+  <L_kes> kd_pad = kd_fs - kd_el; kd_ml = g32_gpro28_4;
+  kd_j = 0; <L_kr8> if (kd_j >= kd_ml) goto <L_ke8>; kd_i = kd_j:4; *[cpm]:1 ((0x100100) + kd_i) = *:1 ((g32_gpr28_4) + kd_j); kd_j = kd_j + 1; goto <L_kr8>; <L_ke8>
+  kd_j = 0; <L_kr9> if (kd_j >= kd_el) goto <L_ke9>; kd_i = kd_j:4; *[cpm]:1 ((0x100100 - kd_el:4) + kd_i) = *:1 ((r1 + (2 * kd_fs) + kd_pad) + kd_j); kd_j = kd_j + 1; goto <L_kr9>; <L_ke9>
+  kd_hs = 0x100100 - kd_el; kd_hn = kd_el; kd_hph = 20; goto <L_kdhash>;
+  <L_kp20> 
+  ep_dd = 0; kd_j = 0; <L_kl10> if (kd_j >= kd_el) goto <L_km10>; kd_i = kd_j:4; kd_b = *[cpm]:1 ((0x4100) + kd_i); kd_sh = kd_j * 8; ep_tm = zext(kd_b); ep_tm = ep_tm << kd_sh; ep_dd = ep_dd | ep_tm; kd_j = kd_j + 1; goto <L_kl10>; <L_km10>
+  ep_dd = ep_dd & ep_m1; ep_dd = ep_dd | ep_m2; 
+  kd_i = 0; <L_kc11> if (zext(kd_i) >= kd_el) goto <L_kd11>; *[cpm]:1 ((17024) + kd_i) = *[cpm]:1 ((0x4100 + kd_el:4) + kd_i); kd_i = kd_i + 1; goto <L_kc11>; <L_kd11>
+  ep_x1 = ep_gx; ep_y1 = ep_gy; ep_k = ep_dd; ep_nb = kd_nb; ep_mode = 1; kd_ph = 21; goto <L_kdrun>;
+  <L_kp21> 
+  ep_tm = ep_x3 & 1; kd_sh = (kd_el * 8) - 1; ep_tm = ep_tm << kd_sh; ep_t0 = ep_y3 | ep_tm; 
+  kd_j = 0; <L_kn13> if (kd_j >= kd_el) goto <L_ko13>; kd_sh = kd_j * 8; ep_tm = ep_t0 >> kd_sh; kd_b = ep_tm:1; kd_i = kd_j:4; *[cpm]:1 ((16896) + kd_i) = kd_b; kd_j = kd_j + 1; goto <L_kn13>; <L_ko13>
+  kd_hs = 0x100100 - (kd_dl + kd_el); kd_hn = (kd_dl + kd_el) + kd_ml; kd_at = kd_hs:4;
+  if (kd_dl == 0) goto <L_hnd13>;
+  *[cpm]:1 (kd_at + 0) = 0x53;
+  *[cpm]:1 (kd_at + 1) = 0x69;
+  *[cpm]:1 (kd_at + 2) = 0x67;
+  *[cpm]:1 (kd_at + 3) = 0x45;
+  *[cpm]:1 (kd_at + 4) = 0x64;
+  *[cpm]:1 (kd_at + 5) = 0x34;
+  *[cpm]:1 (kd_at + 6) = 0x34;
+  *[cpm]:1 (kd_at + 7) = 0x38;
+  *[cpm]:1 (kd_at + 8) = 0x0;
+  *[cpm]:1 (kd_at + 9) = 0x0;
+  <L_hnd13> kd_off = kd_dl;
+  kd_i = 0; <L_hp14> if (zext(kd_i) >= kd_el) goto <L_hq14>; *[cpm]:1 (kd_at + (kd_off:4 + kd_i)) = *[cpm]:1 (17024 + kd_i); kd_i = kd_i + 1; goto <L_hp14>; <L_hq14> kd_off = kd_off + kd_el;
+  kd_hph = 22; goto <L_kdhash>;
+  <L_kp22> 
+  ep_pr = 0; kd_j = 0; <L_kl16> if (kd_j >= kd_hl) goto <L_km16>; kd_i = kd_j:4; kd_b = *[cpm]:1 ((0x4100) + kd_i); kd_sh = kd_j * 8; ep_pm = zext(kd_b); ep_pm = ep_pm << kd_sh; ep_pr = ep_pr | ep_pm; kd_j = kd_j + 1; goto <L_kl16>; <L_km16>
+  ep_mode = 7; kd_ph = 23; goto <L_kdrun>;
+  <L_kp23> ep_u1 = ep_r; ep_x1 = ep_gx; ep_y1 = ep_gy; ep_k = ep_r; ep_nb = kd_nb; ep_mode = 1; kd_ph = 24; goto <L_kdrun>;
+  <L_kp24> 
+  ep_tm = ep_x3 & 1; kd_sh = (kd_el * 8) - 1; ep_tm = ep_tm << kd_sh; ep_t0 = ep_y3 | ep_tm; 
+  kd_j = 0; <L_kn18> if (kd_j >= kd_el) goto <L_ko18>; kd_sh = kd_j * 8; ep_tm = ep_t0 >> kd_sh; kd_b = ep_tm:1; kd_i = kd_j:4; *[cpm]:1 ((16960) + kd_i) = kd_b; kd_j = kd_j + 1; goto <L_kn18>; <L_ko18>
+  kd_hs = 0x100100 - (kd_dl + (2 * kd_el)); kd_hn = (kd_dl + (2 * kd_el)) + kd_ml; kd_at = kd_hs:4;
+  if (kd_dl == 0) goto <L_hnd18>;
+  *[cpm]:1 (kd_at + 0) = 0x53;
+  *[cpm]:1 (kd_at + 1) = 0x69;
+  *[cpm]:1 (kd_at + 2) = 0x67;
+  *[cpm]:1 (kd_at + 3) = 0x45;
+  *[cpm]:1 (kd_at + 4) = 0x64;
+  *[cpm]:1 (kd_at + 5) = 0x34;
+  *[cpm]:1 (kd_at + 6) = 0x34;
+  *[cpm]:1 (kd_at + 7) = 0x38;
+  *[cpm]:1 (kd_at + 8) = 0x0;
+  *[cpm]:1 (kd_at + 9) = 0x0;
+  <L_hnd18> kd_off = kd_dl;
+  kd_i = 0; <L_hp19> if (zext(kd_i) >= kd_el) goto <L_hq19>; *[cpm]:1 (kd_at + (kd_off:4 + kd_i)) = *[cpm]:1 (16960 + kd_i); kd_i = kd_i + 1; goto <L_hp19>; <L_hq19> kd_off = kd_off + kd_el;
+  kd_i = 0; <L_hp20> if (zext(kd_i) >= kd_el) goto <L_hq20>; *[cpm]:1 (kd_at + (kd_off:4 + kd_i)) = *[cpm]:1 (16896 + kd_i); kd_i = kd_i + 1; goto <L_hp20>; <L_hq20> kd_off = kd_off + kd_el;
+  kd_hph = 25; goto <L_kdhash>;
+  <L_kp25> 
+  ep_pr = 0; kd_j = 0; <L_kl22> if (kd_j >= kd_hl) goto <L_km22>; kd_i = kd_j:4; kd_b = *[cpm]:1 ((0x4100) + kd_i); kd_sh = kd_j * 8; ep_pm = zext(kd_b); ep_pm = ep_pm << kd_sh; ep_pr = ep_pr | ep_pm; kd_j = kd_j + 1; goto <L_kl22>; <L_km22>
+  ep_mode = 7; kd_ph = 26; goto <L_kdrun>;
+  <L_kp26> ep_k = ep_r; ep_r = ep_u1; ep_mode = 9; kd_ph = 27; goto <L_kdrun>;
+  <L_kp27> 
+  kd_j = 0; <L_kw23> if (kd_j >= kd_el) goto <L_kx23>; kd_t = kd_el - 1 - kd_j; kd_i = kd_t:4; *:1 ((r1 + kd_pad) + kd_j) = *[cpm]:1 ((16960) + kd_i); kd_j = kd_j + 1; goto <L_kw23>; <L_kx23>
+  ec_j = 0; <L_stke> ec_sh = (kd_el - 1 - ec_j) * 8; ep_tm = ep_s >> ec_sh; ec_b = ep_tm:1; *:1 ((r1 + kd_fs + kd_pad) + ec_j) = ec_b; ec_j = ec_j + 1; if (ec_j < kd_el) goto <L_stke>;
+  cc = 0; cc_sync(); goto <L_done>;
+  <L_kdrun> build cp_ecc;
+  if (kd_ph == 1) goto <L_kp1>; if (kd_ph == 2) goto <L_kp2>; if (kd_ph == 10) goto <L_kp10>; if (kd_ph == 11) goto <L_kp11>; if (kd_ph == 13) goto <L_kp13>; if (kd_ph == 14) goto <L_kp14>;
+  if (kd_ph == 21) goto <L_kp21>; if (kd_ph == 23) goto <L_kp23>; if (kd_ph == 24) goto <L_kp24>; if (kd_ph == 26) goto <L_kp26>; goto <L_kp27>;
+  <L_kdhash> cpa = kd_hs; cpl = kd_hn; cpfin = 1; cpsm = 1; cpbh = 0; cpbl = kd_hn * 8; if (kd_h != 0) goto <L_kdsh>; *[cpm]:8 (0x0:4) = 0x6a09e667f3bcc908; *[cpm]:8 (0x8:4) = 0xbb67ae8584caa73b; *[cpm]:8 (0x10:4) = 0x3c6ef372fe94f82b; *[cpm]:8 (0x18:4) = 0xa54ff53a5f1d36f1; *[cpm]:8 (0x20:4) = 0x510e527fade682d1; *[cpm]:8 (0x28:4) = 0x9b05688c2b3e6c1f; *[cpm]:8 (0x30:4) = 0x1f83d9abfb41bd6b; *[cpm]:8 (0x38:4) = 0x5be0cd19137e2179; build cp_sha512; kd_i = 0; <L_kdc> *[cpm]:8 (0x4100:4 + kd_i) = *[cpm]:8 (kd_i); kd_i = kd_i + 8; if (kd_i < 64) goto <L_kdc>; goto <L_kdhd>;
+  <L_kdsh> kd_i = 0; <L_kdz> *[cpm]:8 (kd_i) = 0; kd_i = kd_i + 8; if (kd_i < 200) goto <L_kdz>; cprt = 136; cpdm = 0x1f; cpps = 0; cpmd = 1; cpo = 0x4100; cpn = 114; build cp_keccak;
+  <L_kdhd> cpsm = 0; kd_ph = kd_hph; if (kd_ph == 12) goto <L_kp12>; if (kd_ph == 20) goto <L_kp20>; if (kd_ph == 22) goto <L_kp22>; if (kd_ph == 25) goto <L_kp25>; goto <L_kp26>;
+  <L_done>
 }
 :DFLTCC g32_gpr24_4,g32_gpr28_4,g32_gpr16_4 is g32_u0_4=0xb & g32_u4_4=0x9 & g32_u8_4=0x3 & g32_u12_4=0x9 & g32_gpr24_4 & g32_gpr28_4 & g32_gpr16_4 {
   g32_gpr24_4 = s390_dfltcc(g32_gpr28_4, g32_gpr16_4);

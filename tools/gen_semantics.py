@@ -920,6 +920,7 @@ for _n in ("cxstr", "cxutr"):
 EXTRA_FIELDS["cuxtr"] = [(24, 4, "gpro")]
 for _n in ("km", "kmc", "kmf", "kmo", "kmac"):
     EXTRA_FIELDS[_n] = [(28, 4, "gpro"), (28, 4, "u"), (24, 4, "u")]                  # R2 + 1, R2, R1
+EXTRA_FIELDS["kdsa"] = [(28, 4, "gpro"), (28, 4, "u")]   # R2 + 1, R2
 EXTRA_FIELDS["cmpsc"] = [(24, 4, "gpro"), (24, 4, "u"), (28, 4, "gpro"), (28, 4, "u")]   # R1 + 1, R1, R2 + 1, R2
 EXTRA_FIELDS["sortl"] = [(24, 4, "gpro"), (24, 4, "u"), (28, 4, "gpro"), (28, 4, "u")]   # R1 + 1, R1, R2 + 1, R2
 EXTRA_FIELDS["prno"] = [(24, 4, "gpro"), (24, 4, "u"), (28, 4, "gpro"), (28, 4, "u")]   # R1 + 1, R1, R2 + 1, R2
