@@ -66,13 +66,15 @@ def nanconv(blk, r, src, s, t):
     return out
 
 def cc_value(blk, r, s):
-    z = ZERO[s] if s < 16 else blk.local(16, "zext(0:8)")
+    """cc 0 zero, 1 negative, 2 positive, 3 NaN (flags set directly, see gen_semantics)."""
+    z = blk.local(s, ZERO[s]) if s < 16 else blk.local(16, "zext(0:8)")
     n = blk.local(1, f"nan({r})")
-    blk.add(f"cc = zext({n}) * 3 + zext(!{n}) * (zext({r} f< {z}) + 2 * zext({r} f> {z}));")
+    blk.add(f"gs_cc_flags(!{n} && ({r} f== {z}), !{n} && ({r} f< {z}), !{n} && ({r} f> {z}), {n});")
 
 def cc_compare(blk, a, b):
+    """cc 0 equal, 1 low, 2 high, 3 unordered."""
     u = blk.local(1, f"nan({a}) || nan({b})")
-    blk.add(f"cc = zext({u}) * 3 + zext(!{u}) * (zext({a} f< {b}) + 2 * zext({a} f> {b}));")
+    blk.add(f"gs_cc_flags({a} f== {b}, {a} f< {b}, {a} f> {b}, {u});")
 
 # ---- register access -------------------------------------------------------------------------
 def rd(blk, sym, s, pair=None):

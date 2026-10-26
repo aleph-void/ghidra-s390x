@@ -406,6 +406,8 @@ def build(e):
         out.append(f":{mn} {disp} is {pat} {{\n{semantics(e, its, items, lenfld, xf)}\n}}\n")
     return out
 
+CC_WRITE = re.compile(r"(?<![_A-Za-z0-9])(cc\s*=(?!=)[^;]*;)")
+
 def semantics(e, its, items, lenfld, xf=()):
     name, flags = e["name"], e["flags"]
     syms = [it[2] for it in items]
@@ -424,6 +426,8 @@ def semantics(e, its, items, lenfld, xf=()):
         import traceback; traceback.print_exc()
         t = None
     if t is not None:
+        # every direct write of cc is followed by cc_sync() (the condition flags, s390x.slaspec)
+        t = CC_WRITE.sub(lambda m: m.group(1) + " cc_sync();", t)
         return "  " + t.replace("\n", "\n  ")
     op = "s390_" + ident(name)
     pcodeops.add(op)

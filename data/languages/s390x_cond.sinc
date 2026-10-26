@@ -99,12 +99,10 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 :LOCRO RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB9F2 & RRFc_M3=1 & RRFc_R1 & RRFc_R2
 {
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     _c_m = 1;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    _c_bit = (cc3);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     RRFc_R1 = (RRFc_R1 & (0xFFFFFFFF << 32)) | (RRFc_R2 & 0xFFFFFFFF);
@@ -114,12 +112,10 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 :LOCRH RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB9F2 & RRFc_M3=2 & RRFc_R1 & RRFc_R2
 {
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     _c_m = 2;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    _c_bit = (cc2);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     RRFc_R1 = (RRFc_R1 & (0xFFFFFFFF << 32)) | (RRFc_R2 & 0xFFFFFFFF);
@@ -129,12 +125,10 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 :LOCRNLE RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB9F2 & RRFc_M3=3 & RRFc_R1 & RRFc_R2
 {
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     _c_m = 3;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    _c_bit = (cc2 || cc3);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     RRFc_R1 = (RRFc_R1 & (0xFFFFFFFF << 32)) | (RRFc_R2 & 0xFFFFFFFF);
@@ -144,12 +138,10 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 :LOCRL RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB9F2 & RRFc_M3=4 & RRFc_R1 & RRFc_R2
 {
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     _c_m = 4;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    _c_bit = (cc1);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     RRFc_R1 = (RRFc_R1 & (0xFFFFFFFF << 32)) | (RRFc_R2 & 0xFFFFFFFF);
@@ -159,12 +151,10 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 :LOCRNHE RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB9F2 & RRFc_M3=5 & RRFc_R1 & RRFc_R2
 {
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     _c_m = 5;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    _c_bit = (cc1 || cc3);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     RRFc_R1 = (RRFc_R1 & (0xFFFFFFFF << 32)) | (RRFc_R2 & 0xFFFFFFFF);
@@ -174,12 +164,10 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 :LOCRLH RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB9F2 & RRFc_M3=6 & RRFc_R1 & RRFc_R2
 {
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     _c_m = 6;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    _c_bit = !(cc0 || cc3);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     RRFc_R1 = (RRFc_R1 & (0xFFFFFFFF << 32)) | (RRFc_R2 & 0xFFFFFFFF);
@@ -189,12 +177,10 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 :LOCRNE RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB9F2 & RRFc_M3=7 & RRFc_R1 & RRFc_R2
 {
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     _c_m = 7;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    _c_bit = !(cc0);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     RRFc_R1 = (RRFc_R1 & (0xFFFFFFFF << 32)) | (RRFc_R2 & 0xFFFFFFFF);
@@ -204,12 +190,10 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 :LOCRE RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB9F2 & RRFc_M3=8 & RRFc_R1 & RRFc_R2
 {
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     _c_m = 8;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    _c_bit = (cc0);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     RRFc_R1 = (RRFc_R1 & (0xFFFFFFFF << 32)) | (RRFc_R2 & 0xFFFFFFFF);
@@ -219,12 +203,10 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 :LOCRNLH RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB9F2 & RRFc_M3=9 & RRFc_R1 & RRFc_R2
 {
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     _c_m = 9;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    _c_bit = (cc0 || cc3);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     RRFc_R1 = (RRFc_R1 & (0xFFFFFFFF << 32)) | (RRFc_R2 & 0xFFFFFFFF);
@@ -234,12 +216,10 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 :LOCRHE RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB9F2 & RRFc_M3=10 & RRFc_R1 & RRFc_R2
 {
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     _c_m = 10;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    _c_bit = !(cc1 || cc3);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     RRFc_R1 = (RRFc_R1 & (0xFFFFFFFF << 32)) | (RRFc_R2 & 0xFFFFFFFF);
@@ -249,12 +229,10 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 :LOCRNL RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB9F2 & RRFc_M3=11 & RRFc_R1 & RRFc_R2
 {
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     _c_m = 11;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    _c_bit = !(cc1);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     RRFc_R1 = (RRFc_R1 & (0xFFFFFFFF << 32)) | (RRFc_R2 & 0xFFFFFFFF);
@@ -264,12 +242,10 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 :LOCRLE RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB9F2 & RRFc_M3=12 & RRFc_R1 & RRFc_R2
 {
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     _c_m = 12;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    _c_bit = !(cc2 || cc3);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     RRFc_R1 = (RRFc_R1 & (0xFFFFFFFF << 32)) | (RRFc_R2 & 0xFFFFFFFF);
@@ -279,12 +255,10 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 :LOCRNH RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB9F2 & RRFc_M3=13 & RRFc_R1 & RRFc_R2
 {
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     _c_m = 13;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    _c_bit = !(cc2);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     RRFc_R1 = (RRFc_R1 & (0xFFFFFFFF << 32)) | (RRFc_R2 & 0xFFFFFFFF);
@@ -294,12 +268,10 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 :LOCRNO RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB9F2 & RRFc_M3=14 & RRFc_R1 & RRFc_R2
 {
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     _c_m = 14;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    _c_bit = !(cc3);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     RRFc_R1 = (RRFc_R1 & (0xFFFFFFFF << 32)) | (RRFc_R2 & 0xFFFFFFFF);
@@ -309,12 +281,10 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 :LOCR RRFc_R1 "," RRFc_R2 "," RRFc_M3 is RRFc_OP=0xB9F2 & RRFc_M3 & RRFc_R1 & RRFc_R2
 {
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     _c_m = RRFc_M3;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    cc_hit(_c_m, _c_bit);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     RRFc_R1 = (RRFc_R1 & (0xFFFFFFFF << 32)) | (RRFc_R2 & 0xFFFFFFFF);
@@ -325,12 +295,10 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 :LOCGRO RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB9E2 & RRFc_M3=1 & RRFc_R1 & RRFc_R2
 {
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     _c_m = 1;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    _c_bit = (cc3);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     RRFc_R1 = RRFc_R2;
@@ -340,12 +308,10 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 :LOCGRH RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB9E2 & RRFc_M3=2 & RRFc_R1 & RRFc_R2
 {
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     _c_m = 2;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    _c_bit = (cc2);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     RRFc_R1 = RRFc_R2;
@@ -355,12 +321,10 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 :LOCGRNLE RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB9E2 & RRFc_M3=3 & RRFc_R1 & RRFc_R2
 {
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     _c_m = 3;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    _c_bit = (cc2 || cc3);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     RRFc_R1 = RRFc_R2;
@@ -370,12 +334,10 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 :LOCGRL RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB9E2 & RRFc_M3=4 & RRFc_R1 & RRFc_R2
 {
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     _c_m = 4;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    _c_bit = (cc1);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     RRFc_R1 = RRFc_R2;
@@ -385,12 +347,10 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 :LOCGRNHE RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB9E2 & RRFc_M3=5 & RRFc_R1 & RRFc_R2
 {
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     _c_m = 5;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    _c_bit = (cc1 || cc3);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     RRFc_R1 = RRFc_R2;
@@ -400,12 +360,10 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 :LOCGRLH RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB9E2 & RRFc_M3=6 & RRFc_R1 & RRFc_R2
 {
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     _c_m = 6;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    _c_bit = !(cc0 || cc3);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     RRFc_R1 = RRFc_R2;
@@ -415,12 +373,10 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 :LOCGRNE RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB9E2 & RRFc_M3=7 & RRFc_R1 & RRFc_R2
 {
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     _c_m = 7;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    _c_bit = !(cc0);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     RRFc_R1 = RRFc_R2;
@@ -430,12 +386,10 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 :LOCGRE RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB9E2 & RRFc_M3=8 & RRFc_R1 & RRFc_R2
 {
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     _c_m = 8;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    _c_bit = (cc0);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     RRFc_R1 = RRFc_R2;
@@ -445,12 +399,10 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 :LOCGRNLH RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB9E2 & RRFc_M3=9 & RRFc_R1 & RRFc_R2
 {
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     _c_m = 9;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    _c_bit = (cc0 || cc3);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     RRFc_R1 = RRFc_R2;
@@ -460,12 +412,10 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 :LOCGRHE RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB9E2 & RRFc_M3=10 & RRFc_R1 & RRFc_R2
 {
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     _c_m = 10;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    _c_bit = !(cc1 || cc3);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     RRFc_R1 = RRFc_R2;
@@ -475,12 +425,10 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 :LOCGRNL RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB9E2 & RRFc_M3=11 & RRFc_R1 & RRFc_R2
 {
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     _c_m = 11;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    _c_bit = !(cc1);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     RRFc_R1 = RRFc_R2;
@@ -490,12 +438,10 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 :LOCGRLE RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB9E2 & RRFc_M3=12 & RRFc_R1 & RRFc_R2
 {
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     _c_m = 12;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    _c_bit = !(cc2 || cc3);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     RRFc_R1 = RRFc_R2;
@@ -505,12 +451,10 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 :LOCGRNH RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB9E2 & RRFc_M3=13 & RRFc_R1 & RRFc_R2
 {
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     _c_m = 13;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    _c_bit = !(cc2);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     RRFc_R1 = RRFc_R2;
@@ -520,12 +464,10 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 :LOCGRNO RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB9E2 & RRFc_M3=14 & RRFc_R1 & RRFc_R2
 {
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     _c_m = 14;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    _c_bit = !(cc3);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     RRFc_R1 = RRFc_R2;
@@ -535,12 +477,10 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 :LOCGR RRFc_R1 "," RRFc_R2 "," RRFc_M3 is RRFc_OP=0xB9E2 & RRFc_M3 & RRFc_R1 & RRFc_R2
 {
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     _c_m = RRFc_M3;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    cc_hit(_c_m, _c_bit);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     RRFc_R1 = RRFc_R2;
@@ -551,12 +491,10 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 :LOCFHRO RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB9E0 & RRFc_M3=1 & RRFc_R1 & RRFc_R2
 {
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     _c_m = 1;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    _c_bit = (cc3);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     RRFc_R1 = (RRFc_R1 & 0xFFFFFFFF) | (RRFc_R2 & (0xFFFFFFFF << 32));
@@ -566,12 +504,10 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 :LOCFHRH RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB9E0 & RRFc_M3=2 & RRFc_R1 & RRFc_R2
 {
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     _c_m = 2;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    _c_bit = (cc2);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     RRFc_R1 = (RRFc_R1 & 0xFFFFFFFF) | (RRFc_R2 & (0xFFFFFFFF << 32));
@@ -581,12 +517,10 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 :LOCFHRNLE RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB9E0 & RRFc_M3=3 & RRFc_R1 & RRFc_R2
 {
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     _c_m = 3;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    _c_bit = (cc2 || cc3);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     RRFc_R1 = (RRFc_R1 & 0xFFFFFFFF) | (RRFc_R2 & (0xFFFFFFFF << 32));
@@ -596,12 +530,10 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 :LOCFHRL RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB9E0 & RRFc_M3=4 & RRFc_R1 & RRFc_R2
 {
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     _c_m = 4;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    _c_bit = (cc1);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     RRFc_R1 = (RRFc_R1 & 0xFFFFFFFF) | (RRFc_R2 & (0xFFFFFFFF << 32));
@@ -611,12 +543,10 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 :LOCFHRNHE RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB9E0 & RRFc_M3=5 & RRFc_R1 & RRFc_R2
 {
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     _c_m = 5;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    _c_bit = (cc1 || cc3);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     RRFc_R1 = (RRFc_R1 & 0xFFFFFFFF) | (RRFc_R2 & (0xFFFFFFFF << 32));
@@ -626,12 +556,10 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 :LOCFHRLH RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB9E0 & RRFc_M3=6 & RRFc_R1 & RRFc_R2
 {
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     _c_m = 6;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    _c_bit = !(cc0 || cc3);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     RRFc_R1 = (RRFc_R1 & 0xFFFFFFFF) | (RRFc_R2 & (0xFFFFFFFF << 32));
@@ -641,12 +569,10 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 :LOCFHRNE RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB9E0 & RRFc_M3=7 & RRFc_R1 & RRFc_R2
 {
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     _c_m = 7;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    _c_bit = !(cc0);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     RRFc_R1 = (RRFc_R1 & 0xFFFFFFFF) | (RRFc_R2 & (0xFFFFFFFF << 32));
@@ -656,12 +582,10 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 :LOCFHRE RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB9E0 & RRFc_M3=8 & RRFc_R1 & RRFc_R2
 {
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     _c_m = 8;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    _c_bit = (cc0);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     RRFc_R1 = (RRFc_R1 & 0xFFFFFFFF) | (RRFc_R2 & (0xFFFFFFFF << 32));
@@ -671,12 +595,10 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 :LOCFHRNLH RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB9E0 & RRFc_M3=9 & RRFc_R1 & RRFc_R2
 {
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     _c_m = 9;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    _c_bit = (cc0 || cc3);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     RRFc_R1 = (RRFc_R1 & 0xFFFFFFFF) | (RRFc_R2 & (0xFFFFFFFF << 32));
@@ -686,12 +608,10 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 :LOCFHRHE RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB9E0 & RRFc_M3=10 & RRFc_R1 & RRFc_R2
 {
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     _c_m = 10;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    _c_bit = !(cc1 || cc3);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     RRFc_R1 = (RRFc_R1 & 0xFFFFFFFF) | (RRFc_R2 & (0xFFFFFFFF << 32));
@@ -701,12 +621,10 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 :LOCFHRNL RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB9E0 & RRFc_M3=11 & RRFc_R1 & RRFc_R2
 {
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     _c_m = 11;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    _c_bit = !(cc1);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     RRFc_R1 = (RRFc_R1 & 0xFFFFFFFF) | (RRFc_R2 & (0xFFFFFFFF << 32));
@@ -716,12 +634,10 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 :LOCFHRLE RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB9E0 & RRFc_M3=12 & RRFc_R1 & RRFc_R2
 {
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     _c_m = 12;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    _c_bit = !(cc2 || cc3);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     RRFc_R1 = (RRFc_R1 & 0xFFFFFFFF) | (RRFc_R2 & (0xFFFFFFFF << 32));
@@ -731,12 +647,10 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 :LOCFHRNH RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB9E0 & RRFc_M3=13 & RRFc_R1 & RRFc_R2
 {
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     _c_m = 13;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    _c_bit = !(cc2);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     RRFc_R1 = (RRFc_R1 & 0xFFFFFFFF) | (RRFc_R2 & (0xFFFFFFFF << 32));
@@ -746,12 +660,10 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 :LOCFHRNO RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB9E0 & RRFc_M3=14 & RRFc_R1 & RRFc_R2
 {
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     _c_m = 14;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    _c_bit = !(cc3);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     RRFc_R1 = (RRFc_R1 & 0xFFFFFFFF) | (RRFc_R2 & (0xFFFFFFFF << 32));
@@ -761,12 +673,10 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 :LOCFHR RRFc_R1 "," RRFc_R2 "," RRFc_M3 is RRFc_OP=0xB9E0 & RRFc_M3 & RRFc_R1 & RRFc_R2
 {
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     _c_m = RRFc_M3;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    cc_hit(_c_m, _c_bit);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     RRFc_R1 = (RRFc_R1 & 0xFFFFFFFF) | (RRFc_R2 & (0xFFFFFFFF << 32));
@@ -782,512 +692,64 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 # M3 bit 3 is reserved; only bits 0-2 participate in the trap test.
 # ===========================================================================
 # CRT: cc_scmp32, 32-bit operands.
-:CRTH RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB972 & RRFc_M3=2 & RRFc_R1 & RRFc_R2
-{
-    local a:8;
-    local b:8;
-    local _t_ccval:1;
-    local _t_bit:1;
-    a = RRFc_R1 & 0xffffffff;
-    b = RRFc_R2 & 0xffffffff;
-    cc_scmp32(a, b);
-    _t_ccval = cc;
-    _t_bit = 4 >> _t_ccval;
-    if ((2 & _t_bit) != 0) goto <trap_fire>;
-    goto <trap_done>;
-<trap_fire>
-    trap_compare_data();
-<trap_done>
-}
+# CRTH: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:CRTL RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB972 & RRFc_M3=4 & RRFc_R1 & RRFc_R2
-{
-    local a:8;
-    local b:8;
-    local _t_ccval:1;
-    local _t_bit:1;
-    a = RRFc_R1 & 0xffffffff;
-    b = RRFc_R2 & 0xffffffff;
-    cc_scmp32(a, b);
-    _t_ccval = cc;
-    _t_bit = 4 >> _t_ccval;
-    if ((4 & _t_bit) != 0) goto <trap_fire>;
-    goto <trap_done>;
-<trap_fire>
-    trap_compare_data();
-<trap_done>
-}
+# CRTL: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:CRTLH RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB972 & RRFc_M3=6 & RRFc_R1 & RRFc_R2
-{
-    local a:8;
-    local b:8;
-    local _t_ccval:1;
-    local _t_bit:1;
-    a = RRFc_R1 & 0xffffffff;
-    b = RRFc_R2 & 0xffffffff;
-    cc_scmp32(a, b);
-    _t_ccval = cc;
-    _t_bit = 4 >> _t_ccval;
-    if ((6 & _t_bit) != 0) goto <trap_fire>;
-    goto <trap_done>;
-<trap_fire>
-    trap_compare_data();
-<trap_done>
-}
+# CRTLH: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:CRTE RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB972 & RRFc_M3=8 & RRFc_R1 & RRFc_R2
-{
-    local a:8;
-    local b:8;
-    local _t_ccval:1;
-    local _t_bit:1;
-    a = RRFc_R1 & 0xffffffff;
-    b = RRFc_R2 & 0xffffffff;
-    cc_scmp32(a, b);
-    _t_ccval = cc;
-    _t_bit = 4 >> _t_ccval;
-    if ((8 & _t_bit) != 0) goto <trap_fire>;
-    goto <trap_done>;
-<trap_fire>
-    trap_compare_data();
-<trap_done>
-}
+# CRTE: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:CRTHE RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB972 & RRFc_M3=10 & RRFc_R1 & RRFc_R2
-{
-    local a:8;
-    local b:8;
-    local _t_ccval:1;
-    local _t_bit:1;
-    a = RRFc_R1 & 0xffffffff;
-    b = RRFc_R2 & 0xffffffff;
-    cc_scmp32(a, b);
-    _t_ccval = cc;
-    _t_bit = 4 >> _t_ccval;
-    if ((10 & _t_bit) != 0) goto <trap_fire>;
-    goto <trap_done>;
-<trap_fire>
-    trap_compare_data();
-<trap_done>
-}
+# CRTHE: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:CRTLE RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB972 & RRFc_M3=12 & RRFc_R1 & RRFc_R2
-{
-    local a:8;
-    local b:8;
-    local _t_ccval:1;
-    local _t_bit:1;
-    a = RRFc_R1 & 0xffffffff;
-    b = RRFc_R2 & 0xffffffff;
-    cc_scmp32(a, b);
-    _t_ccval = cc;
-    _t_bit = 4 >> _t_ccval;
-    if ((12 & _t_bit) != 0) goto <trap_fire>;
-    goto <trap_done>;
-<trap_fire>
-    trap_compare_data();
-<trap_done>
-}
+# CRTLE: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:CRT RRFc_R1 "," RRFc_R2 "," RRFc_M3 is RRFc_OP=0xB972 & RRFc_M3 & RRFc_R1 & RRFc_R2
-{
-    local a:8;
-    local b:8;
-    local _t_ccval:1;
-    local _t_bit:1;
-    a = RRFc_R1 & 0xffffffff;
-    b = RRFc_R2 & 0xffffffff;
-    cc_scmp32(a, b);
-    _t_ccval = cc;
-    _t_bit = 4 >> _t_ccval;
-    if ((RRFc_M3 & _t_bit) != 0) goto <trap_fire>;
-    goto <trap_done>;
-<trap_fire>
-    trap_compare_data();
-<trap_done>
-}
+# CRT: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # CLRT: cc_ucmp, 32-bit operands.
-:CLRTH RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB973 & RRFc_M3=2 & RRFc_R1 & RRFc_R2
-{
-    local a:8;
-    local b:8;
-    local _t_ccval:1;
-    local _t_bit:1;
-    a = RRFc_R1 & 0xffffffff;
-    b = RRFc_R2 & 0xffffffff;
-    cc_ucmp(a, b);
-    _t_ccval = cc;
-    _t_bit = 4 >> _t_ccval;
-    if ((2 & _t_bit) != 0) goto <trap_fire>;
-    goto <trap_done>;
-<trap_fire>
-    trap_compare_data();
-<trap_done>
-}
+# CLRTH: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:CLRTL RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB973 & RRFc_M3=4 & RRFc_R1 & RRFc_R2
-{
-    local a:8;
-    local b:8;
-    local _t_ccval:1;
-    local _t_bit:1;
-    a = RRFc_R1 & 0xffffffff;
-    b = RRFc_R2 & 0xffffffff;
-    cc_ucmp(a, b);
-    _t_ccval = cc;
-    _t_bit = 4 >> _t_ccval;
-    if ((4 & _t_bit) != 0) goto <trap_fire>;
-    goto <trap_done>;
-<trap_fire>
-    trap_compare_data();
-<trap_done>
-}
+# CLRTL: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:CLRTLH RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB973 & RRFc_M3=6 & RRFc_R1 & RRFc_R2
-{
-    local a:8;
-    local b:8;
-    local _t_ccval:1;
-    local _t_bit:1;
-    a = RRFc_R1 & 0xffffffff;
-    b = RRFc_R2 & 0xffffffff;
-    cc_ucmp(a, b);
-    _t_ccval = cc;
-    _t_bit = 4 >> _t_ccval;
-    if ((6 & _t_bit) != 0) goto <trap_fire>;
-    goto <trap_done>;
-<trap_fire>
-    trap_compare_data();
-<trap_done>
-}
+# CLRTLH: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:CLRTE RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB973 & RRFc_M3=8 & RRFc_R1 & RRFc_R2
-{
-    local a:8;
-    local b:8;
-    local _t_ccval:1;
-    local _t_bit:1;
-    a = RRFc_R1 & 0xffffffff;
-    b = RRFc_R2 & 0xffffffff;
-    cc_ucmp(a, b);
-    _t_ccval = cc;
-    _t_bit = 4 >> _t_ccval;
-    if ((8 & _t_bit) != 0) goto <trap_fire>;
-    goto <trap_done>;
-<trap_fire>
-    trap_compare_data();
-<trap_done>
-}
+# CLRTE: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:CLRTHE RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB973 & RRFc_M3=10 & RRFc_R1 & RRFc_R2
-{
-    local a:8;
-    local b:8;
-    local _t_ccval:1;
-    local _t_bit:1;
-    a = RRFc_R1 & 0xffffffff;
-    b = RRFc_R2 & 0xffffffff;
-    cc_ucmp(a, b);
-    _t_ccval = cc;
-    _t_bit = 4 >> _t_ccval;
-    if ((10 & _t_bit) != 0) goto <trap_fire>;
-    goto <trap_done>;
-<trap_fire>
-    trap_compare_data();
-<trap_done>
-}
+# CLRTHE: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:CLRTLE RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB973 & RRFc_M3=12 & RRFc_R1 & RRFc_R2
-{
-    local a:8;
-    local b:8;
-    local _t_ccval:1;
-    local _t_bit:1;
-    a = RRFc_R1 & 0xffffffff;
-    b = RRFc_R2 & 0xffffffff;
-    cc_ucmp(a, b);
-    _t_ccval = cc;
-    _t_bit = 4 >> _t_ccval;
-    if ((12 & _t_bit) != 0) goto <trap_fire>;
-    goto <trap_done>;
-<trap_fire>
-    trap_compare_data();
-<trap_done>
-}
+# CLRTLE: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:CLRT RRFc_R1 "," RRFc_R2 "," RRFc_M3 is RRFc_OP=0xB973 & RRFc_M3 & RRFc_R1 & RRFc_R2
-{
-    local a:8;
-    local b:8;
-    local _t_ccval:1;
-    local _t_bit:1;
-    a = RRFc_R1 & 0xffffffff;
-    b = RRFc_R2 & 0xffffffff;
-    cc_ucmp(a, b);
-    _t_ccval = cc;
-    _t_bit = 4 >> _t_ccval;
-    if ((RRFc_M3 & _t_bit) != 0) goto <trap_fire>;
-    goto <trap_done>;
-<trap_fire>
-    trap_compare_data();
-<trap_done>
-}
+# CLRT: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # CGRT: cc_scmp64, 64-bit operands.
-:CGRTH RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB960 & RRFc_M3=2 & RRFc_R1 & RRFc_R2
-{
-    local a:8;
-    local b:8;
-    local _t_ccval:1;
-    local _t_bit:1;
-    a = RRFc_R1;
-    b = RRFc_R2;
-    cc_scmp64(a, b);
-    _t_ccval = cc;
-    _t_bit = 4 >> _t_ccval;
-    if ((2 & _t_bit) != 0) goto <trap_fire>;
-    goto <trap_done>;
-<trap_fire>
-    trap_compare_data();
-<trap_done>
-}
+# CGRTH: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:CGRTL RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB960 & RRFc_M3=4 & RRFc_R1 & RRFc_R2
-{
-    local a:8;
-    local b:8;
-    local _t_ccval:1;
-    local _t_bit:1;
-    a = RRFc_R1;
-    b = RRFc_R2;
-    cc_scmp64(a, b);
-    _t_ccval = cc;
-    _t_bit = 4 >> _t_ccval;
-    if ((4 & _t_bit) != 0) goto <trap_fire>;
-    goto <trap_done>;
-<trap_fire>
-    trap_compare_data();
-<trap_done>
-}
+# CGRTL: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:CGRTLH RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB960 & RRFc_M3=6 & RRFc_R1 & RRFc_R2
-{
-    local a:8;
-    local b:8;
-    local _t_ccval:1;
-    local _t_bit:1;
-    a = RRFc_R1;
-    b = RRFc_R2;
-    cc_scmp64(a, b);
-    _t_ccval = cc;
-    _t_bit = 4 >> _t_ccval;
-    if ((6 & _t_bit) != 0) goto <trap_fire>;
-    goto <trap_done>;
-<trap_fire>
-    trap_compare_data();
-<trap_done>
-}
+# CGRTLH: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:CGRTE RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB960 & RRFc_M3=8 & RRFc_R1 & RRFc_R2
-{
-    local a:8;
-    local b:8;
-    local _t_ccval:1;
-    local _t_bit:1;
-    a = RRFc_R1;
-    b = RRFc_R2;
-    cc_scmp64(a, b);
-    _t_ccval = cc;
-    _t_bit = 4 >> _t_ccval;
-    if ((8 & _t_bit) != 0) goto <trap_fire>;
-    goto <trap_done>;
-<trap_fire>
-    trap_compare_data();
-<trap_done>
-}
+# CGRTE: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:CGRTHE RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB960 & RRFc_M3=10 & RRFc_R1 & RRFc_R2
-{
-    local a:8;
-    local b:8;
-    local _t_ccval:1;
-    local _t_bit:1;
-    a = RRFc_R1;
-    b = RRFc_R2;
-    cc_scmp64(a, b);
-    _t_ccval = cc;
-    _t_bit = 4 >> _t_ccval;
-    if ((10 & _t_bit) != 0) goto <trap_fire>;
-    goto <trap_done>;
-<trap_fire>
-    trap_compare_data();
-<trap_done>
-}
+# CGRTHE: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:CGRTLE RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB960 & RRFc_M3=12 & RRFc_R1 & RRFc_R2
-{
-    local a:8;
-    local b:8;
-    local _t_ccval:1;
-    local _t_bit:1;
-    a = RRFc_R1;
-    b = RRFc_R2;
-    cc_scmp64(a, b);
-    _t_ccval = cc;
-    _t_bit = 4 >> _t_ccval;
-    if ((12 & _t_bit) != 0) goto <trap_fire>;
-    goto <trap_done>;
-<trap_fire>
-    trap_compare_data();
-<trap_done>
-}
+# CGRTLE: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:CGRT RRFc_R1 "," RRFc_R2 "," RRFc_M3 is RRFc_OP=0xB960 & RRFc_M3 & RRFc_R1 & RRFc_R2
-{
-    local a:8;
-    local b:8;
-    local _t_ccval:1;
-    local _t_bit:1;
-    a = RRFc_R1;
-    b = RRFc_R2;
-    cc_scmp64(a, b);
-    _t_ccval = cc;
-    _t_bit = 4 >> _t_ccval;
-    if ((RRFc_M3 & _t_bit) != 0) goto <trap_fire>;
-    goto <trap_done>;
-<trap_fire>
-    trap_compare_data();
-<trap_done>
-}
+# CGRT: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # CLGRT: cc_ucmp, 64-bit operands.
-:CLGRTH RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB961 & RRFc_M3=2 & RRFc_R1 & RRFc_R2
-{
-    local a:8;
-    local b:8;
-    local _t_ccval:1;
-    local _t_bit:1;
-    a = RRFc_R1;
-    b = RRFc_R2;
-    cc_ucmp(a, b);
-    _t_ccval = cc;
-    _t_bit = 4 >> _t_ccval;
-    if ((2 & _t_bit) != 0) goto <trap_fire>;
-    goto <trap_done>;
-<trap_fire>
-    trap_compare_data();
-<trap_done>
-}
+# CLGRTH: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:CLGRTL RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB961 & RRFc_M3=4 & RRFc_R1 & RRFc_R2
-{
-    local a:8;
-    local b:8;
-    local _t_ccval:1;
-    local _t_bit:1;
-    a = RRFc_R1;
-    b = RRFc_R2;
-    cc_ucmp(a, b);
-    _t_ccval = cc;
-    _t_bit = 4 >> _t_ccval;
-    if ((4 & _t_bit) != 0) goto <trap_fire>;
-    goto <trap_done>;
-<trap_fire>
-    trap_compare_data();
-<trap_done>
-}
+# CLGRTL: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:CLGRTLH RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB961 & RRFc_M3=6 & RRFc_R1 & RRFc_R2
-{
-    local a:8;
-    local b:8;
-    local _t_ccval:1;
-    local _t_bit:1;
-    a = RRFc_R1;
-    b = RRFc_R2;
-    cc_ucmp(a, b);
-    _t_ccval = cc;
-    _t_bit = 4 >> _t_ccval;
-    if ((6 & _t_bit) != 0) goto <trap_fire>;
-    goto <trap_done>;
-<trap_fire>
-    trap_compare_data();
-<trap_done>
-}
+# CLGRTLH: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:CLGRTE RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB961 & RRFc_M3=8 & RRFc_R1 & RRFc_R2
-{
-    local a:8;
-    local b:8;
-    local _t_ccval:1;
-    local _t_bit:1;
-    a = RRFc_R1;
-    b = RRFc_R2;
-    cc_ucmp(a, b);
-    _t_ccval = cc;
-    _t_bit = 4 >> _t_ccval;
-    if ((8 & _t_bit) != 0) goto <trap_fire>;
-    goto <trap_done>;
-<trap_fire>
-    trap_compare_data();
-<trap_done>
-}
+# CLGRTE: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:CLGRTHE RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB961 & RRFc_M3=10 & RRFc_R1 & RRFc_R2
-{
-    local a:8;
-    local b:8;
-    local _t_ccval:1;
-    local _t_bit:1;
-    a = RRFc_R1;
-    b = RRFc_R2;
-    cc_ucmp(a, b);
-    _t_ccval = cc;
-    _t_bit = 4 >> _t_ccval;
-    if ((10 & _t_bit) != 0) goto <trap_fire>;
-    goto <trap_done>;
-<trap_fire>
-    trap_compare_data();
-<trap_done>
-}
+# CLGRTHE: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:CLGRTLE RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB961 & RRFc_M3=12 & RRFc_R1 & RRFc_R2
-{
-    local a:8;
-    local b:8;
-    local _t_ccval:1;
-    local _t_bit:1;
-    a = RRFc_R1;
-    b = RRFc_R2;
-    cc_ucmp(a, b);
-    _t_ccval = cc;
-    _t_bit = 4 >> _t_ccval;
-    if ((12 & _t_bit) != 0) goto <trap_fire>;
-    goto <trap_done>;
-<trap_fire>
-    trap_compare_data();
-<trap_done>
-}
+# CLGRTLE: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:CLGRT RRFc_R1 "," RRFc_R2 "," RRFc_M3 is RRFc_OP=0xB961 & RRFc_M3 & RRFc_R1 & RRFc_R2
-{
-    local a:8;
-    local b:8;
-    local _t_ccval:1;
-    local _t_bit:1;
-    a = RRFc_R1;
-    b = RRFc_R2;
-    cc_ucmp(a, b);
-    _t_ccval = cc;
-    _t_bit = 4 >> _t_ccval;
-    if ((RRFc_M3 & _t_bit) != 0) goto <trap_fire>;
-    goto <trap_done>;
-<trap_fire>
-    trap_compare_data();
-<trap_done>
-}
+# CLGRT: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # ===========================================================================
 # LOAD/STORE ON CONDITION, storage forms (RSY-b, 20-bit displacement).
@@ -1300,13 +762,11 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
     local ea:8;
     local w:4;
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     ea_D20(ea, RSYb_B2, zero, RSYb_DH2, RSYb_DL2);
     _c_m = 1;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    _c_bit = (cc3);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     w = *:4 ea;
@@ -1319,13 +779,11 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
     local ea:8;
     local w:4;
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     ea_D20(ea, RSYb_B2, zero, RSYb_DH2, RSYb_DL2);
     _c_m = 2;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    _c_bit = (cc2);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     w = *:4 ea;
@@ -1338,13 +796,11 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
     local ea:8;
     local w:4;
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     ea_D20(ea, RSYb_B2, zero, RSYb_DH2, RSYb_DL2);
     _c_m = 3;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    _c_bit = (cc2 || cc3);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     w = *:4 ea;
@@ -1357,13 +813,11 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
     local ea:8;
     local w:4;
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     ea_D20(ea, RSYb_B2, zero, RSYb_DH2, RSYb_DL2);
     _c_m = 4;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    _c_bit = (cc1);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     w = *:4 ea;
@@ -1376,13 +830,11 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
     local ea:8;
     local w:4;
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     ea_D20(ea, RSYb_B2, zero, RSYb_DH2, RSYb_DL2);
     _c_m = 5;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    _c_bit = (cc1 || cc3);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     w = *:4 ea;
@@ -1395,13 +847,11 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
     local ea:8;
     local w:4;
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     ea_D20(ea, RSYb_B2, zero, RSYb_DH2, RSYb_DL2);
     _c_m = 6;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    _c_bit = !(cc0 || cc3);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     w = *:4 ea;
@@ -1414,13 +864,11 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
     local ea:8;
     local w:4;
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     ea_D20(ea, RSYb_B2, zero, RSYb_DH2, RSYb_DL2);
     _c_m = 7;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    _c_bit = !(cc0);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     w = *:4 ea;
@@ -1433,13 +881,11 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
     local ea:8;
     local w:4;
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     ea_D20(ea, RSYb_B2, zero, RSYb_DH2, RSYb_DL2);
     _c_m = 8;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    _c_bit = (cc0);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     w = *:4 ea;
@@ -1452,13 +898,11 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
     local ea:8;
     local w:4;
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     ea_D20(ea, RSYb_B2, zero, RSYb_DH2, RSYb_DL2);
     _c_m = 9;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    _c_bit = (cc0 || cc3);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     w = *:4 ea;
@@ -1471,13 +915,11 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
     local ea:8;
     local w:4;
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     ea_D20(ea, RSYb_B2, zero, RSYb_DH2, RSYb_DL2);
     _c_m = 10;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    _c_bit = !(cc1 || cc3);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     w = *:4 ea;
@@ -1490,13 +932,11 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
     local ea:8;
     local w:4;
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     ea_D20(ea, RSYb_B2, zero, RSYb_DH2, RSYb_DL2);
     _c_m = 11;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    _c_bit = !(cc1);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     w = *:4 ea;
@@ -1509,13 +949,11 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
     local ea:8;
     local w:4;
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     ea_D20(ea, RSYb_B2, zero, RSYb_DH2, RSYb_DL2);
     _c_m = 12;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    _c_bit = !(cc2 || cc3);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     w = *:4 ea;
@@ -1528,13 +966,11 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
     local ea:8;
     local w:4;
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     ea_D20(ea, RSYb_B2, zero, RSYb_DH2, RSYb_DL2);
     _c_m = 13;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    _c_bit = !(cc2);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     w = *:4 ea;
@@ -1547,13 +983,11 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
     local ea:8;
     local w:4;
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     ea_D20(ea, RSYb_B2, zero, RSYb_DH2, RSYb_DL2);
     _c_m = 14;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    _c_bit = !(cc3);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     w = *:4 ea;
@@ -1566,13 +1000,11 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
     local ea:8;
     local w:4;
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     ea_D20(ea, RSYb_B2, zero, RSYb_DH2, RSYb_DL2);
     _c_m = RSYb_M3;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    cc_hit(_c_m, _c_bit);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     w = *:4 ea;
@@ -1585,13 +1017,11 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 {
     local ea:8;
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     ea_D20(ea, RSYb_B2, zero, RSYb_DH2, RSYb_DL2);
     _c_m = 1;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    _c_bit = (cc3);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     RSYb_R1 = *:8 ea;
@@ -1602,13 +1032,11 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 {
     local ea:8;
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     ea_D20(ea, RSYb_B2, zero, RSYb_DH2, RSYb_DL2);
     _c_m = 2;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    _c_bit = (cc2);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     RSYb_R1 = *:8 ea;
@@ -1619,13 +1047,11 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 {
     local ea:8;
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     ea_D20(ea, RSYb_B2, zero, RSYb_DH2, RSYb_DL2);
     _c_m = 3;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    _c_bit = (cc2 || cc3);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     RSYb_R1 = *:8 ea;
@@ -1636,13 +1062,11 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 {
     local ea:8;
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     ea_D20(ea, RSYb_B2, zero, RSYb_DH2, RSYb_DL2);
     _c_m = 4;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    _c_bit = (cc1);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     RSYb_R1 = *:8 ea;
@@ -1653,13 +1077,11 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 {
     local ea:8;
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     ea_D20(ea, RSYb_B2, zero, RSYb_DH2, RSYb_DL2);
     _c_m = 5;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    _c_bit = (cc1 || cc3);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     RSYb_R1 = *:8 ea;
@@ -1670,13 +1092,11 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 {
     local ea:8;
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     ea_D20(ea, RSYb_B2, zero, RSYb_DH2, RSYb_DL2);
     _c_m = 6;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    _c_bit = !(cc0 || cc3);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     RSYb_R1 = *:8 ea;
@@ -1687,13 +1107,11 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 {
     local ea:8;
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     ea_D20(ea, RSYb_B2, zero, RSYb_DH2, RSYb_DL2);
     _c_m = 7;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    _c_bit = !(cc0);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     RSYb_R1 = *:8 ea;
@@ -1704,13 +1122,11 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 {
     local ea:8;
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     ea_D20(ea, RSYb_B2, zero, RSYb_DH2, RSYb_DL2);
     _c_m = 8;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    _c_bit = (cc0);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     RSYb_R1 = *:8 ea;
@@ -1721,13 +1137,11 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 {
     local ea:8;
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     ea_D20(ea, RSYb_B2, zero, RSYb_DH2, RSYb_DL2);
     _c_m = 9;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    _c_bit = (cc0 || cc3);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     RSYb_R1 = *:8 ea;
@@ -1738,13 +1152,11 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 {
     local ea:8;
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     ea_D20(ea, RSYb_B2, zero, RSYb_DH2, RSYb_DL2);
     _c_m = 10;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    _c_bit = !(cc1 || cc3);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     RSYb_R1 = *:8 ea;
@@ -1755,13 +1167,11 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 {
     local ea:8;
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     ea_D20(ea, RSYb_B2, zero, RSYb_DH2, RSYb_DL2);
     _c_m = 11;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    _c_bit = !(cc1);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     RSYb_R1 = *:8 ea;
@@ -1772,13 +1182,11 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 {
     local ea:8;
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     ea_D20(ea, RSYb_B2, zero, RSYb_DH2, RSYb_DL2);
     _c_m = 12;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    _c_bit = !(cc2 || cc3);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     RSYb_R1 = *:8 ea;
@@ -1789,13 +1197,11 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 {
     local ea:8;
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     ea_D20(ea, RSYb_B2, zero, RSYb_DH2, RSYb_DL2);
     _c_m = 13;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    _c_bit = !(cc2);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     RSYb_R1 = *:8 ea;
@@ -1806,13 +1212,11 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 {
     local ea:8;
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     ea_D20(ea, RSYb_B2, zero, RSYb_DH2, RSYb_DL2);
     _c_m = 14;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    _c_bit = !(cc3);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     RSYb_R1 = *:8 ea;
@@ -1823,13 +1227,11 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 {
     local ea:8;
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     ea_D20(ea, RSYb_B2, zero, RSYb_DH2, RSYb_DL2);
     _c_m = RSYb_M3;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    cc_hit(_c_m, _c_bit);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     RSYb_R1 = *:8 ea;
@@ -1842,13 +1244,11 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
     local ea:8;
     local w:4;
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     ea_D20(ea, RSYb_B2, zero, RSYb_DH2, RSYb_DL2);
     _c_m = 1;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    _c_bit = (cc3);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     w = *:4 ea;
@@ -1861,13 +1261,11 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
     local ea:8;
     local w:4;
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     ea_D20(ea, RSYb_B2, zero, RSYb_DH2, RSYb_DL2);
     _c_m = 2;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    _c_bit = (cc2);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     w = *:4 ea;
@@ -1880,13 +1278,11 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
     local ea:8;
     local w:4;
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     ea_D20(ea, RSYb_B2, zero, RSYb_DH2, RSYb_DL2);
     _c_m = 3;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    _c_bit = (cc2 || cc3);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     w = *:4 ea;
@@ -1899,13 +1295,11 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
     local ea:8;
     local w:4;
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     ea_D20(ea, RSYb_B2, zero, RSYb_DH2, RSYb_DL2);
     _c_m = 4;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    _c_bit = (cc1);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     w = *:4 ea;
@@ -1918,13 +1312,11 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
     local ea:8;
     local w:4;
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     ea_D20(ea, RSYb_B2, zero, RSYb_DH2, RSYb_DL2);
     _c_m = 5;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    _c_bit = (cc1 || cc3);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     w = *:4 ea;
@@ -1937,13 +1329,11 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
     local ea:8;
     local w:4;
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     ea_D20(ea, RSYb_B2, zero, RSYb_DH2, RSYb_DL2);
     _c_m = 6;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    _c_bit = !(cc0 || cc3);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     w = *:4 ea;
@@ -1956,13 +1346,11 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
     local ea:8;
     local w:4;
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     ea_D20(ea, RSYb_B2, zero, RSYb_DH2, RSYb_DL2);
     _c_m = 7;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    _c_bit = !(cc0);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     w = *:4 ea;
@@ -1975,13 +1363,11 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
     local ea:8;
     local w:4;
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     ea_D20(ea, RSYb_B2, zero, RSYb_DH2, RSYb_DL2);
     _c_m = 8;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    _c_bit = (cc0);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     w = *:4 ea;
@@ -1994,13 +1380,11 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
     local ea:8;
     local w:4;
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     ea_D20(ea, RSYb_B2, zero, RSYb_DH2, RSYb_DL2);
     _c_m = 9;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    _c_bit = (cc0 || cc3);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     w = *:4 ea;
@@ -2013,13 +1397,11 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
     local ea:8;
     local w:4;
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     ea_D20(ea, RSYb_B2, zero, RSYb_DH2, RSYb_DL2);
     _c_m = 10;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    _c_bit = !(cc1 || cc3);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     w = *:4 ea;
@@ -2032,13 +1414,11 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
     local ea:8;
     local w:4;
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     ea_D20(ea, RSYb_B2, zero, RSYb_DH2, RSYb_DL2);
     _c_m = 11;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    _c_bit = !(cc1);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     w = *:4 ea;
@@ -2051,13 +1431,11 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
     local ea:8;
     local w:4;
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     ea_D20(ea, RSYb_B2, zero, RSYb_DH2, RSYb_DL2);
     _c_m = 12;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    _c_bit = !(cc2 || cc3);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     w = *:4 ea;
@@ -2070,13 +1448,11 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
     local ea:8;
     local w:4;
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     ea_D20(ea, RSYb_B2, zero, RSYb_DH2, RSYb_DL2);
     _c_m = 13;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    _c_bit = !(cc2);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     w = *:4 ea;
@@ -2089,13 +1465,11 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
     local ea:8;
     local w:4;
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     ea_D20(ea, RSYb_B2, zero, RSYb_DH2, RSYb_DL2);
     _c_m = 14;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    _c_bit = !(cc3);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     w = *:4 ea;
@@ -2108,13 +1482,11 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
     local ea:8;
     local w:4;
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     ea_D20(ea, RSYb_B2, zero, RSYb_DH2, RSYb_DL2);
     _c_m = RSYb_M3;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    cc_hit(_c_m, _c_bit);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     w = *:4 ea;
@@ -2221,286 +1593,34 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 # the mask is the SECOND operand: CLT R1,M3,D2(B2).
 # ===========================================================================
 # CLT: unsigned 32-bit compare against storage operand.
-:CLTH RSYb_R1 "," db_RSYb_DL2_RSYb_B2 is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=2 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0x23 & db_RSYb_DL2_RSYb_B2
-{
-    local ea:8;
-    local a:8;
-    local b:8;
-    local _t_ccval:1;
-    local _t_bit:1;
-    ea_D20(ea, RSYb_B2, zero, RSYb_DH2, RSYb_DL2);
-    a = RSYb_R1 & 0xffffffff;
-    b = zext(*:4 ea);
-    cc_ucmp(a, b);
-    _t_ccval = cc;
-    _t_bit = 4 >> _t_ccval;
-    if ((2 & _t_bit) != 0) goto <trap_fire>;
-    goto <trap_done>;
-<trap_fire>
-    trap_compare_data();
-<trap_done>
-}
+# CLTH: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:CLTL RSYb_R1 "," db_RSYb_DL2_RSYb_B2 is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=4 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0x23 & db_RSYb_DL2_RSYb_B2
-{
-    local ea:8;
-    local a:8;
-    local b:8;
-    local _t_ccval:1;
-    local _t_bit:1;
-    ea_D20(ea, RSYb_B2, zero, RSYb_DH2, RSYb_DL2);
-    a = RSYb_R1 & 0xffffffff;
-    b = zext(*:4 ea);
-    cc_ucmp(a, b);
-    _t_ccval = cc;
-    _t_bit = 4 >> _t_ccval;
-    if ((4 & _t_bit) != 0) goto <trap_fire>;
-    goto <trap_done>;
-<trap_fire>
-    trap_compare_data();
-<trap_done>
-}
+# CLTL: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:CLTLH RSYb_R1 "," db_RSYb_DL2_RSYb_B2 is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=6 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0x23 & db_RSYb_DL2_RSYb_B2
-{
-    local ea:8;
-    local a:8;
-    local b:8;
-    local _t_ccval:1;
-    local _t_bit:1;
-    ea_D20(ea, RSYb_B2, zero, RSYb_DH2, RSYb_DL2);
-    a = RSYb_R1 & 0xffffffff;
-    b = zext(*:4 ea);
-    cc_ucmp(a, b);
-    _t_ccval = cc;
-    _t_bit = 4 >> _t_ccval;
-    if ((6 & _t_bit) != 0) goto <trap_fire>;
-    goto <trap_done>;
-<trap_fire>
-    trap_compare_data();
-<trap_done>
-}
+# CLTLH: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:CLTE RSYb_R1 "," db_RSYb_DL2_RSYb_B2 is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=8 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0x23 & db_RSYb_DL2_RSYb_B2
-{
-    local ea:8;
-    local a:8;
-    local b:8;
-    local _t_ccval:1;
-    local _t_bit:1;
-    ea_D20(ea, RSYb_B2, zero, RSYb_DH2, RSYb_DL2);
-    a = RSYb_R1 & 0xffffffff;
-    b = zext(*:4 ea);
-    cc_ucmp(a, b);
-    _t_ccval = cc;
-    _t_bit = 4 >> _t_ccval;
-    if ((8 & _t_bit) != 0) goto <trap_fire>;
-    goto <trap_done>;
-<trap_fire>
-    trap_compare_data();
-<trap_done>
-}
+# CLTE: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:CLTHE RSYb_R1 "," db_RSYb_DL2_RSYb_B2 is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=10 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0x23 & db_RSYb_DL2_RSYb_B2
-{
-    local ea:8;
-    local a:8;
-    local b:8;
-    local _t_ccval:1;
-    local _t_bit:1;
-    ea_D20(ea, RSYb_B2, zero, RSYb_DH2, RSYb_DL2);
-    a = RSYb_R1 & 0xffffffff;
-    b = zext(*:4 ea);
-    cc_ucmp(a, b);
-    _t_ccval = cc;
-    _t_bit = 4 >> _t_ccval;
-    if ((10 & _t_bit) != 0) goto <trap_fire>;
-    goto <trap_done>;
-<trap_fire>
-    trap_compare_data();
-<trap_done>
-}
+# CLTHE: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:CLTLE RSYb_R1 "," db_RSYb_DL2_RSYb_B2 is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=12 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0x23 & db_RSYb_DL2_RSYb_B2
-{
-    local ea:8;
-    local a:8;
-    local b:8;
-    local _t_ccval:1;
-    local _t_bit:1;
-    ea_D20(ea, RSYb_B2, zero, RSYb_DH2, RSYb_DL2);
-    a = RSYb_R1 & 0xffffffff;
-    b = zext(*:4 ea);
-    cc_ucmp(a, b);
-    _t_ccval = cc;
-    _t_bit = 4 >> _t_ccval;
-    if ((12 & _t_bit) != 0) goto <trap_fire>;
-    goto <trap_done>;
-<trap_fire>
-    trap_compare_data();
-<trap_done>
-}
+# CLTLE: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:CLT RSYb_R1 "," RSYb_M3 "," db_RSYb_DL2_RSYb_B2 is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0x23 & db_RSYb_DL2_RSYb_B2
-{
-    local ea:8;
-    local a:8;
-    local b:8;
-    local _t_ccval:1;
-    local _t_bit:1;
-    ea_D20(ea, RSYb_B2, zero, RSYb_DH2, RSYb_DL2);
-    a = RSYb_R1 & 0xffffffff;
-    b = zext(*:4 ea);
-    cc_ucmp(a, b);
-    _t_ccval = cc;
-    _t_bit = 4 >> _t_ccval;
-    if ((RSYb_M3 & _t_bit) != 0) goto <trap_fire>;
-    goto <trap_done>;
-<trap_fire>
-    trap_compare_data();
-<trap_done>
-}
+# CLT: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # CLGT: unsigned 64-bit compare against storage operand.
-:CLGTH RSYb_R1 "," db_RSYb_DL2_RSYb_B2 is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=2 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0x2B & db_RSYb_DL2_RSYb_B2
-{
-    local ea:8;
-    local a:8;
-    local b:8;
-    local _t_ccval:1;
-    local _t_bit:1;
-    ea_D20(ea, RSYb_B2, zero, RSYb_DH2, RSYb_DL2);
-    a = RSYb_R1;
-    b = *:8 ea;
-    cc_ucmp(a, b);
-    _t_ccval = cc;
-    _t_bit = 4 >> _t_ccval;
-    if ((2 & _t_bit) != 0) goto <trap_fire>;
-    goto <trap_done>;
-<trap_fire>
-    trap_compare_data();
-<trap_done>
-}
+# CLGTH: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:CLGTL RSYb_R1 "," db_RSYb_DL2_RSYb_B2 is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=4 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0x2B & db_RSYb_DL2_RSYb_B2
-{
-    local ea:8;
-    local a:8;
-    local b:8;
-    local _t_ccval:1;
-    local _t_bit:1;
-    ea_D20(ea, RSYb_B2, zero, RSYb_DH2, RSYb_DL2);
-    a = RSYb_R1;
-    b = *:8 ea;
-    cc_ucmp(a, b);
-    _t_ccval = cc;
-    _t_bit = 4 >> _t_ccval;
-    if ((4 & _t_bit) != 0) goto <trap_fire>;
-    goto <trap_done>;
-<trap_fire>
-    trap_compare_data();
-<trap_done>
-}
+# CLGTL: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:CLGTLH RSYb_R1 "," db_RSYb_DL2_RSYb_B2 is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=6 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0x2B & db_RSYb_DL2_RSYb_B2
-{
-    local ea:8;
-    local a:8;
-    local b:8;
-    local _t_ccval:1;
-    local _t_bit:1;
-    ea_D20(ea, RSYb_B2, zero, RSYb_DH2, RSYb_DL2);
-    a = RSYb_R1;
-    b = *:8 ea;
-    cc_ucmp(a, b);
-    _t_ccval = cc;
-    _t_bit = 4 >> _t_ccval;
-    if ((6 & _t_bit) != 0) goto <trap_fire>;
-    goto <trap_done>;
-<trap_fire>
-    trap_compare_data();
-<trap_done>
-}
+# CLGTLH: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:CLGTE RSYb_R1 "," db_RSYb_DL2_RSYb_B2 is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=8 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0x2B & db_RSYb_DL2_RSYb_B2
-{
-    local ea:8;
-    local a:8;
-    local b:8;
-    local _t_ccval:1;
-    local _t_bit:1;
-    ea_D20(ea, RSYb_B2, zero, RSYb_DH2, RSYb_DL2);
-    a = RSYb_R1;
-    b = *:8 ea;
-    cc_ucmp(a, b);
-    _t_ccval = cc;
-    _t_bit = 4 >> _t_ccval;
-    if ((8 & _t_bit) != 0) goto <trap_fire>;
-    goto <trap_done>;
-<trap_fire>
-    trap_compare_data();
-<trap_done>
-}
+# CLGTE: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:CLGTHE RSYb_R1 "," db_RSYb_DL2_RSYb_B2 is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=10 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0x2B & db_RSYb_DL2_RSYb_B2
-{
-    local ea:8;
-    local a:8;
-    local b:8;
-    local _t_ccval:1;
-    local _t_bit:1;
-    ea_D20(ea, RSYb_B2, zero, RSYb_DH2, RSYb_DL2);
-    a = RSYb_R1;
-    b = *:8 ea;
-    cc_ucmp(a, b);
-    _t_ccval = cc;
-    _t_bit = 4 >> _t_ccval;
-    if ((10 & _t_bit) != 0) goto <trap_fire>;
-    goto <trap_done>;
-<trap_fire>
-    trap_compare_data();
-<trap_done>
-}
+# CLGTHE: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:CLGTLE RSYb_R1 "," db_RSYb_DL2_RSYb_B2 is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3=12 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0x2B & db_RSYb_DL2_RSYb_B2
-{
-    local ea:8;
-    local a:8;
-    local b:8;
-    local _t_ccval:1;
-    local _t_bit:1;
-    ea_D20(ea, RSYb_B2, zero, RSYb_DH2, RSYb_DL2);
-    a = RSYb_R1;
-    b = *:8 ea;
-    cc_ucmp(a, b);
-    _t_ccval = cc;
-    _t_bit = 4 >> _t_ccval;
-    if ((12 & _t_bit) != 0) goto <trap_fire>;
-    goto <trap_done>;
-<trap_fire>
-    trap_compare_data();
-<trap_done>
-}
+# CLGTLE: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:CLGT RSYb_R1 "," RSYb_M3 "," db_RSYb_DL2_RSYb_B2 is RSYb_OP=0xEB & RSYb_R1 & RSYb_M3 & RSYb_B2 & RSYb_DL2 & RSYb_DH2 & RSYb_OP2=0x2B & db_RSYb_DL2_RSYb_B2
-{
-    local ea:8;
-    local a:8;
-    local b:8;
-    local _t_ccval:1;
-    local _t_bit:1;
-    ea_D20(ea, RSYb_B2, zero, RSYb_DH2, RSYb_DL2);
-    a = RSYb_R1;
-    b = *:8 ea;
-    cc_ucmp(a, b);
-    _t_ccval = cc;
-    _t_bit = 4 >> _t_ccval;
-    if ((RSYb_M3 & _t_bit) != 0) goto <trap_fire>;
-    goto <trap_done>;
-<trap_fire>
-    trap_compare_data();
-<trap_done>
-}
+# CLGT: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # ===========================================================================
 # LOAD HALFWORD IMMEDIATE ON CONDITION (RIE-g). PoP 7-315.
@@ -2515,14 +1635,12 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
     local _ext_rieg_i2:2;
     local w:4;
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     _ext_rieg_i2 = RIEg_I2;
     w = sext(_ext_rieg_i2);
     _c_m = 1;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    _c_bit = (cc3);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     RIEg_R1 = (RIEg_R1 & (0xFFFFFFFF << 32)) | zext(w);
@@ -2534,14 +1652,12 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
     local _ext_rieg_i2:2;
     local w:4;
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     _ext_rieg_i2 = RIEg_I2;
     w = sext(_ext_rieg_i2);
     _c_m = 2;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    _c_bit = (cc2);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     RIEg_R1 = (RIEg_R1 & (0xFFFFFFFF << 32)) | zext(w);
@@ -2553,14 +1669,12 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
     local _ext_rieg_i2:2;
     local w:4;
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     _ext_rieg_i2 = RIEg_I2;
     w = sext(_ext_rieg_i2);
     _c_m = 3;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    _c_bit = (cc2 || cc3);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     RIEg_R1 = (RIEg_R1 & (0xFFFFFFFF << 32)) | zext(w);
@@ -2572,14 +1686,12 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
     local _ext_rieg_i2:2;
     local w:4;
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     _ext_rieg_i2 = RIEg_I2;
     w = sext(_ext_rieg_i2);
     _c_m = 4;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    _c_bit = (cc1);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     RIEg_R1 = (RIEg_R1 & (0xFFFFFFFF << 32)) | zext(w);
@@ -2591,14 +1703,12 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
     local _ext_rieg_i2:2;
     local w:4;
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     _ext_rieg_i2 = RIEg_I2;
     w = sext(_ext_rieg_i2);
     _c_m = 5;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    _c_bit = (cc1 || cc3);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     RIEg_R1 = (RIEg_R1 & (0xFFFFFFFF << 32)) | zext(w);
@@ -2610,14 +1720,12 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
     local _ext_rieg_i2:2;
     local w:4;
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     _ext_rieg_i2 = RIEg_I2;
     w = sext(_ext_rieg_i2);
     _c_m = 6;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    _c_bit = !(cc0 || cc3);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     RIEg_R1 = (RIEg_R1 & (0xFFFFFFFF << 32)) | zext(w);
@@ -2629,14 +1737,12 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
     local _ext_rieg_i2:2;
     local w:4;
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     _ext_rieg_i2 = RIEg_I2;
     w = sext(_ext_rieg_i2);
     _c_m = 7;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    _c_bit = !(cc0);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     RIEg_R1 = (RIEg_R1 & (0xFFFFFFFF << 32)) | zext(w);
@@ -2648,14 +1754,12 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
     local _ext_rieg_i2:2;
     local w:4;
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     _ext_rieg_i2 = RIEg_I2;
     w = sext(_ext_rieg_i2);
     _c_m = 8;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    _c_bit = (cc0);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     RIEg_R1 = (RIEg_R1 & (0xFFFFFFFF << 32)) | zext(w);
@@ -2667,14 +1771,12 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
     local _ext_rieg_i2:2;
     local w:4;
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     _ext_rieg_i2 = RIEg_I2;
     w = sext(_ext_rieg_i2);
     _c_m = 9;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    _c_bit = (cc0 || cc3);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     RIEg_R1 = (RIEg_R1 & (0xFFFFFFFF << 32)) | zext(w);
@@ -2686,14 +1788,12 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
     local _ext_rieg_i2:2;
     local w:4;
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     _ext_rieg_i2 = RIEg_I2;
     w = sext(_ext_rieg_i2);
     _c_m = 10;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    _c_bit = !(cc1 || cc3);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     RIEg_R1 = (RIEg_R1 & (0xFFFFFFFF << 32)) | zext(w);
@@ -2705,14 +1805,12 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
     local _ext_rieg_i2:2;
     local w:4;
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     _ext_rieg_i2 = RIEg_I2;
     w = sext(_ext_rieg_i2);
     _c_m = 11;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    _c_bit = !(cc1);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     RIEg_R1 = (RIEg_R1 & (0xFFFFFFFF << 32)) | zext(w);
@@ -2724,14 +1822,12 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
     local _ext_rieg_i2:2;
     local w:4;
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     _ext_rieg_i2 = RIEg_I2;
     w = sext(_ext_rieg_i2);
     _c_m = 12;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    _c_bit = !(cc2 || cc3);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     RIEg_R1 = (RIEg_R1 & (0xFFFFFFFF << 32)) | zext(w);
@@ -2743,14 +1839,12 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
     local _ext_rieg_i2:2;
     local w:4;
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     _ext_rieg_i2 = RIEg_I2;
     w = sext(_ext_rieg_i2);
     _c_m = 13;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    _c_bit = !(cc2);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     RIEg_R1 = (RIEg_R1 & (0xFFFFFFFF << 32)) | zext(w);
@@ -2762,14 +1856,12 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
     local _ext_rieg_i2:2;
     local w:4;
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     _ext_rieg_i2 = RIEg_I2;
     w = sext(_ext_rieg_i2);
     _c_m = 14;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    _c_bit = !(cc3);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     RIEg_R1 = (RIEg_R1 & (0xFFFFFFFF << 32)) | zext(w);
@@ -2781,14 +1873,12 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
     local _ext_rieg_i2:2;
     local w:4;
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     _ext_rieg_i2 = RIEg_I2;
     w = sext(_ext_rieg_i2);
     _c_m = RIEg_M3;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    cc_hit(_c_m, _c_bit);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     RIEg_R1 = (RIEg_R1 & (0xFFFFFFFF << 32)) | zext(w);
@@ -2800,13 +1890,11 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 {
     local _ext_rieg_i2:2;
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     _ext_rieg_i2 = RIEg_I2;
     _c_m = 1;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    _c_bit = (cc3);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     RIEg_R1 = sext(_ext_rieg_i2);
@@ -2817,13 +1905,11 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 {
     local _ext_rieg_i2:2;
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     _ext_rieg_i2 = RIEg_I2;
     _c_m = 2;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    _c_bit = (cc2);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     RIEg_R1 = sext(_ext_rieg_i2);
@@ -2834,13 +1920,11 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 {
     local _ext_rieg_i2:2;
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     _ext_rieg_i2 = RIEg_I2;
     _c_m = 3;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    _c_bit = (cc2 || cc3);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     RIEg_R1 = sext(_ext_rieg_i2);
@@ -2851,13 +1935,11 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 {
     local _ext_rieg_i2:2;
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     _ext_rieg_i2 = RIEg_I2;
     _c_m = 4;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    _c_bit = (cc1);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     RIEg_R1 = sext(_ext_rieg_i2);
@@ -2868,13 +1950,11 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 {
     local _ext_rieg_i2:2;
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     _ext_rieg_i2 = RIEg_I2;
     _c_m = 5;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    _c_bit = (cc1 || cc3);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     RIEg_R1 = sext(_ext_rieg_i2);
@@ -2885,13 +1965,11 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 {
     local _ext_rieg_i2:2;
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     _ext_rieg_i2 = RIEg_I2;
     _c_m = 6;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    _c_bit = !(cc0 || cc3);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     RIEg_R1 = sext(_ext_rieg_i2);
@@ -2902,13 +1980,11 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 {
     local _ext_rieg_i2:2;
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     _ext_rieg_i2 = RIEg_I2;
     _c_m = 7;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    _c_bit = !(cc0);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     RIEg_R1 = sext(_ext_rieg_i2);
@@ -2919,13 +1995,11 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 {
     local _ext_rieg_i2:2;
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     _ext_rieg_i2 = RIEg_I2;
     _c_m = 8;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    _c_bit = (cc0);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     RIEg_R1 = sext(_ext_rieg_i2);
@@ -2936,13 +2010,11 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 {
     local _ext_rieg_i2:2;
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     _ext_rieg_i2 = RIEg_I2;
     _c_m = 9;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    _c_bit = (cc0 || cc3);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     RIEg_R1 = sext(_ext_rieg_i2);
@@ -2953,13 +2025,11 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 {
     local _ext_rieg_i2:2;
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     _ext_rieg_i2 = RIEg_I2;
     _c_m = 10;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    _c_bit = !(cc1 || cc3);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     RIEg_R1 = sext(_ext_rieg_i2);
@@ -2970,13 +2040,11 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 {
     local _ext_rieg_i2:2;
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     _ext_rieg_i2 = RIEg_I2;
     _c_m = 11;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    _c_bit = !(cc1);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     RIEg_R1 = sext(_ext_rieg_i2);
@@ -2987,13 +2055,11 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 {
     local _ext_rieg_i2:2;
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     _ext_rieg_i2 = RIEg_I2;
     _c_m = 12;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    _c_bit = !(cc2 || cc3);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     RIEg_R1 = sext(_ext_rieg_i2);
@@ -3004,13 +2070,11 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 {
     local _ext_rieg_i2:2;
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     _ext_rieg_i2 = RIEg_I2;
     _c_m = 13;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    _c_bit = !(cc2);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     RIEg_R1 = sext(_ext_rieg_i2);
@@ -3021,13 +2085,11 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 {
     local _ext_rieg_i2:2;
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     _ext_rieg_i2 = RIEg_I2;
     _c_m = 14;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    _c_bit = !(cc3);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     RIEg_R1 = sext(_ext_rieg_i2);
@@ -3038,13 +2100,11 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 {
     local _ext_rieg_i2:2;
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     _ext_rieg_i2 = RIEg_I2;
     _c_m = RIEg_M3;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    cc_hit(_c_m, _c_bit);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     RIEg_R1 = sext(_ext_rieg_i2);
@@ -3057,14 +2117,12 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
     local _ext_rieg_i2:2;
     local w:4;
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     _ext_rieg_i2 = RIEg_I2;
     w = sext(_ext_rieg_i2);
     _c_m = 1;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    _c_bit = (cc3);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     RIEg_R1 = (RIEg_R1 & 0xFFFFFFFF) | (zext(w) << 32);
@@ -3076,14 +2134,12 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
     local _ext_rieg_i2:2;
     local w:4;
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     _ext_rieg_i2 = RIEg_I2;
     w = sext(_ext_rieg_i2);
     _c_m = 2;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    _c_bit = (cc2);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     RIEg_R1 = (RIEg_R1 & 0xFFFFFFFF) | (zext(w) << 32);
@@ -3095,14 +2151,12 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
     local _ext_rieg_i2:2;
     local w:4;
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     _ext_rieg_i2 = RIEg_I2;
     w = sext(_ext_rieg_i2);
     _c_m = 3;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    _c_bit = (cc2 || cc3);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     RIEg_R1 = (RIEg_R1 & 0xFFFFFFFF) | (zext(w) << 32);
@@ -3114,14 +2168,12 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
     local _ext_rieg_i2:2;
     local w:4;
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     _ext_rieg_i2 = RIEg_I2;
     w = sext(_ext_rieg_i2);
     _c_m = 4;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    _c_bit = (cc1);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     RIEg_R1 = (RIEg_R1 & 0xFFFFFFFF) | (zext(w) << 32);
@@ -3133,14 +2185,12 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
     local _ext_rieg_i2:2;
     local w:4;
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     _ext_rieg_i2 = RIEg_I2;
     w = sext(_ext_rieg_i2);
     _c_m = 5;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    _c_bit = (cc1 || cc3);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     RIEg_R1 = (RIEg_R1 & 0xFFFFFFFF) | (zext(w) << 32);
@@ -3152,14 +2202,12 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
     local _ext_rieg_i2:2;
     local w:4;
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     _ext_rieg_i2 = RIEg_I2;
     w = sext(_ext_rieg_i2);
     _c_m = 6;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    _c_bit = !(cc0 || cc3);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     RIEg_R1 = (RIEg_R1 & 0xFFFFFFFF) | (zext(w) << 32);
@@ -3171,14 +2219,12 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
     local _ext_rieg_i2:2;
     local w:4;
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     _ext_rieg_i2 = RIEg_I2;
     w = sext(_ext_rieg_i2);
     _c_m = 7;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    _c_bit = !(cc0);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     RIEg_R1 = (RIEg_R1 & 0xFFFFFFFF) | (zext(w) << 32);
@@ -3190,14 +2236,12 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
     local _ext_rieg_i2:2;
     local w:4;
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     _ext_rieg_i2 = RIEg_I2;
     w = sext(_ext_rieg_i2);
     _c_m = 8;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    _c_bit = (cc0);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     RIEg_R1 = (RIEg_R1 & 0xFFFFFFFF) | (zext(w) << 32);
@@ -3209,14 +2253,12 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
     local _ext_rieg_i2:2;
     local w:4;
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     _ext_rieg_i2 = RIEg_I2;
     w = sext(_ext_rieg_i2);
     _c_m = 9;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    _c_bit = (cc0 || cc3);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     RIEg_R1 = (RIEg_R1 & 0xFFFFFFFF) | (zext(w) << 32);
@@ -3228,14 +2270,12 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
     local _ext_rieg_i2:2;
     local w:4;
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     _ext_rieg_i2 = RIEg_I2;
     w = sext(_ext_rieg_i2);
     _c_m = 10;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    _c_bit = !(cc1 || cc3);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     RIEg_R1 = (RIEg_R1 & 0xFFFFFFFF) | (zext(w) << 32);
@@ -3247,14 +2287,12 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
     local _ext_rieg_i2:2;
     local w:4;
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     _ext_rieg_i2 = RIEg_I2;
     w = sext(_ext_rieg_i2);
     _c_m = 11;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    _c_bit = !(cc1);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     RIEg_R1 = (RIEg_R1 & 0xFFFFFFFF) | (zext(w) << 32);
@@ -3266,14 +2304,12 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
     local _ext_rieg_i2:2;
     local w:4;
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     _ext_rieg_i2 = RIEg_I2;
     w = sext(_ext_rieg_i2);
     _c_m = 12;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    _c_bit = !(cc2 || cc3);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     RIEg_R1 = (RIEg_R1 & 0xFFFFFFFF) | (zext(w) << 32);
@@ -3285,14 +2321,12 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
     local _ext_rieg_i2:2;
     local w:4;
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     _ext_rieg_i2 = RIEg_I2;
     w = sext(_ext_rieg_i2);
     _c_m = 13;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    _c_bit = !(cc2);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     RIEg_R1 = (RIEg_R1 & 0xFFFFFFFF) | (zext(w) << 32);
@@ -3304,14 +2338,12 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
     local _ext_rieg_i2:2;
     local w:4;
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     _ext_rieg_i2 = RIEg_I2;
     w = sext(_ext_rieg_i2);
     _c_m = 14;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    _c_bit = !(cc3);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     RIEg_R1 = (RIEg_R1 & 0xFFFFFFFF) | (zext(w) << 32);
@@ -3323,14 +2355,12 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
     local _ext_rieg_i2:2;
     local w:4;
     local _c_m:1;
-    local _c_ccval:1;
     local _c_bit:1;
     _ext_rieg_i2 = RIEg_I2;
     w = sext(_ext_rieg_i2);
     _c_m = RIEg_M3;
-    _c_ccval = cc;
-    _c_bit = 8 >> _c_ccval;
-    if ((_c_m & _c_bit) != 0) goto <c_do>;
+    cc_hit(_c_m, _c_bit);
+    if (_c_bit) goto <c_do>;
     goto <c_done>;
 <c_do>
     RIEg_R1 = (RIEg_R1 & 0xFFFFFFFF) | (zext(w) << 32);
@@ -3345,568 +2375,64 @@ attach variables [ RIEg_R1 ] [ r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14
 # compare-and-trap data exception is modeled via trap_compare_data().
 # ===========================================================================
 # CIT: cc_scmp32, I2 sext-extended.
-:CITH RIEa_R1 "," RIEa_I2 is RIEa_OP=0xEC & RIEa_R1 & RIEa_IGN1 & RIEa_I2 & RIEa_M3=2 & RIEa_IGN2 & RIEa_OP2=0x72
-{
-    local a:8;
-    local b:8;
-    local _ext_riea_i2:2;
-    local _t_ccval:1;
-    local _t_bit:1;
-    _ext_riea_i2 = RIEa_I2;
-    a = RIEa_R1 & 0xffffffff;
-    b = sext(_ext_riea_i2) & 0xffffffff;
-    cc_scmp32(a, b);
-    _t_ccval = cc;
-    _t_bit = 4 >> _t_ccval;
-    if ((2 & _t_bit) != 0) goto <trap_fire>;
-    goto <trap_done>;
-<trap_fire>
-    trap_compare_data();
-<trap_done>
-}
+# CITH: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:CITL RIEa_R1 "," RIEa_I2 is RIEa_OP=0xEC & RIEa_R1 & RIEa_IGN1 & RIEa_I2 & RIEa_M3=4 & RIEa_IGN2 & RIEa_OP2=0x72
-{
-    local a:8;
-    local b:8;
-    local _ext_riea_i2:2;
-    local _t_ccval:1;
-    local _t_bit:1;
-    _ext_riea_i2 = RIEa_I2;
-    a = RIEa_R1 & 0xffffffff;
-    b = sext(_ext_riea_i2) & 0xffffffff;
-    cc_scmp32(a, b);
-    _t_ccval = cc;
-    _t_bit = 4 >> _t_ccval;
-    if ((4 & _t_bit) != 0) goto <trap_fire>;
-    goto <trap_done>;
-<trap_fire>
-    trap_compare_data();
-<trap_done>
-}
+# CITL: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:CITLH RIEa_R1 "," RIEa_I2 is RIEa_OP=0xEC & RIEa_R1 & RIEa_IGN1 & RIEa_I2 & RIEa_M3=6 & RIEa_IGN2 & RIEa_OP2=0x72
-{
-    local a:8;
-    local b:8;
-    local _ext_riea_i2:2;
-    local _t_ccval:1;
-    local _t_bit:1;
-    _ext_riea_i2 = RIEa_I2;
-    a = RIEa_R1 & 0xffffffff;
-    b = sext(_ext_riea_i2) & 0xffffffff;
-    cc_scmp32(a, b);
-    _t_ccval = cc;
-    _t_bit = 4 >> _t_ccval;
-    if ((6 & _t_bit) != 0) goto <trap_fire>;
-    goto <trap_done>;
-<trap_fire>
-    trap_compare_data();
-<trap_done>
-}
+# CITLH: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:CITE RIEa_R1 "," RIEa_I2 is RIEa_OP=0xEC & RIEa_R1 & RIEa_IGN1 & RIEa_I2 & RIEa_M3=8 & RIEa_IGN2 & RIEa_OP2=0x72
-{
-    local a:8;
-    local b:8;
-    local _ext_riea_i2:2;
-    local _t_ccval:1;
-    local _t_bit:1;
-    _ext_riea_i2 = RIEa_I2;
-    a = RIEa_R1 & 0xffffffff;
-    b = sext(_ext_riea_i2) & 0xffffffff;
-    cc_scmp32(a, b);
-    _t_ccval = cc;
-    _t_bit = 4 >> _t_ccval;
-    if ((8 & _t_bit) != 0) goto <trap_fire>;
-    goto <trap_done>;
-<trap_fire>
-    trap_compare_data();
-<trap_done>
-}
+# CITE: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:CITHE RIEa_R1 "," RIEa_I2 is RIEa_OP=0xEC & RIEa_R1 & RIEa_IGN1 & RIEa_I2 & RIEa_M3=10 & RIEa_IGN2 & RIEa_OP2=0x72
-{
-    local a:8;
-    local b:8;
-    local _ext_riea_i2:2;
-    local _t_ccval:1;
-    local _t_bit:1;
-    _ext_riea_i2 = RIEa_I2;
-    a = RIEa_R1 & 0xffffffff;
-    b = sext(_ext_riea_i2) & 0xffffffff;
-    cc_scmp32(a, b);
-    _t_ccval = cc;
-    _t_bit = 4 >> _t_ccval;
-    if ((10 & _t_bit) != 0) goto <trap_fire>;
-    goto <trap_done>;
-<trap_fire>
-    trap_compare_data();
-<trap_done>
-}
+# CITHE: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:CITLE RIEa_R1 "," RIEa_I2 is RIEa_OP=0xEC & RIEa_R1 & RIEa_IGN1 & RIEa_I2 & RIEa_M3=12 & RIEa_IGN2 & RIEa_OP2=0x72
-{
-    local a:8;
-    local b:8;
-    local _ext_riea_i2:2;
-    local _t_ccval:1;
-    local _t_bit:1;
-    _ext_riea_i2 = RIEa_I2;
-    a = RIEa_R1 & 0xffffffff;
-    b = sext(_ext_riea_i2) & 0xffffffff;
-    cc_scmp32(a, b);
-    _t_ccval = cc;
-    _t_bit = 4 >> _t_ccval;
-    if ((12 & _t_bit) != 0) goto <trap_fire>;
-    goto <trap_done>;
-<trap_fire>
-    trap_compare_data();
-<trap_done>
-}
+# CITLE: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:CIT RIEa_R1 "," RIEa_I2 "," RIEa_M3 is RIEa_OP=0xEC & RIEa_R1 & RIEa_IGN1 & RIEa_I2 & RIEa_M3 & RIEa_IGN2 & RIEa_OP2=0x72
-{
-    local a:8;
-    local b:8;
-    local _ext_riea_i2:2;
-    local _t_ccval:1;
-    local _t_bit:1;
-    _ext_riea_i2 = RIEa_I2;
-    a = RIEa_R1 & 0xffffffff;
-    b = sext(_ext_riea_i2) & 0xffffffff;
-    cc_scmp32(a, b);
-    _t_ccval = cc;
-    _t_bit = 4 >> _t_ccval;
-    if ((RIEa_M3 & _t_bit) != 0) goto <trap_fire>;
-    goto <trap_done>;
-<trap_fire>
-    trap_compare_data();
-<trap_done>
-}
+# CIT: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # CGIT: cc_scmp64, I2 sext-extended.
-:CGITH RIEa_R1 "," RIEa_I2 is RIEa_OP=0xEC & RIEa_R1 & RIEa_IGN1 & RIEa_I2 & RIEa_M3=2 & RIEa_IGN2 & RIEa_OP2=0x70
-{
-    local a:8;
-    local b:8;
-    local _ext_riea_i2:2;
-    local _t_ccval:1;
-    local _t_bit:1;
-    _ext_riea_i2 = RIEa_I2;
-    a = RIEa_R1;
-    b = sext(_ext_riea_i2);
-    cc_scmp64(a, b);
-    _t_ccval = cc;
-    _t_bit = 4 >> _t_ccval;
-    if ((2 & _t_bit) != 0) goto <trap_fire>;
-    goto <trap_done>;
-<trap_fire>
-    trap_compare_data();
-<trap_done>
-}
+# CGITH: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:CGITL RIEa_R1 "," RIEa_I2 is RIEa_OP=0xEC & RIEa_R1 & RIEa_IGN1 & RIEa_I2 & RIEa_M3=4 & RIEa_IGN2 & RIEa_OP2=0x70
-{
-    local a:8;
-    local b:8;
-    local _ext_riea_i2:2;
-    local _t_ccval:1;
-    local _t_bit:1;
-    _ext_riea_i2 = RIEa_I2;
-    a = RIEa_R1;
-    b = sext(_ext_riea_i2);
-    cc_scmp64(a, b);
-    _t_ccval = cc;
-    _t_bit = 4 >> _t_ccval;
-    if ((4 & _t_bit) != 0) goto <trap_fire>;
-    goto <trap_done>;
-<trap_fire>
-    trap_compare_data();
-<trap_done>
-}
+# CGITL: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:CGITLH RIEa_R1 "," RIEa_I2 is RIEa_OP=0xEC & RIEa_R1 & RIEa_IGN1 & RIEa_I2 & RIEa_M3=6 & RIEa_IGN2 & RIEa_OP2=0x70
-{
-    local a:8;
-    local b:8;
-    local _ext_riea_i2:2;
-    local _t_ccval:1;
-    local _t_bit:1;
-    _ext_riea_i2 = RIEa_I2;
-    a = RIEa_R1;
-    b = sext(_ext_riea_i2);
-    cc_scmp64(a, b);
-    _t_ccval = cc;
-    _t_bit = 4 >> _t_ccval;
-    if ((6 & _t_bit) != 0) goto <trap_fire>;
-    goto <trap_done>;
-<trap_fire>
-    trap_compare_data();
-<trap_done>
-}
+# CGITLH: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:CGITE RIEa_R1 "," RIEa_I2 is RIEa_OP=0xEC & RIEa_R1 & RIEa_IGN1 & RIEa_I2 & RIEa_M3=8 & RIEa_IGN2 & RIEa_OP2=0x70
-{
-    local a:8;
-    local b:8;
-    local _ext_riea_i2:2;
-    local _t_ccval:1;
-    local _t_bit:1;
-    _ext_riea_i2 = RIEa_I2;
-    a = RIEa_R1;
-    b = sext(_ext_riea_i2);
-    cc_scmp64(a, b);
-    _t_ccval = cc;
-    _t_bit = 4 >> _t_ccval;
-    if ((8 & _t_bit) != 0) goto <trap_fire>;
-    goto <trap_done>;
-<trap_fire>
-    trap_compare_data();
-<trap_done>
-}
+# CGITE: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:CGITHE RIEa_R1 "," RIEa_I2 is RIEa_OP=0xEC & RIEa_R1 & RIEa_IGN1 & RIEa_I2 & RIEa_M3=10 & RIEa_IGN2 & RIEa_OP2=0x70
-{
-    local a:8;
-    local b:8;
-    local _ext_riea_i2:2;
-    local _t_ccval:1;
-    local _t_bit:1;
-    _ext_riea_i2 = RIEa_I2;
-    a = RIEa_R1;
-    b = sext(_ext_riea_i2);
-    cc_scmp64(a, b);
-    _t_ccval = cc;
-    _t_bit = 4 >> _t_ccval;
-    if ((10 & _t_bit) != 0) goto <trap_fire>;
-    goto <trap_done>;
-<trap_fire>
-    trap_compare_data();
-<trap_done>
-}
+# CGITHE: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:CGITLE RIEa_R1 "," RIEa_I2 is RIEa_OP=0xEC & RIEa_R1 & RIEa_IGN1 & RIEa_I2 & RIEa_M3=12 & RIEa_IGN2 & RIEa_OP2=0x70
-{
-    local a:8;
-    local b:8;
-    local _ext_riea_i2:2;
-    local _t_ccval:1;
-    local _t_bit:1;
-    _ext_riea_i2 = RIEa_I2;
-    a = RIEa_R1;
-    b = sext(_ext_riea_i2);
-    cc_scmp64(a, b);
-    _t_ccval = cc;
-    _t_bit = 4 >> _t_ccval;
-    if ((12 & _t_bit) != 0) goto <trap_fire>;
-    goto <trap_done>;
-<trap_fire>
-    trap_compare_data();
-<trap_done>
-}
+# CGITLE: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:CGIT RIEa_R1 "," RIEa_I2 "," RIEa_M3 is RIEa_OP=0xEC & RIEa_R1 & RIEa_IGN1 & RIEa_I2 & RIEa_M3 & RIEa_IGN2 & RIEa_OP2=0x70
-{
-    local a:8;
-    local b:8;
-    local _ext_riea_i2:2;
-    local _t_ccval:1;
-    local _t_bit:1;
-    _ext_riea_i2 = RIEa_I2;
-    a = RIEa_R1;
-    b = sext(_ext_riea_i2);
-    cc_scmp64(a, b);
-    _t_ccval = cc;
-    _t_bit = 4 >> _t_ccval;
-    if ((RIEa_M3 & _t_bit) != 0) goto <trap_fire>;
-    goto <trap_done>;
-<trap_fire>
-    trap_compare_data();
-<trap_done>
-}
+# CGIT: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # CLFIT: cc_ucmp, I2 zext-extended.
-:CLFITH RIEa_R1 "," RIEa_I2 is RIEa_OP=0xEC & RIEa_R1 & RIEa_IGN1 & RIEa_I2 & RIEa_M3=2 & RIEa_IGN2 & RIEa_OP2=0x73
-{
-    local a:8;
-    local b:8;
-    local _ext_riea_i2:2;
-    local _t_ccval:1;
-    local _t_bit:1;
-    _ext_riea_i2 = RIEa_I2;
-    a = RIEa_R1 & 0xffffffff;
-    b = zext(_ext_riea_i2) & 0xffffffff;
-    cc_ucmp(a, b);
-    _t_ccval = cc;
-    _t_bit = 4 >> _t_ccval;
-    if ((2 & _t_bit) != 0) goto <trap_fire>;
-    goto <trap_done>;
-<trap_fire>
-    trap_compare_data();
-<trap_done>
-}
+# CLFITH: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:CLFITL RIEa_R1 "," RIEa_I2 is RIEa_OP=0xEC & RIEa_R1 & RIEa_IGN1 & RIEa_I2 & RIEa_M3=4 & RIEa_IGN2 & RIEa_OP2=0x73
-{
-    local a:8;
-    local b:8;
-    local _ext_riea_i2:2;
-    local _t_ccval:1;
-    local _t_bit:1;
-    _ext_riea_i2 = RIEa_I2;
-    a = RIEa_R1 & 0xffffffff;
-    b = zext(_ext_riea_i2) & 0xffffffff;
-    cc_ucmp(a, b);
-    _t_ccval = cc;
-    _t_bit = 4 >> _t_ccval;
-    if ((4 & _t_bit) != 0) goto <trap_fire>;
-    goto <trap_done>;
-<trap_fire>
-    trap_compare_data();
-<trap_done>
-}
+# CLFITL: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:CLFITLH RIEa_R1 "," RIEa_I2 is RIEa_OP=0xEC & RIEa_R1 & RIEa_IGN1 & RIEa_I2 & RIEa_M3=6 & RIEa_IGN2 & RIEa_OP2=0x73
-{
-    local a:8;
-    local b:8;
-    local _ext_riea_i2:2;
-    local _t_ccval:1;
-    local _t_bit:1;
-    _ext_riea_i2 = RIEa_I2;
-    a = RIEa_R1 & 0xffffffff;
-    b = zext(_ext_riea_i2) & 0xffffffff;
-    cc_ucmp(a, b);
-    _t_ccval = cc;
-    _t_bit = 4 >> _t_ccval;
-    if ((6 & _t_bit) != 0) goto <trap_fire>;
-    goto <trap_done>;
-<trap_fire>
-    trap_compare_data();
-<trap_done>
-}
+# CLFITLH: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:CLFITE RIEa_R1 "," RIEa_I2 is RIEa_OP=0xEC & RIEa_R1 & RIEa_IGN1 & RIEa_I2 & RIEa_M3=8 & RIEa_IGN2 & RIEa_OP2=0x73
-{
-    local a:8;
-    local b:8;
-    local _ext_riea_i2:2;
-    local _t_ccval:1;
-    local _t_bit:1;
-    _ext_riea_i2 = RIEa_I2;
-    a = RIEa_R1 & 0xffffffff;
-    b = zext(_ext_riea_i2) & 0xffffffff;
-    cc_ucmp(a, b);
-    _t_ccval = cc;
-    _t_bit = 4 >> _t_ccval;
-    if ((8 & _t_bit) != 0) goto <trap_fire>;
-    goto <trap_done>;
-<trap_fire>
-    trap_compare_data();
-<trap_done>
-}
+# CLFITE: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:CLFITHE RIEa_R1 "," RIEa_I2 is RIEa_OP=0xEC & RIEa_R1 & RIEa_IGN1 & RIEa_I2 & RIEa_M3=10 & RIEa_IGN2 & RIEa_OP2=0x73
-{
-    local a:8;
-    local b:8;
-    local _ext_riea_i2:2;
-    local _t_ccval:1;
-    local _t_bit:1;
-    _ext_riea_i2 = RIEa_I2;
-    a = RIEa_R1 & 0xffffffff;
-    b = zext(_ext_riea_i2) & 0xffffffff;
-    cc_ucmp(a, b);
-    _t_ccval = cc;
-    _t_bit = 4 >> _t_ccval;
-    if ((10 & _t_bit) != 0) goto <trap_fire>;
-    goto <trap_done>;
-<trap_fire>
-    trap_compare_data();
-<trap_done>
-}
+# CLFITHE: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:CLFITLE RIEa_R1 "," RIEa_I2 is RIEa_OP=0xEC & RIEa_R1 & RIEa_IGN1 & RIEa_I2 & RIEa_M3=12 & RIEa_IGN2 & RIEa_OP2=0x73
-{
-    local a:8;
-    local b:8;
-    local _ext_riea_i2:2;
-    local _t_ccval:1;
-    local _t_bit:1;
-    _ext_riea_i2 = RIEa_I2;
-    a = RIEa_R1 & 0xffffffff;
-    b = zext(_ext_riea_i2) & 0xffffffff;
-    cc_ucmp(a, b);
-    _t_ccval = cc;
-    _t_bit = 4 >> _t_ccval;
-    if ((12 & _t_bit) != 0) goto <trap_fire>;
-    goto <trap_done>;
-<trap_fire>
-    trap_compare_data();
-<trap_done>
-}
+# CLFITLE: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:CLFIT RIEa_R1 "," RIEa_I2 "," RIEa_M3 is RIEa_OP=0xEC & RIEa_R1 & RIEa_IGN1 & RIEa_I2 & RIEa_M3 & RIEa_IGN2 & RIEa_OP2=0x73
-{
-    local a:8;
-    local b:8;
-    local _ext_riea_i2:2;
-    local _t_ccval:1;
-    local _t_bit:1;
-    _ext_riea_i2 = RIEa_I2;
-    a = RIEa_R1 & 0xffffffff;
-    b = zext(_ext_riea_i2) & 0xffffffff;
-    cc_ucmp(a, b);
-    _t_ccval = cc;
-    _t_bit = 4 >> _t_ccval;
-    if ((RIEa_M3 & _t_bit) != 0) goto <trap_fire>;
-    goto <trap_done>;
-<trap_fire>
-    trap_compare_data();
-<trap_done>
-}
+# CLFIT: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # CLGIT: cc_ucmp, I2 zext-extended.
-:CLGITH RIEa_R1 "," RIEa_I2 is RIEa_OP=0xEC & RIEa_R1 & RIEa_IGN1 & RIEa_I2 & RIEa_M3=2 & RIEa_IGN2 & RIEa_OP2=0x71
-{
-    local a:8;
-    local b:8;
-    local _ext_riea_i2:2;
-    local _t_ccval:1;
-    local _t_bit:1;
-    _ext_riea_i2 = RIEa_I2;
-    a = RIEa_R1;
-    b = zext(_ext_riea_i2);
-    cc_ucmp(a, b);
-    _t_ccval = cc;
-    _t_bit = 4 >> _t_ccval;
-    if ((2 & _t_bit) != 0) goto <trap_fire>;
-    goto <trap_done>;
-<trap_fire>
-    trap_compare_data();
-<trap_done>
-}
+# CLGITH: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:CLGITL RIEa_R1 "," RIEa_I2 is RIEa_OP=0xEC & RIEa_R1 & RIEa_IGN1 & RIEa_I2 & RIEa_M3=4 & RIEa_IGN2 & RIEa_OP2=0x71
-{
-    local a:8;
-    local b:8;
-    local _ext_riea_i2:2;
-    local _t_ccval:1;
-    local _t_bit:1;
-    _ext_riea_i2 = RIEa_I2;
-    a = RIEa_R1;
-    b = zext(_ext_riea_i2);
-    cc_ucmp(a, b);
-    _t_ccval = cc;
-    _t_bit = 4 >> _t_ccval;
-    if ((4 & _t_bit) != 0) goto <trap_fire>;
-    goto <trap_done>;
-<trap_fire>
-    trap_compare_data();
-<trap_done>
-}
+# CLGITL: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:CLGITLH RIEa_R1 "," RIEa_I2 is RIEa_OP=0xEC & RIEa_R1 & RIEa_IGN1 & RIEa_I2 & RIEa_M3=6 & RIEa_IGN2 & RIEa_OP2=0x71
-{
-    local a:8;
-    local b:8;
-    local _ext_riea_i2:2;
-    local _t_ccval:1;
-    local _t_bit:1;
-    _ext_riea_i2 = RIEa_I2;
-    a = RIEa_R1;
-    b = zext(_ext_riea_i2);
-    cc_ucmp(a, b);
-    _t_ccval = cc;
-    _t_bit = 4 >> _t_ccval;
-    if ((6 & _t_bit) != 0) goto <trap_fire>;
-    goto <trap_done>;
-<trap_fire>
-    trap_compare_data();
-<trap_done>
-}
+# CLGITLH: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:CLGITE RIEa_R1 "," RIEa_I2 is RIEa_OP=0xEC & RIEa_R1 & RIEa_IGN1 & RIEa_I2 & RIEa_M3=8 & RIEa_IGN2 & RIEa_OP2=0x71
-{
-    local a:8;
-    local b:8;
-    local _ext_riea_i2:2;
-    local _t_ccval:1;
-    local _t_bit:1;
-    _ext_riea_i2 = RIEa_I2;
-    a = RIEa_R1;
-    b = zext(_ext_riea_i2);
-    cc_ucmp(a, b);
-    _t_ccval = cc;
-    _t_bit = 4 >> _t_ccval;
-    if ((8 & _t_bit) != 0) goto <trap_fire>;
-    goto <trap_done>;
-<trap_fire>
-    trap_compare_data();
-<trap_done>
-}
+# CLGITE: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:CLGITHE RIEa_R1 "," RIEa_I2 is RIEa_OP=0xEC & RIEa_R1 & RIEa_IGN1 & RIEa_I2 & RIEa_M3=10 & RIEa_IGN2 & RIEa_OP2=0x71
-{
-    local a:8;
-    local b:8;
-    local _ext_riea_i2:2;
-    local _t_ccval:1;
-    local _t_bit:1;
-    _ext_riea_i2 = RIEa_I2;
-    a = RIEa_R1;
-    b = zext(_ext_riea_i2);
-    cc_ucmp(a, b);
-    _t_ccval = cc;
-    _t_bit = 4 >> _t_ccval;
-    if ((10 & _t_bit) != 0) goto <trap_fire>;
-    goto <trap_done>;
-<trap_fire>
-    trap_compare_data();
-<trap_done>
-}
+# CLGITHE: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:CLGITLE RIEa_R1 "," RIEa_I2 is RIEa_OP=0xEC & RIEa_R1 & RIEa_IGN1 & RIEa_I2 & RIEa_M3=12 & RIEa_IGN2 & RIEa_OP2=0x71
-{
-    local a:8;
-    local b:8;
-    local _ext_riea_i2:2;
-    local _t_ccval:1;
-    local _t_bit:1;
-    _ext_riea_i2 = RIEa_I2;
-    a = RIEa_R1;
-    b = zext(_ext_riea_i2);
-    cc_ucmp(a, b);
-    _t_ccval = cc;
-    _t_bit = 4 >> _t_ccval;
-    if ((12 & _t_bit) != 0) goto <trap_fire>;
-    goto <trap_done>;
-<trap_fire>
-    trap_compare_data();
-<trap_done>
-}
+# CLGITLE: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:CLGIT RIEa_R1 "," RIEa_I2 "," RIEa_M3 is RIEa_OP=0xEC & RIEa_R1 & RIEa_IGN1 & RIEa_I2 & RIEa_M3 & RIEa_IGN2 & RIEa_OP2=0x71
-{
-    local a:8;
-    local b:8;
-    local _ext_riea_i2:2;
-    local _t_ccval:1;
-    local _t_bit:1;
-    _ext_riea_i2 = RIEa_I2;
-    a = RIEa_R1;
-    b = zext(_ext_riea_i2);
-    cc_ucmp(a, b);
-    _t_ccval = cc;
-    _t_bit = 4 >> _t_ccval;
-    if ((RIEa_M3 & _t_bit) != 0) goto <trap_fire>;
-    goto <trap_done>;
-<trap_fire>
-    trap_compare_data();
-<trap_done>
-}
+# CLGIT: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # ===========================================================================
 # SELECT (RRF-a). PoP 7-401. R1 = M4-matched ? R2 : R3. CC unchanged.

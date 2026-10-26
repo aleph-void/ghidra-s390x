@@ -444,18 +444,18 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     pt = (r1 >> 24) & 0xff;
     pad = pt[0,8];
     if (n1 != n2) goto <mvcl_0_0_c1>;
-    cc = 0;
+    cc = 0; cc_sync();
     goto <mvcl_0_0_ov>;
 <mvcl_0_0_c1>
     if (n1 >= n2) goto <mvcl_0_0_c2>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <mvcl_0_0_ov>;
 <mvcl_0_0_c2>
-    cc = 2;
+    cc = 2; cc_sync();
 <mvcl_0_0_ov>
     if (r0 <= r0) goto <mvcl_0_0_go>;
     if (r0 >= (r0 + n2)) goto <mvcl_0_0_go>;
-    cc = 3;
+    cc = 3; cc_sync();
     goto <mvcl_0_0_end>;
 <mvcl_0_0_go>
     i = 0;
@@ -492,18 +492,18 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     pt = (r3 >> 24) & 0xff;
     pad = pt[0,8];
     if (n1 != n2) goto <mvcl_0_2_c1>;
-    cc = 0;
+    cc = 0; cc_sync();
     goto <mvcl_0_2_ov>;
 <mvcl_0_2_c1>
     if (n1 >= n2) goto <mvcl_0_2_c2>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <mvcl_0_2_ov>;
 <mvcl_0_2_c2>
-    cc = 2;
+    cc = 2; cc_sync();
 <mvcl_0_2_ov>
     if (r0 <= r2) goto <mvcl_0_2_go>;
     if (r0 >= (r2 + n2)) goto <mvcl_0_2_go>;
-    cc = 3;
+    cc = 3; cc_sync();
     goto <mvcl_0_2_end>;
 <mvcl_0_2_go>
     i = 0;
@@ -540,18 +540,18 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     pt = (r5 >> 24) & 0xff;
     pad = pt[0,8];
     if (n1 != n2) goto <mvcl_0_4_c1>;
-    cc = 0;
+    cc = 0; cc_sync();
     goto <mvcl_0_4_ov>;
 <mvcl_0_4_c1>
     if (n1 >= n2) goto <mvcl_0_4_c2>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <mvcl_0_4_ov>;
 <mvcl_0_4_c2>
-    cc = 2;
+    cc = 2; cc_sync();
 <mvcl_0_4_ov>
     if (r0 <= r4) goto <mvcl_0_4_go>;
     if (r0 >= (r4 + n2)) goto <mvcl_0_4_go>;
-    cc = 3;
+    cc = 3; cc_sync();
     goto <mvcl_0_4_end>;
 <mvcl_0_4_go>
     i = 0;
@@ -588,18 +588,18 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     pt = (r7 >> 24) & 0xff;
     pad = pt[0,8];
     if (n1 != n2) goto <mvcl_0_6_c1>;
-    cc = 0;
+    cc = 0; cc_sync();
     goto <mvcl_0_6_ov>;
 <mvcl_0_6_c1>
     if (n1 >= n2) goto <mvcl_0_6_c2>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <mvcl_0_6_ov>;
 <mvcl_0_6_c2>
-    cc = 2;
+    cc = 2; cc_sync();
 <mvcl_0_6_ov>
     if (r0 <= r6) goto <mvcl_0_6_go>;
     if (r0 >= (r6 + n2)) goto <mvcl_0_6_go>;
-    cc = 3;
+    cc = 3; cc_sync();
     goto <mvcl_0_6_end>;
 <mvcl_0_6_go>
     i = 0;
@@ -636,18 +636,18 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     pt = (r9 >> 24) & 0xff;
     pad = pt[0,8];
     if (n1 != n2) goto <mvcl_0_8_c1>;
-    cc = 0;
+    cc = 0; cc_sync();
     goto <mvcl_0_8_ov>;
 <mvcl_0_8_c1>
     if (n1 >= n2) goto <mvcl_0_8_c2>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <mvcl_0_8_ov>;
 <mvcl_0_8_c2>
-    cc = 2;
+    cc = 2; cc_sync();
 <mvcl_0_8_ov>
     if (r0 <= r8) goto <mvcl_0_8_go>;
     if (r0 >= (r8 + n2)) goto <mvcl_0_8_go>;
-    cc = 3;
+    cc = 3; cc_sync();
     goto <mvcl_0_8_end>;
 <mvcl_0_8_go>
     i = 0;
@@ -684,18 +684,18 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     pt = (r11 >> 24) & 0xff;
     pad = pt[0,8];
     if (n1 != n2) goto <mvcl_0_10_c1>;
-    cc = 0;
+    cc = 0; cc_sync();
     goto <mvcl_0_10_ov>;
 <mvcl_0_10_c1>
     if (n1 >= n2) goto <mvcl_0_10_c2>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <mvcl_0_10_ov>;
 <mvcl_0_10_c2>
-    cc = 2;
+    cc = 2; cc_sync();
 <mvcl_0_10_ov>
     if (r0 <= r10) goto <mvcl_0_10_go>;
     if (r0 >= (r10 + n2)) goto <mvcl_0_10_go>;
-    cc = 3;
+    cc = 3; cc_sync();
     goto <mvcl_0_10_end>;
 <mvcl_0_10_go>
     i = 0;
@@ -732,18 +732,18 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     pt = (r13 >> 24) & 0xff;
     pad = pt[0,8];
     if (n1 != n2) goto <mvcl_0_12_c1>;
-    cc = 0;
+    cc = 0; cc_sync();
     goto <mvcl_0_12_ov>;
 <mvcl_0_12_c1>
     if (n1 >= n2) goto <mvcl_0_12_c2>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <mvcl_0_12_ov>;
 <mvcl_0_12_c2>
-    cc = 2;
+    cc = 2; cc_sync();
 <mvcl_0_12_ov>
     if (r0 <= r12) goto <mvcl_0_12_go>;
     if (r0 >= (r12 + n2)) goto <mvcl_0_12_go>;
-    cc = 3;
+    cc = 3; cc_sync();
     goto <mvcl_0_12_end>;
 <mvcl_0_12_go>
     i = 0;
@@ -780,18 +780,18 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     pt = (r15 >> 24) & 0xff;
     pad = pt[0,8];
     if (n1 != n2) goto <mvcl_0_14_c1>;
-    cc = 0;
+    cc = 0; cc_sync();
     goto <mvcl_0_14_ov>;
 <mvcl_0_14_c1>
     if (n1 >= n2) goto <mvcl_0_14_c2>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <mvcl_0_14_ov>;
 <mvcl_0_14_c2>
-    cc = 2;
+    cc = 2; cc_sync();
 <mvcl_0_14_ov>
     if (r0 <= r14) goto <mvcl_0_14_go>;
     if (r0 >= (r14 + n2)) goto <mvcl_0_14_go>;
-    cc = 3;
+    cc = 3; cc_sync();
     goto <mvcl_0_14_end>;
 <mvcl_0_14_go>
     i = 0;
@@ -828,18 +828,18 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     pt = (r1 >> 24) & 0xff;
     pad = pt[0,8];
     if (n1 != n2) goto <mvcl_2_0_c1>;
-    cc = 0;
+    cc = 0; cc_sync();
     goto <mvcl_2_0_ov>;
 <mvcl_2_0_c1>
     if (n1 >= n2) goto <mvcl_2_0_c2>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <mvcl_2_0_ov>;
 <mvcl_2_0_c2>
-    cc = 2;
+    cc = 2; cc_sync();
 <mvcl_2_0_ov>
     if (r2 <= r0) goto <mvcl_2_0_go>;
     if (r2 >= (r0 + n2)) goto <mvcl_2_0_go>;
-    cc = 3;
+    cc = 3; cc_sync();
     goto <mvcl_2_0_end>;
 <mvcl_2_0_go>
     i = 0;
@@ -876,18 +876,18 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     pt = (r3 >> 24) & 0xff;
     pad = pt[0,8];
     if (n1 != n2) goto <mvcl_2_2_c1>;
-    cc = 0;
+    cc = 0; cc_sync();
     goto <mvcl_2_2_ov>;
 <mvcl_2_2_c1>
     if (n1 >= n2) goto <mvcl_2_2_c2>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <mvcl_2_2_ov>;
 <mvcl_2_2_c2>
-    cc = 2;
+    cc = 2; cc_sync();
 <mvcl_2_2_ov>
     if (r2 <= r2) goto <mvcl_2_2_go>;
     if (r2 >= (r2 + n2)) goto <mvcl_2_2_go>;
-    cc = 3;
+    cc = 3; cc_sync();
     goto <mvcl_2_2_end>;
 <mvcl_2_2_go>
     i = 0;
@@ -924,18 +924,18 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     pt = (r5 >> 24) & 0xff;
     pad = pt[0,8];
     if (n1 != n2) goto <mvcl_2_4_c1>;
-    cc = 0;
+    cc = 0; cc_sync();
     goto <mvcl_2_4_ov>;
 <mvcl_2_4_c1>
     if (n1 >= n2) goto <mvcl_2_4_c2>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <mvcl_2_4_ov>;
 <mvcl_2_4_c2>
-    cc = 2;
+    cc = 2; cc_sync();
 <mvcl_2_4_ov>
     if (r2 <= r4) goto <mvcl_2_4_go>;
     if (r2 >= (r4 + n2)) goto <mvcl_2_4_go>;
-    cc = 3;
+    cc = 3; cc_sync();
     goto <mvcl_2_4_end>;
 <mvcl_2_4_go>
     i = 0;
@@ -972,18 +972,18 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     pt = (r7 >> 24) & 0xff;
     pad = pt[0,8];
     if (n1 != n2) goto <mvcl_2_6_c1>;
-    cc = 0;
+    cc = 0; cc_sync();
     goto <mvcl_2_6_ov>;
 <mvcl_2_6_c1>
     if (n1 >= n2) goto <mvcl_2_6_c2>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <mvcl_2_6_ov>;
 <mvcl_2_6_c2>
-    cc = 2;
+    cc = 2; cc_sync();
 <mvcl_2_6_ov>
     if (r2 <= r6) goto <mvcl_2_6_go>;
     if (r2 >= (r6 + n2)) goto <mvcl_2_6_go>;
-    cc = 3;
+    cc = 3; cc_sync();
     goto <mvcl_2_6_end>;
 <mvcl_2_6_go>
     i = 0;
@@ -1020,18 +1020,18 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     pt = (r9 >> 24) & 0xff;
     pad = pt[0,8];
     if (n1 != n2) goto <mvcl_2_8_c1>;
-    cc = 0;
+    cc = 0; cc_sync();
     goto <mvcl_2_8_ov>;
 <mvcl_2_8_c1>
     if (n1 >= n2) goto <mvcl_2_8_c2>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <mvcl_2_8_ov>;
 <mvcl_2_8_c2>
-    cc = 2;
+    cc = 2; cc_sync();
 <mvcl_2_8_ov>
     if (r2 <= r8) goto <mvcl_2_8_go>;
     if (r2 >= (r8 + n2)) goto <mvcl_2_8_go>;
-    cc = 3;
+    cc = 3; cc_sync();
     goto <mvcl_2_8_end>;
 <mvcl_2_8_go>
     i = 0;
@@ -1068,18 +1068,18 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     pt = (r11 >> 24) & 0xff;
     pad = pt[0,8];
     if (n1 != n2) goto <mvcl_2_10_c1>;
-    cc = 0;
+    cc = 0; cc_sync();
     goto <mvcl_2_10_ov>;
 <mvcl_2_10_c1>
     if (n1 >= n2) goto <mvcl_2_10_c2>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <mvcl_2_10_ov>;
 <mvcl_2_10_c2>
-    cc = 2;
+    cc = 2; cc_sync();
 <mvcl_2_10_ov>
     if (r2 <= r10) goto <mvcl_2_10_go>;
     if (r2 >= (r10 + n2)) goto <mvcl_2_10_go>;
-    cc = 3;
+    cc = 3; cc_sync();
     goto <mvcl_2_10_end>;
 <mvcl_2_10_go>
     i = 0;
@@ -1116,18 +1116,18 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     pt = (r13 >> 24) & 0xff;
     pad = pt[0,8];
     if (n1 != n2) goto <mvcl_2_12_c1>;
-    cc = 0;
+    cc = 0; cc_sync();
     goto <mvcl_2_12_ov>;
 <mvcl_2_12_c1>
     if (n1 >= n2) goto <mvcl_2_12_c2>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <mvcl_2_12_ov>;
 <mvcl_2_12_c2>
-    cc = 2;
+    cc = 2; cc_sync();
 <mvcl_2_12_ov>
     if (r2 <= r12) goto <mvcl_2_12_go>;
     if (r2 >= (r12 + n2)) goto <mvcl_2_12_go>;
-    cc = 3;
+    cc = 3; cc_sync();
     goto <mvcl_2_12_end>;
 <mvcl_2_12_go>
     i = 0;
@@ -1164,18 +1164,18 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     pt = (r15 >> 24) & 0xff;
     pad = pt[0,8];
     if (n1 != n2) goto <mvcl_2_14_c1>;
-    cc = 0;
+    cc = 0; cc_sync();
     goto <mvcl_2_14_ov>;
 <mvcl_2_14_c1>
     if (n1 >= n2) goto <mvcl_2_14_c2>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <mvcl_2_14_ov>;
 <mvcl_2_14_c2>
-    cc = 2;
+    cc = 2; cc_sync();
 <mvcl_2_14_ov>
     if (r2 <= r14) goto <mvcl_2_14_go>;
     if (r2 >= (r14 + n2)) goto <mvcl_2_14_go>;
-    cc = 3;
+    cc = 3; cc_sync();
     goto <mvcl_2_14_end>;
 <mvcl_2_14_go>
     i = 0;
@@ -1212,18 +1212,18 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     pt = (r1 >> 24) & 0xff;
     pad = pt[0,8];
     if (n1 != n2) goto <mvcl_4_0_c1>;
-    cc = 0;
+    cc = 0; cc_sync();
     goto <mvcl_4_0_ov>;
 <mvcl_4_0_c1>
     if (n1 >= n2) goto <mvcl_4_0_c2>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <mvcl_4_0_ov>;
 <mvcl_4_0_c2>
-    cc = 2;
+    cc = 2; cc_sync();
 <mvcl_4_0_ov>
     if (r4 <= r0) goto <mvcl_4_0_go>;
     if (r4 >= (r0 + n2)) goto <mvcl_4_0_go>;
-    cc = 3;
+    cc = 3; cc_sync();
     goto <mvcl_4_0_end>;
 <mvcl_4_0_go>
     i = 0;
@@ -1260,18 +1260,18 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     pt = (r3 >> 24) & 0xff;
     pad = pt[0,8];
     if (n1 != n2) goto <mvcl_4_2_c1>;
-    cc = 0;
+    cc = 0; cc_sync();
     goto <mvcl_4_2_ov>;
 <mvcl_4_2_c1>
     if (n1 >= n2) goto <mvcl_4_2_c2>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <mvcl_4_2_ov>;
 <mvcl_4_2_c2>
-    cc = 2;
+    cc = 2; cc_sync();
 <mvcl_4_2_ov>
     if (r4 <= r2) goto <mvcl_4_2_go>;
     if (r4 >= (r2 + n2)) goto <mvcl_4_2_go>;
-    cc = 3;
+    cc = 3; cc_sync();
     goto <mvcl_4_2_end>;
 <mvcl_4_2_go>
     i = 0;
@@ -1308,18 +1308,18 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     pt = (r5 >> 24) & 0xff;
     pad = pt[0,8];
     if (n1 != n2) goto <mvcl_4_4_c1>;
-    cc = 0;
+    cc = 0; cc_sync();
     goto <mvcl_4_4_ov>;
 <mvcl_4_4_c1>
     if (n1 >= n2) goto <mvcl_4_4_c2>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <mvcl_4_4_ov>;
 <mvcl_4_4_c2>
-    cc = 2;
+    cc = 2; cc_sync();
 <mvcl_4_4_ov>
     if (r4 <= r4) goto <mvcl_4_4_go>;
     if (r4 >= (r4 + n2)) goto <mvcl_4_4_go>;
-    cc = 3;
+    cc = 3; cc_sync();
     goto <mvcl_4_4_end>;
 <mvcl_4_4_go>
     i = 0;
@@ -1356,18 +1356,18 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     pt = (r7 >> 24) & 0xff;
     pad = pt[0,8];
     if (n1 != n2) goto <mvcl_4_6_c1>;
-    cc = 0;
+    cc = 0; cc_sync();
     goto <mvcl_4_6_ov>;
 <mvcl_4_6_c1>
     if (n1 >= n2) goto <mvcl_4_6_c2>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <mvcl_4_6_ov>;
 <mvcl_4_6_c2>
-    cc = 2;
+    cc = 2; cc_sync();
 <mvcl_4_6_ov>
     if (r4 <= r6) goto <mvcl_4_6_go>;
     if (r4 >= (r6 + n2)) goto <mvcl_4_6_go>;
-    cc = 3;
+    cc = 3; cc_sync();
     goto <mvcl_4_6_end>;
 <mvcl_4_6_go>
     i = 0;
@@ -1404,18 +1404,18 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     pt = (r9 >> 24) & 0xff;
     pad = pt[0,8];
     if (n1 != n2) goto <mvcl_4_8_c1>;
-    cc = 0;
+    cc = 0; cc_sync();
     goto <mvcl_4_8_ov>;
 <mvcl_4_8_c1>
     if (n1 >= n2) goto <mvcl_4_8_c2>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <mvcl_4_8_ov>;
 <mvcl_4_8_c2>
-    cc = 2;
+    cc = 2; cc_sync();
 <mvcl_4_8_ov>
     if (r4 <= r8) goto <mvcl_4_8_go>;
     if (r4 >= (r8 + n2)) goto <mvcl_4_8_go>;
-    cc = 3;
+    cc = 3; cc_sync();
     goto <mvcl_4_8_end>;
 <mvcl_4_8_go>
     i = 0;
@@ -1452,18 +1452,18 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     pt = (r11 >> 24) & 0xff;
     pad = pt[0,8];
     if (n1 != n2) goto <mvcl_4_10_c1>;
-    cc = 0;
+    cc = 0; cc_sync();
     goto <mvcl_4_10_ov>;
 <mvcl_4_10_c1>
     if (n1 >= n2) goto <mvcl_4_10_c2>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <mvcl_4_10_ov>;
 <mvcl_4_10_c2>
-    cc = 2;
+    cc = 2; cc_sync();
 <mvcl_4_10_ov>
     if (r4 <= r10) goto <mvcl_4_10_go>;
     if (r4 >= (r10 + n2)) goto <mvcl_4_10_go>;
-    cc = 3;
+    cc = 3; cc_sync();
     goto <mvcl_4_10_end>;
 <mvcl_4_10_go>
     i = 0;
@@ -1500,18 +1500,18 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     pt = (r13 >> 24) & 0xff;
     pad = pt[0,8];
     if (n1 != n2) goto <mvcl_4_12_c1>;
-    cc = 0;
+    cc = 0; cc_sync();
     goto <mvcl_4_12_ov>;
 <mvcl_4_12_c1>
     if (n1 >= n2) goto <mvcl_4_12_c2>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <mvcl_4_12_ov>;
 <mvcl_4_12_c2>
-    cc = 2;
+    cc = 2; cc_sync();
 <mvcl_4_12_ov>
     if (r4 <= r12) goto <mvcl_4_12_go>;
     if (r4 >= (r12 + n2)) goto <mvcl_4_12_go>;
-    cc = 3;
+    cc = 3; cc_sync();
     goto <mvcl_4_12_end>;
 <mvcl_4_12_go>
     i = 0;
@@ -1548,18 +1548,18 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     pt = (r15 >> 24) & 0xff;
     pad = pt[0,8];
     if (n1 != n2) goto <mvcl_4_14_c1>;
-    cc = 0;
+    cc = 0; cc_sync();
     goto <mvcl_4_14_ov>;
 <mvcl_4_14_c1>
     if (n1 >= n2) goto <mvcl_4_14_c2>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <mvcl_4_14_ov>;
 <mvcl_4_14_c2>
-    cc = 2;
+    cc = 2; cc_sync();
 <mvcl_4_14_ov>
     if (r4 <= r14) goto <mvcl_4_14_go>;
     if (r4 >= (r14 + n2)) goto <mvcl_4_14_go>;
-    cc = 3;
+    cc = 3; cc_sync();
     goto <mvcl_4_14_end>;
 <mvcl_4_14_go>
     i = 0;
@@ -1596,18 +1596,18 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     pt = (r1 >> 24) & 0xff;
     pad = pt[0,8];
     if (n1 != n2) goto <mvcl_6_0_c1>;
-    cc = 0;
+    cc = 0; cc_sync();
     goto <mvcl_6_0_ov>;
 <mvcl_6_0_c1>
     if (n1 >= n2) goto <mvcl_6_0_c2>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <mvcl_6_0_ov>;
 <mvcl_6_0_c2>
-    cc = 2;
+    cc = 2; cc_sync();
 <mvcl_6_0_ov>
     if (r6 <= r0) goto <mvcl_6_0_go>;
     if (r6 >= (r0 + n2)) goto <mvcl_6_0_go>;
-    cc = 3;
+    cc = 3; cc_sync();
     goto <mvcl_6_0_end>;
 <mvcl_6_0_go>
     i = 0;
@@ -1644,18 +1644,18 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     pt = (r3 >> 24) & 0xff;
     pad = pt[0,8];
     if (n1 != n2) goto <mvcl_6_2_c1>;
-    cc = 0;
+    cc = 0; cc_sync();
     goto <mvcl_6_2_ov>;
 <mvcl_6_2_c1>
     if (n1 >= n2) goto <mvcl_6_2_c2>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <mvcl_6_2_ov>;
 <mvcl_6_2_c2>
-    cc = 2;
+    cc = 2; cc_sync();
 <mvcl_6_2_ov>
     if (r6 <= r2) goto <mvcl_6_2_go>;
     if (r6 >= (r2 + n2)) goto <mvcl_6_2_go>;
-    cc = 3;
+    cc = 3; cc_sync();
     goto <mvcl_6_2_end>;
 <mvcl_6_2_go>
     i = 0;
@@ -1692,18 +1692,18 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     pt = (r5 >> 24) & 0xff;
     pad = pt[0,8];
     if (n1 != n2) goto <mvcl_6_4_c1>;
-    cc = 0;
+    cc = 0; cc_sync();
     goto <mvcl_6_4_ov>;
 <mvcl_6_4_c1>
     if (n1 >= n2) goto <mvcl_6_4_c2>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <mvcl_6_4_ov>;
 <mvcl_6_4_c2>
-    cc = 2;
+    cc = 2; cc_sync();
 <mvcl_6_4_ov>
     if (r6 <= r4) goto <mvcl_6_4_go>;
     if (r6 >= (r4 + n2)) goto <mvcl_6_4_go>;
-    cc = 3;
+    cc = 3; cc_sync();
     goto <mvcl_6_4_end>;
 <mvcl_6_4_go>
     i = 0;
@@ -1740,18 +1740,18 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     pt = (r7 >> 24) & 0xff;
     pad = pt[0,8];
     if (n1 != n2) goto <mvcl_6_6_c1>;
-    cc = 0;
+    cc = 0; cc_sync();
     goto <mvcl_6_6_ov>;
 <mvcl_6_6_c1>
     if (n1 >= n2) goto <mvcl_6_6_c2>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <mvcl_6_6_ov>;
 <mvcl_6_6_c2>
-    cc = 2;
+    cc = 2; cc_sync();
 <mvcl_6_6_ov>
     if (r6 <= r6) goto <mvcl_6_6_go>;
     if (r6 >= (r6 + n2)) goto <mvcl_6_6_go>;
-    cc = 3;
+    cc = 3; cc_sync();
     goto <mvcl_6_6_end>;
 <mvcl_6_6_go>
     i = 0;
@@ -1788,18 +1788,18 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     pt = (r9 >> 24) & 0xff;
     pad = pt[0,8];
     if (n1 != n2) goto <mvcl_6_8_c1>;
-    cc = 0;
+    cc = 0; cc_sync();
     goto <mvcl_6_8_ov>;
 <mvcl_6_8_c1>
     if (n1 >= n2) goto <mvcl_6_8_c2>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <mvcl_6_8_ov>;
 <mvcl_6_8_c2>
-    cc = 2;
+    cc = 2; cc_sync();
 <mvcl_6_8_ov>
     if (r6 <= r8) goto <mvcl_6_8_go>;
     if (r6 >= (r8 + n2)) goto <mvcl_6_8_go>;
-    cc = 3;
+    cc = 3; cc_sync();
     goto <mvcl_6_8_end>;
 <mvcl_6_8_go>
     i = 0;
@@ -1836,18 +1836,18 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     pt = (r11 >> 24) & 0xff;
     pad = pt[0,8];
     if (n1 != n2) goto <mvcl_6_10_c1>;
-    cc = 0;
+    cc = 0; cc_sync();
     goto <mvcl_6_10_ov>;
 <mvcl_6_10_c1>
     if (n1 >= n2) goto <mvcl_6_10_c2>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <mvcl_6_10_ov>;
 <mvcl_6_10_c2>
-    cc = 2;
+    cc = 2; cc_sync();
 <mvcl_6_10_ov>
     if (r6 <= r10) goto <mvcl_6_10_go>;
     if (r6 >= (r10 + n2)) goto <mvcl_6_10_go>;
-    cc = 3;
+    cc = 3; cc_sync();
     goto <mvcl_6_10_end>;
 <mvcl_6_10_go>
     i = 0;
@@ -1884,18 +1884,18 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     pt = (r13 >> 24) & 0xff;
     pad = pt[0,8];
     if (n1 != n2) goto <mvcl_6_12_c1>;
-    cc = 0;
+    cc = 0; cc_sync();
     goto <mvcl_6_12_ov>;
 <mvcl_6_12_c1>
     if (n1 >= n2) goto <mvcl_6_12_c2>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <mvcl_6_12_ov>;
 <mvcl_6_12_c2>
-    cc = 2;
+    cc = 2; cc_sync();
 <mvcl_6_12_ov>
     if (r6 <= r12) goto <mvcl_6_12_go>;
     if (r6 >= (r12 + n2)) goto <mvcl_6_12_go>;
-    cc = 3;
+    cc = 3; cc_sync();
     goto <mvcl_6_12_end>;
 <mvcl_6_12_go>
     i = 0;
@@ -1932,18 +1932,18 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     pt = (r15 >> 24) & 0xff;
     pad = pt[0,8];
     if (n1 != n2) goto <mvcl_6_14_c1>;
-    cc = 0;
+    cc = 0; cc_sync();
     goto <mvcl_6_14_ov>;
 <mvcl_6_14_c1>
     if (n1 >= n2) goto <mvcl_6_14_c2>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <mvcl_6_14_ov>;
 <mvcl_6_14_c2>
-    cc = 2;
+    cc = 2; cc_sync();
 <mvcl_6_14_ov>
     if (r6 <= r14) goto <mvcl_6_14_go>;
     if (r6 >= (r14 + n2)) goto <mvcl_6_14_go>;
-    cc = 3;
+    cc = 3; cc_sync();
     goto <mvcl_6_14_end>;
 <mvcl_6_14_go>
     i = 0;
@@ -1980,18 +1980,18 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     pt = (r1 >> 24) & 0xff;
     pad = pt[0,8];
     if (n1 != n2) goto <mvcl_8_0_c1>;
-    cc = 0;
+    cc = 0; cc_sync();
     goto <mvcl_8_0_ov>;
 <mvcl_8_0_c1>
     if (n1 >= n2) goto <mvcl_8_0_c2>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <mvcl_8_0_ov>;
 <mvcl_8_0_c2>
-    cc = 2;
+    cc = 2; cc_sync();
 <mvcl_8_0_ov>
     if (r8 <= r0) goto <mvcl_8_0_go>;
     if (r8 >= (r0 + n2)) goto <mvcl_8_0_go>;
-    cc = 3;
+    cc = 3; cc_sync();
     goto <mvcl_8_0_end>;
 <mvcl_8_0_go>
     i = 0;
@@ -2028,18 +2028,18 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     pt = (r3 >> 24) & 0xff;
     pad = pt[0,8];
     if (n1 != n2) goto <mvcl_8_2_c1>;
-    cc = 0;
+    cc = 0; cc_sync();
     goto <mvcl_8_2_ov>;
 <mvcl_8_2_c1>
     if (n1 >= n2) goto <mvcl_8_2_c2>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <mvcl_8_2_ov>;
 <mvcl_8_2_c2>
-    cc = 2;
+    cc = 2; cc_sync();
 <mvcl_8_2_ov>
     if (r8 <= r2) goto <mvcl_8_2_go>;
     if (r8 >= (r2 + n2)) goto <mvcl_8_2_go>;
-    cc = 3;
+    cc = 3; cc_sync();
     goto <mvcl_8_2_end>;
 <mvcl_8_2_go>
     i = 0;
@@ -2076,18 +2076,18 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     pt = (r5 >> 24) & 0xff;
     pad = pt[0,8];
     if (n1 != n2) goto <mvcl_8_4_c1>;
-    cc = 0;
+    cc = 0; cc_sync();
     goto <mvcl_8_4_ov>;
 <mvcl_8_4_c1>
     if (n1 >= n2) goto <mvcl_8_4_c2>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <mvcl_8_4_ov>;
 <mvcl_8_4_c2>
-    cc = 2;
+    cc = 2; cc_sync();
 <mvcl_8_4_ov>
     if (r8 <= r4) goto <mvcl_8_4_go>;
     if (r8 >= (r4 + n2)) goto <mvcl_8_4_go>;
-    cc = 3;
+    cc = 3; cc_sync();
     goto <mvcl_8_4_end>;
 <mvcl_8_4_go>
     i = 0;
@@ -2124,18 +2124,18 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     pt = (r7 >> 24) & 0xff;
     pad = pt[0,8];
     if (n1 != n2) goto <mvcl_8_6_c1>;
-    cc = 0;
+    cc = 0; cc_sync();
     goto <mvcl_8_6_ov>;
 <mvcl_8_6_c1>
     if (n1 >= n2) goto <mvcl_8_6_c2>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <mvcl_8_6_ov>;
 <mvcl_8_6_c2>
-    cc = 2;
+    cc = 2; cc_sync();
 <mvcl_8_6_ov>
     if (r8 <= r6) goto <mvcl_8_6_go>;
     if (r8 >= (r6 + n2)) goto <mvcl_8_6_go>;
-    cc = 3;
+    cc = 3; cc_sync();
     goto <mvcl_8_6_end>;
 <mvcl_8_6_go>
     i = 0;
@@ -2172,18 +2172,18 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     pt = (r9 >> 24) & 0xff;
     pad = pt[0,8];
     if (n1 != n2) goto <mvcl_8_8_c1>;
-    cc = 0;
+    cc = 0; cc_sync();
     goto <mvcl_8_8_ov>;
 <mvcl_8_8_c1>
     if (n1 >= n2) goto <mvcl_8_8_c2>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <mvcl_8_8_ov>;
 <mvcl_8_8_c2>
-    cc = 2;
+    cc = 2; cc_sync();
 <mvcl_8_8_ov>
     if (r8 <= r8) goto <mvcl_8_8_go>;
     if (r8 >= (r8 + n2)) goto <mvcl_8_8_go>;
-    cc = 3;
+    cc = 3; cc_sync();
     goto <mvcl_8_8_end>;
 <mvcl_8_8_go>
     i = 0;
@@ -2220,18 +2220,18 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     pt = (r11 >> 24) & 0xff;
     pad = pt[0,8];
     if (n1 != n2) goto <mvcl_8_10_c1>;
-    cc = 0;
+    cc = 0; cc_sync();
     goto <mvcl_8_10_ov>;
 <mvcl_8_10_c1>
     if (n1 >= n2) goto <mvcl_8_10_c2>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <mvcl_8_10_ov>;
 <mvcl_8_10_c2>
-    cc = 2;
+    cc = 2; cc_sync();
 <mvcl_8_10_ov>
     if (r8 <= r10) goto <mvcl_8_10_go>;
     if (r8 >= (r10 + n2)) goto <mvcl_8_10_go>;
-    cc = 3;
+    cc = 3; cc_sync();
     goto <mvcl_8_10_end>;
 <mvcl_8_10_go>
     i = 0;
@@ -2268,18 +2268,18 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     pt = (r13 >> 24) & 0xff;
     pad = pt[0,8];
     if (n1 != n2) goto <mvcl_8_12_c1>;
-    cc = 0;
+    cc = 0; cc_sync();
     goto <mvcl_8_12_ov>;
 <mvcl_8_12_c1>
     if (n1 >= n2) goto <mvcl_8_12_c2>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <mvcl_8_12_ov>;
 <mvcl_8_12_c2>
-    cc = 2;
+    cc = 2; cc_sync();
 <mvcl_8_12_ov>
     if (r8 <= r12) goto <mvcl_8_12_go>;
     if (r8 >= (r12 + n2)) goto <mvcl_8_12_go>;
-    cc = 3;
+    cc = 3; cc_sync();
     goto <mvcl_8_12_end>;
 <mvcl_8_12_go>
     i = 0;
@@ -2316,18 +2316,18 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     pt = (r15 >> 24) & 0xff;
     pad = pt[0,8];
     if (n1 != n2) goto <mvcl_8_14_c1>;
-    cc = 0;
+    cc = 0; cc_sync();
     goto <mvcl_8_14_ov>;
 <mvcl_8_14_c1>
     if (n1 >= n2) goto <mvcl_8_14_c2>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <mvcl_8_14_ov>;
 <mvcl_8_14_c2>
-    cc = 2;
+    cc = 2; cc_sync();
 <mvcl_8_14_ov>
     if (r8 <= r14) goto <mvcl_8_14_go>;
     if (r8 >= (r14 + n2)) goto <mvcl_8_14_go>;
-    cc = 3;
+    cc = 3; cc_sync();
     goto <mvcl_8_14_end>;
 <mvcl_8_14_go>
     i = 0;
@@ -2364,18 +2364,18 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     pt = (r1 >> 24) & 0xff;
     pad = pt[0,8];
     if (n1 != n2) goto <mvcl_10_0_c1>;
-    cc = 0;
+    cc = 0; cc_sync();
     goto <mvcl_10_0_ov>;
 <mvcl_10_0_c1>
     if (n1 >= n2) goto <mvcl_10_0_c2>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <mvcl_10_0_ov>;
 <mvcl_10_0_c2>
-    cc = 2;
+    cc = 2; cc_sync();
 <mvcl_10_0_ov>
     if (r10 <= r0) goto <mvcl_10_0_go>;
     if (r10 >= (r0 + n2)) goto <mvcl_10_0_go>;
-    cc = 3;
+    cc = 3; cc_sync();
     goto <mvcl_10_0_end>;
 <mvcl_10_0_go>
     i = 0;
@@ -2412,18 +2412,18 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     pt = (r3 >> 24) & 0xff;
     pad = pt[0,8];
     if (n1 != n2) goto <mvcl_10_2_c1>;
-    cc = 0;
+    cc = 0; cc_sync();
     goto <mvcl_10_2_ov>;
 <mvcl_10_2_c1>
     if (n1 >= n2) goto <mvcl_10_2_c2>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <mvcl_10_2_ov>;
 <mvcl_10_2_c2>
-    cc = 2;
+    cc = 2; cc_sync();
 <mvcl_10_2_ov>
     if (r10 <= r2) goto <mvcl_10_2_go>;
     if (r10 >= (r2 + n2)) goto <mvcl_10_2_go>;
-    cc = 3;
+    cc = 3; cc_sync();
     goto <mvcl_10_2_end>;
 <mvcl_10_2_go>
     i = 0;
@@ -2460,18 +2460,18 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     pt = (r5 >> 24) & 0xff;
     pad = pt[0,8];
     if (n1 != n2) goto <mvcl_10_4_c1>;
-    cc = 0;
+    cc = 0; cc_sync();
     goto <mvcl_10_4_ov>;
 <mvcl_10_4_c1>
     if (n1 >= n2) goto <mvcl_10_4_c2>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <mvcl_10_4_ov>;
 <mvcl_10_4_c2>
-    cc = 2;
+    cc = 2; cc_sync();
 <mvcl_10_4_ov>
     if (r10 <= r4) goto <mvcl_10_4_go>;
     if (r10 >= (r4 + n2)) goto <mvcl_10_4_go>;
-    cc = 3;
+    cc = 3; cc_sync();
     goto <mvcl_10_4_end>;
 <mvcl_10_4_go>
     i = 0;
@@ -2508,18 +2508,18 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     pt = (r7 >> 24) & 0xff;
     pad = pt[0,8];
     if (n1 != n2) goto <mvcl_10_6_c1>;
-    cc = 0;
+    cc = 0; cc_sync();
     goto <mvcl_10_6_ov>;
 <mvcl_10_6_c1>
     if (n1 >= n2) goto <mvcl_10_6_c2>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <mvcl_10_6_ov>;
 <mvcl_10_6_c2>
-    cc = 2;
+    cc = 2; cc_sync();
 <mvcl_10_6_ov>
     if (r10 <= r6) goto <mvcl_10_6_go>;
     if (r10 >= (r6 + n2)) goto <mvcl_10_6_go>;
-    cc = 3;
+    cc = 3; cc_sync();
     goto <mvcl_10_6_end>;
 <mvcl_10_6_go>
     i = 0;
@@ -2556,18 +2556,18 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     pt = (r9 >> 24) & 0xff;
     pad = pt[0,8];
     if (n1 != n2) goto <mvcl_10_8_c1>;
-    cc = 0;
+    cc = 0; cc_sync();
     goto <mvcl_10_8_ov>;
 <mvcl_10_8_c1>
     if (n1 >= n2) goto <mvcl_10_8_c2>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <mvcl_10_8_ov>;
 <mvcl_10_8_c2>
-    cc = 2;
+    cc = 2; cc_sync();
 <mvcl_10_8_ov>
     if (r10 <= r8) goto <mvcl_10_8_go>;
     if (r10 >= (r8 + n2)) goto <mvcl_10_8_go>;
-    cc = 3;
+    cc = 3; cc_sync();
     goto <mvcl_10_8_end>;
 <mvcl_10_8_go>
     i = 0;
@@ -2604,18 +2604,18 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     pt = (r11 >> 24) & 0xff;
     pad = pt[0,8];
     if (n1 != n2) goto <mvcl_10_10_c1>;
-    cc = 0;
+    cc = 0; cc_sync();
     goto <mvcl_10_10_ov>;
 <mvcl_10_10_c1>
     if (n1 >= n2) goto <mvcl_10_10_c2>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <mvcl_10_10_ov>;
 <mvcl_10_10_c2>
-    cc = 2;
+    cc = 2; cc_sync();
 <mvcl_10_10_ov>
     if (r10 <= r10) goto <mvcl_10_10_go>;
     if (r10 >= (r10 + n2)) goto <mvcl_10_10_go>;
-    cc = 3;
+    cc = 3; cc_sync();
     goto <mvcl_10_10_end>;
 <mvcl_10_10_go>
     i = 0;
@@ -2652,18 +2652,18 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     pt = (r13 >> 24) & 0xff;
     pad = pt[0,8];
     if (n1 != n2) goto <mvcl_10_12_c1>;
-    cc = 0;
+    cc = 0; cc_sync();
     goto <mvcl_10_12_ov>;
 <mvcl_10_12_c1>
     if (n1 >= n2) goto <mvcl_10_12_c2>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <mvcl_10_12_ov>;
 <mvcl_10_12_c2>
-    cc = 2;
+    cc = 2; cc_sync();
 <mvcl_10_12_ov>
     if (r10 <= r12) goto <mvcl_10_12_go>;
     if (r10 >= (r12 + n2)) goto <mvcl_10_12_go>;
-    cc = 3;
+    cc = 3; cc_sync();
     goto <mvcl_10_12_end>;
 <mvcl_10_12_go>
     i = 0;
@@ -2700,18 +2700,18 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     pt = (r15 >> 24) & 0xff;
     pad = pt[0,8];
     if (n1 != n2) goto <mvcl_10_14_c1>;
-    cc = 0;
+    cc = 0; cc_sync();
     goto <mvcl_10_14_ov>;
 <mvcl_10_14_c1>
     if (n1 >= n2) goto <mvcl_10_14_c2>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <mvcl_10_14_ov>;
 <mvcl_10_14_c2>
-    cc = 2;
+    cc = 2; cc_sync();
 <mvcl_10_14_ov>
     if (r10 <= r14) goto <mvcl_10_14_go>;
     if (r10 >= (r14 + n2)) goto <mvcl_10_14_go>;
-    cc = 3;
+    cc = 3; cc_sync();
     goto <mvcl_10_14_end>;
 <mvcl_10_14_go>
     i = 0;
@@ -2748,18 +2748,18 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     pt = (r1 >> 24) & 0xff;
     pad = pt[0,8];
     if (n1 != n2) goto <mvcl_12_0_c1>;
-    cc = 0;
+    cc = 0; cc_sync();
     goto <mvcl_12_0_ov>;
 <mvcl_12_0_c1>
     if (n1 >= n2) goto <mvcl_12_0_c2>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <mvcl_12_0_ov>;
 <mvcl_12_0_c2>
-    cc = 2;
+    cc = 2; cc_sync();
 <mvcl_12_0_ov>
     if (r12 <= r0) goto <mvcl_12_0_go>;
     if (r12 >= (r0 + n2)) goto <mvcl_12_0_go>;
-    cc = 3;
+    cc = 3; cc_sync();
     goto <mvcl_12_0_end>;
 <mvcl_12_0_go>
     i = 0;
@@ -2796,18 +2796,18 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     pt = (r3 >> 24) & 0xff;
     pad = pt[0,8];
     if (n1 != n2) goto <mvcl_12_2_c1>;
-    cc = 0;
+    cc = 0; cc_sync();
     goto <mvcl_12_2_ov>;
 <mvcl_12_2_c1>
     if (n1 >= n2) goto <mvcl_12_2_c2>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <mvcl_12_2_ov>;
 <mvcl_12_2_c2>
-    cc = 2;
+    cc = 2; cc_sync();
 <mvcl_12_2_ov>
     if (r12 <= r2) goto <mvcl_12_2_go>;
     if (r12 >= (r2 + n2)) goto <mvcl_12_2_go>;
-    cc = 3;
+    cc = 3; cc_sync();
     goto <mvcl_12_2_end>;
 <mvcl_12_2_go>
     i = 0;
@@ -2844,18 +2844,18 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     pt = (r5 >> 24) & 0xff;
     pad = pt[0,8];
     if (n1 != n2) goto <mvcl_12_4_c1>;
-    cc = 0;
+    cc = 0; cc_sync();
     goto <mvcl_12_4_ov>;
 <mvcl_12_4_c1>
     if (n1 >= n2) goto <mvcl_12_4_c2>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <mvcl_12_4_ov>;
 <mvcl_12_4_c2>
-    cc = 2;
+    cc = 2; cc_sync();
 <mvcl_12_4_ov>
     if (r12 <= r4) goto <mvcl_12_4_go>;
     if (r12 >= (r4 + n2)) goto <mvcl_12_4_go>;
-    cc = 3;
+    cc = 3; cc_sync();
     goto <mvcl_12_4_end>;
 <mvcl_12_4_go>
     i = 0;
@@ -2892,18 +2892,18 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     pt = (r7 >> 24) & 0xff;
     pad = pt[0,8];
     if (n1 != n2) goto <mvcl_12_6_c1>;
-    cc = 0;
+    cc = 0; cc_sync();
     goto <mvcl_12_6_ov>;
 <mvcl_12_6_c1>
     if (n1 >= n2) goto <mvcl_12_6_c2>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <mvcl_12_6_ov>;
 <mvcl_12_6_c2>
-    cc = 2;
+    cc = 2; cc_sync();
 <mvcl_12_6_ov>
     if (r12 <= r6) goto <mvcl_12_6_go>;
     if (r12 >= (r6 + n2)) goto <mvcl_12_6_go>;
-    cc = 3;
+    cc = 3; cc_sync();
     goto <mvcl_12_6_end>;
 <mvcl_12_6_go>
     i = 0;
@@ -2940,18 +2940,18 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     pt = (r9 >> 24) & 0xff;
     pad = pt[0,8];
     if (n1 != n2) goto <mvcl_12_8_c1>;
-    cc = 0;
+    cc = 0; cc_sync();
     goto <mvcl_12_8_ov>;
 <mvcl_12_8_c1>
     if (n1 >= n2) goto <mvcl_12_8_c2>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <mvcl_12_8_ov>;
 <mvcl_12_8_c2>
-    cc = 2;
+    cc = 2; cc_sync();
 <mvcl_12_8_ov>
     if (r12 <= r8) goto <mvcl_12_8_go>;
     if (r12 >= (r8 + n2)) goto <mvcl_12_8_go>;
-    cc = 3;
+    cc = 3; cc_sync();
     goto <mvcl_12_8_end>;
 <mvcl_12_8_go>
     i = 0;
@@ -2988,18 +2988,18 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     pt = (r11 >> 24) & 0xff;
     pad = pt[0,8];
     if (n1 != n2) goto <mvcl_12_10_c1>;
-    cc = 0;
+    cc = 0; cc_sync();
     goto <mvcl_12_10_ov>;
 <mvcl_12_10_c1>
     if (n1 >= n2) goto <mvcl_12_10_c2>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <mvcl_12_10_ov>;
 <mvcl_12_10_c2>
-    cc = 2;
+    cc = 2; cc_sync();
 <mvcl_12_10_ov>
     if (r12 <= r10) goto <mvcl_12_10_go>;
     if (r12 >= (r10 + n2)) goto <mvcl_12_10_go>;
-    cc = 3;
+    cc = 3; cc_sync();
     goto <mvcl_12_10_end>;
 <mvcl_12_10_go>
     i = 0;
@@ -3036,18 +3036,18 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     pt = (r13 >> 24) & 0xff;
     pad = pt[0,8];
     if (n1 != n2) goto <mvcl_12_12_c1>;
-    cc = 0;
+    cc = 0; cc_sync();
     goto <mvcl_12_12_ov>;
 <mvcl_12_12_c1>
     if (n1 >= n2) goto <mvcl_12_12_c2>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <mvcl_12_12_ov>;
 <mvcl_12_12_c2>
-    cc = 2;
+    cc = 2; cc_sync();
 <mvcl_12_12_ov>
     if (r12 <= r12) goto <mvcl_12_12_go>;
     if (r12 >= (r12 + n2)) goto <mvcl_12_12_go>;
-    cc = 3;
+    cc = 3; cc_sync();
     goto <mvcl_12_12_end>;
 <mvcl_12_12_go>
     i = 0;
@@ -3084,18 +3084,18 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     pt = (r15 >> 24) & 0xff;
     pad = pt[0,8];
     if (n1 != n2) goto <mvcl_12_14_c1>;
-    cc = 0;
+    cc = 0; cc_sync();
     goto <mvcl_12_14_ov>;
 <mvcl_12_14_c1>
     if (n1 >= n2) goto <mvcl_12_14_c2>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <mvcl_12_14_ov>;
 <mvcl_12_14_c2>
-    cc = 2;
+    cc = 2; cc_sync();
 <mvcl_12_14_ov>
     if (r12 <= r14) goto <mvcl_12_14_go>;
     if (r12 >= (r14 + n2)) goto <mvcl_12_14_go>;
-    cc = 3;
+    cc = 3; cc_sync();
     goto <mvcl_12_14_end>;
 <mvcl_12_14_go>
     i = 0;
@@ -3132,18 +3132,18 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     pt = (r1 >> 24) & 0xff;
     pad = pt[0,8];
     if (n1 != n2) goto <mvcl_14_0_c1>;
-    cc = 0;
+    cc = 0; cc_sync();
     goto <mvcl_14_0_ov>;
 <mvcl_14_0_c1>
     if (n1 >= n2) goto <mvcl_14_0_c2>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <mvcl_14_0_ov>;
 <mvcl_14_0_c2>
-    cc = 2;
+    cc = 2; cc_sync();
 <mvcl_14_0_ov>
     if (r14 <= r0) goto <mvcl_14_0_go>;
     if (r14 >= (r0 + n2)) goto <mvcl_14_0_go>;
-    cc = 3;
+    cc = 3; cc_sync();
     goto <mvcl_14_0_end>;
 <mvcl_14_0_go>
     i = 0;
@@ -3180,18 +3180,18 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     pt = (r3 >> 24) & 0xff;
     pad = pt[0,8];
     if (n1 != n2) goto <mvcl_14_2_c1>;
-    cc = 0;
+    cc = 0; cc_sync();
     goto <mvcl_14_2_ov>;
 <mvcl_14_2_c1>
     if (n1 >= n2) goto <mvcl_14_2_c2>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <mvcl_14_2_ov>;
 <mvcl_14_2_c2>
-    cc = 2;
+    cc = 2; cc_sync();
 <mvcl_14_2_ov>
     if (r14 <= r2) goto <mvcl_14_2_go>;
     if (r14 >= (r2 + n2)) goto <mvcl_14_2_go>;
-    cc = 3;
+    cc = 3; cc_sync();
     goto <mvcl_14_2_end>;
 <mvcl_14_2_go>
     i = 0;
@@ -3228,18 +3228,18 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     pt = (r5 >> 24) & 0xff;
     pad = pt[0,8];
     if (n1 != n2) goto <mvcl_14_4_c1>;
-    cc = 0;
+    cc = 0; cc_sync();
     goto <mvcl_14_4_ov>;
 <mvcl_14_4_c1>
     if (n1 >= n2) goto <mvcl_14_4_c2>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <mvcl_14_4_ov>;
 <mvcl_14_4_c2>
-    cc = 2;
+    cc = 2; cc_sync();
 <mvcl_14_4_ov>
     if (r14 <= r4) goto <mvcl_14_4_go>;
     if (r14 >= (r4 + n2)) goto <mvcl_14_4_go>;
-    cc = 3;
+    cc = 3; cc_sync();
     goto <mvcl_14_4_end>;
 <mvcl_14_4_go>
     i = 0;
@@ -3276,18 +3276,18 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     pt = (r7 >> 24) & 0xff;
     pad = pt[0,8];
     if (n1 != n2) goto <mvcl_14_6_c1>;
-    cc = 0;
+    cc = 0; cc_sync();
     goto <mvcl_14_6_ov>;
 <mvcl_14_6_c1>
     if (n1 >= n2) goto <mvcl_14_6_c2>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <mvcl_14_6_ov>;
 <mvcl_14_6_c2>
-    cc = 2;
+    cc = 2; cc_sync();
 <mvcl_14_6_ov>
     if (r14 <= r6) goto <mvcl_14_6_go>;
     if (r14 >= (r6 + n2)) goto <mvcl_14_6_go>;
-    cc = 3;
+    cc = 3; cc_sync();
     goto <mvcl_14_6_end>;
 <mvcl_14_6_go>
     i = 0;
@@ -3324,18 +3324,18 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     pt = (r9 >> 24) & 0xff;
     pad = pt[0,8];
     if (n1 != n2) goto <mvcl_14_8_c1>;
-    cc = 0;
+    cc = 0; cc_sync();
     goto <mvcl_14_8_ov>;
 <mvcl_14_8_c1>
     if (n1 >= n2) goto <mvcl_14_8_c2>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <mvcl_14_8_ov>;
 <mvcl_14_8_c2>
-    cc = 2;
+    cc = 2; cc_sync();
 <mvcl_14_8_ov>
     if (r14 <= r8) goto <mvcl_14_8_go>;
     if (r14 >= (r8 + n2)) goto <mvcl_14_8_go>;
-    cc = 3;
+    cc = 3; cc_sync();
     goto <mvcl_14_8_end>;
 <mvcl_14_8_go>
     i = 0;
@@ -3372,18 +3372,18 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     pt = (r11 >> 24) & 0xff;
     pad = pt[0,8];
     if (n1 != n2) goto <mvcl_14_10_c1>;
-    cc = 0;
+    cc = 0; cc_sync();
     goto <mvcl_14_10_ov>;
 <mvcl_14_10_c1>
     if (n1 >= n2) goto <mvcl_14_10_c2>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <mvcl_14_10_ov>;
 <mvcl_14_10_c2>
-    cc = 2;
+    cc = 2; cc_sync();
 <mvcl_14_10_ov>
     if (r14 <= r10) goto <mvcl_14_10_go>;
     if (r14 >= (r10 + n2)) goto <mvcl_14_10_go>;
-    cc = 3;
+    cc = 3; cc_sync();
     goto <mvcl_14_10_end>;
 <mvcl_14_10_go>
     i = 0;
@@ -3420,18 +3420,18 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     pt = (r13 >> 24) & 0xff;
     pad = pt[0,8];
     if (n1 != n2) goto <mvcl_14_12_c1>;
-    cc = 0;
+    cc = 0; cc_sync();
     goto <mvcl_14_12_ov>;
 <mvcl_14_12_c1>
     if (n1 >= n2) goto <mvcl_14_12_c2>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <mvcl_14_12_ov>;
 <mvcl_14_12_c2>
-    cc = 2;
+    cc = 2; cc_sync();
 <mvcl_14_12_ov>
     if (r14 <= r12) goto <mvcl_14_12_go>;
     if (r14 >= (r12 + n2)) goto <mvcl_14_12_go>;
-    cc = 3;
+    cc = 3; cc_sync();
     goto <mvcl_14_12_end>;
 <mvcl_14_12_go>
     i = 0;
@@ -3468,18 +3468,18 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     pt = (r15 >> 24) & 0xff;
     pad = pt[0,8];
     if (n1 != n2) goto <mvcl_14_14_c1>;
-    cc = 0;
+    cc = 0; cc_sync();
     goto <mvcl_14_14_ov>;
 <mvcl_14_14_c1>
     if (n1 >= n2) goto <mvcl_14_14_c2>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <mvcl_14_14_ov>;
 <mvcl_14_14_c2>
-    cc = 2;
+    cc = 2; cc_sync();
 <mvcl_14_14_ov>
     if (r14 <= r14) goto <mvcl_14_14_go>;
     if (r14 >= (r14 + n2)) goto <mvcl_14_14_go>;
-    cc = 3;
+    cc = 3; cc_sync();
     goto <mvcl_14_14_end>;
 <mvcl_14_14_go>
     i = 0;
@@ -3527,10 +3527,10 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b2 = *:1 (r0 + i);
     if (b1 == b2) goto <clcl_0_0_eq>;
     if (b1 >= b2) goto <clcl_0_0_hi>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_0_0_upd>;
 <clcl_0_0_hi>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_0_0_upd>;
 <clcl_0_0_eq>
     i = i + 1;
@@ -3542,10 +3542,10 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b2 = *:1 (r0 + i);
     if (pad == b2) goto <clcl_0_0_p1e>;
     if (pad >= b2) goto <clcl_0_0_p1h>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_0_0_upd1>;
 <clcl_0_0_p1h>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_0_0_upd1>;
 <clcl_0_0_p1e>
     i = i + 1;
@@ -3556,16 +3556,16 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b1 = *:1 (r0 + i);
     if (b1 == pad) goto <clcl_0_0_p2e>;
     if (b1 >= pad) goto <clcl_0_0_p2h>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_0_0_upd2>;
 <clcl_0_0_p2h>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_0_0_upd2>;
 <clcl_0_0_p2e>
     i = i + 1;
     goto <clcl_0_0_p2>;
 <clcl_0_0_equal>
-    cc = 0;
+    cc = 0; cc_sync();
     r0 = r0 + n1;
     r1 = r1 - n1;
     r0 = r0 + n2;
@@ -3607,10 +3607,10 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b2 = *:1 (r2 + i);
     if (b1 == b2) goto <clcl_0_2_eq>;
     if (b1 >= b2) goto <clcl_0_2_hi>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_0_2_upd>;
 <clcl_0_2_hi>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_0_2_upd>;
 <clcl_0_2_eq>
     i = i + 1;
@@ -3622,10 +3622,10 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b2 = *:1 (r2 + i);
     if (pad == b2) goto <clcl_0_2_p1e>;
     if (pad >= b2) goto <clcl_0_2_p1h>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_0_2_upd1>;
 <clcl_0_2_p1h>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_0_2_upd1>;
 <clcl_0_2_p1e>
     i = i + 1;
@@ -3636,16 +3636,16 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b1 = *:1 (r0 + i);
     if (b1 == pad) goto <clcl_0_2_p2e>;
     if (b1 >= pad) goto <clcl_0_2_p2h>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_0_2_upd2>;
 <clcl_0_2_p2h>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_0_2_upd2>;
 <clcl_0_2_p2e>
     i = i + 1;
     goto <clcl_0_2_p2>;
 <clcl_0_2_equal>
-    cc = 0;
+    cc = 0; cc_sync();
     r0 = r0 + n1;
     r1 = r1 - n1;
     r2 = r2 + n2;
@@ -3687,10 +3687,10 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b2 = *:1 (r4 + i);
     if (b1 == b2) goto <clcl_0_4_eq>;
     if (b1 >= b2) goto <clcl_0_4_hi>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_0_4_upd>;
 <clcl_0_4_hi>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_0_4_upd>;
 <clcl_0_4_eq>
     i = i + 1;
@@ -3702,10 +3702,10 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b2 = *:1 (r4 + i);
     if (pad == b2) goto <clcl_0_4_p1e>;
     if (pad >= b2) goto <clcl_0_4_p1h>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_0_4_upd1>;
 <clcl_0_4_p1h>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_0_4_upd1>;
 <clcl_0_4_p1e>
     i = i + 1;
@@ -3716,16 +3716,16 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b1 = *:1 (r0 + i);
     if (b1 == pad) goto <clcl_0_4_p2e>;
     if (b1 >= pad) goto <clcl_0_4_p2h>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_0_4_upd2>;
 <clcl_0_4_p2h>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_0_4_upd2>;
 <clcl_0_4_p2e>
     i = i + 1;
     goto <clcl_0_4_p2>;
 <clcl_0_4_equal>
-    cc = 0;
+    cc = 0; cc_sync();
     r0 = r0 + n1;
     r1 = r1 - n1;
     r4 = r4 + n2;
@@ -3767,10 +3767,10 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b2 = *:1 (r6 + i);
     if (b1 == b2) goto <clcl_0_6_eq>;
     if (b1 >= b2) goto <clcl_0_6_hi>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_0_6_upd>;
 <clcl_0_6_hi>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_0_6_upd>;
 <clcl_0_6_eq>
     i = i + 1;
@@ -3782,10 +3782,10 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b2 = *:1 (r6 + i);
     if (pad == b2) goto <clcl_0_6_p1e>;
     if (pad >= b2) goto <clcl_0_6_p1h>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_0_6_upd1>;
 <clcl_0_6_p1h>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_0_6_upd1>;
 <clcl_0_6_p1e>
     i = i + 1;
@@ -3796,16 +3796,16 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b1 = *:1 (r0 + i);
     if (b1 == pad) goto <clcl_0_6_p2e>;
     if (b1 >= pad) goto <clcl_0_6_p2h>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_0_6_upd2>;
 <clcl_0_6_p2h>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_0_6_upd2>;
 <clcl_0_6_p2e>
     i = i + 1;
     goto <clcl_0_6_p2>;
 <clcl_0_6_equal>
-    cc = 0;
+    cc = 0; cc_sync();
     r0 = r0 + n1;
     r1 = r1 - n1;
     r6 = r6 + n2;
@@ -3847,10 +3847,10 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b2 = *:1 (r8 + i);
     if (b1 == b2) goto <clcl_0_8_eq>;
     if (b1 >= b2) goto <clcl_0_8_hi>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_0_8_upd>;
 <clcl_0_8_hi>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_0_8_upd>;
 <clcl_0_8_eq>
     i = i + 1;
@@ -3862,10 +3862,10 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b2 = *:1 (r8 + i);
     if (pad == b2) goto <clcl_0_8_p1e>;
     if (pad >= b2) goto <clcl_0_8_p1h>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_0_8_upd1>;
 <clcl_0_8_p1h>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_0_8_upd1>;
 <clcl_0_8_p1e>
     i = i + 1;
@@ -3876,16 +3876,16 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b1 = *:1 (r0 + i);
     if (b1 == pad) goto <clcl_0_8_p2e>;
     if (b1 >= pad) goto <clcl_0_8_p2h>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_0_8_upd2>;
 <clcl_0_8_p2h>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_0_8_upd2>;
 <clcl_0_8_p2e>
     i = i + 1;
     goto <clcl_0_8_p2>;
 <clcl_0_8_equal>
-    cc = 0;
+    cc = 0; cc_sync();
     r0 = r0 + n1;
     r1 = r1 - n1;
     r8 = r8 + n2;
@@ -3927,10 +3927,10 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b2 = *:1 (r10 + i);
     if (b1 == b2) goto <clcl_0_10_eq>;
     if (b1 >= b2) goto <clcl_0_10_hi>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_0_10_upd>;
 <clcl_0_10_hi>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_0_10_upd>;
 <clcl_0_10_eq>
     i = i + 1;
@@ -3942,10 +3942,10 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b2 = *:1 (r10 + i);
     if (pad == b2) goto <clcl_0_10_p1e>;
     if (pad >= b2) goto <clcl_0_10_p1h>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_0_10_upd1>;
 <clcl_0_10_p1h>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_0_10_upd1>;
 <clcl_0_10_p1e>
     i = i + 1;
@@ -3956,16 +3956,16 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b1 = *:1 (r0 + i);
     if (b1 == pad) goto <clcl_0_10_p2e>;
     if (b1 >= pad) goto <clcl_0_10_p2h>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_0_10_upd2>;
 <clcl_0_10_p2h>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_0_10_upd2>;
 <clcl_0_10_p2e>
     i = i + 1;
     goto <clcl_0_10_p2>;
 <clcl_0_10_equal>
-    cc = 0;
+    cc = 0; cc_sync();
     r0 = r0 + n1;
     r1 = r1 - n1;
     r10 = r10 + n2;
@@ -4007,10 +4007,10 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b2 = *:1 (r12 + i);
     if (b1 == b2) goto <clcl_0_12_eq>;
     if (b1 >= b2) goto <clcl_0_12_hi>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_0_12_upd>;
 <clcl_0_12_hi>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_0_12_upd>;
 <clcl_0_12_eq>
     i = i + 1;
@@ -4022,10 +4022,10 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b2 = *:1 (r12 + i);
     if (pad == b2) goto <clcl_0_12_p1e>;
     if (pad >= b2) goto <clcl_0_12_p1h>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_0_12_upd1>;
 <clcl_0_12_p1h>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_0_12_upd1>;
 <clcl_0_12_p1e>
     i = i + 1;
@@ -4036,16 +4036,16 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b1 = *:1 (r0 + i);
     if (b1 == pad) goto <clcl_0_12_p2e>;
     if (b1 >= pad) goto <clcl_0_12_p2h>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_0_12_upd2>;
 <clcl_0_12_p2h>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_0_12_upd2>;
 <clcl_0_12_p2e>
     i = i + 1;
     goto <clcl_0_12_p2>;
 <clcl_0_12_equal>
-    cc = 0;
+    cc = 0; cc_sync();
     r0 = r0 + n1;
     r1 = r1 - n1;
     r12 = r12 + n2;
@@ -4087,10 +4087,10 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b2 = *:1 (r14 + i);
     if (b1 == b2) goto <clcl_0_14_eq>;
     if (b1 >= b2) goto <clcl_0_14_hi>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_0_14_upd>;
 <clcl_0_14_hi>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_0_14_upd>;
 <clcl_0_14_eq>
     i = i + 1;
@@ -4102,10 +4102,10 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b2 = *:1 (r14 + i);
     if (pad == b2) goto <clcl_0_14_p1e>;
     if (pad >= b2) goto <clcl_0_14_p1h>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_0_14_upd1>;
 <clcl_0_14_p1h>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_0_14_upd1>;
 <clcl_0_14_p1e>
     i = i + 1;
@@ -4116,16 +4116,16 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b1 = *:1 (r0 + i);
     if (b1 == pad) goto <clcl_0_14_p2e>;
     if (b1 >= pad) goto <clcl_0_14_p2h>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_0_14_upd2>;
 <clcl_0_14_p2h>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_0_14_upd2>;
 <clcl_0_14_p2e>
     i = i + 1;
     goto <clcl_0_14_p2>;
 <clcl_0_14_equal>
-    cc = 0;
+    cc = 0; cc_sync();
     r0 = r0 + n1;
     r1 = r1 - n1;
     r14 = r14 + n2;
@@ -4167,10 +4167,10 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b2 = *:1 (r0 + i);
     if (b1 == b2) goto <clcl_2_0_eq>;
     if (b1 >= b2) goto <clcl_2_0_hi>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_2_0_upd>;
 <clcl_2_0_hi>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_2_0_upd>;
 <clcl_2_0_eq>
     i = i + 1;
@@ -4182,10 +4182,10 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b2 = *:1 (r0 + i);
     if (pad == b2) goto <clcl_2_0_p1e>;
     if (pad >= b2) goto <clcl_2_0_p1h>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_2_0_upd1>;
 <clcl_2_0_p1h>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_2_0_upd1>;
 <clcl_2_0_p1e>
     i = i + 1;
@@ -4196,16 +4196,16 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b1 = *:1 (r2 + i);
     if (b1 == pad) goto <clcl_2_0_p2e>;
     if (b1 >= pad) goto <clcl_2_0_p2h>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_2_0_upd2>;
 <clcl_2_0_p2h>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_2_0_upd2>;
 <clcl_2_0_p2e>
     i = i + 1;
     goto <clcl_2_0_p2>;
 <clcl_2_0_equal>
-    cc = 0;
+    cc = 0; cc_sync();
     r2 = r2 + n1;
     r3 = r3 - n1;
     r0 = r0 + n2;
@@ -4247,10 +4247,10 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b2 = *:1 (r2 + i);
     if (b1 == b2) goto <clcl_2_2_eq>;
     if (b1 >= b2) goto <clcl_2_2_hi>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_2_2_upd>;
 <clcl_2_2_hi>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_2_2_upd>;
 <clcl_2_2_eq>
     i = i + 1;
@@ -4262,10 +4262,10 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b2 = *:1 (r2 + i);
     if (pad == b2) goto <clcl_2_2_p1e>;
     if (pad >= b2) goto <clcl_2_2_p1h>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_2_2_upd1>;
 <clcl_2_2_p1h>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_2_2_upd1>;
 <clcl_2_2_p1e>
     i = i + 1;
@@ -4276,16 +4276,16 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b1 = *:1 (r2 + i);
     if (b1 == pad) goto <clcl_2_2_p2e>;
     if (b1 >= pad) goto <clcl_2_2_p2h>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_2_2_upd2>;
 <clcl_2_2_p2h>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_2_2_upd2>;
 <clcl_2_2_p2e>
     i = i + 1;
     goto <clcl_2_2_p2>;
 <clcl_2_2_equal>
-    cc = 0;
+    cc = 0; cc_sync();
     r2 = r2 + n1;
     r3 = r3 - n1;
     r2 = r2 + n2;
@@ -4327,10 +4327,10 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b2 = *:1 (r4 + i);
     if (b1 == b2) goto <clcl_2_4_eq>;
     if (b1 >= b2) goto <clcl_2_4_hi>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_2_4_upd>;
 <clcl_2_4_hi>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_2_4_upd>;
 <clcl_2_4_eq>
     i = i + 1;
@@ -4342,10 +4342,10 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b2 = *:1 (r4 + i);
     if (pad == b2) goto <clcl_2_4_p1e>;
     if (pad >= b2) goto <clcl_2_4_p1h>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_2_4_upd1>;
 <clcl_2_4_p1h>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_2_4_upd1>;
 <clcl_2_4_p1e>
     i = i + 1;
@@ -4356,16 +4356,16 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b1 = *:1 (r2 + i);
     if (b1 == pad) goto <clcl_2_4_p2e>;
     if (b1 >= pad) goto <clcl_2_4_p2h>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_2_4_upd2>;
 <clcl_2_4_p2h>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_2_4_upd2>;
 <clcl_2_4_p2e>
     i = i + 1;
     goto <clcl_2_4_p2>;
 <clcl_2_4_equal>
-    cc = 0;
+    cc = 0; cc_sync();
     r2 = r2 + n1;
     r3 = r3 - n1;
     r4 = r4 + n2;
@@ -4407,10 +4407,10 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b2 = *:1 (r6 + i);
     if (b1 == b2) goto <clcl_2_6_eq>;
     if (b1 >= b2) goto <clcl_2_6_hi>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_2_6_upd>;
 <clcl_2_6_hi>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_2_6_upd>;
 <clcl_2_6_eq>
     i = i + 1;
@@ -4422,10 +4422,10 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b2 = *:1 (r6 + i);
     if (pad == b2) goto <clcl_2_6_p1e>;
     if (pad >= b2) goto <clcl_2_6_p1h>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_2_6_upd1>;
 <clcl_2_6_p1h>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_2_6_upd1>;
 <clcl_2_6_p1e>
     i = i + 1;
@@ -4436,16 +4436,16 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b1 = *:1 (r2 + i);
     if (b1 == pad) goto <clcl_2_6_p2e>;
     if (b1 >= pad) goto <clcl_2_6_p2h>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_2_6_upd2>;
 <clcl_2_6_p2h>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_2_6_upd2>;
 <clcl_2_6_p2e>
     i = i + 1;
     goto <clcl_2_6_p2>;
 <clcl_2_6_equal>
-    cc = 0;
+    cc = 0; cc_sync();
     r2 = r2 + n1;
     r3 = r3 - n1;
     r6 = r6 + n2;
@@ -4487,10 +4487,10 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b2 = *:1 (r8 + i);
     if (b1 == b2) goto <clcl_2_8_eq>;
     if (b1 >= b2) goto <clcl_2_8_hi>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_2_8_upd>;
 <clcl_2_8_hi>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_2_8_upd>;
 <clcl_2_8_eq>
     i = i + 1;
@@ -4502,10 +4502,10 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b2 = *:1 (r8 + i);
     if (pad == b2) goto <clcl_2_8_p1e>;
     if (pad >= b2) goto <clcl_2_8_p1h>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_2_8_upd1>;
 <clcl_2_8_p1h>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_2_8_upd1>;
 <clcl_2_8_p1e>
     i = i + 1;
@@ -4516,16 +4516,16 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b1 = *:1 (r2 + i);
     if (b1 == pad) goto <clcl_2_8_p2e>;
     if (b1 >= pad) goto <clcl_2_8_p2h>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_2_8_upd2>;
 <clcl_2_8_p2h>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_2_8_upd2>;
 <clcl_2_8_p2e>
     i = i + 1;
     goto <clcl_2_8_p2>;
 <clcl_2_8_equal>
-    cc = 0;
+    cc = 0; cc_sync();
     r2 = r2 + n1;
     r3 = r3 - n1;
     r8 = r8 + n2;
@@ -4567,10 +4567,10 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b2 = *:1 (r10 + i);
     if (b1 == b2) goto <clcl_2_10_eq>;
     if (b1 >= b2) goto <clcl_2_10_hi>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_2_10_upd>;
 <clcl_2_10_hi>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_2_10_upd>;
 <clcl_2_10_eq>
     i = i + 1;
@@ -4582,10 +4582,10 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b2 = *:1 (r10 + i);
     if (pad == b2) goto <clcl_2_10_p1e>;
     if (pad >= b2) goto <clcl_2_10_p1h>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_2_10_upd1>;
 <clcl_2_10_p1h>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_2_10_upd1>;
 <clcl_2_10_p1e>
     i = i + 1;
@@ -4596,16 +4596,16 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b1 = *:1 (r2 + i);
     if (b1 == pad) goto <clcl_2_10_p2e>;
     if (b1 >= pad) goto <clcl_2_10_p2h>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_2_10_upd2>;
 <clcl_2_10_p2h>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_2_10_upd2>;
 <clcl_2_10_p2e>
     i = i + 1;
     goto <clcl_2_10_p2>;
 <clcl_2_10_equal>
-    cc = 0;
+    cc = 0; cc_sync();
     r2 = r2 + n1;
     r3 = r3 - n1;
     r10 = r10 + n2;
@@ -4647,10 +4647,10 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b2 = *:1 (r12 + i);
     if (b1 == b2) goto <clcl_2_12_eq>;
     if (b1 >= b2) goto <clcl_2_12_hi>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_2_12_upd>;
 <clcl_2_12_hi>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_2_12_upd>;
 <clcl_2_12_eq>
     i = i + 1;
@@ -4662,10 +4662,10 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b2 = *:1 (r12 + i);
     if (pad == b2) goto <clcl_2_12_p1e>;
     if (pad >= b2) goto <clcl_2_12_p1h>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_2_12_upd1>;
 <clcl_2_12_p1h>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_2_12_upd1>;
 <clcl_2_12_p1e>
     i = i + 1;
@@ -4676,16 +4676,16 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b1 = *:1 (r2 + i);
     if (b1 == pad) goto <clcl_2_12_p2e>;
     if (b1 >= pad) goto <clcl_2_12_p2h>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_2_12_upd2>;
 <clcl_2_12_p2h>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_2_12_upd2>;
 <clcl_2_12_p2e>
     i = i + 1;
     goto <clcl_2_12_p2>;
 <clcl_2_12_equal>
-    cc = 0;
+    cc = 0; cc_sync();
     r2 = r2 + n1;
     r3 = r3 - n1;
     r12 = r12 + n2;
@@ -4727,10 +4727,10 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b2 = *:1 (r14 + i);
     if (b1 == b2) goto <clcl_2_14_eq>;
     if (b1 >= b2) goto <clcl_2_14_hi>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_2_14_upd>;
 <clcl_2_14_hi>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_2_14_upd>;
 <clcl_2_14_eq>
     i = i + 1;
@@ -4742,10 +4742,10 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b2 = *:1 (r14 + i);
     if (pad == b2) goto <clcl_2_14_p1e>;
     if (pad >= b2) goto <clcl_2_14_p1h>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_2_14_upd1>;
 <clcl_2_14_p1h>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_2_14_upd1>;
 <clcl_2_14_p1e>
     i = i + 1;
@@ -4756,16 +4756,16 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b1 = *:1 (r2 + i);
     if (b1 == pad) goto <clcl_2_14_p2e>;
     if (b1 >= pad) goto <clcl_2_14_p2h>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_2_14_upd2>;
 <clcl_2_14_p2h>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_2_14_upd2>;
 <clcl_2_14_p2e>
     i = i + 1;
     goto <clcl_2_14_p2>;
 <clcl_2_14_equal>
-    cc = 0;
+    cc = 0; cc_sync();
     r2 = r2 + n1;
     r3 = r3 - n1;
     r14 = r14 + n2;
@@ -4807,10 +4807,10 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b2 = *:1 (r0 + i);
     if (b1 == b2) goto <clcl_4_0_eq>;
     if (b1 >= b2) goto <clcl_4_0_hi>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_4_0_upd>;
 <clcl_4_0_hi>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_4_0_upd>;
 <clcl_4_0_eq>
     i = i + 1;
@@ -4822,10 +4822,10 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b2 = *:1 (r0 + i);
     if (pad == b2) goto <clcl_4_0_p1e>;
     if (pad >= b2) goto <clcl_4_0_p1h>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_4_0_upd1>;
 <clcl_4_0_p1h>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_4_0_upd1>;
 <clcl_4_0_p1e>
     i = i + 1;
@@ -4836,16 +4836,16 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b1 = *:1 (r4 + i);
     if (b1 == pad) goto <clcl_4_0_p2e>;
     if (b1 >= pad) goto <clcl_4_0_p2h>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_4_0_upd2>;
 <clcl_4_0_p2h>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_4_0_upd2>;
 <clcl_4_0_p2e>
     i = i + 1;
     goto <clcl_4_0_p2>;
 <clcl_4_0_equal>
-    cc = 0;
+    cc = 0; cc_sync();
     r4 = r4 + n1;
     r5 = r5 - n1;
     r0 = r0 + n2;
@@ -4887,10 +4887,10 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b2 = *:1 (r2 + i);
     if (b1 == b2) goto <clcl_4_2_eq>;
     if (b1 >= b2) goto <clcl_4_2_hi>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_4_2_upd>;
 <clcl_4_2_hi>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_4_2_upd>;
 <clcl_4_2_eq>
     i = i + 1;
@@ -4902,10 +4902,10 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b2 = *:1 (r2 + i);
     if (pad == b2) goto <clcl_4_2_p1e>;
     if (pad >= b2) goto <clcl_4_2_p1h>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_4_2_upd1>;
 <clcl_4_2_p1h>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_4_2_upd1>;
 <clcl_4_2_p1e>
     i = i + 1;
@@ -4916,16 +4916,16 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b1 = *:1 (r4 + i);
     if (b1 == pad) goto <clcl_4_2_p2e>;
     if (b1 >= pad) goto <clcl_4_2_p2h>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_4_2_upd2>;
 <clcl_4_2_p2h>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_4_2_upd2>;
 <clcl_4_2_p2e>
     i = i + 1;
     goto <clcl_4_2_p2>;
 <clcl_4_2_equal>
-    cc = 0;
+    cc = 0; cc_sync();
     r4 = r4 + n1;
     r5 = r5 - n1;
     r2 = r2 + n2;
@@ -4967,10 +4967,10 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b2 = *:1 (r4 + i);
     if (b1 == b2) goto <clcl_4_4_eq>;
     if (b1 >= b2) goto <clcl_4_4_hi>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_4_4_upd>;
 <clcl_4_4_hi>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_4_4_upd>;
 <clcl_4_4_eq>
     i = i + 1;
@@ -4982,10 +4982,10 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b2 = *:1 (r4 + i);
     if (pad == b2) goto <clcl_4_4_p1e>;
     if (pad >= b2) goto <clcl_4_4_p1h>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_4_4_upd1>;
 <clcl_4_4_p1h>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_4_4_upd1>;
 <clcl_4_4_p1e>
     i = i + 1;
@@ -4996,16 +4996,16 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b1 = *:1 (r4 + i);
     if (b1 == pad) goto <clcl_4_4_p2e>;
     if (b1 >= pad) goto <clcl_4_4_p2h>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_4_4_upd2>;
 <clcl_4_4_p2h>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_4_4_upd2>;
 <clcl_4_4_p2e>
     i = i + 1;
     goto <clcl_4_4_p2>;
 <clcl_4_4_equal>
-    cc = 0;
+    cc = 0; cc_sync();
     r4 = r4 + n1;
     r5 = r5 - n1;
     r4 = r4 + n2;
@@ -5047,10 +5047,10 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b2 = *:1 (r6 + i);
     if (b1 == b2) goto <clcl_4_6_eq>;
     if (b1 >= b2) goto <clcl_4_6_hi>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_4_6_upd>;
 <clcl_4_6_hi>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_4_6_upd>;
 <clcl_4_6_eq>
     i = i + 1;
@@ -5062,10 +5062,10 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b2 = *:1 (r6 + i);
     if (pad == b2) goto <clcl_4_6_p1e>;
     if (pad >= b2) goto <clcl_4_6_p1h>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_4_6_upd1>;
 <clcl_4_6_p1h>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_4_6_upd1>;
 <clcl_4_6_p1e>
     i = i + 1;
@@ -5076,16 +5076,16 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b1 = *:1 (r4 + i);
     if (b1 == pad) goto <clcl_4_6_p2e>;
     if (b1 >= pad) goto <clcl_4_6_p2h>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_4_6_upd2>;
 <clcl_4_6_p2h>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_4_6_upd2>;
 <clcl_4_6_p2e>
     i = i + 1;
     goto <clcl_4_6_p2>;
 <clcl_4_6_equal>
-    cc = 0;
+    cc = 0; cc_sync();
     r4 = r4 + n1;
     r5 = r5 - n1;
     r6 = r6 + n2;
@@ -5127,10 +5127,10 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b2 = *:1 (r8 + i);
     if (b1 == b2) goto <clcl_4_8_eq>;
     if (b1 >= b2) goto <clcl_4_8_hi>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_4_8_upd>;
 <clcl_4_8_hi>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_4_8_upd>;
 <clcl_4_8_eq>
     i = i + 1;
@@ -5142,10 +5142,10 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b2 = *:1 (r8 + i);
     if (pad == b2) goto <clcl_4_8_p1e>;
     if (pad >= b2) goto <clcl_4_8_p1h>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_4_8_upd1>;
 <clcl_4_8_p1h>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_4_8_upd1>;
 <clcl_4_8_p1e>
     i = i + 1;
@@ -5156,16 +5156,16 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b1 = *:1 (r4 + i);
     if (b1 == pad) goto <clcl_4_8_p2e>;
     if (b1 >= pad) goto <clcl_4_8_p2h>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_4_8_upd2>;
 <clcl_4_8_p2h>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_4_8_upd2>;
 <clcl_4_8_p2e>
     i = i + 1;
     goto <clcl_4_8_p2>;
 <clcl_4_8_equal>
-    cc = 0;
+    cc = 0; cc_sync();
     r4 = r4 + n1;
     r5 = r5 - n1;
     r8 = r8 + n2;
@@ -5207,10 +5207,10 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b2 = *:1 (r10 + i);
     if (b1 == b2) goto <clcl_4_10_eq>;
     if (b1 >= b2) goto <clcl_4_10_hi>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_4_10_upd>;
 <clcl_4_10_hi>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_4_10_upd>;
 <clcl_4_10_eq>
     i = i + 1;
@@ -5222,10 +5222,10 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b2 = *:1 (r10 + i);
     if (pad == b2) goto <clcl_4_10_p1e>;
     if (pad >= b2) goto <clcl_4_10_p1h>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_4_10_upd1>;
 <clcl_4_10_p1h>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_4_10_upd1>;
 <clcl_4_10_p1e>
     i = i + 1;
@@ -5236,16 +5236,16 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b1 = *:1 (r4 + i);
     if (b1 == pad) goto <clcl_4_10_p2e>;
     if (b1 >= pad) goto <clcl_4_10_p2h>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_4_10_upd2>;
 <clcl_4_10_p2h>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_4_10_upd2>;
 <clcl_4_10_p2e>
     i = i + 1;
     goto <clcl_4_10_p2>;
 <clcl_4_10_equal>
-    cc = 0;
+    cc = 0; cc_sync();
     r4 = r4 + n1;
     r5 = r5 - n1;
     r10 = r10 + n2;
@@ -5287,10 +5287,10 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b2 = *:1 (r12 + i);
     if (b1 == b2) goto <clcl_4_12_eq>;
     if (b1 >= b2) goto <clcl_4_12_hi>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_4_12_upd>;
 <clcl_4_12_hi>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_4_12_upd>;
 <clcl_4_12_eq>
     i = i + 1;
@@ -5302,10 +5302,10 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b2 = *:1 (r12 + i);
     if (pad == b2) goto <clcl_4_12_p1e>;
     if (pad >= b2) goto <clcl_4_12_p1h>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_4_12_upd1>;
 <clcl_4_12_p1h>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_4_12_upd1>;
 <clcl_4_12_p1e>
     i = i + 1;
@@ -5316,16 +5316,16 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b1 = *:1 (r4 + i);
     if (b1 == pad) goto <clcl_4_12_p2e>;
     if (b1 >= pad) goto <clcl_4_12_p2h>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_4_12_upd2>;
 <clcl_4_12_p2h>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_4_12_upd2>;
 <clcl_4_12_p2e>
     i = i + 1;
     goto <clcl_4_12_p2>;
 <clcl_4_12_equal>
-    cc = 0;
+    cc = 0; cc_sync();
     r4 = r4 + n1;
     r5 = r5 - n1;
     r12 = r12 + n2;
@@ -5367,10 +5367,10 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b2 = *:1 (r14 + i);
     if (b1 == b2) goto <clcl_4_14_eq>;
     if (b1 >= b2) goto <clcl_4_14_hi>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_4_14_upd>;
 <clcl_4_14_hi>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_4_14_upd>;
 <clcl_4_14_eq>
     i = i + 1;
@@ -5382,10 +5382,10 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b2 = *:1 (r14 + i);
     if (pad == b2) goto <clcl_4_14_p1e>;
     if (pad >= b2) goto <clcl_4_14_p1h>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_4_14_upd1>;
 <clcl_4_14_p1h>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_4_14_upd1>;
 <clcl_4_14_p1e>
     i = i + 1;
@@ -5396,16 +5396,16 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b1 = *:1 (r4 + i);
     if (b1 == pad) goto <clcl_4_14_p2e>;
     if (b1 >= pad) goto <clcl_4_14_p2h>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_4_14_upd2>;
 <clcl_4_14_p2h>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_4_14_upd2>;
 <clcl_4_14_p2e>
     i = i + 1;
     goto <clcl_4_14_p2>;
 <clcl_4_14_equal>
-    cc = 0;
+    cc = 0; cc_sync();
     r4 = r4 + n1;
     r5 = r5 - n1;
     r14 = r14 + n2;
@@ -5447,10 +5447,10 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b2 = *:1 (r0 + i);
     if (b1 == b2) goto <clcl_6_0_eq>;
     if (b1 >= b2) goto <clcl_6_0_hi>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_6_0_upd>;
 <clcl_6_0_hi>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_6_0_upd>;
 <clcl_6_0_eq>
     i = i + 1;
@@ -5462,10 +5462,10 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b2 = *:1 (r0 + i);
     if (pad == b2) goto <clcl_6_0_p1e>;
     if (pad >= b2) goto <clcl_6_0_p1h>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_6_0_upd1>;
 <clcl_6_0_p1h>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_6_0_upd1>;
 <clcl_6_0_p1e>
     i = i + 1;
@@ -5476,16 +5476,16 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b1 = *:1 (r6 + i);
     if (b1 == pad) goto <clcl_6_0_p2e>;
     if (b1 >= pad) goto <clcl_6_0_p2h>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_6_0_upd2>;
 <clcl_6_0_p2h>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_6_0_upd2>;
 <clcl_6_0_p2e>
     i = i + 1;
     goto <clcl_6_0_p2>;
 <clcl_6_0_equal>
-    cc = 0;
+    cc = 0; cc_sync();
     r6 = r6 + n1;
     r7 = r7 - n1;
     r0 = r0 + n2;
@@ -5527,10 +5527,10 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b2 = *:1 (r2 + i);
     if (b1 == b2) goto <clcl_6_2_eq>;
     if (b1 >= b2) goto <clcl_6_2_hi>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_6_2_upd>;
 <clcl_6_2_hi>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_6_2_upd>;
 <clcl_6_2_eq>
     i = i + 1;
@@ -5542,10 +5542,10 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b2 = *:1 (r2 + i);
     if (pad == b2) goto <clcl_6_2_p1e>;
     if (pad >= b2) goto <clcl_6_2_p1h>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_6_2_upd1>;
 <clcl_6_2_p1h>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_6_2_upd1>;
 <clcl_6_2_p1e>
     i = i + 1;
@@ -5556,16 +5556,16 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b1 = *:1 (r6 + i);
     if (b1 == pad) goto <clcl_6_2_p2e>;
     if (b1 >= pad) goto <clcl_6_2_p2h>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_6_2_upd2>;
 <clcl_6_2_p2h>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_6_2_upd2>;
 <clcl_6_2_p2e>
     i = i + 1;
     goto <clcl_6_2_p2>;
 <clcl_6_2_equal>
-    cc = 0;
+    cc = 0; cc_sync();
     r6 = r6 + n1;
     r7 = r7 - n1;
     r2 = r2 + n2;
@@ -5607,10 +5607,10 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b2 = *:1 (r4 + i);
     if (b1 == b2) goto <clcl_6_4_eq>;
     if (b1 >= b2) goto <clcl_6_4_hi>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_6_4_upd>;
 <clcl_6_4_hi>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_6_4_upd>;
 <clcl_6_4_eq>
     i = i + 1;
@@ -5622,10 +5622,10 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b2 = *:1 (r4 + i);
     if (pad == b2) goto <clcl_6_4_p1e>;
     if (pad >= b2) goto <clcl_6_4_p1h>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_6_4_upd1>;
 <clcl_6_4_p1h>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_6_4_upd1>;
 <clcl_6_4_p1e>
     i = i + 1;
@@ -5636,16 +5636,16 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b1 = *:1 (r6 + i);
     if (b1 == pad) goto <clcl_6_4_p2e>;
     if (b1 >= pad) goto <clcl_6_4_p2h>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_6_4_upd2>;
 <clcl_6_4_p2h>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_6_4_upd2>;
 <clcl_6_4_p2e>
     i = i + 1;
     goto <clcl_6_4_p2>;
 <clcl_6_4_equal>
-    cc = 0;
+    cc = 0; cc_sync();
     r6 = r6 + n1;
     r7 = r7 - n1;
     r4 = r4 + n2;
@@ -5687,10 +5687,10 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b2 = *:1 (r6 + i);
     if (b1 == b2) goto <clcl_6_6_eq>;
     if (b1 >= b2) goto <clcl_6_6_hi>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_6_6_upd>;
 <clcl_6_6_hi>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_6_6_upd>;
 <clcl_6_6_eq>
     i = i + 1;
@@ -5702,10 +5702,10 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b2 = *:1 (r6 + i);
     if (pad == b2) goto <clcl_6_6_p1e>;
     if (pad >= b2) goto <clcl_6_6_p1h>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_6_6_upd1>;
 <clcl_6_6_p1h>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_6_6_upd1>;
 <clcl_6_6_p1e>
     i = i + 1;
@@ -5716,16 +5716,16 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b1 = *:1 (r6 + i);
     if (b1 == pad) goto <clcl_6_6_p2e>;
     if (b1 >= pad) goto <clcl_6_6_p2h>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_6_6_upd2>;
 <clcl_6_6_p2h>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_6_6_upd2>;
 <clcl_6_6_p2e>
     i = i + 1;
     goto <clcl_6_6_p2>;
 <clcl_6_6_equal>
-    cc = 0;
+    cc = 0; cc_sync();
     r6 = r6 + n1;
     r7 = r7 - n1;
     r6 = r6 + n2;
@@ -5767,10 +5767,10 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b2 = *:1 (r8 + i);
     if (b1 == b2) goto <clcl_6_8_eq>;
     if (b1 >= b2) goto <clcl_6_8_hi>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_6_8_upd>;
 <clcl_6_8_hi>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_6_8_upd>;
 <clcl_6_8_eq>
     i = i + 1;
@@ -5782,10 +5782,10 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b2 = *:1 (r8 + i);
     if (pad == b2) goto <clcl_6_8_p1e>;
     if (pad >= b2) goto <clcl_6_8_p1h>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_6_8_upd1>;
 <clcl_6_8_p1h>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_6_8_upd1>;
 <clcl_6_8_p1e>
     i = i + 1;
@@ -5796,16 +5796,16 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b1 = *:1 (r6 + i);
     if (b1 == pad) goto <clcl_6_8_p2e>;
     if (b1 >= pad) goto <clcl_6_8_p2h>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_6_8_upd2>;
 <clcl_6_8_p2h>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_6_8_upd2>;
 <clcl_6_8_p2e>
     i = i + 1;
     goto <clcl_6_8_p2>;
 <clcl_6_8_equal>
-    cc = 0;
+    cc = 0; cc_sync();
     r6 = r6 + n1;
     r7 = r7 - n1;
     r8 = r8 + n2;
@@ -5847,10 +5847,10 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b2 = *:1 (r10 + i);
     if (b1 == b2) goto <clcl_6_10_eq>;
     if (b1 >= b2) goto <clcl_6_10_hi>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_6_10_upd>;
 <clcl_6_10_hi>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_6_10_upd>;
 <clcl_6_10_eq>
     i = i + 1;
@@ -5862,10 +5862,10 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b2 = *:1 (r10 + i);
     if (pad == b2) goto <clcl_6_10_p1e>;
     if (pad >= b2) goto <clcl_6_10_p1h>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_6_10_upd1>;
 <clcl_6_10_p1h>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_6_10_upd1>;
 <clcl_6_10_p1e>
     i = i + 1;
@@ -5876,16 +5876,16 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b1 = *:1 (r6 + i);
     if (b1 == pad) goto <clcl_6_10_p2e>;
     if (b1 >= pad) goto <clcl_6_10_p2h>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_6_10_upd2>;
 <clcl_6_10_p2h>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_6_10_upd2>;
 <clcl_6_10_p2e>
     i = i + 1;
     goto <clcl_6_10_p2>;
 <clcl_6_10_equal>
-    cc = 0;
+    cc = 0; cc_sync();
     r6 = r6 + n1;
     r7 = r7 - n1;
     r10 = r10 + n2;
@@ -5927,10 +5927,10 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b2 = *:1 (r12 + i);
     if (b1 == b2) goto <clcl_6_12_eq>;
     if (b1 >= b2) goto <clcl_6_12_hi>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_6_12_upd>;
 <clcl_6_12_hi>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_6_12_upd>;
 <clcl_6_12_eq>
     i = i + 1;
@@ -5942,10 +5942,10 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b2 = *:1 (r12 + i);
     if (pad == b2) goto <clcl_6_12_p1e>;
     if (pad >= b2) goto <clcl_6_12_p1h>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_6_12_upd1>;
 <clcl_6_12_p1h>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_6_12_upd1>;
 <clcl_6_12_p1e>
     i = i + 1;
@@ -5956,16 +5956,16 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b1 = *:1 (r6 + i);
     if (b1 == pad) goto <clcl_6_12_p2e>;
     if (b1 >= pad) goto <clcl_6_12_p2h>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_6_12_upd2>;
 <clcl_6_12_p2h>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_6_12_upd2>;
 <clcl_6_12_p2e>
     i = i + 1;
     goto <clcl_6_12_p2>;
 <clcl_6_12_equal>
-    cc = 0;
+    cc = 0; cc_sync();
     r6 = r6 + n1;
     r7 = r7 - n1;
     r12 = r12 + n2;
@@ -6007,10 +6007,10 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b2 = *:1 (r14 + i);
     if (b1 == b2) goto <clcl_6_14_eq>;
     if (b1 >= b2) goto <clcl_6_14_hi>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_6_14_upd>;
 <clcl_6_14_hi>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_6_14_upd>;
 <clcl_6_14_eq>
     i = i + 1;
@@ -6022,10 +6022,10 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b2 = *:1 (r14 + i);
     if (pad == b2) goto <clcl_6_14_p1e>;
     if (pad >= b2) goto <clcl_6_14_p1h>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_6_14_upd1>;
 <clcl_6_14_p1h>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_6_14_upd1>;
 <clcl_6_14_p1e>
     i = i + 1;
@@ -6036,16 +6036,16 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b1 = *:1 (r6 + i);
     if (b1 == pad) goto <clcl_6_14_p2e>;
     if (b1 >= pad) goto <clcl_6_14_p2h>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_6_14_upd2>;
 <clcl_6_14_p2h>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_6_14_upd2>;
 <clcl_6_14_p2e>
     i = i + 1;
     goto <clcl_6_14_p2>;
 <clcl_6_14_equal>
-    cc = 0;
+    cc = 0; cc_sync();
     r6 = r6 + n1;
     r7 = r7 - n1;
     r14 = r14 + n2;
@@ -6087,10 +6087,10 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b2 = *:1 (r0 + i);
     if (b1 == b2) goto <clcl_8_0_eq>;
     if (b1 >= b2) goto <clcl_8_0_hi>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_8_0_upd>;
 <clcl_8_0_hi>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_8_0_upd>;
 <clcl_8_0_eq>
     i = i + 1;
@@ -6102,10 +6102,10 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b2 = *:1 (r0 + i);
     if (pad == b2) goto <clcl_8_0_p1e>;
     if (pad >= b2) goto <clcl_8_0_p1h>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_8_0_upd1>;
 <clcl_8_0_p1h>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_8_0_upd1>;
 <clcl_8_0_p1e>
     i = i + 1;
@@ -6116,16 +6116,16 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b1 = *:1 (r8 + i);
     if (b1 == pad) goto <clcl_8_0_p2e>;
     if (b1 >= pad) goto <clcl_8_0_p2h>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_8_0_upd2>;
 <clcl_8_0_p2h>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_8_0_upd2>;
 <clcl_8_0_p2e>
     i = i + 1;
     goto <clcl_8_0_p2>;
 <clcl_8_0_equal>
-    cc = 0;
+    cc = 0; cc_sync();
     r8 = r8 + n1;
     r9 = r9 - n1;
     r0 = r0 + n2;
@@ -6167,10 +6167,10 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b2 = *:1 (r2 + i);
     if (b1 == b2) goto <clcl_8_2_eq>;
     if (b1 >= b2) goto <clcl_8_2_hi>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_8_2_upd>;
 <clcl_8_2_hi>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_8_2_upd>;
 <clcl_8_2_eq>
     i = i + 1;
@@ -6182,10 +6182,10 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b2 = *:1 (r2 + i);
     if (pad == b2) goto <clcl_8_2_p1e>;
     if (pad >= b2) goto <clcl_8_2_p1h>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_8_2_upd1>;
 <clcl_8_2_p1h>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_8_2_upd1>;
 <clcl_8_2_p1e>
     i = i + 1;
@@ -6196,16 +6196,16 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b1 = *:1 (r8 + i);
     if (b1 == pad) goto <clcl_8_2_p2e>;
     if (b1 >= pad) goto <clcl_8_2_p2h>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_8_2_upd2>;
 <clcl_8_2_p2h>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_8_2_upd2>;
 <clcl_8_2_p2e>
     i = i + 1;
     goto <clcl_8_2_p2>;
 <clcl_8_2_equal>
-    cc = 0;
+    cc = 0; cc_sync();
     r8 = r8 + n1;
     r9 = r9 - n1;
     r2 = r2 + n2;
@@ -6247,10 +6247,10 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b2 = *:1 (r4 + i);
     if (b1 == b2) goto <clcl_8_4_eq>;
     if (b1 >= b2) goto <clcl_8_4_hi>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_8_4_upd>;
 <clcl_8_4_hi>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_8_4_upd>;
 <clcl_8_4_eq>
     i = i + 1;
@@ -6262,10 +6262,10 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b2 = *:1 (r4 + i);
     if (pad == b2) goto <clcl_8_4_p1e>;
     if (pad >= b2) goto <clcl_8_4_p1h>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_8_4_upd1>;
 <clcl_8_4_p1h>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_8_4_upd1>;
 <clcl_8_4_p1e>
     i = i + 1;
@@ -6276,16 +6276,16 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b1 = *:1 (r8 + i);
     if (b1 == pad) goto <clcl_8_4_p2e>;
     if (b1 >= pad) goto <clcl_8_4_p2h>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_8_4_upd2>;
 <clcl_8_4_p2h>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_8_4_upd2>;
 <clcl_8_4_p2e>
     i = i + 1;
     goto <clcl_8_4_p2>;
 <clcl_8_4_equal>
-    cc = 0;
+    cc = 0; cc_sync();
     r8 = r8 + n1;
     r9 = r9 - n1;
     r4 = r4 + n2;
@@ -6327,10 +6327,10 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b2 = *:1 (r6 + i);
     if (b1 == b2) goto <clcl_8_6_eq>;
     if (b1 >= b2) goto <clcl_8_6_hi>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_8_6_upd>;
 <clcl_8_6_hi>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_8_6_upd>;
 <clcl_8_6_eq>
     i = i + 1;
@@ -6342,10 +6342,10 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b2 = *:1 (r6 + i);
     if (pad == b2) goto <clcl_8_6_p1e>;
     if (pad >= b2) goto <clcl_8_6_p1h>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_8_6_upd1>;
 <clcl_8_6_p1h>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_8_6_upd1>;
 <clcl_8_6_p1e>
     i = i + 1;
@@ -6356,16 +6356,16 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b1 = *:1 (r8 + i);
     if (b1 == pad) goto <clcl_8_6_p2e>;
     if (b1 >= pad) goto <clcl_8_6_p2h>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_8_6_upd2>;
 <clcl_8_6_p2h>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_8_6_upd2>;
 <clcl_8_6_p2e>
     i = i + 1;
     goto <clcl_8_6_p2>;
 <clcl_8_6_equal>
-    cc = 0;
+    cc = 0; cc_sync();
     r8 = r8 + n1;
     r9 = r9 - n1;
     r6 = r6 + n2;
@@ -6407,10 +6407,10 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b2 = *:1 (r8 + i);
     if (b1 == b2) goto <clcl_8_8_eq>;
     if (b1 >= b2) goto <clcl_8_8_hi>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_8_8_upd>;
 <clcl_8_8_hi>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_8_8_upd>;
 <clcl_8_8_eq>
     i = i + 1;
@@ -6422,10 +6422,10 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b2 = *:1 (r8 + i);
     if (pad == b2) goto <clcl_8_8_p1e>;
     if (pad >= b2) goto <clcl_8_8_p1h>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_8_8_upd1>;
 <clcl_8_8_p1h>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_8_8_upd1>;
 <clcl_8_8_p1e>
     i = i + 1;
@@ -6436,16 +6436,16 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b1 = *:1 (r8 + i);
     if (b1 == pad) goto <clcl_8_8_p2e>;
     if (b1 >= pad) goto <clcl_8_8_p2h>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_8_8_upd2>;
 <clcl_8_8_p2h>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_8_8_upd2>;
 <clcl_8_8_p2e>
     i = i + 1;
     goto <clcl_8_8_p2>;
 <clcl_8_8_equal>
-    cc = 0;
+    cc = 0; cc_sync();
     r8 = r8 + n1;
     r9 = r9 - n1;
     r8 = r8 + n2;
@@ -6487,10 +6487,10 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b2 = *:1 (r10 + i);
     if (b1 == b2) goto <clcl_8_10_eq>;
     if (b1 >= b2) goto <clcl_8_10_hi>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_8_10_upd>;
 <clcl_8_10_hi>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_8_10_upd>;
 <clcl_8_10_eq>
     i = i + 1;
@@ -6502,10 +6502,10 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b2 = *:1 (r10 + i);
     if (pad == b2) goto <clcl_8_10_p1e>;
     if (pad >= b2) goto <clcl_8_10_p1h>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_8_10_upd1>;
 <clcl_8_10_p1h>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_8_10_upd1>;
 <clcl_8_10_p1e>
     i = i + 1;
@@ -6516,16 +6516,16 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b1 = *:1 (r8 + i);
     if (b1 == pad) goto <clcl_8_10_p2e>;
     if (b1 >= pad) goto <clcl_8_10_p2h>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_8_10_upd2>;
 <clcl_8_10_p2h>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_8_10_upd2>;
 <clcl_8_10_p2e>
     i = i + 1;
     goto <clcl_8_10_p2>;
 <clcl_8_10_equal>
-    cc = 0;
+    cc = 0; cc_sync();
     r8 = r8 + n1;
     r9 = r9 - n1;
     r10 = r10 + n2;
@@ -6567,10 +6567,10 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b2 = *:1 (r12 + i);
     if (b1 == b2) goto <clcl_8_12_eq>;
     if (b1 >= b2) goto <clcl_8_12_hi>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_8_12_upd>;
 <clcl_8_12_hi>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_8_12_upd>;
 <clcl_8_12_eq>
     i = i + 1;
@@ -6582,10 +6582,10 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b2 = *:1 (r12 + i);
     if (pad == b2) goto <clcl_8_12_p1e>;
     if (pad >= b2) goto <clcl_8_12_p1h>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_8_12_upd1>;
 <clcl_8_12_p1h>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_8_12_upd1>;
 <clcl_8_12_p1e>
     i = i + 1;
@@ -6596,16 +6596,16 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b1 = *:1 (r8 + i);
     if (b1 == pad) goto <clcl_8_12_p2e>;
     if (b1 >= pad) goto <clcl_8_12_p2h>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_8_12_upd2>;
 <clcl_8_12_p2h>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_8_12_upd2>;
 <clcl_8_12_p2e>
     i = i + 1;
     goto <clcl_8_12_p2>;
 <clcl_8_12_equal>
-    cc = 0;
+    cc = 0; cc_sync();
     r8 = r8 + n1;
     r9 = r9 - n1;
     r12 = r12 + n2;
@@ -6647,10 +6647,10 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b2 = *:1 (r14 + i);
     if (b1 == b2) goto <clcl_8_14_eq>;
     if (b1 >= b2) goto <clcl_8_14_hi>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_8_14_upd>;
 <clcl_8_14_hi>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_8_14_upd>;
 <clcl_8_14_eq>
     i = i + 1;
@@ -6662,10 +6662,10 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b2 = *:1 (r14 + i);
     if (pad == b2) goto <clcl_8_14_p1e>;
     if (pad >= b2) goto <clcl_8_14_p1h>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_8_14_upd1>;
 <clcl_8_14_p1h>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_8_14_upd1>;
 <clcl_8_14_p1e>
     i = i + 1;
@@ -6676,16 +6676,16 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b1 = *:1 (r8 + i);
     if (b1 == pad) goto <clcl_8_14_p2e>;
     if (b1 >= pad) goto <clcl_8_14_p2h>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_8_14_upd2>;
 <clcl_8_14_p2h>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_8_14_upd2>;
 <clcl_8_14_p2e>
     i = i + 1;
     goto <clcl_8_14_p2>;
 <clcl_8_14_equal>
-    cc = 0;
+    cc = 0; cc_sync();
     r8 = r8 + n1;
     r9 = r9 - n1;
     r14 = r14 + n2;
@@ -6727,10 +6727,10 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b2 = *:1 (r0 + i);
     if (b1 == b2) goto <clcl_10_0_eq>;
     if (b1 >= b2) goto <clcl_10_0_hi>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_10_0_upd>;
 <clcl_10_0_hi>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_10_0_upd>;
 <clcl_10_0_eq>
     i = i + 1;
@@ -6742,10 +6742,10 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b2 = *:1 (r0 + i);
     if (pad == b2) goto <clcl_10_0_p1e>;
     if (pad >= b2) goto <clcl_10_0_p1h>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_10_0_upd1>;
 <clcl_10_0_p1h>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_10_0_upd1>;
 <clcl_10_0_p1e>
     i = i + 1;
@@ -6756,16 +6756,16 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b1 = *:1 (r10 + i);
     if (b1 == pad) goto <clcl_10_0_p2e>;
     if (b1 >= pad) goto <clcl_10_0_p2h>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_10_0_upd2>;
 <clcl_10_0_p2h>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_10_0_upd2>;
 <clcl_10_0_p2e>
     i = i + 1;
     goto <clcl_10_0_p2>;
 <clcl_10_0_equal>
-    cc = 0;
+    cc = 0; cc_sync();
     r10 = r10 + n1;
     r11 = r11 - n1;
     r0 = r0 + n2;
@@ -6807,10 +6807,10 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b2 = *:1 (r2 + i);
     if (b1 == b2) goto <clcl_10_2_eq>;
     if (b1 >= b2) goto <clcl_10_2_hi>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_10_2_upd>;
 <clcl_10_2_hi>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_10_2_upd>;
 <clcl_10_2_eq>
     i = i + 1;
@@ -6822,10 +6822,10 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b2 = *:1 (r2 + i);
     if (pad == b2) goto <clcl_10_2_p1e>;
     if (pad >= b2) goto <clcl_10_2_p1h>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_10_2_upd1>;
 <clcl_10_2_p1h>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_10_2_upd1>;
 <clcl_10_2_p1e>
     i = i + 1;
@@ -6836,16 +6836,16 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b1 = *:1 (r10 + i);
     if (b1 == pad) goto <clcl_10_2_p2e>;
     if (b1 >= pad) goto <clcl_10_2_p2h>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_10_2_upd2>;
 <clcl_10_2_p2h>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_10_2_upd2>;
 <clcl_10_2_p2e>
     i = i + 1;
     goto <clcl_10_2_p2>;
 <clcl_10_2_equal>
-    cc = 0;
+    cc = 0; cc_sync();
     r10 = r10 + n1;
     r11 = r11 - n1;
     r2 = r2 + n2;
@@ -6887,10 +6887,10 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b2 = *:1 (r4 + i);
     if (b1 == b2) goto <clcl_10_4_eq>;
     if (b1 >= b2) goto <clcl_10_4_hi>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_10_4_upd>;
 <clcl_10_4_hi>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_10_4_upd>;
 <clcl_10_4_eq>
     i = i + 1;
@@ -6902,10 +6902,10 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b2 = *:1 (r4 + i);
     if (pad == b2) goto <clcl_10_4_p1e>;
     if (pad >= b2) goto <clcl_10_4_p1h>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_10_4_upd1>;
 <clcl_10_4_p1h>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_10_4_upd1>;
 <clcl_10_4_p1e>
     i = i + 1;
@@ -6916,16 +6916,16 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b1 = *:1 (r10 + i);
     if (b1 == pad) goto <clcl_10_4_p2e>;
     if (b1 >= pad) goto <clcl_10_4_p2h>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_10_4_upd2>;
 <clcl_10_4_p2h>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_10_4_upd2>;
 <clcl_10_4_p2e>
     i = i + 1;
     goto <clcl_10_4_p2>;
 <clcl_10_4_equal>
-    cc = 0;
+    cc = 0; cc_sync();
     r10 = r10 + n1;
     r11 = r11 - n1;
     r4 = r4 + n2;
@@ -6967,10 +6967,10 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b2 = *:1 (r6 + i);
     if (b1 == b2) goto <clcl_10_6_eq>;
     if (b1 >= b2) goto <clcl_10_6_hi>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_10_6_upd>;
 <clcl_10_6_hi>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_10_6_upd>;
 <clcl_10_6_eq>
     i = i + 1;
@@ -6982,10 +6982,10 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b2 = *:1 (r6 + i);
     if (pad == b2) goto <clcl_10_6_p1e>;
     if (pad >= b2) goto <clcl_10_6_p1h>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_10_6_upd1>;
 <clcl_10_6_p1h>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_10_6_upd1>;
 <clcl_10_6_p1e>
     i = i + 1;
@@ -6996,16 +6996,16 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b1 = *:1 (r10 + i);
     if (b1 == pad) goto <clcl_10_6_p2e>;
     if (b1 >= pad) goto <clcl_10_6_p2h>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_10_6_upd2>;
 <clcl_10_6_p2h>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_10_6_upd2>;
 <clcl_10_6_p2e>
     i = i + 1;
     goto <clcl_10_6_p2>;
 <clcl_10_6_equal>
-    cc = 0;
+    cc = 0; cc_sync();
     r10 = r10 + n1;
     r11 = r11 - n1;
     r6 = r6 + n2;
@@ -7047,10 +7047,10 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b2 = *:1 (r8 + i);
     if (b1 == b2) goto <clcl_10_8_eq>;
     if (b1 >= b2) goto <clcl_10_8_hi>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_10_8_upd>;
 <clcl_10_8_hi>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_10_8_upd>;
 <clcl_10_8_eq>
     i = i + 1;
@@ -7062,10 +7062,10 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b2 = *:1 (r8 + i);
     if (pad == b2) goto <clcl_10_8_p1e>;
     if (pad >= b2) goto <clcl_10_8_p1h>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_10_8_upd1>;
 <clcl_10_8_p1h>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_10_8_upd1>;
 <clcl_10_8_p1e>
     i = i + 1;
@@ -7076,16 +7076,16 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b1 = *:1 (r10 + i);
     if (b1 == pad) goto <clcl_10_8_p2e>;
     if (b1 >= pad) goto <clcl_10_8_p2h>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_10_8_upd2>;
 <clcl_10_8_p2h>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_10_8_upd2>;
 <clcl_10_8_p2e>
     i = i + 1;
     goto <clcl_10_8_p2>;
 <clcl_10_8_equal>
-    cc = 0;
+    cc = 0; cc_sync();
     r10 = r10 + n1;
     r11 = r11 - n1;
     r8 = r8 + n2;
@@ -7127,10 +7127,10 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b2 = *:1 (r10 + i);
     if (b1 == b2) goto <clcl_10_10_eq>;
     if (b1 >= b2) goto <clcl_10_10_hi>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_10_10_upd>;
 <clcl_10_10_hi>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_10_10_upd>;
 <clcl_10_10_eq>
     i = i + 1;
@@ -7142,10 +7142,10 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b2 = *:1 (r10 + i);
     if (pad == b2) goto <clcl_10_10_p1e>;
     if (pad >= b2) goto <clcl_10_10_p1h>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_10_10_upd1>;
 <clcl_10_10_p1h>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_10_10_upd1>;
 <clcl_10_10_p1e>
     i = i + 1;
@@ -7156,16 +7156,16 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b1 = *:1 (r10 + i);
     if (b1 == pad) goto <clcl_10_10_p2e>;
     if (b1 >= pad) goto <clcl_10_10_p2h>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_10_10_upd2>;
 <clcl_10_10_p2h>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_10_10_upd2>;
 <clcl_10_10_p2e>
     i = i + 1;
     goto <clcl_10_10_p2>;
 <clcl_10_10_equal>
-    cc = 0;
+    cc = 0; cc_sync();
     r10 = r10 + n1;
     r11 = r11 - n1;
     r10 = r10 + n2;
@@ -7207,10 +7207,10 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b2 = *:1 (r12 + i);
     if (b1 == b2) goto <clcl_10_12_eq>;
     if (b1 >= b2) goto <clcl_10_12_hi>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_10_12_upd>;
 <clcl_10_12_hi>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_10_12_upd>;
 <clcl_10_12_eq>
     i = i + 1;
@@ -7222,10 +7222,10 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b2 = *:1 (r12 + i);
     if (pad == b2) goto <clcl_10_12_p1e>;
     if (pad >= b2) goto <clcl_10_12_p1h>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_10_12_upd1>;
 <clcl_10_12_p1h>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_10_12_upd1>;
 <clcl_10_12_p1e>
     i = i + 1;
@@ -7236,16 +7236,16 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b1 = *:1 (r10 + i);
     if (b1 == pad) goto <clcl_10_12_p2e>;
     if (b1 >= pad) goto <clcl_10_12_p2h>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_10_12_upd2>;
 <clcl_10_12_p2h>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_10_12_upd2>;
 <clcl_10_12_p2e>
     i = i + 1;
     goto <clcl_10_12_p2>;
 <clcl_10_12_equal>
-    cc = 0;
+    cc = 0; cc_sync();
     r10 = r10 + n1;
     r11 = r11 - n1;
     r12 = r12 + n2;
@@ -7287,10 +7287,10 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b2 = *:1 (r14 + i);
     if (b1 == b2) goto <clcl_10_14_eq>;
     if (b1 >= b2) goto <clcl_10_14_hi>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_10_14_upd>;
 <clcl_10_14_hi>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_10_14_upd>;
 <clcl_10_14_eq>
     i = i + 1;
@@ -7302,10 +7302,10 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b2 = *:1 (r14 + i);
     if (pad == b2) goto <clcl_10_14_p1e>;
     if (pad >= b2) goto <clcl_10_14_p1h>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_10_14_upd1>;
 <clcl_10_14_p1h>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_10_14_upd1>;
 <clcl_10_14_p1e>
     i = i + 1;
@@ -7316,16 +7316,16 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b1 = *:1 (r10 + i);
     if (b1 == pad) goto <clcl_10_14_p2e>;
     if (b1 >= pad) goto <clcl_10_14_p2h>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_10_14_upd2>;
 <clcl_10_14_p2h>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_10_14_upd2>;
 <clcl_10_14_p2e>
     i = i + 1;
     goto <clcl_10_14_p2>;
 <clcl_10_14_equal>
-    cc = 0;
+    cc = 0; cc_sync();
     r10 = r10 + n1;
     r11 = r11 - n1;
     r14 = r14 + n2;
@@ -7367,10 +7367,10 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b2 = *:1 (r0 + i);
     if (b1 == b2) goto <clcl_12_0_eq>;
     if (b1 >= b2) goto <clcl_12_0_hi>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_12_0_upd>;
 <clcl_12_0_hi>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_12_0_upd>;
 <clcl_12_0_eq>
     i = i + 1;
@@ -7382,10 +7382,10 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b2 = *:1 (r0 + i);
     if (pad == b2) goto <clcl_12_0_p1e>;
     if (pad >= b2) goto <clcl_12_0_p1h>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_12_0_upd1>;
 <clcl_12_0_p1h>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_12_0_upd1>;
 <clcl_12_0_p1e>
     i = i + 1;
@@ -7396,16 +7396,16 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b1 = *:1 (r12 + i);
     if (b1 == pad) goto <clcl_12_0_p2e>;
     if (b1 >= pad) goto <clcl_12_0_p2h>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_12_0_upd2>;
 <clcl_12_0_p2h>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_12_0_upd2>;
 <clcl_12_0_p2e>
     i = i + 1;
     goto <clcl_12_0_p2>;
 <clcl_12_0_equal>
-    cc = 0;
+    cc = 0; cc_sync();
     r12 = r12 + n1;
     r13 = r13 - n1;
     r0 = r0 + n2;
@@ -7447,10 +7447,10 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b2 = *:1 (r2 + i);
     if (b1 == b2) goto <clcl_12_2_eq>;
     if (b1 >= b2) goto <clcl_12_2_hi>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_12_2_upd>;
 <clcl_12_2_hi>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_12_2_upd>;
 <clcl_12_2_eq>
     i = i + 1;
@@ -7462,10 +7462,10 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b2 = *:1 (r2 + i);
     if (pad == b2) goto <clcl_12_2_p1e>;
     if (pad >= b2) goto <clcl_12_2_p1h>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_12_2_upd1>;
 <clcl_12_2_p1h>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_12_2_upd1>;
 <clcl_12_2_p1e>
     i = i + 1;
@@ -7476,16 +7476,16 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b1 = *:1 (r12 + i);
     if (b1 == pad) goto <clcl_12_2_p2e>;
     if (b1 >= pad) goto <clcl_12_2_p2h>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_12_2_upd2>;
 <clcl_12_2_p2h>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_12_2_upd2>;
 <clcl_12_2_p2e>
     i = i + 1;
     goto <clcl_12_2_p2>;
 <clcl_12_2_equal>
-    cc = 0;
+    cc = 0; cc_sync();
     r12 = r12 + n1;
     r13 = r13 - n1;
     r2 = r2 + n2;
@@ -7527,10 +7527,10 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b2 = *:1 (r4 + i);
     if (b1 == b2) goto <clcl_12_4_eq>;
     if (b1 >= b2) goto <clcl_12_4_hi>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_12_4_upd>;
 <clcl_12_4_hi>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_12_4_upd>;
 <clcl_12_4_eq>
     i = i + 1;
@@ -7542,10 +7542,10 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b2 = *:1 (r4 + i);
     if (pad == b2) goto <clcl_12_4_p1e>;
     if (pad >= b2) goto <clcl_12_4_p1h>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_12_4_upd1>;
 <clcl_12_4_p1h>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_12_4_upd1>;
 <clcl_12_4_p1e>
     i = i + 1;
@@ -7556,16 +7556,16 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b1 = *:1 (r12 + i);
     if (b1 == pad) goto <clcl_12_4_p2e>;
     if (b1 >= pad) goto <clcl_12_4_p2h>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_12_4_upd2>;
 <clcl_12_4_p2h>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_12_4_upd2>;
 <clcl_12_4_p2e>
     i = i + 1;
     goto <clcl_12_4_p2>;
 <clcl_12_4_equal>
-    cc = 0;
+    cc = 0; cc_sync();
     r12 = r12 + n1;
     r13 = r13 - n1;
     r4 = r4 + n2;
@@ -7607,10 +7607,10 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b2 = *:1 (r6 + i);
     if (b1 == b2) goto <clcl_12_6_eq>;
     if (b1 >= b2) goto <clcl_12_6_hi>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_12_6_upd>;
 <clcl_12_6_hi>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_12_6_upd>;
 <clcl_12_6_eq>
     i = i + 1;
@@ -7622,10 +7622,10 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b2 = *:1 (r6 + i);
     if (pad == b2) goto <clcl_12_6_p1e>;
     if (pad >= b2) goto <clcl_12_6_p1h>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_12_6_upd1>;
 <clcl_12_6_p1h>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_12_6_upd1>;
 <clcl_12_6_p1e>
     i = i + 1;
@@ -7636,16 +7636,16 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b1 = *:1 (r12 + i);
     if (b1 == pad) goto <clcl_12_6_p2e>;
     if (b1 >= pad) goto <clcl_12_6_p2h>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_12_6_upd2>;
 <clcl_12_6_p2h>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_12_6_upd2>;
 <clcl_12_6_p2e>
     i = i + 1;
     goto <clcl_12_6_p2>;
 <clcl_12_6_equal>
-    cc = 0;
+    cc = 0; cc_sync();
     r12 = r12 + n1;
     r13 = r13 - n1;
     r6 = r6 + n2;
@@ -7687,10 +7687,10 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b2 = *:1 (r8 + i);
     if (b1 == b2) goto <clcl_12_8_eq>;
     if (b1 >= b2) goto <clcl_12_8_hi>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_12_8_upd>;
 <clcl_12_8_hi>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_12_8_upd>;
 <clcl_12_8_eq>
     i = i + 1;
@@ -7702,10 +7702,10 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b2 = *:1 (r8 + i);
     if (pad == b2) goto <clcl_12_8_p1e>;
     if (pad >= b2) goto <clcl_12_8_p1h>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_12_8_upd1>;
 <clcl_12_8_p1h>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_12_8_upd1>;
 <clcl_12_8_p1e>
     i = i + 1;
@@ -7716,16 +7716,16 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b1 = *:1 (r12 + i);
     if (b1 == pad) goto <clcl_12_8_p2e>;
     if (b1 >= pad) goto <clcl_12_8_p2h>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_12_8_upd2>;
 <clcl_12_8_p2h>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_12_8_upd2>;
 <clcl_12_8_p2e>
     i = i + 1;
     goto <clcl_12_8_p2>;
 <clcl_12_8_equal>
-    cc = 0;
+    cc = 0; cc_sync();
     r12 = r12 + n1;
     r13 = r13 - n1;
     r8 = r8 + n2;
@@ -7767,10 +7767,10 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b2 = *:1 (r10 + i);
     if (b1 == b2) goto <clcl_12_10_eq>;
     if (b1 >= b2) goto <clcl_12_10_hi>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_12_10_upd>;
 <clcl_12_10_hi>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_12_10_upd>;
 <clcl_12_10_eq>
     i = i + 1;
@@ -7782,10 +7782,10 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b2 = *:1 (r10 + i);
     if (pad == b2) goto <clcl_12_10_p1e>;
     if (pad >= b2) goto <clcl_12_10_p1h>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_12_10_upd1>;
 <clcl_12_10_p1h>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_12_10_upd1>;
 <clcl_12_10_p1e>
     i = i + 1;
@@ -7796,16 +7796,16 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b1 = *:1 (r12 + i);
     if (b1 == pad) goto <clcl_12_10_p2e>;
     if (b1 >= pad) goto <clcl_12_10_p2h>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_12_10_upd2>;
 <clcl_12_10_p2h>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_12_10_upd2>;
 <clcl_12_10_p2e>
     i = i + 1;
     goto <clcl_12_10_p2>;
 <clcl_12_10_equal>
-    cc = 0;
+    cc = 0; cc_sync();
     r12 = r12 + n1;
     r13 = r13 - n1;
     r10 = r10 + n2;
@@ -7847,10 +7847,10 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b2 = *:1 (r12 + i);
     if (b1 == b2) goto <clcl_12_12_eq>;
     if (b1 >= b2) goto <clcl_12_12_hi>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_12_12_upd>;
 <clcl_12_12_hi>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_12_12_upd>;
 <clcl_12_12_eq>
     i = i + 1;
@@ -7862,10 +7862,10 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b2 = *:1 (r12 + i);
     if (pad == b2) goto <clcl_12_12_p1e>;
     if (pad >= b2) goto <clcl_12_12_p1h>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_12_12_upd1>;
 <clcl_12_12_p1h>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_12_12_upd1>;
 <clcl_12_12_p1e>
     i = i + 1;
@@ -7876,16 +7876,16 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b1 = *:1 (r12 + i);
     if (b1 == pad) goto <clcl_12_12_p2e>;
     if (b1 >= pad) goto <clcl_12_12_p2h>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_12_12_upd2>;
 <clcl_12_12_p2h>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_12_12_upd2>;
 <clcl_12_12_p2e>
     i = i + 1;
     goto <clcl_12_12_p2>;
 <clcl_12_12_equal>
-    cc = 0;
+    cc = 0; cc_sync();
     r12 = r12 + n1;
     r13 = r13 - n1;
     r12 = r12 + n2;
@@ -7927,10 +7927,10 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b2 = *:1 (r14 + i);
     if (b1 == b2) goto <clcl_12_14_eq>;
     if (b1 >= b2) goto <clcl_12_14_hi>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_12_14_upd>;
 <clcl_12_14_hi>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_12_14_upd>;
 <clcl_12_14_eq>
     i = i + 1;
@@ -7942,10 +7942,10 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b2 = *:1 (r14 + i);
     if (pad == b2) goto <clcl_12_14_p1e>;
     if (pad >= b2) goto <clcl_12_14_p1h>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_12_14_upd1>;
 <clcl_12_14_p1h>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_12_14_upd1>;
 <clcl_12_14_p1e>
     i = i + 1;
@@ -7956,16 +7956,16 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b1 = *:1 (r12 + i);
     if (b1 == pad) goto <clcl_12_14_p2e>;
     if (b1 >= pad) goto <clcl_12_14_p2h>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_12_14_upd2>;
 <clcl_12_14_p2h>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_12_14_upd2>;
 <clcl_12_14_p2e>
     i = i + 1;
     goto <clcl_12_14_p2>;
 <clcl_12_14_equal>
-    cc = 0;
+    cc = 0; cc_sync();
     r12 = r12 + n1;
     r13 = r13 - n1;
     r14 = r14 + n2;
@@ -8007,10 +8007,10 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b2 = *:1 (r0 + i);
     if (b1 == b2) goto <clcl_14_0_eq>;
     if (b1 >= b2) goto <clcl_14_0_hi>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_14_0_upd>;
 <clcl_14_0_hi>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_14_0_upd>;
 <clcl_14_0_eq>
     i = i + 1;
@@ -8022,10 +8022,10 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b2 = *:1 (r0 + i);
     if (pad == b2) goto <clcl_14_0_p1e>;
     if (pad >= b2) goto <clcl_14_0_p1h>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_14_0_upd1>;
 <clcl_14_0_p1h>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_14_0_upd1>;
 <clcl_14_0_p1e>
     i = i + 1;
@@ -8036,16 +8036,16 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b1 = *:1 (r14 + i);
     if (b1 == pad) goto <clcl_14_0_p2e>;
     if (b1 >= pad) goto <clcl_14_0_p2h>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_14_0_upd2>;
 <clcl_14_0_p2h>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_14_0_upd2>;
 <clcl_14_0_p2e>
     i = i + 1;
     goto <clcl_14_0_p2>;
 <clcl_14_0_equal>
-    cc = 0;
+    cc = 0; cc_sync();
     r14 = r14 + n1;
     r15 = r15 - n1;
     r0 = r0 + n2;
@@ -8087,10 +8087,10 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b2 = *:1 (r2 + i);
     if (b1 == b2) goto <clcl_14_2_eq>;
     if (b1 >= b2) goto <clcl_14_2_hi>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_14_2_upd>;
 <clcl_14_2_hi>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_14_2_upd>;
 <clcl_14_2_eq>
     i = i + 1;
@@ -8102,10 +8102,10 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b2 = *:1 (r2 + i);
     if (pad == b2) goto <clcl_14_2_p1e>;
     if (pad >= b2) goto <clcl_14_2_p1h>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_14_2_upd1>;
 <clcl_14_2_p1h>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_14_2_upd1>;
 <clcl_14_2_p1e>
     i = i + 1;
@@ -8116,16 +8116,16 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b1 = *:1 (r14 + i);
     if (b1 == pad) goto <clcl_14_2_p2e>;
     if (b1 >= pad) goto <clcl_14_2_p2h>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_14_2_upd2>;
 <clcl_14_2_p2h>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_14_2_upd2>;
 <clcl_14_2_p2e>
     i = i + 1;
     goto <clcl_14_2_p2>;
 <clcl_14_2_equal>
-    cc = 0;
+    cc = 0; cc_sync();
     r14 = r14 + n1;
     r15 = r15 - n1;
     r2 = r2 + n2;
@@ -8167,10 +8167,10 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b2 = *:1 (r4 + i);
     if (b1 == b2) goto <clcl_14_4_eq>;
     if (b1 >= b2) goto <clcl_14_4_hi>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_14_4_upd>;
 <clcl_14_4_hi>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_14_4_upd>;
 <clcl_14_4_eq>
     i = i + 1;
@@ -8182,10 +8182,10 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b2 = *:1 (r4 + i);
     if (pad == b2) goto <clcl_14_4_p1e>;
     if (pad >= b2) goto <clcl_14_4_p1h>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_14_4_upd1>;
 <clcl_14_4_p1h>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_14_4_upd1>;
 <clcl_14_4_p1e>
     i = i + 1;
@@ -8196,16 +8196,16 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b1 = *:1 (r14 + i);
     if (b1 == pad) goto <clcl_14_4_p2e>;
     if (b1 >= pad) goto <clcl_14_4_p2h>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_14_4_upd2>;
 <clcl_14_4_p2h>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_14_4_upd2>;
 <clcl_14_4_p2e>
     i = i + 1;
     goto <clcl_14_4_p2>;
 <clcl_14_4_equal>
-    cc = 0;
+    cc = 0; cc_sync();
     r14 = r14 + n1;
     r15 = r15 - n1;
     r4 = r4 + n2;
@@ -8247,10 +8247,10 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b2 = *:1 (r6 + i);
     if (b1 == b2) goto <clcl_14_6_eq>;
     if (b1 >= b2) goto <clcl_14_6_hi>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_14_6_upd>;
 <clcl_14_6_hi>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_14_6_upd>;
 <clcl_14_6_eq>
     i = i + 1;
@@ -8262,10 +8262,10 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b2 = *:1 (r6 + i);
     if (pad == b2) goto <clcl_14_6_p1e>;
     if (pad >= b2) goto <clcl_14_6_p1h>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_14_6_upd1>;
 <clcl_14_6_p1h>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_14_6_upd1>;
 <clcl_14_6_p1e>
     i = i + 1;
@@ -8276,16 +8276,16 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b1 = *:1 (r14 + i);
     if (b1 == pad) goto <clcl_14_6_p2e>;
     if (b1 >= pad) goto <clcl_14_6_p2h>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_14_6_upd2>;
 <clcl_14_6_p2h>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_14_6_upd2>;
 <clcl_14_6_p2e>
     i = i + 1;
     goto <clcl_14_6_p2>;
 <clcl_14_6_equal>
-    cc = 0;
+    cc = 0; cc_sync();
     r14 = r14 + n1;
     r15 = r15 - n1;
     r6 = r6 + n2;
@@ -8327,10 +8327,10 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b2 = *:1 (r8 + i);
     if (b1 == b2) goto <clcl_14_8_eq>;
     if (b1 >= b2) goto <clcl_14_8_hi>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_14_8_upd>;
 <clcl_14_8_hi>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_14_8_upd>;
 <clcl_14_8_eq>
     i = i + 1;
@@ -8342,10 +8342,10 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b2 = *:1 (r8 + i);
     if (pad == b2) goto <clcl_14_8_p1e>;
     if (pad >= b2) goto <clcl_14_8_p1h>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_14_8_upd1>;
 <clcl_14_8_p1h>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_14_8_upd1>;
 <clcl_14_8_p1e>
     i = i + 1;
@@ -8356,16 +8356,16 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b1 = *:1 (r14 + i);
     if (b1 == pad) goto <clcl_14_8_p2e>;
     if (b1 >= pad) goto <clcl_14_8_p2h>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_14_8_upd2>;
 <clcl_14_8_p2h>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_14_8_upd2>;
 <clcl_14_8_p2e>
     i = i + 1;
     goto <clcl_14_8_p2>;
 <clcl_14_8_equal>
-    cc = 0;
+    cc = 0; cc_sync();
     r14 = r14 + n1;
     r15 = r15 - n1;
     r8 = r8 + n2;
@@ -8407,10 +8407,10 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b2 = *:1 (r10 + i);
     if (b1 == b2) goto <clcl_14_10_eq>;
     if (b1 >= b2) goto <clcl_14_10_hi>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_14_10_upd>;
 <clcl_14_10_hi>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_14_10_upd>;
 <clcl_14_10_eq>
     i = i + 1;
@@ -8422,10 +8422,10 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b2 = *:1 (r10 + i);
     if (pad == b2) goto <clcl_14_10_p1e>;
     if (pad >= b2) goto <clcl_14_10_p1h>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_14_10_upd1>;
 <clcl_14_10_p1h>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_14_10_upd1>;
 <clcl_14_10_p1e>
     i = i + 1;
@@ -8436,16 +8436,16 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b1 = *:1 (r14 + i);
     if (b1 == pad) goto <clcl_14_10_p2e>;
     if (b1 >= pad) goto <clcl_14_10_p2h>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_14_10_upd2>;
 <clcl_14_10_p2h>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_14_10_upd2>;
 <clcl_14_10_p2e>
     i = i + 1;
     goto <clcl_14_10_p2>;
 <clcl_14_10_equal>
-    cc = 0;
+    cc = 0; cc_sync();
     r14 = r14 + n1;
     r15 = r15 - n1;
     r10 = r10 + n2;
@@ -8487,10 +8487,10 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b2 = *:1 (r12 + i);
     if (b1 == b2) goto <clcl_14_12_eq>;
     if (b1 >= b2) goto <clcl_14_12_hi>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_14_12_upd>;
 <clcl_14_12_hi>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_14_12_upd>;
 <clcl_14_12_eq>
     i = i + 1;
@@ -8502,10 +8502,10 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b2 = *:1 (r12 + i);
     if (pad == b2) goto <clcl_14_12_p1e>;
     if (pad >= b2) goto <clcl_14_12_p1h>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_14_12_upd1>;
 <clcl_14_12_p1h>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_14_12_upd1>;
 <clcl_14_12_p1e>
     i = i + 1;
@@ -8516,16 +8516,16 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b1 = *:1 (r14 + i);
     if (b1 == pad) goto <clcl_14_12_p2e>;
     if (b1 >= pad) goto <clcl_14_12_p2h>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_14_12_upd2>;
 <clcl_14_12_p2h>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_14_12_upd2>;
 <clcl_14_12_p2e>
     i = i + 1;
     goto <clcl_14_12_p2>;
 <clcl_14_12_equal>
-    cc = 0;
+    cc = 0; cc_sync();
     r14 = r14 + n1;
     r15 = r15 - n1;
     r12 = r12 + n2;
@@ -8567,10 +8567,10 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b2 = *:1 (r14 + i);
     if (b1 == b2) goto <clcl_14_14_eq>;
     if (b1 >= b2) goto <clcl_14_14_hi>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_14_14_upd>;
 <clcl_14_14_hi>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_14_14_upd>;
 <clcl_14_14_eq>
     i = i + 1;
@@ -8582,10 +8582,10 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b2 = *:1 (r14 + i);
     if (pad == b2) goto <clcl_14_14_p1e>;
     if (pad >= b2) goto <clcl_14_14_p1h>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_14_14_upd1>;
 <clcl_14_14_p1h>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_14_14_upd1>;
 <clcl_14_14_p1e>
     i = i + 1;
@@ -8596,16 +8596,16 @@ db_RSYb_DL2_RSYb_B2: dispRSYb_DL2(RSYb_B2) is RSYb_DL2 & RSYb_DH2 & RSYb_B2 [ di
     b1 = *:1 (r14 + i);
     if (b1 == pad) goto <clcl_14_14_p2e>;
     if (b1 >= pad) goto <clcl_14_14_p2h>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcl_14_14_upd2>;
 <clcl_14_14_p2h>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcl_14_14_upd2>;
 <clcl_14_14_p2e>
     i = i + 1;
     goto <clcl_14_14_p2>;
 <clcl_14_14_equal>
-    cc = 0;
+    cc = 0; cc_sync();
     r14 = r14 + n1;
     r15 = r15 - n1;
     r14 = r14 + n2;

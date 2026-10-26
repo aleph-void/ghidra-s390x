@@ -365,7 +365,7 @@ dlb_SSb_D2_SSb_L2_SSb_B2: SSb_D2(lenSSb_L2,SSb_B2) is SSb_D2 & SSb_L2 & SSb_B2 [
     neg2 = (s2 == 0xd) | (s2 == 0xb);
     add = (neg1 == neg2);
     dec_addsub(ea1, n1, ea2, n2, neg1, neg2, add, ovf, iszero, negR);
-    cc = 3 * ovf + (1 - ovf) * ((1 - iszero) * (1 + (1 - negR)));
+    cc = 3 * ovf + (1 - ovf) * ((1 - iszero) * (1 + (1 - negR))); cc_sync();
 }
 
 # SP: SUBTRACT DECIMAL. op1 = op1 - op2 (packed). CC as AP.
@@ -388,7 +388,7 @@ dlb_SSb_D2_SSb_L2_SSb_B2: SSb_D2(lenSSb_L2,SSb_B2) is SSb_D2 & SSb_L2 & SSb_B2 [
     neg2 = (s2 == 0xd) | (s2 == 0xb);
     add = (neg1 != neg2);
     dec_addsub(ea1, n1, ea2, n2, neg1, neg2, add, ovf, iszero, negR);
-    cc = 3 * ovf + (1 - ovf) * ((1 - iszero) * (1 + (1 - negR)));
+    cc = 3 * ovf + (1 - ovf) * ((1 - iszero) * (1 + (1 - negR))); cc_sync();
 }
 
 # ZAP: ZERO AND ADD. op1 = op2 (packed move, right-aligned, zero-extended).
@@ -435,7 +435,7 @@ dlb_SSb_D2_SSb_L2_SSb_B2: SSb_D2(lenSSb_L2,SSb_B2) is SSb_D2 & SSb_L2 & SSb_B2 [
     b = *:1 (ea1 + n1 - 1);
     *:1 (ea1 + n1 - 1) = (b & 0xf0) | 0xc;
 <zap_nofix>
-    cc = 3 * ovf + (1 - ovf) * ((1 - iszero) * (1 + (1 - neg2)));
+    cc = 3 * ovf + (1 - ovf) * ((1 - iszero) * (1 + (1 - neg2))); cc_sync();
 }
 
 # CP: COMPARE DECIMAL. Compare packed op1 vs op2. CC: 0=equal, 1=op1 low,
@@ -490,7 +490,7 @@ dlb_SSb_D2_SSb_L2_SSb_B2: SSb_D2(lenSSb_L2,SSb_B2) is SSb_D2 & SSb_L2 & SSb_B2 [
           (samesgn & ((lt & (1 - neg1)) | (gt & neg1))));
     sgt = (1 - eq) & ((neg2 & (1 - neg1)) |
           (samesgn & ((gt & (1 - neg1)) | (lt & neg1))));
-    cc = slt + 2 * sgt;
+    cc = slt + 2 * sgt; cc_sync();
 }
 
 # SRP: SHIFT AND ROUND DECIMAL. The first operand's digits are shifted by the
@@ -621,7 +621,7 @@ db_SSc_D2_SSc_B2: SSc_D2(SSc_B2) is SSc_D2 & SSc_B2  { }
     b = *:1 (ea1 + n1 - 1);
     *:1 (ea1 + n1 - 1) = (b & 0xf0) | 0xc;
 <srp_nofix>
-    cc = 3 * ovf + (1 - ovf) * ((1 - iszero) * (1 + (1 - neg1)));
+    cc = 3 * ovf + (1 - ovf) * ((1 - iszero) * (1 + (1 - neg1))); cc_sync();
 }
 
 # MP: MULTIPLY DECIMAL. op1 = op1 * op2 (packed). Multi-precision decimal
@@ -907,7 +907,7 @@ dlb_SSf_D2_SSf_L2_SSf_B2: SSf_D2(lenSSf_L2,SSf_B2) is SSf_D2 & SSf_L2 & SSf_B2 [
     goto <ed_loop>;
 <ed_end>
     # cc: 0 if the last field was zero/empty (nz=0), else 1=negative, 2=positive
-    cc = nz * (1 + (1 - neg));
+    cc = nz * (1 + (1 - neg)); cc_sync();
 }
 
 # EDMK: EDIT AND MARK. Like ED, but the address of the first significant
@@ -972,7 +972,7 @@ dlb_SSf_D2_SSf_L2_SSf_B2: SSf_D2(lenSSf_L2,SSf_B2) is SSf_D2 & SSf_L2 & SSf_B2 [
     i = i + 1;
     goto <edmk_loop>;
 <edmk_end>
-    cc = nz * (1 + (1 - neg));
+    cc = nz * (1 + (1 - neg)); cc_sync();
 }
 
 # ---------------------------------------------------------------------------
@@ -1019,13 +1019,13 @@ dlb_SSf_D2_SSf_L2_SSf_B2: SSf_D2(lenSSf_L2,SSf_B2) is SSf_D2 & SSf_L2 & SSf_B2 [
     if (t == 0) goto <trt_next>;
     r1 = ea1 + i;
     r2 = (r2 & 0xffffffffffffff00) | zext(t);
-    cc = 1 + (i == last);
+    cc = 1 + (i == last); cc_sync();
     goto <trt_end>;
 <trt_next>
     i = i + 1;
     goto <trt_loop>;
 <trt_none>
-    cc = 0;
+    cc = 0; cc_sync();
 <trt_end>
 }
 
@@ -1047,13 +1047,13 @@ dlb_SSf_D2_SSf_L2_SSf_B2: SSf_D2(lenSSf_L2,SSf_B2) is SSf_D2 & SSf_L2 & SSf_B2 [
     if (t == 0) goto <trtr_next>;
     r1 = ea1 - i;
     r2 = (r2 & 0xffffffffffffff00) | zext(t);
-    cc = 1 + (i == n - 1);
+    cc = 1 + (i == n - 1); cc_sync();
     goto <trtr_end>;
 <trtr_next>
     i = i + 1;
     goto <trtr_loop>;
 <trtr_none>
-    cc = 0;
+    cc = 0; cc_sync();
 <trtr_end>
 }
 
@@ -1133,7 +1133,7 @@ dlb_RSLa_D1_RSLa_L1_RSLa_B1: RSLa_D1(lenRSLa_L1,RSLa_B1) is RSLa_D1 & RSLa_L1 & 
     k = k + 1;
     goto <tp_loop>;
 <tp_end>
-    cc = (1 - dv) * 2 + (1 - sv);
+    cc = (1 - dv) * 2 + (1 - sv); cc_sync();
     # cc: dv&sv=0; dv&!sv=1; !dv&sv=2; !dv&!sv=3
 }
 
@@ -1288,7 +1288,7 @@ dlb_RSLa_D1_RSLa_L1_RSLa_B1: RSLa_D1(lenRSLa_L1,RSLa_B1) is RSLa_D1 & RSLa_L1 & 
     if (i == len) goto <tre_cc0>;
     sb = *:1 (ea + i);
     if (zext(sb) != tbc) goto <tre_tr>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <tre_upd>;
 <tre_tr>
     tb = *:1 (tbl + zext(sb));
@@ -1296,7 +1296,7 @@ dlb_RSLa_D1_RSLa_L1_RSLa_B1: RSLa_D1(lenRSLa_L1,RSLa_B1) is RSLa_D1 & RSLa_L1 & 
     i = i + 1;
     goto <tre_loop>;
 <tre_cc0>
-    cc = 0;
+    cc = 0; cc_sync();
     # update the address/length pair
 <tre_upd>
     if (r1v != 0) goto <tre_w1>;
@@ -1392,11 +1392,11 @@ dlb_RSLa_D1_RSLa_L1_RSLa_B1: RSLa_D1(lenRSLa_L1,RSLa_B1) is RSLa_D1 & RSLa_L1 & 
     goto <trte_l>;
 <trte_found>
     na = ea + i; nl = len - i; fcv = zext(fc);
-    cc = 1;
+    cc = 1; cc_sync();
     goto <trte_wb>;
 <trte_exh>
     na = ea + len; nl = 0; fcv = 0;
-    cc = 0;
+    cc = 0; cc_sync();
     goto <trte_wb>;
 <trte_wb>
     # R2 first, then the R1 pair: on R1/R2 overlap the pair update wins
@@ -1657,10 +1657,10 @@ db_RSan_D2_RSan_B2: RSan_D2(RSan_B2) is RSan_D2 & RSan_B2  { }
     b2 = *:1 (ad2 + i);
     if (b1 == b2) goto <clcle_eq>;
     if (b1 >= b2) goto <clcle_hi>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcle_upd>;
 <clcle_hi>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcle_upd>;
 <clcle_eq>
     i = i + 1;
@@ -1674,10 +1674,10 @@ db_RSan_D2_RSan_B2: RSan_D2(RSan_B2) is RSan_D2 & RSan_B2  { }
     b2 = *:1 (ad2 + i);
     if (zext(b2) == pad) goto <clcle_p1e>;
     if (pad >= zext(b2)) goto <clcle_p1h>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcle_upd1>;
 <clcle_p1h>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcle_upd1>;
 <clcle_p1e>
     i = i + 1;
@@ -1689,16 +1689,16 @@ db_RSan_D2_RSan_B2: RSan_D2(RSan_B2) is RSan_D2 & RSan_B2  { }
     b1 = *:1 (ad1 + i);
     if (zext(b1) == pad) goto <clcle_p2e>;
     if (zext(b1) >= pad) goto <clcle_p2h>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clcle_upd2>;
 <clcle_p2h>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clcle_upd2>;
 <clcle_p2e>
     i = i + 1;
     goto <clcle_p2>;
 <clcle_equal>
-    cc = 0;
+    cc = 0; cc_sync();
     ad1 = ad1 + n1; n1 = 0;
     ad2 = ad2 + n2; n2 = 0;
     goto <clcle_wb>;
@@ -1884,10 +1884,10 @@ db_RSYan_DL2_RSYan_B2: dispRSYan_DL2(RSYan_B2) is RSYan_DL2 & RSYan_DH2 & RSYan_
     w2 = *:2 (ad2 + i);
     if (w1 == w2) goto <clclu_eq>;
     if (w1 >= w2) goto <clclu_hi>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clclu_upd>;
 <clclu_hi>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clclu_upd>;
 <clclu_eq>
     i = i + 2;
@@ -1901,10 +1901,10 @@ db_RSYan_DL2_RSYan_B2: dispRSYan_DL2(RSYan_B2) is RSYan_DL2 & RSYan_DH2 & RSYan_
     w2 = *:2 (ad2 + i);
     if (zext(w2) == pad) goto <clclu_p1e>;
     if (pad >= zext(w2)) goto <clclu_p1h>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clclu_upd1>;
 <clclu_p1h>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clclu_upd1>;
 <clclu_p1e>
     i = i + 2;
@@ -1916,16 +1916,16 @@ db_RSYan_DL2_RSYan_B2: dispRSYan_DL2(RSYan_B2) is RSYan_DL2 & RSYan_DH2 & RSYan_
     w1 = *:2 (ad1 + i);
     if (zext(w1) == pad) goto <clclu_p2e>;
     if (zext(w1) >= pad) goto <clclu_p2h>;
-    cc = 1;
+    cc = 1; cc_sync();
     goto <clclu_upd2>;
 <clclu_p2h>
-    cc = 2;
+    cc = 2; cc_sync();
     goto <clclu_upd2>;
 <clclu_p2e>
     i = i + 2;
     goto <clclu_p2>;
 <clclu_equal>
-    cc = 0;
+    cc = 0; cc_sync();
     ad1 = ad1 + n1; n1 = 0;
     ad2 = ad2 + n2; n2 = 0;
     goto <clclu_wb>;

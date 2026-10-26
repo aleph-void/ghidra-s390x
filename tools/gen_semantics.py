@@ -16,22 +16,34 @@ import re
 
 PRELUDE = r"""
 # ---- helpers for generated semantics (tools/gen_semantics.py) ----
+# The flags cc0..cc3 (cc == N) are set directly from the operands so that branches decompile
+# to the comparison; cc is the architected value (see s390x.slaspec).
+macro gs_cc_flags(f0, f1, f2, f3) {
+  cc0 = f0; cc1 = f1; cc2 = f2; cc3 = f3;
+  cc = zext(f1) + zext(f2) * 2 + zext(f3) * 3;
+}
 # signed result: 0 zero, 1 negative, 2 positive, 3 overflow
 macro gs_cc_arith(r, ov) {
-  local n:1 = zext(r s< 0) + zext(r s> 0) * 2;
-  cc = n + zext(ov != 0) * (3 - n);
+  local o:1 = ov != 0;
+  gs_cc_flags(!o && (r == 0), !o && (r s< 0), !o && (r s> 0), o);
 }
-# logical add: bit 1 carry, bit 0 nonzero
-macro gs_cc_addl(r, carry) { cc = zext(r != 0) | (zext(carry != 0) << 1); }
-# logical subtract: bit 1 no borrow, bit 0 nonzero
-macro gs_cc_subl(r, borrow) { cc = zext(r != 0) | (zext(borrow == 0) << 1); }
+# logical add: 0 zero, 1 nonzero, 2 zero with carry, 3 nonzero with carry
+macro gs_cc_addl(r, carry) {
+  local c:1 = carry != 0;
+  gs_cc_flags(!c && (r == 0), !c && (r != 0), c && (r == 0), c && (r != 0));
+}
+# logical subtract: 1 nonzero with borrow, 2 zero without borrow, 3 nonzero without borrow
+macro gs_cc_subl(r, borrow) {
+  local b:1 = borrow != 0;
+  gs_cc_flags(b && (r == 0), b && (r != 0), !b && (r == 0), !b && (r != 0));
+}
 # compare: 0 equal, 1 low, 2 high
-macro gs_cc_cmps(a, b) { cc = zext(a s< b) + zext(a s> b) * 2; }
-macro gs_cc_cmpu(a, b) { cc = zext(a < b) + zext(a > b) * 2; }
+macro gs_cc_cmps(a, b) { gs_cc_flags(a == b, a s< b, a s> b, 0:1); }
+macro gs_cc_cmpu(a, b) { gs_cc_flags(a == b, a < b, a > b, 0:1); }
 # 0 zero, 1 nonzero
-macro gs_cc_nz(r) { cc = zext(r != 0); }
+macro gs_cc_nz(r) { gs_cc_flags(r == 0, r != 0, 0:1, 0:1); }
 # condition mask test: bit (8 >> cc) of mask
-macro gs_mask(m, out) { out = ((m >> (3 - cc)) & 1) != 0; }
+macro gs_mask(m, out) { cc_hit(m, out); }
 macro gs_set32(reg, v) { reg = (reg & 0xffffffff00000000) | zext(v); }
 macro gs_seth32(reg, v) { reg = (reg & 0xffffffff) | (zext(v) << 32); }
 define pcodeop s390_trap;
@@ -80,7 +92,7 @@ IMM = {
     "slfi": (4, "-", "l"), "slgfi": (8, "-", "l"),
 }
 
-COND_JUMP = re.compile(r"^(c|cl)(g?)(r|i|f?)(j|b|t)(.*)$")
+COND_JUMP = re.compile(r"^(c|cl)(g?)(r|i|fi|f?)(j|b|t)(.*)$")
 CC_NAMES = {"": None, "h": 2, "nle": 2, "l": 4, "nhe": 4, "lh": 6, "ne": 6, "e": 8, "nlh": 8,
             "he": 10, "nl": 10, "le": 12, "nh": 12}
 
@@ -402,6 +414,27 @@ BC_NAMES = {"o": 1, "h": 2, "p": 2, "nle": 3, "l": 4, "m": 4, "nhe": 5, "lh": 6,
             "nz": 7, "e": 8, "z": 8, "nlh": 9, "he": 10, "nl": 11, "nm": 11, "le": 12, "nh": 13,
             "np": 13, "no": 14}
 
+def cc_cond(m):
+    """Branch condition for a constant mask m (bit 8 >> cc) as a flag expression the decompiler
+    simplifies well: one flag, or the negation of the complementary flags; two-flag masks use
+    the form that contains cc3 (constant false after a compare)."""
+    m = int(m)
+    on = [k for k in range(4) if m & (8 >> k)]
+    off = [k for k in range(4) if k not in on]
+    if not on:
+        return "0:1"
+    if not off:
+        return "1:1"
+    if len(on) == 1 or (len(on) == 2 and 3 in on):
+        return "(" + " || ".join(f"cc{k}" for k in on) + ")"
+    return "!(" + " || ".join(f"cc{k}" for k in off) + ")"
+
+def mask_test(mexpr, out="take"):
+    """'local take:1 = ...' for a mask expression (constant: cc_cond, else cc_hit)."""
+    if str(mexpr).isdigit():
+        return f"local {out}:1 = {cc_cond(mexpr)};"
+    return f"local mk:8 = {mexpr}; local {out}:1; gs_mask(mk, {out});"
+
 def mask_from(ctx, base):
     """Condition mask fixed by an extended mnemonic (<base><suffix>), else None (the M operand
     is then an operand)."""
@@ -417,7 +450,7 @@ def loc(ctx):
     mexpr = fixedm if fixedm is not None else o[-1]
     g = "g" in base
     fh = "fh" in n
-    lines = [f"local mk:8 = {mexpr}; local take:1; gs_mask(mk, take);", "if (!take) goto <skip>;"]
+    lines = [mask_test(mexpr), "if (!take) goto <skip>;"]
     if n.startswith("stoc"):
         w = 8 if g else 4
         src = f"{o[0]}(4)" if fh else (o[0] if g else f"{o[0]}:4")
@@ -453,7 +486,7 @@ def sel(ctx):
     a, b = (o[1], o[2]) if g else ((f"{o[1]}(4)", f"{o[2]}(4)") if fh else (f"{o[1]}:4", f"{o[2]}:4"))
     w = 8 if g else 4
     put = (f"{o[0]} = v;" if g else (f"gs_seth32({o[0]}, v);" if fh else f"gs_set32({o[0]}, v);"))
-    return (f"local mk:8 = {mexpr}; local take:1; gs_mask(mk, take); local x:{w} = {a}; local y:{w} = {b};\n"
+    return (mask_test(mexpr) + f" local x:{w} = {a}; local y:{w} = {b};\n"
             f"local v:{w} = zext(take) * x + zext(!take) * y;\n{put}")
 
 def cmp_branch(ctx, m):
@@ -631,7 +664,7 @@ def core(ctx):
         if n == "bi":
             return f"local t:8 = *:8 {tgt}; goto [t];"
         mexpr = o[0] if n == "bic" else str(BC_NAMES[n[2:]])
-        return (f"local mk:8 = {mexpr}; local take:1; gs_mask(mk, take); local t:8 = *:8 {tgt};\n"
+        return (mask_test(mexpr) + f" local t:8 = *:8 {tgt};\n"
                 f"if (!take) goto <nt>;\ngoto [t];\n<nt>")
     if n in ARITH:
         op, w, s, ext, cc, form = ARITH[n]
@@ -778,12 +811,12 @@ def core(ctx):
     if m:
         sh = {"hh": 48, "hl": 32, "lh": 16, "ll": 0}[m.group(1) + m.group(2)]
         return (f"local immv:8 = {o[1]}; local mk:2 = immv:2; local fld:8 = {o[0]} >> {sh}; local fv:2 = fld:2;\n"
-                f"local sel:2 = fv & mk; local lead:2 = mk;\n"
-                f"local top:2 = lzcount(mk); local bit:2 = (fv << top) & 0x8000;\n"
-                f"cc = zext(sel != 0) * (zext(sel == mk) * 3 + zext(sel != mk) * (1 + zext(bit != 0)));")
+                f"local sel:2 = fv & mk; local top:2 = lzcount(mk); local bit:2 = (fv << top) & 0x8000;\n"
+                f"local mixed:1 = (sel != 0) && (sel != mk);\n"
+                f"gs_cc_flags(sel == 0, mixed && (bit == 0), mixed && (bit != 0), (sel != 0) && (sel == mk));")
     if n in ("tm", "tmy"):
         return (f"local immv:8 = {o[1]}; local mk:1 = immv:1; local v:1 = *:1 {o[0]}; local sel:1 = v & mk;\n"
-                f"cc = zext(sel != 0) * (1 + zext(sel == mk) * 2);")
+                f"gs_cc_flags(sel == 0, (sel != 0) && (sel != mk), 0:1, (sel != 0) && (sel == mk));")
     if n in ("mvi", "cli", "ni", "oi", "xi"):
         t = f"local immv:8 = {o[1]}; local i:1 = immv:1; "
         if n == "mvi":

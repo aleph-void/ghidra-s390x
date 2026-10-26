@@ -166,13 +166,11 @@ dxb_RXb_D2_RXb_X2_RXb_B2: RXb_D2(RXb_X2,RXb_B2) is RXb_D2 & RXb_X2 & RXb_B2  { }
 {
     local ea:8;
     local _b_m:1;
-    local _b_ccval:1;
     local _b_bit:1;
     ea_D12(ea, RXb_B2, RXb_X2, RXb_D2);
     _b_m = 0x1;
-    _b_ccval = cc;
-    _b_bit = 8 >> _b_ccval;
-    if ((_b_m & _b_bit) == 0) goto <br2_skip_1>;
+    _b_bit = (cc3);
+    if (!_b_bit) goto <br2_skip_1>;
     goto [ea];
     <br2_skip_1>
 }
@@ -181,13 +179,11 @@ dxb_RXb_D2_RXb_X2_RXb_B2: RXb_D2(RXb_X2,RXb_B2) is RXb_D2 & RXb_X2 & RXb_B2  { }
 {
     local ea:8;
     local _b_m:1;
-    local _b_ccval:1;
     local _b_bit:1;
     ea_D12(ea, RXb_B2, RXb_X2, RXb_D2);
     _b_m = 0x2;
-    _b_ccval = cc;
-    _b_bit = 8 >> _b_ccval;
-    if ((_b_m & _b_bit) == 0) goto <br2_skip_2>;
+    _b_bit = (cc2);
+    if (!_b_bit) goto <br2_skip_2>;
     goto [ea];
     <br2_skip_2>
 }
@@ -196,13 +192,11 @@ dxb_RXb_D2_RXb_X2_RXb_B2: RXb_D2(RXb_X2,RXb_B2) is RXb_D2 & RXb_X2 & RXb_B2  { }
 {
     local ea:8;
     local _b_m:1;
-    local _b_ccval:1;
     local _b_bit:1;
     ea_D12(ea, RXb_B2, RXb_X2, RXb_D2);
     _b_m = 0x3;
-    _b_ccval = cc;
-    _b_bit = 8 >> _b_ccval;
-    if ((_b_m & _b_bit) == 0) goto <br2_skip_3>;
+    _b_bit = (cc2 || cc3);
+    if (!_b_bit) goto <br2_skip_3>;
     goto [ea];
     <br2_skip_3>
 }
@@ -211,13 +205,11 @@ dxb_RXb_D2_RXb_X2_RXb_B2: RXb_D2(RXb_X2,RXb_B2) is RXb_D2 & RXb_X2 & RXb_B2  { }
 {
     local ea:8;
     local _b_m:1;
-    local _b_ccval:1;
     local _b_bit:1;
     ea_D12(ea, RXb_B2, RXb_X2, RXb_D2);
     _b_m = 0x4;
-    _b_ccval = cc;
-    _b_bit = 8 >> _b_ccval;
-    if ((_b_m & _b_bit) == 0) goto <br2_skip_4>;
+    _b_bit = (cc1);
+    if (!_b_bit) goto <br2_skip_4>;
     goto [ea];
     <br2_skip_4>
 }
@@ -226,13 +218,11 @@ dxb_RXb_D2_RXb_X2_RXb_B2: RXb_D2(RXb_X2,RXb_B2) is RXb_D2 & RXb_X2 & RXb_B2  { }
 {
     local ea:8;
     local _b_m:1;
-    local _b_ccval:1;
     local _b_bit:1;
     ea_D12(ea, RXb_B2, RXb_X2, RXb_D2);
     _b_m = 0x5;
-    _b_ccval = cc;
-    _b_bit = 8 >> _b_ccval;
-    if ((_b_m & _b_bit) == 0) goto <br2_skip_5>;
+    _b_bit = (cc1 || cc3);
+    if (!_b_bit) goto <br2_skip_5>;
     goto [ea];
     <br2_skip_5>
 }
@@ -241,13 +231,11 @@ dxb_RXb_D2_RXb_X2_RXb_B2: RXb_D2(RXb_X2,RXb_B2) is RXb_D2 & RXb_X2 & RXb_B2  { }
 {
     local ea:8;
     local _b_m:1;
-    local _b_ccval:1;
     local _b_bit:1;
     ea_D12(ea, RXb_B2, RXb_X2, RXb_D2);
     _b_m = 0x6;
-    _b_ccval = cc;
-    _b_bit = 8 >> _b_ccval;
-    if ((_b_m & _b_bit) == 0) goto <br2_skip_6>;
+    _b_bit = !(cc0 || cc3);
+    if (!_b_bit) goto <br2_skip_6>;
     goto [ea];
     <br2_skip_6>
 }
@@ -256,13 +244,11 @@ dxb_RXb_D2_RXb_X2_RXb_B2: RXb_D2(RXb_X2,RXb_B2) is RXb_D2 & RXb_X2 & RXb_B2  { }
 {
     local ea:8;
     local _b_m:1;
-    local _b_ccval:1;
     local _b_bit:1;
     ea_D12(ea, RXb_B2, RXb_X2, RXb_D2);
     _b_m = 0x7;
-    _b_ccval = cc;
-    _b_bit = 8 >> _b_ccval;
-    if ((_b_m & _b_bit) == 0) goto <br2_skip_7>;
+    _b_bit = !(cc0);
+    if (!_b_bit) goto <br2_skip_7>;
     goto [ea];
     <br2_skip_7>
 }
@@ -271,13 +257,11 @@ dxb_RXb_D2_RXb_X2_RXb_B2: RXb_D2(RXb_X2,RXb_B2) is RXb_D2 & RXb_X2 & RXb_B2  { }
 {
     local ea:8;
     local _b_m:1;
-    local _b_ccval:1;
     local _b_bit:1;
     ea_D12(ea, RXb_B2, RXb_X2, RXb_D2);
     _b_m = 0x8;
-    _b_ccval = cc;
-    _b_bit = 8 >> _b_ccval;
-    if ((_b_m & _b_bit) == 0) goto <br2_skip_8>;
+    _b_bit = (cc0);
+    if (!_b_bit) goto <br2_skip_8>;
     goto [ea];
     <br2_skip_8>
 }
@@ -286,13 +270,11 @@ dxb_RXb_D2_RXb_X2_RXb_B2: RXb_D2(RXb_X2,RXb_B2) is RXb_D2 & RXb_X2 & RXb_B2  { }
 {
     local ea:8;
     local _b_m:1;
-    local _b_ccval:1;
     local _b_bit:1;
     ea_D12(ea, RXb_B2, RXb_X2, RXb_D2);
     _b_m = 0x9;
-    _b_ccval = cc;
-    _b_bit = 8 >> _b_ccval;
-    if ((_b_m & _b_bit) == 0) goto <br2_skip_9>;
+    _b_bit = (cc0 || cc3);
+    if (!_b_bit) goto <br2_skip_9>;
     goto [ea];
     <br2_skip_9>
 }
@@ -301,13 +283,11 @@ dxb_RXb_D2_RXb_X2_RXb_B2: RXb_D2(RXb_X2,RXb_B2) is RXb_D2 & RXb_X2 & RXb_B2  { }
 {
     local ea:8;
     local _b_m:1;
-    local _b_ccval:1;
     local _b_bit:1;
     ea_D12(ea, RXb_B2, RXb_X2, RXb_D2);
     _b_m = 0xA;
-    _b_ccval = cc;
-    _b_bit = 8 >> _b_ccval;
-    if ((_b_m & _b_bit) == 0) goto <br2_skip_10>;
+    _b_bit = !(cc1 || cc3);
+    if (!_b_bit) goto <br2_skip_10>;
     goto [ea];
     <br2_skip_10>
 }
@@ -316,13 +296,11 @@ dxb_RXb_D2_RXb_X2_RXb_B2: RXb_D2(RXb_X2,RXb_B2) is RXb_D2 & RXb_X2 & RXb_B2  { }
 {
     local ea:8;
     local _b_m:1;
-    local _b_ccval:1;
     local _b_bit:1;
     ea_D12(ea, RXb_B2, RXb_X2, RXb_D2);
     _b_m = 0xB;
-    _b_ccval = cc;
-    _b_bit = 8 >> _b_ccval;
-    if ((_b_m & _b_bit) == 0) goto <br2_skip_11>;
+    _b_bit = !(cc1);
+    if (!_b_bit) goto <br2_skip_11>;
     goto [ea];
     <br2_skip_11>
 }
@@ -331,13 +309,11 @@ dxb_RXb_D2_RXb_X2_RXb_B2: RXb_D2(RXb_X2,RXb_B2) is RXb_D2 & RXb_X2 & RXb_B2  { }
 {
     local ea:8;
     local _b_m:1;
-    local _b_ccval:1;
     local _b_bit:1;
     ea_D12(ea, RXb_B2, RXb_X2, RXb_D2);
     _b_m = 0xC;
-    _b_ccval = cc;
-    _b_bit = 8 >> _b_ccval;
-    if ((_b_m & _b_bit) == 0) goto <br2_skip_12>;
+    _b_bit = !(cc2 || cc3);
+    if (!_b_bit) goto <br2_skip_12>;
     goto [ea];
     <br2_skip_12>
 }
@@ -346,13 +322,11 @@ dxb_RXb_D2_RXb_X2_RXb_B2: RXb_D2(RXb_X2,RXb_B2) is RXb_D2 & RXb_X2 & RXb_B2  { }
 {
     local ea:8;
     local _b_m:1;
-    local _b_ccval:1;
     local _b_bit:1;
     ea_D12(ea, RXb_B2, RXb_X2, RXb_D2);
     _b_m = 0xD;
-    _b_ccval = cc;
-    _b_bit = 8 >> _b_ccval;
-    if ((_b_m & _b_bit) == 0) goto <br2_skip_13>;
+    _b_bit = !(cc2);
+    if (!_b_bit) goto <br2_skip_13>;
     goto [ea];
     <br2_skip_13>
 }
@@ -361,13 +335,11 @@ dxb_RXb_D2_RXb_X2_RXb_B2: RXb_D2(RXb_X2,RXb_B2) is RXb_D2 & RXb_X2 & RXb_B2  { }
 {
     local ea:8;
     local _b_m:1;
-    local _b_ccval:1;
     local _b_bit:1;
     ea_D12(ea, RXb_B2, RXb_X2, RXb_D2);
     _b_m = 0xE;
-    _b_ccval = cc;
-    _b_bit = 8 >> _b_ccval;
-    if ((_b_m & _b_bit) == 0) goto <br2_skip_14>;
+    _b_bit = !(cc3);
+    if (!_b_bit) goto <br2_skip_14>;
     goto [ea];
     <br2_skip_14>
 }

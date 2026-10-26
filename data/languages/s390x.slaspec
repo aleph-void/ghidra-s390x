@@ -319,6 +319,12 @@ define register offset=0x2c8 size=8  [ pswia ];  # instruction address; the prog
 # the condition code as a plain 0-3 value. Kept apart from pswm: SPM/SSM/LPSW writes to
 # pswm used to overwrite it when it overlaid PSW byte 2.
 define register offset=0x2e0 size=1  [ cc   ];
+# The condition code is also kept as four booleans, ccN meaning "cc == N". Branch and
+# conditional instructions test these, so the decompiler sees the comparison that set the
+# condition code (if (a < b)) instead of mask arithmetic on a 0-3 value. Every write of cc is
+# followed by cc_sync() (or sets the flags directly, as the generated compare/arithmetic
+# helpers do); cc itself stays the architected value for IPM, EPSW and friends.
+define register offset=0x2e1 size=1  [ cc0 cc1 cc2 cc3 ];
                                                 # (PSW bits 18-19 live in bits 4-5 of this byte)
 
 # Constant-zero pseudo-register. In address fields, B=0 / X=0 means
@@ -440,6 +446,16 @@ macro rel_RI32(dest, RI) {
 # Instruction constructors.
 # See CONVENTIONS.md for the recipe for adding one constructor.
 # ---------------------------------------------------------------------------
+
+# Derive the condition flags from cc (after a write of cc).
+macro cc_sync() {
+    cc0 = cc == 0; cc1 = cc == 1; cc2 = cc == 2; cc3 = cc == 3;
+}
+# out = the branch condition for mask m (bit 8 >> cc), from the flags.
+macro cc_hit(m, out) {
+    out = (((m & 8) != 0) && cc0) || (((m & 4) != 0) && cc1) || (((m & 2) != 0) && cc2) || (((m & 1) != 0) && cc3);
+}
+
 
 @include "s390x_loadstore.sinc"
 @include "s390x_loadstore_gen.sinc"

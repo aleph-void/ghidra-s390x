@@ -126,14 +126,12 @@ macro rel_RI16(dest, RI) {
     # test is on the field value, not the register contents. The 'cc'
     # register holds the condition code as a plain 0-3 value.
     local _b_m:1;
-    local _b_ccval:1;
     local _b_bit:1;
     local _b_r2n:1;
     _b_m = 0x1;
-    _b_ccval = cc;
-    _b_bit = 8 >> _b_ccval;
+    _b_bit = (cc3);
     _b_r2n = RRb_R2n;
-    if (!(((_b_m & _b_bit) != 0) && (_b_r2n != 0))) goto <bcr_nt>;
+    if (!((_b_bit) && (_b_r2n != 0))) goto <bcr_nt>;
     goto [RRb_R2];
     <bcr_nt>
 }
@@ -147,14 +145,12 @@ macro rel_RI16(dest, RI) {
     # test is on the field value, not the register contents. The 'cc'
     # register holds the condition code as a plain 0-3 value.
     local _b_m:1;
-    local _b_ccval:1;
     local _b_bit:1;
     local _b_r2n:1;
     _b_m = 0x2;
-    _b_ccval = cc;
-    _b_bit = 8 >> _b_ccval;
+    _b_bit = (cc2);
     _b_r2n = RRb_R2n;
-    if (!(((_b_m & _b_bit) != 0) && (_b_r2n != 0))) goto <bcr_nt>;
+    if (!((_b_bit) && (_b_r2n != 0))) goto <bcr_nt>;
     goto [RRb_R2];
     <bcr_nt>
 }
@@ -168,14 +164,12 @@ macro rel_RI16(dest, RI) {
     # test is on the field value, not the register contents. The 'cc'
     # register holds the condition code as a plain 0-3 value.
     local _b_m:1;
-    local _b_ccval:1;
     local _b_bit:1;
     local _b_r2n:1;
     _b_m = 0x3;
-    _b_ccval = cc;
-    _b_bit = 8 >> _b_ccval;
+    _b_bit = (cc2 || cc3);
     _b_r2n = RRb_R2n;
-    if (!(((_b_m & _b_bit) != 0) && (_b_r2n != 0))) goto <bcr_nt>;
+    if (!((_b_bit) && (_b_r2n != 0))) goto <bcr_nt>;
     goto [RRb_R2];
     <bcr_nt>
 }
@@ -189,14 +183,12 @@ macro rel_RI16(dest, RI) {
     # test is on the field value, not the register contents. The 'cc'
     # register holds the condition code as a plain 0-3 value.
     local _b_m:1;
-    local _b_ccval:1;
     local _b_bit:1;
     local _b_r2n:1;
     _b_m = 0x4;
-    _b_ccval = cc;
-    _b_bit = 8 >> _b_ccval;
+    _b_bit = (cc1);
     _b_r2n = RRb_R2n;
-    if (!(((_b_m & _b_bit) != 0) && (_b_r2n != 0))) goto <bcr_nt>;
+    if (!((_b_bit) && (_b_r2n != 0))) goto <bcr_nt>;
     goto [RRb_R2];
     <bcr_nt>
 }
@@ -210,14 +202,12 @@ macro rel_RI16(dest, RI) {
     # test is on the field value, not the register contents. The 'cc'
     # register holds the condition code as a plain 0-3 value.
     local _b_m:1;
-    local _b_ccval:1;
     local _b_bit:1;
     local _b_r2n:1;
     _b_m = 0x5;
-    _b_ccval = cc;
-    _b_bit = 8 >> _b_ccval;
+    _b_bit = (cc1 || cc3);
     _b_r2n = RRb_R2n;
-    if (!(((_b_m & _b_bit) != 0) && (_b_r2n != 0))) goto <bcr_nt>;
+    if (!((_b_bit) && (_b_r2n != 0))) goto <bcr_nt>;
     goto [RRb_R2];
     <bcr_nt>
 }
@@ -231,14 +221,12 @@ macro rel_RI16(dest, RI) {
     # test is on the field value, not the register contents. The 'cc'
     # register holds the condition code as a plain 0-3 value.
     local _b_m:1;
-    local _b_ccval:1;
     local _b_bit:1;
     local _b_r2n:1;
     _b_m = 0x6;
-    _b_ccval = cc;
-    _b_bit = 8 >> _b_ccval;
+    _b_bit = !(cc0 || cc3);
     _b_r2n = RRb_R2n;
-    if (!(((_b_m & _b_bit) != 0) && (_b_r2n != 0))) goto <bcr_nt>;
+    if (!((_b_bit) && (_b_r2n != 0))) goto <bcr_nt>;
     goto [RRb_R2];
     <bcr_nt>
 }
@@ -252,14 +240,12 @@ macro rel_RI16(dest, RI) {
     # test is on the field value, not the register contents. The 'cc'
     # register holds the condition code as a plain 0-3 value.
     local _b_m:1;
-    local _b_ccval:1;
     local _b_bit:1;
     local _b_r2n:1;
     _b_m = 0x7;
-    _b_ccval = cc;
-    _b_bit = 8 >> _b_ccval;
+    _b_bit = !(cc0);
     _b_r2n = RRb_R2n;
-    if (!(((_b_m & _b_bit) != 0) && (_b_r2n != 0))) goto <bcr_nt>;
+    if (!((_b_bit) && (_b_r2n != 0))) goto <bcr_nt>;
     goto [RRb_R2];
     <bcr_nt>
 }
@@ -273,14 +259,12 @@ macro rel_RI16(dest, RI) {
     # test is on the field value, not the register contents. The 'cc'
     # register holds the condition code as a plain 0-3 value.
     local _b_m:1;
-    local _b_ccval:1;
     local _b_bit:1;
     local _b_r2n:1;
     _b_m = 0x8;
-    _b_ccval = cc;
-    _b_bit = 8 >> _b_ccval;
+    _b_bit = (cc0);
     _b_r2n = RRb_R2n;
-    if (!(((_b_m & _b_bit) != 0) && (_b_r2n != 0))) goto <bcr_nt>;
+    if (!((_b_bit) && (_b_r2n != 0))) goto <bcr_nt>;
     goto [RRb_R2];
     <bcr_nt>
 }
@@ -294,14 +278,12 @@ macro rel_RI16(dest, RI) {
     # test is on the field value, not the register contents. The 'cc'
     # register holds the condition code as a plain 0-3 value.
     local _b_m:1;
-    local _b_ccval:1;
     local _b_bit:1;
     local _b_r2n:1;
     _b_m = 0x9;
-    _b_ccval = cc;
-    _b_bit = 8 >> _b_ccval;
+    _b_bit = (cc0 || cc3);
     _b_r2n = RRb_R2n;
-    if (!(((_b_m & _b_bit) != 0) && (_b_r2n != 0))) goto <bcr_nt>;
+    if (!((_b_bit) && (_b_r2n != 0))) goto <bcr_nt>;
     goto [RRb_R2];
     <bcr_nt>
 }
@@ -315,14 +297,12 @@ macro rel_RI16(dest, RI) {
     # test is on the field value, not the register contents. The 'cc'
     # register holds the condition code as a plain 0-3 value.
     local _b_m:1;
-    local _b_ccval:1;
     local _b_bit:1;
     local _b_r2n:1;
     _b_m = 0xA;
-    _b_ccval = cc;
-    _b_bit = 8 >> _b_ccval;
+    _b_bit = !(cc1 || cc3);
     _b_r2n = RRb_R2n;
-    if (!(((_b_m & _b_bit) != 0) && (_b_r2n != 0))) goto <bcr_nt>;
+    if (!((_b_bit) && (_b_r2n != 0))) goto <bcr_nt>;
     goto [RRb_R2];
     <bcr_nt>
 }
@@ -336,14 +316,12 @@ macro rel_RI16(dest, RI) {
     # test is on the field value, not the register contents. The 'cc'
     # register holds the condition code as a plain 0-3 value.
     local _b_m:1;
-    local _b_ccval:1;
     local _b_bit:1;
     local _b_r2n:1;
     _b_m = 0xB;
-    _b_ccval = cc;
-    _b_bit = 8 >> _b_ccval;
+    _b_bit = !(cc1);
     _b_r2n = RRb_R2n;
-    if (!(((_b_m & _b_bit) != 0) && (_b_r2n != 0))) goto <bcr_nt>;
+    if (!((_b_bit) && (_b_r2n != 0))) goto <bcr_nt>;
     goto [RRb_R2];
     <bcr_nt>
 }
@@ -357,14 +335,12 @@ macro rel_RI16(dest, RI) {
     # test is on the field value, not the register contents. The 'cc'
     # register holds the condition code as a plain 0-3 value.
     local _b_m:1;
-    local _b_ccval:1;
     local _b_bit:1;
     local _b_r2n:1;
     _b_m = 0xC;
-    _b_ccval = cc;
-    _b_bit = 8 >> _b_ccval;
+    _b_bit = !(cc2 || cc3);
     _b_r2n = RRb_R2n;
-    if (!(((_b_m & _b_bit) != 0) && (_b_r2n != 0))) goto <bcr_nt>;
+    if (!((_b_bit) && (_b_r2n != 0))) goto <bcr_nt>;
     goto [RRb_R2];
     <bcr_nt>
 }
@@ -378,14 +354,12 @@ macro rel_RI16(dest, RI) {
     # test is on the field value, not the register contents. The 'cc'
     # register holds the condition code as a plain 0-3 value.
     local _b_m:1;
-    local _b_ccval:1;
     local _b_bit:1;
     local _b_r2n:1;
     _b_m = 0xD;
-    _b_ccval = cc;
-    _b_bit = 8 >> _b_ccval;
+    _b_bit = !(cc2);
     _b_r2n = RRb_R2n;
-    if (!(((_b_m & _b_bit) != 0) && (_b_r2n != 0))) goto <bcr_nt>;
+    if (!((_b_bit) && (_b_r2n != 0))) goto <bcr_nt>;
     goto [RRb_R2];
     <bcr_nt>
 }
@@ -399,14 +373,12 @@ macro rel_RI16(dest, RI) {
     # test is on the field value, not the register contents. The 'cc'
     # register holds the condition code as a plain 0-3 value.
     local _b_m:1;
-    local _b_ccval:1;
     local _b_bit:1;
     local _b_r2n:1;
     _b_m = 0xE;
-    _b_ccval = cc;
-    _b_bit = 8 >> _b_ccval;
+    _b_bit = !(cc3);
     _b_r2n = RRb_R2n;
-    if (!(((_b_m & _b_bit) != 0) && (_b_r2n != 0))) goto <bcr_nt>;
+    if (!((_b_bit) && (_b_r2n != 0))) goto <bcr_nt>;
     goto [RRb_R2];
     <bcr_nt>
 }
@@ -450,14 +422,12 @@ macro rel_RI16(dest, RI) {
     # test is on the field value, not the register contents. The 'cc'
     # register holds the condition code as a plain 0-3 value.
     local _b_m:1;
-    local _b_ccval:1;
     local _b_bit:1;
     local _b_r2n:1;
     _b_m = RRb_M1;
-    _b_ccval = cc;
-    _b_bit = 8 >> _b_ccval;
+    cc_hit(_b_m, _b_bit);
     _b_r2n = RRb_R2n;
-    if (!(((_b_m & _b_bit) != 0) && (_b_r2n != 0))) goto <bcr_nt>;
+    if (!((_b_bit) && (_b_r2n != 0))) goto <bcr_nt>;
     goto [RRb_R2];
     <bcr_nt>
 }
@@ -492,23 +462,19 @@ RILb_Target: RILb_TargetLoc is RILb_TargetLoc { export *:8 RILb_TargetLoc; }
 :JO RIc_Target is RIc_OP=0xA7 & RIc_M1=0x1 & RIc_OP2=0x4 & RIc_Target
 {
     local _b_m:1;
-    local _b_ccval:1;
     local _b_bit:1;
     _b_m = 0x1;
-    _b_ccval = cc;
-    _b_bit = 8 >> _b_ccval;
-    if ((_b_m & _b_bit) != 0) goto RIc_Target;
+    _b_bit = (cc3);
+    if (_b_bit) goto RIc_Target;
 }
 
 :JH RIc_Target is RIc_OP=0xA7 & RIc_M1=0x2 & RIc_OP2=0x4 & RIc_Target
 {
     local _b_m:1;
-    local _b_ccval:1;
     local _b_bit:1;
     _b_m = 0x2;
-    _b_ccval = cc;
-    _b_bit = 8 >> _b_ccval;
-    if ((_b_m & _b_bit) != 0) goto RIc_Target;
+    _b_bit = (cc2);
+    if (_b_bit) goto RIc_Target;
 }
 
 # Masks 3/5/6/9/10/12 have no PoP Appendix J extended mnemonic; the
@@ -518,133 +484,109 @@ RILb_Target: RILb_TargetLoc is RILb_TargetLoc { export *:8 RILb_TargetLoc; }
 :JNLE RIc_Target is RIc_OP=0xA7 & RIc_M1=0x3 & RIc_OP2=0x4 & RIc_Target
 {
     local _b_m:1;
-    local _b_ccval:1;
     local _b_bit:1;
     _b_m = 0x3;
-    _b_ccval = cc;
-    _b_bit = 8 >> _b_ccval;
-    if ((_b_m & _b_bit) != 0) goto RIc_Target;
+    _b_bit = (cc2 || cc3);
+    if (_b_bit) goto RIc_Target;
 }
 
 :JL RIc_Target is RIc_OP=0xA7 & RIc_M1=0x4 & RIc_OP2=0x4 & RIc_Target
 {
     local _b_m:1;
-    local _b_ccval:1;
     local _b_bit:1;
     _b_m = 0x4;
-    _b_ccval = cc;
-    _b_bit = 8 >> _b_ccval;
-    if ((_b_m & _b_bit) != 0) goto RIc_Target;
+    _b_bit = (cc1);
+    if (_b_bit) goto RIc_Target;
 }
 
 :JNHE RIc_Target is RIc_OP=0xA7 & RIc_M1=0x5 & RIc_OP2=0x4 & RIc_Target
 {
     local _b_m:1;
-    local _b_ccval:1;
     local _b_bit:1;
     _b_m = 0x5;
-    _b_ccval = cc;
-    _b_bit = 8 >> _b_ccval;
-    if ((_b_m & _b_bit) != 0) goto RIc_Target;
+    _b_bit = (cc1 || cc3);
+    if (_b_bit) goto RIc_Target;
 }
 
 :JLH RIc_Target is RIc_OP=0xA7 & RIc_M1=0x6 & RIc_OP2=0x4 & RIc_Target
 {
     local _b_m:1;
-    local _b_ccval:1;
     local _b_bit:1;
     _b_m = 0x6;
-    _b_ccval = cc;
-    _b_bit = 8 >> _b_ccval;
-    if ((_b_m & _b_bit) != 0) goto RIc_Target;
+    _b_bit = !(cc0 || cc3);
+    if (_b_bit) goto RIc_Target;
 }
 
 :JNE RIc_Target is RIc_OP=0xA7 & RIc_M1=0x7 & RIc_OP2=0x4 & RIc_Target
 {
     local _b_m:1;
-    local _b_ccval:1;
     local _b_bit:1;
     _b_m = 0x7;
-    _b_ccval = cc;
-    _b_bit = 8 >> _b_ccval;
-    if ((_b_m & _b_bit) != 0) goto RIc_Target;
+    _b_bit = !(cc0);
+    if (_b_bit) goto RIc_Target;
 }
 
 :JE RIc_Target is RIc_OP=0xA7 & RIc_M1=0x8 & RIc_OP2=0x4 & RIc_Target
 {
     local _b_m:1;
-    local _b_ccval:1;
     local _b_bit:1;
     _b_m = 0x8;
-    _b_ccval = cc;
-    _b_bit = 8 >> _b_ccval;
-    if ((_b_m & _b_bit) != 0) goto RIc_Target;
+    _b_bit = (cc0);
+    if (_b_bit) goto RIc_Target;
 }
 
 :JNLH RIc_Target is RIc_OP=0xA7 & RIc_M1=0x9 & RIc_OP2=0x4 & RIc_Target
 {
     local _b_m:1;
-    local _b_ccval:1;
     local _b_bit:1;
     _b_m = 0x9;
-    _b_ccval = cc;
-    _b_bit = 8 >> _b_ccval;
-    if ((_b_m & _b_bit) != 0) goto RIc_Target;
+    _b_bit = (cc0 || cc3);
+    if (_b_bit) goto RIc_Target;
 }
 
 :JHE RIc_Target is RIc_OP=0xA7 & RIc_M1=0xA & RIc_OP2=0x4 & RIc_Target
 {
     local _b_m:1;
-    local _b_ccval:1;
     local _b_bit:1;
     _b_m = 0xA;
-    _b_ccval = cc;
-    _b_bit = 8 >> _b_ccval;
-    if ((_b_m & _b_bit) != 0) goto RIc_Target;
+    _b_bit = !(cc1 || cc3);
+    if (_b_bit) goto RIc_Target;
 }
 
 :JNL RIc_Target is RIc_OP=0xA7 & RIc_M1=0xB & RIc_OP2=0x4 & RIc_Target
 {
     local _b_m:1;
-    local _b_ccval:1;
     local _b_bit:1;
     _b_m = 0xB;
-    _b_ccval = cc;
-    _b_bit = 8 >> _b_ccval;
-    if ((_b_m & _b_bit) != 0) goto RIc_Target;
+    _b_bit = !(cc1);
+    if (_b_bit) goto RIc_Target;
 }
 
 :JLE RIc_Target is RIc_OP=0xA7 & RIc_M1=0xC & RIc_OP2=0x4 & RIc_Target
 {
     local _b_m:1;
-    local _b_ccval:1;
     local _b_bit:1;
     _b_m = 0xC;
-    _b_ccval = cc;
-    _b_bit = 8 >> _b_ccval;
-    if ((_b_m & _b_bit) != 0) goto RIc_Target;
+    _b_bit = !(cc2 || cc3);
+    if (_b_bit) goto RIc_Target;
 }
 
 :JNH RIc_Target is RIc_OP=0xA7 & RIc_M1=0xD & RIc_OP2=0x4 & RIc_Target
 {
     local _b_m:1;
-    local _b_ccval:1;
     local _b_bit:1;
     _b_m = 0xD;
-    _b_ccval = cc;
-    _b_bit = 8 >> _b_ccval;
-    if ((_b_m & _b_bit) != 0) goto RIc_Target;
+    _b_bit = !(cc2);
+    if (_b_bit) goto RIc_Target;
 }
 
 :JNO RIc_Target is RIc_OP=0xA7 & RIc_M1=0xE & RIc_OP2=0x4 & RIc_Target
 {
     local _b_m:1;
-    local _b_ccval:1;
     local _b_bit:1;
     _b_m = 0xE;
-    _b_ccval = cc;
-    _b_bit = 8 >> _b_ccval;
-    if ((_b_m & _b_bit) != 0) goto RIc_Target;
+    _b_bit = !(cc3);
+    if (_b_bit) goto RIc_Target;
 }
 
 :J RIc_Target is RIc_OP=0xA7 & RIc_M1=0xF & RIc_OP2=0x4 & RIc_Target
@@ -671,89 +613,73 @@ RILb_Target: RILb_TargetLoc is RILb_TargetLoc { export *:8 RILb_TargetLoc; }
 :JLO RILc_Target is RILc_OP=0xC0 & RILc_M1=0x1 & RILc_OPCD=0x4 & RILc_Target
 {
     local _b_m:1;
-    local _b_ccval:1;
     local _b_bit:1;
     _b_m = 0x1;
-    _b_ccval = cc;
-    _b_bit = 8 >> _b_ccval;
-    if ((_b_m & _b_bit) != 0) goto RILc_Target;
+    _b_bit = (cc3);
+    if (_b_bit) goto RILc_Target;
 }
 
 :JLH RILc_Target is RILc_OP=0xC0 & RILc_M1=0x2 & RILc_OPCD=0x4 & RILc_Target
 {
     local _b_m:1;
-    local _b_ccval:1;
     local _b_bit:1;
     _b_m = 0x2;
-    _b_ccval = cc;
-    _b_bit = 8 >> _b_ccval;
-    if ((_b_m & _b_bit) != 0) goto RILc_Target;
+    _b_bit = (cc2);
+    if (_b_bit) goto RILc_Target;
 }
 
 :JLL RILc_Target is RILc_OP=0xC0 & RILc_M1=0x4 & RILc_OPCD=0x4 & RILc_Target
 {
     local _b_m:1;
-    local _b_ccval:1;
     local _b_bit:1;
     _b_m = 0x4;
-    _b_ccval = cc;
-    _b_bit = 8 >> _b_ccval;
-    if ((_b_m & _b_bit) != 0) goto RILc_Target;
+    _b_bit = (cc1);
+    if (_b_bit) goto RILc_Target;
 }
 
 :JLNE RILc_Target is RILc_OP=0xC0 & RILc_M1=0x7 & RILc_OPCD=0x4 & RILc_Target
 {
     local _b_m:1;
-    local _b_ccval:1;
     local _b_bit:1;
     _b_m = 0x7;
-    _b_ccval = cc;
-    _b_bit = 8 >> _b_ccval;
-    if ((_b_m & _b_bit) != 0) goto RILc_Target;
+    _b_bit = !(cc0);
+    if (_b_bit) goto RILc_Target;
 }
 
 :JLE RILc_Target is RILc_OP=0xC0 & RILc_M1=0x8 & RILc_OPCD=0x4 & RILc_Target
 {
     local _b_m:1;
-    local _b_ccval:1;
     local _b_bit:1;
     _b_m = 0x8;
-    _b_ccval = cc;
-    _b_bit = 8 >> _b_ccval;
-    if ((_b_m & _b_bit) != 0) goto RILc_Target;
+    _b_bit = (cc0);
+    if (_b_bit) goto RILc_Target;
 }
 
 :JLNL RILc_Target is RILc_OP=0xC0 & RILc_M1=0xB & RILc_OPCD=0x4 & RILc_Target
 {
     local _b_m:1;
-    local _b_ccval:1;
     local _b_bit:1;
     _b_m = 0xB;
-    _b_ccval = cc;
-    _b_bit = 8 >> _b_ccval;
-    if ((_b_m & _b_bit) != 0) goto RILc_Target;
+    _b_bit = !(cc1);
+    if (_b_bit) goto RILc_Target;
 }
 
 :JLNH RILc_Target is RILc_OP=0xC0 & RILc_M1=0xD & RILc_OPCD=0x4 & RILc_Target
 {
     local _b_m:1;
-    local _b_ccval:1;
     local _b_bit:1;
     _b_m = 0xD;
-    _b_ccval = cc;
-    _b_bit = 8 >> _b_ccval;
-    if ((_b_m & _b_bit) != 0) goto RILc_Target;
+    _b_bit = !(cc2);
+    if (_b_bit) goto RILc_Target;
 }
 
 :JLNO RILc_Target is RILc_OP=0xC0 & RILc_M1=0xE & RILc_OPCD=0x4 & RILc_Target
 {
     local _b_m:1;
-    local _b_ccval:1;
     local _b_bit:1;
     _b_m = 0xE;
-    _b_ccval = cc;
-    _b_bit = 8 >> _b_ccval;
-    if ((_b_m & _b_bit) != 0) goto RILc_Target;
+    _b_bit = !(cc3);
+    if (_b_bit) goto RILc_Target;
 }
 
 :JLU RILc_Target is RILc_OP=0xC0 & RILc_M1=0xF & RILc_OPCD=0x4 & RILc_Target
@@ -764,12 +690,10 @@ RILb_Target: RILb_TargetLoc is RILb_TargetLoc { export *:8 RILb_TargetLoc; }
 :BRCL RILc_M1 "," RILc_Target is RILc_OP=0xC0 & RILc_M1 & RILc_OPCD=0x4 & RILc_Target
 {
     local _b_m:1;
-    local _b_ccval:1;
     local _b_bit:1;
     _b_m = RILc_M1;
-    _b_ccval = cc;
-    _b_bit = 8 >> _b_ccval;
-    if ((_b_m & _b_bit) != 0) goto RILc_Target;
+    cc_hit(_b_m, _b_bit);
+    if (_b_bit) goto RILc_Target;
 }
 
 # ---------------------------------------------------------------------------
