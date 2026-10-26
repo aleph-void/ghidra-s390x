@@ -1,0 +1,310 @@
+#!/usr/bin/env python3
+"""s390x p-code emulator tests: short sequences with hand-computed results.
+
+  emu_tests.py <outdir>     writes emu.bin (raw big-endian image loaded at 0) and emu.txt
+
+The sequences are assembled with llvm-mc (LLVM_MC, default llvm-mc; -mcpu=arch15, i.e. z17) into one image,
+each test at its own label; DATA (0x8000-0xffff) is scratch memory inside the image.
+emu.txt lines (read by EmuCheck.java):
+  <name> <start-hex> <stop-hex> <init|-> <expect>
+init/expect are comma-separated "reg=hex" or "m<size>:<addr-hex>=hex" items (memory values are
+big-endian). Every expected value was worked out by hand from the z/Architecture Principles of
+Operation (SA22-7832-14) instruction descriptions, not by running the module.
+"""
+import os, subprocess, sys, tempfile
+
+DATA = 0x8000
+
+tests = []      # (name, asm, init, expect)
+def T(name, asm, init, expect):
+    tests.append((name, asm.strip(), init, expect))
+
+# ---- integer arithmetic and condition codes -------------------------------------------------
+# 32-bit ops change bits 32-63 only; cc 0 zero, 1 < 0, 2 > 0, 3 overflow
+T("ar", "ar %r1,%r2", "r1=1111111100000005,r2=2222222200000007", "r1=111111110000000c,cc=2")
+T("ar_overflow", "ar %r1,%r2", "r1=7fffffff,r2=1", "r1=80000000,cc=3")
+T("agr_zero", "agr %r1,%r2", "r1=ffffffffffffffff,r2=1", "r1=0,cc=0")
+# logical add: cc 0 zero/no carry, 1 nonzero/no carry, 2 zero/carry, 3 nonzero/carry
+T("alr_carry", "alr %r1,%r2", "r1=ffffffff,r2=1", "r1=0,cc=2")
+# logical subtract: cc 1 nonzero with borrow
+T("slgr_borrow", "slgr %r1,%r2", "r1=5,r2=7", "r1=fffffffffffffffe,cc=1")
+T("msgr", "msgr %r1,%r2", "r1=fffffffffffffffd,r2=7", "r1=ffffffffffffffeb")
+# 128-by-64 unsigned divide of r2:r3 by r4: 100 / 7 = 14 remainder 2
+T("dlgr", "dlgr %r2,%r4", "r2=0,r3=64,r4=7", "r2=2,r3=e")
+T("ngr", "ngr %r1,%r2", "r1=f0f0,r2=ff00", "r1=f000,cc=1")
+T("sllg", "sllg %r1,%r2,4", "r2=8000000000000001", "r1=10")
+T("srag", "srag %r1,%r2,4", "r2=8000000000000000", "r1=f800000000000000,cc=1")
+T("lgfr", "lgfr %r1,%r2", "r2=1234567880000000", "r1=ffffffff80000000")
+# leftmost one at bit 19 -> r2 = 19, r3 = r2 input with that bit cleared, cc 2
+T("flogr", "flogr %r2,%r4", "r4=0000100000000001", "r2=13,r3=1,cc=2")
+# ICM mask 0101 inserts bytes into bits 40-47 and 56-63; leftmost inserted bit 1 -> cc 1
+T("icm", "icm %r1,5,0(%r2)", f"r2={DATA:x},m2:{DATA:x}=aabb", "r1=aa00bb,cc=1")
+
+# z17 count leading/trailing zeros (64 for a zero operand)
+T("clzg", "clzg %r1,%r2", "r2=0000100000000001", "r1=13")
+T("ctzg", "ctzg %r1,%r2\nctzg %r3,%r4", "r2=10,r4=0", "r1=4,r3=40")
+
+# ---- loads and stores per addressing mode ---------------------------------------------------
+T("lg_bxd", "lg %r1,8(%r2,%r3)", f"r2=100,r3={DATA:x},m8:{DATA + 0x108:x}=1122334455667788",
+  "r1=1122334455667788")
+T("st_32", "st %r1,0(%r2)", f"r1=aabbccdd11223344,r2={DATA:x}", f"m4:{DATA:x}=11223344")
+T("ly_negdisp", "ly %r1,-4(%r2)", f"r2={DATA + 0x10:x},m4:{DATA + 0xc:x}=cafef00d", "r1=cafef00d")
+T("stmg_lmg", "stmg %r6,%r8,0(%r15)\nlmg %r1,%r3,0(%r15)", f"r6=1,r7=2,r8=3,r15={DATA:x}",
+  f"r1=1,r2=2,r3=3,m8:{DATA + 8:x}=2")
+# register range wraps from r15 to r0: r15, r0, r1 get the low words, high halves unchanged
+T("lmy_wrap", "lmy %r15,%r1,0(%r2)",
+  f"r2={DATA:x},r15=aaaaaaaa00000000,m4:{DATA:x}=1,m4:{DATA + 4:x}=2,m4:{DATA + 8:x}=3",
+  "r15=aaaaaaaa00000001,r0=2,r1=3")
+T("mvc", "mvc 0(4,%r2),0(%r3)", f"r2={DATA:x},r3={DATA + 0x20:x},m4:{DATA + 0x20:x}=deadbeef",
+  f"m4:{DATA:x}=deadbeef")
+# first operand low: cc 1
+T("clc", "clc 0(2,%r2),0(%r3)", f"r2={DATA:x},r3={DATA + 0x20:x},m2:{DATA:x}=0102,m2:{DATA + 0x20:x}=0103",
+  "cc=1")
+T("larl", "larl %r1,.+0x10", "", "r1=@+10")
+# primary-space mode: LAE sets access register R1 to 0
+T("lae", "lae %r1,4(%r2,%r3)", "r2=10,r3=20,a1=5", "r1=34,a1=0")
+
+# ---- branches, calls, returns ---------------------------------------------------------------
+T("brct_loop", """
+  lghi %r1,5
+  lghi %r2,0
+0:aghi %r2,3
+  brct %r1,0b
+""", "", "r1=0,r2=f")
+# branches read the condition flags set by the compare
+T("cgr_jh_taken", """
+  cgr %r1,%r2
+  jh 1f
+  lghi %r3,1
+1:nopr
+""", "r1=5,r2=3", "r3=0,cc=2")
+T("clr_jnl_not_taken", """
+  clr %r1,%r2
+  jnl 1f
+  lghi %r3,1
+1:nopr
+""", "r1=ffffffff00000001,r2=2", "r3=1,cc=1")
+# compare and trap: no trap when the condition is false, condition code unchanged
+T("cgrt_no_trap", "cgrt %r1,%r2,8", "r1=1,r2=2,cc=2", "cc=2")
+T("bras_call_return", """
+  bras %r14,1f
+  j 2f
+1:lghi %r2,42
+  br %r14
+2:nopr
+""", "", "r2=2a")
+T("cgrj_taken", """
+  lghi %r3,1
+  cgrj %r1,%r2,4,1f
+  lghi %r3,2
+1:nopr
+""", "r1=fffffffffffffffe,r2=1", "r3=1")
+# 64-bit addressing mode (PSW bits 31-32 set): link is the updated address with a one in bit 63
+T("bassm_64", """
+  larl %r1,1f
+  oill %r1,1
+  bassm %r14,%r1
+  lghi %r3,7
+1:lghi %r2,9
+""", "pswm=180000000", "r2=9,r3=0,r14=@+d")
+
+# ---- storage-to-storage, decimal and string instructions (qemu-s390x 10.2 gets the first five
+# wrong, so these hand-computed results are their only check)
+# CSST function code 0: R3 bits 32-63 compared; equal: replacement word stored, then the
+# 4-byte store value (storage characteristic 2); unequal: the old word into R3 bits 32-63
+T("csst_fc0_equal", "csst 0(%r4),64(%r4),%r2",
+  f"r0=200,r1={DATA + 0x100:x},r2=ffffffff55667788,r4={DATA:x},m4:{DATA:x}=55667788,"
+  f"m4:{DATA + 0x100:x}=11223344,m4:{DATA + 0x110:x}=aabbccdd",
+  f"m4:{DATA:x}=11223344,m4:{DATA + 0x40:x}=aabbccdd,r2=ffffffff55667788,cc=0")
+T("csst_fc0_unequal", "csst 0(%r4),64(%r4),%r2",
+  f"r0=200,r1={DATA + 0x100:x},r2=ffffffff00000001,r4={DATA:x},m4:{DATA:x}=55667788,"
+  f"m4:{DATA + 0x100:x}=11223344",
+  f"m4:{DATA:x}=55667788,r2=ffffffff55667788,cc=1")
+T("stmh", "stmh %r1,%r2,0(%r3)", f"r1=1111111122222222,r2=3333333344444444,r3={DATA:x}",
+  f"m8:{DATA:x}=1111111133333333")
+# UNPK 12 3C -> F0 F1 F2 C3 (the leftmost source byte supplies digits 1 and 2)
+T("unpk", "unpk 0(4,%r2),0(2,%r3)", f"r2={DATA:x},r3={DATA + 0x20:x},m2:{DATA + 0x20:x}=123c",
+  f"m4:{DATA:x}=f0f1f2c3")
+# PKA "123" -> 16-byte packed +123
+T("pka", "pka 0(%r2),0(3,%r3)", f"r2={DATA:x},r3={DATA + 0x20:x},m3:{DATA + 0x20:x}=313233",
+  f"m8:{DATA:x}=0,m8:{DATA + 8:x}=123c")
+# MVCLE: "ABC" into 6 bytes padded with 0x40; cc 2 (first operand longer)
+T("mvcle", "mvcle %r2,%r4,0x40",
+  f"r2={DATA:x},r3=6,r4={DATA + 0x20:x},r5=3,m3:{DATA + 0x20:x}=c1c2c3",
+  f"m4:{DATA:x}=c1c2c340,m2:{DATA + 4:x}=4040,r2={DATA + 6:x},r3=0,r4={DATA + 0x23:x},r5=0,cc=2")
+# CU12: UTF-8 C3 A9 41 ("\u00e9A") -> UTF-16 00E9 0041, source exhausted: cc 0
+T("cu12", "cu12 %r2,%r4",
+  f"r2={DATA:x},r3=10,r4={DATA + 0x20:x},r5=3,m3:{DATA + 0x20:x}=c3a941",
+  f"m4:{DATA:x}=00e90041,r2={DATA + 4:x},r3=c,r4={DATA + 0x23:x},r5=0,cc=0")
+# CKSM: 00010002 + 0003 padded to 00030000 = 00040002
+T("cksm", "cksm %r1,%r2", f"r2={DATA:x},r3=6,m6:{DATA:x}=000100020003",
+  f"r1=40002,r2={DATA + 6:x},r3=0,cc=0")
+# packed decimal arithmetic (qemu-s390x does not implement it; test/model_diff.py checks
+# random operands against reference models)
+T("ap", "ap 0(4,%r2),0(2,%r3)", f"r2={DATA:x},r3={DATA + 0x20:x},m4:{DATA:x}=0000123c,m2:{DATA + 0x20:x}=456c",
+  f"m4:{DATA:x}=0000579c,cc=2")
+T("sp_negative", "sp 0(4,%r2),0(2,%r3)", f"r2={DATA:x},r3={DATA + 0x20:x},m4:{DATA:x}=0000123c,m2:{DATA + 0x20:x}=456c",
+  f"m4:{DATA:x}=0000333d,cc=1")
+T("mp", "mp 0(4,%r2),0(2,%r3)", f"r2={DATA:x},r3={DATA + 0x20:x},m4:{DATA:x}=0000012c,m2:{DATA + 0x20:x}=012d",
+  f"m4:{DATA:x}=0000144d")
+# 100 / 7 = 14 remainder 2: quotient in the left 2 bytes, remainder in the right 2
+T("dp", "dp 0(4,%r2),0(2,%r3)", f"r2={DATA:x},r3={DATA + 0x20:x},m4:{DATA:x}=0000100c,m2:{DATA + 0x20:x}=007c",
+  f"m4:{DATA:x}=014c002c")
+T("srp_left", "srp 0(4,%r2),2,0", f"r2={DATA:x},m4:{DATA:x}=0000123c", f"m4:{DATA:x}=0012300c,cc=2")
+# right by 2 (shift amount 62 = -2) rounding with 5: 12345 -> 123
+T("srp_right_round", "srp 0(4,%r2),62,5", f"r2={DATA:x},m4:{DATA:x}=0012345c", f"m4:{DATA:x}=0000123c,cc=2")
+# EDIT: pattern " dd,d(d d.dd" on +12345 -> "    123.45" (fill blank), cc 2
+T("ed", "ed 0(10,%r2),0(%r3)",
+  f"r2={DATA:x},r3={DATA + 0x20:x},m8:{DATA:x}=4020206b2021204b,m2:{DATA + 8:x}=2020,m4:{DATA + 0x20:x}=0012345c",
+  f"m8:{DATA:x}=40404040f1f2f34b,m2:{DATA + 8:x}=f4f5,cc=2")
+# EDMK on -12 with a CR suffix: significance from the starter position's nonzero digit,
+# minus sign keeps it on (CR kept); GR1 = address of the first significant digit; cc 1
+T("edmk_minus", "edmk 0(6,%r2),0(%r3)",
+  f"r1=0,r2={DATA:x},r3={DATA + 0x20:x},m6:{DATA:x}=40202120c3d9,m2:{DATA + 0x20:x}=012d",
+  f"m6:{DATA:x}=4040f1f2c3d9,r1={DATA + 2:x},cc=1")
+# zero field: fill '*' until the starter, then 0; cc 0; EDMK leaves GR1 unchanged
+T("edmk_zero", "edmk 0(4,%r2),0(%r3)",
+  f"r1=77,r2={DATA:x},r3={DATA + 0x20:x},m4:{DATA:x}=5c202120,m2:{DATA + 0x20:x}=000c",
+  f"m4:{DATA:x}=5c5c5cf0,r1=77,cc=0")
+T("cdsg_equal", "cdsg %r2,%r4,0(%r6)",
+  f"r2=1,r3=2,r4=3,r5=4,r6={DATA:x},m8:{DATA:x}=1,m8:{DATA + 8:x}=2",
+  f"m8:{DATA:x}=3,m8:{DATA + 8:x}=4,r2=1,r3=2,cc=0")
+# TROT stops at a 2-byte function character equal to GR0 bits 48-63 (qemu 10.2 compares 56-63)
+T("trot_test_char", "trot %r2,%r4,0",
+  f"r0=5678,r1={DATA + 0x100:x},r2={DATA + 0x200:x},r3=2,r4={DATA:x},m2:{DATA:x}=0102,"
+  f"m2:{DATA + 0x102:x}=1234,m2:{DATA + 0x104:x}=5678",
+  f"m2:{DATA + 0x200:x}=1234,r2={DATA + 0x202:x},r3=1,r4={DATA + 1:x},cc=1")
+T("srst_found", "srst %r1,%r2", f"r0=2e,r1={DATA + 0x10:x},r2={DATA:x},m4:{DATA:x}=61622e63",
+  f"r1={DATA + 2:x},r2={DATA:x},cc=1")
+
+# ---- floating point and vector --------------------------------------------------------------
+# hexadecimal floating point (1.0 = 41100000..., 2.0 = 41200000...)
+T("hfp_adr", "adr %f0,%f2", "f0=4110000000000000,f2=4120000000000000", "f0=4130000000000000,cc=2")
+T("hfp_sdr_cancel", "sdr %f0,%f2", "f0=4110000000000000,f2=4110000000000000", "f0=0,cc=0")
+T("hfp_mdr", "mdr %f0,%f2", "f0=4120000000000000,f2=4130000000000000", "f0=4160000000000000")
+T("hfp_ddr", "ddr %f0,%f2", "f0=4110000000000000,f2=4120000000000000", "f0=4080000000000000")
+T("hfp_her", "her %f0,%f2", "f2=4110000000000000", "f0=4080000000000000")
+T("hfp_cdfr", "cdfr %f0,%r1", "r1=ffffffff", "f0=c110000000000000")
+T("hfp_cfdr_trunc", "cfdr %r1,5,%f0", "f0=4128000000000000", "r1=2,cc=2")
+T("hfp_sqdr", "sqdr %f0,%f2", "f2=4140000000000000", "f0=4120000000000000")
+T("hfp_cdr_low", "cdr %f0,%f2", "f0=4110000000000000,f2=4120000000000000", "cc=1")
+T("adbr", "adbr %f0,%f2", "f0=3ff8000000000000,f2=4002000000000000", "f0=400e000000000000,cc=2")
+T("cdgbr", "cdgbr %f0,%r1", "r1=fffffffffffffffe", "f0=c000000000000000")
+T("vag", "vag %v1,%v2,%v3",
+  "v2=000000000000000100000000000000ff,v3=ffffffffffffffff0000000000000001",
+  "v1=00000000000000000000000000000100")
+# find-element-equal on bytes: first equal pair is at byte 5
+T("vfeeb", "vfeeb %v1,%v2,%v3",
+  "v2=000102030405060708090a0b0c0d0e0f,v3=ffffffffff05060708090a0b0c0d0e0f",
+  "v1=00000000000000050000000000000000")
+# string range compare: bytes in 'a'..'z' (control: >= then <=), result index of first match
+T("vstrcb", "vstrcb %v1,%v2,%v3,%v4,0",
+  "v2=41424344616263640000000000000000,v3=617a0000000000000000000000000000,"
+  "v4=a0c00000000000000000000000000000",
+  "v1=00000000000000040000000000000000")
+
+# ---- z17 general instructions, PLO, TRTE, CUSE, CFC, UPT (qemu-s390x lacks them) -----------
+# LOAD INDEXED ADDRESS: B2 + (ext32(X2 bits 32-63 + DX2) << k)
+T("lxaf", "lxaf %r1,4(%r2,%r3)", f"r2=12345678fffffffe,r3={DATA:x}", f"r1={DATA + 8:x}")
+T("llxah", "llxah %r1,0(%r2,%r3)", "r2=ffffffff,r3=10", "r1=20000000e")
+T("lxab_base_only", "lxab %r1,-1(%r2)", "r2=100", "r1=ff")
+# COMPARE AND LOAD: equal -> R3 = second operand, cc 0; unequal -> R3 = first operand, cc 1
+T("cal_eq", "cal %r1,0(%r2),8(%r2)", f"r1=aaaaaaaa00000005,r2={DATA:x},m4:{DATA:x}=5,m4:{DATA + 8:x}=abc",
+  "r1=aaaaaaaa00000abc,cc=0")
+T("cal_ne", "cal %r1,0(%r2),8(%r2)", f"r1=aaaaaaaa00000006,r2={DATA:x},m4:{DATA:x}=5", "r1=aaaaaaaa00000005,cc=1")
+T("calgf_ne", "calgf %r1,0(%r2),8(%r2)", f"r1=ffffffffffffffff,r2={DATA:x},m4:{DATA:x}=7", "r1=7,cc=1")
+T("calg_eq", "calg %r1,0(%r2),8(%r2)", f"r1=1122,r2={DATA:x},m8:{DATA:x}=1122,m8:{DATA + 8:x}=ffff",
+  "r1=ffff,cc=0")
+# BIT DEPOSIT / EXTRACT, mask bits 56-59, bits counted from the left
+T("bdepg", "bdepg %r1,%r2,%r3", "r2=a000000000000000,r3=f0", "r1=a0")
+T("bextg", "bextg %r1,%r2,%r3", "r2=a0,r3=f0", "r1=a000000000000000")
+# TRTE M3=0: table at GR1; arguments 01 02 03, fc(03) = 55 stops at the third byte
+T("trte", "trte %r2,%r4,0",
+  f"r1={DATA:x},r2={DATA + 0x100:x},r3=3,m1:{DATA + 3:x}=55,m4:{DATA + 0x100:x}=01020304",
+  f"r2={DATA + 0x102:x},r3=1,r4=55,cc=1")
+# A and F: 2-byte arguments and function codes; fc(0002) at table + 4
+T("trte_af", "trte %r2,%r4,12",
+  f"r1={DATA:x},r2={DATA + 0x100:x},r3=4,m2:{DATA + 4:x}=1234,m4:{DATA + 0x100:x}=00010002",
+  f"r2={DATA + 0x102:x},r3=2,r4=1234,cc=1")
+T("trtre", "trtre %r2,%r4,0",
+  f"r1={DATA:x},r2={DATA + 0x102:x},r3=3,m1:{DATA + 3:x}=55,m4:{DATA + 0x100:x}=03010200",
+  f"r2={DATA + 0x100:x},r3=1,r4=55,cc=1")
+# CUSE: substring length 2 found at offset 2 of both operands
+T("cuse_found", "cuse %r2,%r4",
+  f"r0=2,r1=40,r2={DATA:x},r3=4,r4={DATA + 0x10:x},r5=4,m4:{DATA:x}=abcd1122,m4:{DATA + 0x10:x}=abee1122",
+  f"r2={DATA + 2:x},r3=2,r4={DATA + 0x12:x},r5=2,cc=0")
+T("cuse_not_found", "cuse %r2,%r4",
+  f"r0=1,r1=40,r2={DATA:x},r3=2,r4={DATA + 0x10:x},r5=2,m2:{DATA:x}=0102,m2:{DATA + 0x10:x}=0304",
+  f"r2={DATA + 2:x},r3=0,r4={DATA + 0x12:x},r5=0,cc=2")
+# CFC: 6-byte units; op1 000000000001 < op3 000000000002, ascending: cc 1, codeword ~op3
+T("cfc_low", "cfc 12", f"r1={DATA:x},r2=0,r3={DATA + 0x20:x},m2:{DATA + 4:x}=0001,m2:{DATA + 0x24:x}=0002",
+  "r2=6fffffffffffd,cc=1")
+T("cfc_equal", "cfc 12", f"r1={DATA:x},r2=0,r3={DATA + 0x40:x}", f"r2={0x8000000000000000 | DATA + 0x40:x},cc=0")
+# UPT: one node (codeword 5) above GR0 (3): swapped, then the tree start: cc 1
+T("upt", "upt", f"r0=3,r1=33,r4={DATA:x},r5=20,m8:{DATA + 0x10:x}=5,m8:{DATA + 0x18:x}=55",
+  f"r0=5,r1=55,r5=0,cc=1,m8:{DATA + 0x10:x}=3,m8:{DATA + 0x18:x}=33")
+# PERFORM LOCKED OPERATION
+T("plo_cl", "plo %r2,0(%r4),%r6,8(%r4)", f"r0=0,r2=7,r4={DATA:x},r6=ffffffff00000000,m4:{DATA:x}=7,m4:{DATA + 8:x}=99",
+  "r6=ffffffff00000099,cc=0")
+T("plo_cs", "plo %r2,0(%r4),%r6,8(%r4)", f"r0=4,r2=7,r3=abc,r4={DATA:x},m4:{DATA:x}=7", f"m4:{DATA:x}=abc,cc=0")
+T("plo_cs_ne", "plo %r2,0(%r4),%r6,8(%r4)", f"r0=4,r2=8,r4={DATA:x},m4:{DATA:x}=7", "r2=7,cc=1")
+T("plo_dcs", "plo %r2,0(%r4),%r6,8(%r4)",
+  f"r0=8,r2=7,r3=77,r4={DATA:x},r6=9,r7=99,m4:{DATA:x}=7,m4:{DATA + 8:x}=9", f"m4:{DATA:x}=77,m4:{DATA + 8:x}=99,cc=0")
+T("plo_csg_pl", "plo %r2,0(%r4),%r6,256(%r4)",
+  f"r0=5,r4={DATA:x},m8:{DATA:x}=1111,m8:{DATA + 0x108:x}=1111,m8:{DATA + 0x118:x}=2222", f"m8:{DATA:x}=2222,cc=0")
+T("plo_csstg", "plo %r2,0(%r4),%r6,256(%r4)",
+  f"r0=d,r4={DATA:x},m8:{DATA:x}=1,m8:{DATA + 0x108:x}=1,m8:{DATA + 0x118:x}=5,m8:{DATA + 0x138:x}=77,"
+  f"m8:{DATA + 0x148:x}={DATA + 0x80:x}", f"m8:{DATA:x}=5,m8:{DATA + 0x80:x}=77,cc=0")
+T("plo_test", "plo %r2,0(%r4),%r6,8(%r4)", f"r0=118,r4={DATA:x}", "cc=3")
+T("ntstg", "ntstg %r1,0(%r2)", f"r1=1122334455667788,r2={DATA:x}", f"m8:{DATA:x}=1122334455667788")
+T("mvcos", "mvcos 0(%r2),16(%r2),%r3", f"r2={DATA:x},r3=4,m4:{DATA + 0x10:x}=cafef00d", f"m4:{DATA:x}=cafef00d,cc=0")
+T("mvck", "mvck 0(%r1,%r2),16(%r2),%r3", f"r1=4,r2={DATA:x},m4:{DATA + 0x10:x}=cafef00d", f"m4:{DATA:x}=cafef00d,cc=0")
+T("mvcsk", "mvcsk 0(%r2),16(%r2)", f"r0=1,r2={DATA:x},m4:{DATA + 0x10:x}=cafef00d", f"m4:{DATA:x}=cafe0000")
+T("tam", "sam31\ntam", "", "cc=1")
+T("sacf_home", "sacf 0x300", "pswm=0", "pswm=c00000000000")
+# ---- decimal floating point and vector packed decimal --------------------------------------
+# long DFP 1, 2, 3: biased exponent 398 (combination 01000, continuation 8e), coefficient declet
+T("adtr", "adtr %f0,%f2,%f4", "f2=2238000000000001,f4=2238000000000002", "f0=2238000000000003,cc=2")
+# +123 - 877 = -754
+T("vap", "vap %v1,%v2,%v3,31,1", "v2=0000000000000000000000000000123c,v3=0000000000000000000000000000877d",
+  "v1=0000000000000000000000000000754d,cc=1")
+
+
+def main():
+    out = sys.argv[1]
+    os.makedirs(out, exist_ok=True)
+    mc = os.environ.get("LLVM_MC", "llvm-mc")
+    src = []
+    for i, (name, asm, _, _) in enumerate(tests):
+        src.append(f".globl s{i}\n.globl e{i}\ns{i}:\n{asm}\ne{i}:\n  nopr\n")
+    with tempfile.TemporaryDirectory() as td:
+        s = os.path.join(td, "emu.s")
+        o = os.path.join(td, "emu.o")
+        open(s, "w").write("\n".join(src))
+        subprocess.run([mc, "-triple=s390x", "-mcpu=arch15", "-filetype=obj", s, "-o", o], check=True)
+        b = os.path.join(td, "emu.bin")
+        subprocess.run([os.environ.get("LLVM_OBJCOPY", "llvm-objcopy"), "-O", "binary",
+                        "--only-section=.text", o, b], check=True)
+        syms = subprocess.run([os.environ.get("LLVM_NM", "llvm-nm"), o], check=True,
+                              capture_output=True, text=True).stdout
+        code = open(b, "rb").read()
+    addr = {}
+    for line in syms.splitlines():
+        f = line.split()
+        if len(f) == 3:
+            addr[f[2]] = int(f[0], 16)
+    assert len(code) < DATA
+    open(os.path.join(out, "emu.bin"), "wb").write(code + bytes(0x10000 - len(code)))
+    with open(os.path.join(out, "emu.txt"), "w") as fh:
+        for i, (name, _, init, expect) in enumerate(tests):
+            st, en = addr[f"s{i}"], addr[f"e{i}"]
+            # "@+n": test start address plus n
+            expect = ",".join(kv if "=@+" not in kv else
+                              kv.split("=")[0] + "=" + format(st + int(kv.split("@+")[1], 16), "x")
+                              for kv in expect.split(","))
+            fh.write(f"{name} {st:x} {en:x} {init or '-'} {expect}\n")
+    print(f"{len(tests)} tests")
+
+
+if __name__ == "__main__":
+    main()

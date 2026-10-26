@@ -23,36 +23,37 @@ Ghidra and get back disassembly and decompiled C:
 - **Analyze before migrating** — understand a legacy module's real behavior
   before rewriting or moving it off the mainframe.
 
+> **Ghidra-Rare fork.** This branch (`ghidra-rare`) is the upstream module after verification
+> and fixes by [Ghidra-Rare](https://github.com/aleph-void/ghidra-s390x/tree/ghidra-rare):
+> every entry of the GNU binutils z/Architecture opcode table (g5 to z17) decodes as objdump
+> does, and the instruction semantics are checked against qemu-s390x, reference models and
+> the Principles of Operation. See [GHIDRA-RARE.md](GHIDRA-RARE.md) for what was verified, the
+> results, the remaining gaps, and how to run the tests, and [CREDITS.md](CREDITS.md) for
+> provenance. Prebuilt extension zips for Ghidra 12.1.3, 12.1.4 and 12.2 are on the
+> [Releases page](https://github.com/aleph-void/ghidra-s390x/releases).
+
 ## Status
 
-- **Processor spec:** `data/languages/s390x.slaspec` + extension `.sinc` files,
-  ~4,356 constructors, compiles with Ghidra's SLEIGH compiler with 0 errors.
-- **Language ID:** `s390x:BE:64:default`
-- **HLASM validation on real z/OS:** 4,308 instruction encodings assembled
-  with IBM HLASM R6.0 and validated against the SLEIGH decoder — every
-  correctly-extracted byte sequence decodes.
-  Plus 18 EBCDIC-sensitive vectors. See `tests/VALIDATION.md`.
-- **Semantic validation:** 303/303 p-code vectors green (branches, TM,
-  division, TRTT, FP, decimal, vector, load/store).
-- **Differential fuzzing:** 20,000 inputs, 0 crashes, 0 misdecodes.
-- **Smoke-tested in Ghidra 12.1.3:** module loads, raw and ELF binaries import,
-  disassembly matches Capstone, and the decompiler produces structured C
-  (recovered `do/while` loops, if/else, function calls/returns).
-- **z/OS loaders:** classic MVS load modules (CESD/ESD/text/RLD parsing with
-  relocation) and GOFF, each validated in headless Ghidra against synthetic
-  test files. Plus a z/OS Language Environment ABI compiler spec (`zos`)
-  auto-selected by both loaders.
-
-See `LOADERS.md` for the loader design, `tests/VALIDATION.md` for validation
-results, `CHANGELOG.md` for history, and `CONVENTIONS.md` for the authoring
-conventions used throughout the spec.
+- **Language ID:** `s390x:BE:64:default` (cspecs: Linux ELF ABI, z/OS Language Environment,
+  z/OS XPLINK). Target: Ghidra 12.1.4; extension zips build for 12.1.3, 12.1.4 and 12.2.
+- **Decoding:** all 2,748 entries of the binutils 2.45 opcode table (z/Architecture g5 through
+  z17) agree with GNU objdump, 8 encodings each (llvm-objdump as a second check); random words agree
+  100%. Upstream's HLASM corpus (4,308 encodings assembled with IBM HLASM R6.0 on z/OS) is
+  kept in `tests/`.
+- **Semantics:** p-code for the general, binary/hexadecimal/decimal floating-point, decimal,
+  vector (integer, BFP, packed decimal, string) instructions, checked by differential tests
+  against qemu-s390x and against reference models for what qemu lacks (decimal, HFP, DFP,
+  vector packed decimal). Privileged, I/O and hardware-state instructions stay named pcodeops.
+- **Loaders:** Linux s390x ELF (opinion, relocations, PLT), z/OS classic load modules
+  (CESD/ESD/text/RLD with relocation), GOFF and program objects, all included in the
+  extension.
 
 ## Layout
 
 ```
 data/languages/      SLEIGH sources (s390x.slaspec + *.sinc), compiled s390x.sla,
                      s390x.ldefs, pspec/cspec (Linux, z/OS LE, XPLINK), opinion file
-loaders/src/         Java sources: z/OS loaders (ZosLoadModuleLoader, ZosGoffLoader,
+src/main/java/         Java sources: z/OS loaders (ZosLoadModuleLoader, ZosGoffLoader,
                      ZosProgramObjectLoader, ZosUtil) and the s390x ELF
                      relocation handler
 tools/               Generators, validators, loader build scripts
@@ -64,97 +65,73 @@ CHANGELOG.md         Dated history of fixes
 LOADERS.md           Loader design, formats, validation, limits
 ```
 
-## Build
-
-Requires Ghidra 12.1.3 (OpenJDK 21) and Python 3. The validators also need
-Capstone (`pip install capstone`).
-
-```sh
-export GHIDRA_INSTALL_DIR=<path-to-ghidra_12.1.3_PUBLIC>
-
-# Rebuild the .sla from sources (the SLEIGH compiler ships with Ghidra)
-$GHIDRA_INSTALL_DIR/support/sleigh -a data/languages   # writes data/languages/s390x.sla
-```
-
 ## Install
 
-The module goes in `$GHIDRA_INSTALL_DIR/Ghidra/Processors/s390x/`. Ghidra
-needs `Module.manifest` and `data/languages/` there:
+Download the zip for your Ghidra version from the
+[Releases page](https://github.com/aleph-void/ghidra-s390x/releases) and install it with
+**File > Install Extensions** (or unzip it into `$GHIDRA_INSTALL_DIR/Ghidra/Extensions`), then
+restart Ghidra. Linux s390x ELF files import with the stock ELF loader (the opinion picks
+`s390x:BE:64:default`), raw binaries with `-processor s390x:BE:64:default`, and classic load
+modules, GOFF or program objects with `ZosLoadModuleLoader`, `ZosGoffLoader` or
+`ZosProgramObjectLoader` (picked automatically by file signature).
+
+## Build
+
+Requires Ghidra 12.1.x or 12.2 with its JDK, Gradle and Python 3.
 
 ```sh
-DEST=$GHIDRA_INSTALL_DIR/Ghidra/Processors/s390x
-mkdir -p "$DEST"
-cp Module.manifest "$DEST"/
-cp -r data "$DEST"/
-
-# Optional: compile and install the z/OS loaders and the ELF relocation
-# handler (each script writes a jar to $DEST/lib/)
-tools/build_zos_loaders.sh
-tools/build_elf_reloc.sh
+export GHIDRA_INSTALL_DIR=/path/to/ghidra_12.1.4_PUBLIC
+gradle buildExtension           # dist/ghidra_12.1.4_PUBLIC_<date>_s390x.zip
 ```
 
-Restart Ghidra after installing. Raw binaries import with the stock Raw
-Binary loader (`-processor s390x:BE:64:default`), Linux s390x ELF with the
-stock ELF loader, and classic load modules or GOFF with `ZosLoadModuleLoader`
-or `ZosGoffLoader` (picked automatically by file signature).
+`data/languages/s390x.sla` is committed; to rebuild it after editing the SLEIGH sources run
+`$GHIDRA_INSTALL_DIR/support/sleigh data/languages/s390x.slaspec`. Most of
+`s390x_table_gen.sinc` is generated: `tools/gen_table.py` with the semantics of
+`tools/gen_semantics.py` (and `gen_vector.py`, `gen_fp.py`, `gen_hfp.py`, `gen_dfp.py`,
+`gen_vpd.py`, `gen_misc.py`); `GHIDRA-RARE.md` has the command. The compiled `.sla` must
+inflate to less than 16 MiB or Ghidra refuses it with a misleading "Decoding error"
+(`test/run-tests.sh` checks this).
 
 ## Validation
 
-The differential harness decodes every vector in `tests/corpus.json` with the
-compiled `.sla` and compares against recorded Capstone output. It needs the
-`tests/s390x_decode` helper, built from Ghidra's decompiler C++ sources:
+`test/run-tests.sh` runs the Ghidra-Rare test suite (SLEIGH compile and size, decode against
+objdump and llvm-objdump, hand-computed emulator tests, the qemu-s390x differential and the
+reference-model differentials); `test/fetch-real-samples.sh` and `test/real-binaries.sh` run
+the Debian/Ubuntu binaries. `GHIDRA-RARE.md` has the details and current results.
 
-```sh
-git clone --depth 1 --branch Ghidra_12.1.3_build --filter=blob:none --sparse \
-  https://github.com/NationalSecurityAgency/ghidra.git ~/ghidra-src
-git -C ~/ghidra-src sparse-checkout set Ghidra/Features/Decompiler/src/decompile/cpp
-export GHIDRA_CPP_SRC=~/ghidra-src/Ghidra/Features/Decompiler/src/decompile/cpp
-
-SRCS="xml marshal space float address pcoderaw translate opcodes globalcontext \
-  sleigh pcodeparse pcodecompile sleighbase slghsymbol slghpatexpress \
-  slghpattern semantics context slaformat compression filemanage loadimage"
-g++ -O2 -std=c++17 -I "$GHIDRA_CPP_SRC" \
-  $(for f in $SRCS; do echo "$GHIDRA_CPP_SRC/$f.cc"; done) \
-  tests/s390x_decode.cc -lz -o tests/s390x_decode
-
-python3 tests/sleigh_diff.py
-```
-
-The p-code validators (`tests/validate_cond2.py`, `tests/validate_vector2.py`)
-build their own helper from `$GHIDRA_CPP_SRC`. The `tools/validate_*.py`
-scripts that recompile the spec need Ghidra's `sleigh_opt` binary (build it
-with `make sleigh_opt` in `$GHIDRA_CPP_SRC`) on `PATH` or in `$SLEIGH_OPT`.
-
-The Ghidra smoke tests (`tests/*.java`, `tests/ghidra_smoke.py`,
-`tests/elf_smoke_test.py`) run inside headless Ghidra; `LOADERS.md` has the
-exact `analyzeHeadless` commands. They write output to `$S390X_TESTS_DIR`
-(default `tests`).
-
-The HLASM corpus (`tests/corpus_zos_hlasm_full.json`, 4,326 entries) was
-built by assembling `hlasm_batches/*.asm` with IBM HLASM R6.0 on z/OS and
-checking the listings with `tools/validate_hlasm_corpus.py`.
+The upstream harness (`tests/sleigh_diff.py` against recorded Capstone output, the
+`tests/validate_*.py` p-code validators and the headless smoke scripts) is unchanged; it
+predates the fixes, so some of its recorded expectations reflect the old decoding. The HLASM
+corpus (`tests/corpus_zos_hlasm_full.json`, 4,326 entries) was built by assembling
+`hlasm_batches/*.asm` with IBM HLASM R6.0 on z/OS.
 
 ## Known limitations
 
-- 41 instructions are ARCH-gated at HLASM R6.0's default ARCH level
-  (SELECT family, MG/MGH, KMA, DFP convert variants). They are checked
-  against the Principles of Operation text only.
-- 29 mnemonics are deliberately not decoded (privileged/system, DFP, and
-  unimplemented families). They are listed in `tests/VALIDATION.md` with
-  the bytes HLASM produced.
-- Modern PM3+ program objects are detected but refused (IBM's binder layout is
-  not publicly documented; no samples available to validate against).
-- CTL+RLD, overlay/scatter, and continued records are refused, not half-parsed.
-- Full PDS-image parsing is not implemented.
-- XPLINK support is limited to the `zos_xplink` compiler spec; XPLINK
-  returns are a known gap (see `CHANGELOG.md`).
-- Some privileged/crypto operations use intentionally opaque semantics; vector
-  semantics are incomplete in places; fixed-point divide exceptions are not
-  modeled.
-- ELF relocations are handled only by the optional handler from
-  `tools/build_elf_reloc.sh`; without it, only static ET_EXEC binaries import
-  cleanly.
-- Decompiled branch conditions show Ghidra-style condition-code bit manipulation.
+Upstream's list, with what changed (details in `GHIDRA-RARE.md`):
+
+- ~~41 instructions are ARCH-gated at HLASM R6.0's default ARCH level and checked against the
+  Principles of Operation only~~ **Fixed:** they decode as GNU objdump does, and their
+  semantics are covered by the qemu and model differentials.
+- ~~29 mnemonics are deliberately not decoded~~ **Fixed:** every opcode-table entry decodes.
+- ~~XPLINK returns are a known gap~~ **Fixed:** `BR 7` and `B 2(,7)`/`B 4(,7)` are returns
+  under the XPLINK compiler spec.
+- ~~Some privileged/crypto operations use opaque semantics; vector semantics are incomplete;
+  approximate HFP semantics~~ **Fixed** for everything the architecture defines from program
+  state: all vector, BFP, HFP, DFP and decimal instructions, PLO, CUSE, TRTE and the z17
+  additions have real p-code. **Remaining**, with reasons: privileged, I/O, timing and
+  configuration instructions (hardware state outside the program), transactional execution
+  (the abort outcome is a run-time event), NNPA and the NNP-data-type conversions (the
+  Principles of Operation leave the format model-dependent), the CPACF crypto, CMPSC, SORTL,
+  DFLTCC and PFPO instructions (not implemented; see `GHIDRA-RARE.md`).
+- ~~ELF relocations are handled only by the optional handler~~ **Fixed:** the relocation
+  handler and the loaders are part of the extension.
+- ~~Decompiled branch conditions show condition-code bit manipulation~~ **Fixed:** branches
+  decompile to `if (a == b)`, `if (a < b)`, `if ((x & 0x10) == 0)`.
+- Fixed-point divide and other program exceptions are not modelled (a trap pcodeop or no
+  effect): an exception is a run-time event.
+- **Remaining (no samples):** modern PM3+ program objects are detected but refused; CTL+RLD,
+  overlay/scatter and continued records are refused; full PDS-image parsing is not
+  implemented. No legally usable z/OS load modules exist to validate against.
 
 ## References
 
