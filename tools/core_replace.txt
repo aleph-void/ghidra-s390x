@@ -676,3 +676,7 @@ sur
 sw
 swr
 sxr
+tbdr
+tbedr
+thdr
+thder

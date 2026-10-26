@@ -1256,18 +1256,9 @@ dxb_RXYFl_D20_RXYFl_X2_RXYFl_B2: dispRXYFl_DL2(RXYFl_X2,RXYFl_B2) is RXYFl_DL2 &
 # EFPC: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # BFP to HFP conversion (RRE).
-:THDER RREsl_R1 "," RREsl_R2 is RREsl_OP=0xB358 & RREsl_IGN=0 & RREsl_R1 & RREsl_R2
-{
-    # CONVERT BFP TO HFP (short to long). TODO: HFP approx.
-    # R2 is short BFP (fNh), R1 is long HFP (fN).
-    RREsl_R1 = float2float(RREsl_R2);
-}
+# THDER: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:THDR RREl_R1 "," RREl_R2 is RREl_OP=0xB359 & RREl_IGN=0 & RREl_R1 & RREl_R2
-{
-    # CONVERT BFP TO HFP (long). TODO: HFP approx.
-    RREl_R1 = RREl_R2;
-}
+# THDR: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # BFP RXF multiply-add/subtract from storage.
 # display-only address operand (tools/fix_display.py)

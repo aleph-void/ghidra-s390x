@@ -363,6 +363,83 @@ def round_to(blk, h, rfmt):
     blk.add(f"<{l}>")
     return r
 
+# ---- BFP <-> HFP (THDR, THDER, TBDR, TBEDR) ---------------------------------------------------
+def bfp_to_hfp(blk, bits, short):
+    """BFP long (or short, lengthened) -> HFP long bits, cc as Hercules cnvt_bfp_to_hfp:
+    NaN 7FFF..FF cc 3; infinity signed maximum cc 3; zero signed zero cc 0; subnormal signed
+    zero cc 1/2; normal: exact, truncated to a hex exponent; |x| < 16^-65 signed zero cc 1/2;
+    |x| >= 16^63 signed maximum cc 3."""
+    done = lbl(blk, "bh")
+    if short:
+        eb = blk.local(8, f"zext(({bits} >> 23) & 0xff)")
+        mb = blk.local(8, f"zext({bits} & 0x7fffff) << 29")
+        sg = blk.local(8, f"zext({bits} >> 31)")
+        emax, bias = 0xff, 127
+    else:
+        eb = blk.local(8, f"({bits} >> 52) & 0x7ff")
+        mb = blk.local(8, f"{bits} & 0xfffffffffffff")
+        sg = blk.local(8, f"{bits} >> 63")
+        emax, bias = 0x7ff, 1023
+    r = blk.local(8, "0")
+    cc = blk.local(1, "0")
+    mx = blk.local(8, f"({sg} << 63) | 0x7fffffffffffffff")
+    blk.add(f"if ({eb} != {emax}) goto <{done}f>; {cc} = 3;\n"
+            f"{r} = zext({mb} != 0) * 0x7fffffffffffffff + zext({mb} == 0) * {mx}; goto <{done}>;\n"
+            f"<{done}f> if ({eb} != 0) goto <{done}n>; {r} = {sg} << 63; {cc} = zext({mb} != 0) * (1 + zext({sg} == 0)); goto <{done}>;\n"
+            f"<{done}n>")
+    fr = blk.local(8, f"({mb} | 0x10000000000000) << 3")
+    ex = blk.local(8, f"{eb} - {bias} + 1")
+    k = blk.local(8, f"(0 - {ex}) & 3")
+    blk.add(f"{fr} = {fr} >> {k}; {ex} = ({ex} + {k}) s>> 2; {cc} = 1 + zext({sg} == 0);\n"
+            f"if ({ex} s>= -64) goto <{done}u>; {r} = {sg} << 63; goto <{done}>;\n"
+            f"<{done}u> if ({ex} s<= 63) goto <{done}p>; {r} = {mx}; {cc} = 3; goto <{done}>;\n"
+            f"<{done}p> {r} = ({sg} << 63) | (({ex} + 64) << 56) | {fr};\n<{done}>")
+    blk.add(f"gs_cc_flags({cc} == 0, {cc} == 1, {cc} == 2, {cc} == 3);")
+    return r
+
+def hfp_to_bfp(blk, h, short, m3):
+    """HFP long -> BFP long/short, rounded by M3 (0: the FPC mode, 1 nearest ties away, 4
+    nearest even, 5 toward 0, 6 toward +inf, 7 toward -inf); cc 0 zero, 1/2 by sign, 3 when
+    the result overflows."""
+    P, emin, emax, eb, n = (24, -126, 127, 8, 4) if short else (53, -1022, 1023, 11, 8)
+    done = lbl(blk, "hb")
+    res = blk.local(8, "0")
+    md = blk.local(8, f"{m3}")
+    blk.add(f"if ({md} != 0) goto <{done}m>; {md} = zext(fpc & 3); {md} = zext({md} == 0) * 4 + zext({md} == 1) * 5 + "
+            f"zext({md} == 2) * 6 + zext({md} == 3) * 7;\n<{done}m>")
+    cc = blk.local(1, "0")
+    blk.add(f"if ({h.f} != 0) goto <{done}nz>; {res} = zext({h.s}) << {8 * n - 1}; goto <{done}>;\n<{done}nz>")
+    f = blk.local(8, f"{h.f}:8")
+    lz = blk.local(8, f"lzcount({f})")
+    pmsb = blk.local(8, f"63 - {lz}")
+    E = blk.local(8, f"{pmsb} + 4 * ({h.e} - 64) - 56")
+    sh = blk.local(8, f"{pmsb} - {P - 1}")
+    blk.add(f"if ({E} s>= {emin}) goto <{done}nm>; {sh} = {sh} + ({emin} - {E}); {E} = {emin - 1};\n<{done}nm>")
+    q = blk.local(16, "zext(0:8)")
+    rem = blk.local(16, "zext(0:8)")
+    half = blk.local(16, "zext(0:8)")
+    blk.add(f"if ({sh} s> 0) goto <{done}r>; {q} = zext({f}) << (0 - {sh}); goto <{done}q>;\n"
+            f"<{done}r> {q} = zext({f}) >> {sh}; {rem} = zext({f}) - ({q} << {sh}); {half} = (zext(1:1) << {sh}) >> 1;\n<{done}q>")
+    up = blk.local(1, f"(({md} == 1) && ({rem} >= {half}) && ({half} != 0)) || "
+                      f"(({md} == 4) && (({rem} > {half}) || (({rem} == {half}) && ({half} != 0) && (({q} & 1) != 0)))) || "
+                      f"(({md} == 6) && ({h.s} == 0) && ({rem} != 0)) || (({md} == 7) && ({h.s} != 0) && ({rem} != 0))")
+    blk.add(f"{q} = {q} + zext({up});")
+    # q holds P significant bits (2^(P-1) <= q < 2^P) for normals, fewer for subnormals; a
+    # carry to 2^P moves the exponent up
+    blk.add(f"if ({q} < {c16(1 << P)}) goto <{done}c>; {q} = {q} >> 1; {E} = {E} + 1;\n<{done}c>")
+    blk.add(f"if (({E} == {emin - 1}) && ({q} >= {c16(1 << (P - 1))})) goto <{done}sn>; goto <{done}sk>;\n"
+            f"<{done}sn> {E} = {emin};\n<{done}sk>")
+    bexp = blk.local(8, f"zext({q} >= {c16(1 << (P - 1))}) * ({E} + {(1 << (eb - 1)) - 1})")
+    blk.add(f"{cc} = 1 + zext({h.s} == 0);")
+    blk.add(f"if ({E} s<= {emax}) goto <{done}ok>; {cc} = 3;\n"
+            f"local toinf{done}:1 = ({md} == 1) || ({md} == 4) || (({md} == 6) && ({h.s} == 0)) || (({md} == 7) && ({h.s} != 0));\n"
+            f"{bexp} = zext(toinf{done}) * {(1 << eb) - 1} + zext(!toinf{done}) * {(1 << eb) - 2};\n"
+            f"{q} = zext(!toinf{done}) * {c16((1 << P) - 1)};\n<{done}ok>")
+    qq = blk.local(8, f"{q}:8 & {(1 << (P - 1)) - 1:#x}")
+    blk.add(f"{res} = (zext({h.s}) << {8 * n - 1}) | ({bexp} << {P - 1}) | {qq};\n<{done}>")
+    blk.add(f"gs_cc_flags({cc} == 0, {cc} == 1, {cc} == 2, {cc} == 3);")
+    return res
+
 # ---- instruction table -----------------------------------------------------------------------
 def opfmt(n):
     return n
@@ -485,6 +562,19 @@ def semantics(ctx):
         lo = blk.local(8, f"{sgn} | (({hi} - 0x0e00000000000000) & 0x7f00000000000000)")
         blk.add(f"if ({fr} != 0) goto <{(l := lbl(blk, 'lx'))}>; {hi} = {sgn}; {lo} = {sgn};\n<{l}>")
         blk.add(f"{o[0]} = {hi}; {p[0]} = {lo};")
+        return blk.text()
+    if n in ("thdr", "thder"):
+        bits = blk.local(8, o[1]) if n == "thdr" else blk.local(4, f"{o[1]}(4)")
+        r = bfp_to_hfp(blk, bits, n == "thder")
+        blk.add(f"{o[0]} = {r};")
+        return blk.text()
+    if n in ("tbdr", "tbedr"):
+        a = rd(2, "d")
+        r = hfp_to_bfp(blk, a, n == "tbedr", o[1])
+        if n == "tbdr":
+            blk.add(f"{o[0]} = {r};")
+        else:
+            blk.add(f"local tb{blk.tag}:4 = {r}:4; {o[0]} = ({o[0]} & 0xffffffff) | (zext(tb{blk.tag}) << 32);")
         return blk.text()
     # multiply and add / subtract (normalized, product not range-checked, no significance)
     m = re.fullmatch(r"m(a|s)([ed])r?", n)

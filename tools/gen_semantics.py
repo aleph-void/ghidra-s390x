@@ -907,7 +907,7 @@ HFP_NAMES = set("""ad adr ae aer au aur aw awr axr cd cdfr cdgr cdr ce cefr cegr
 cgxr cxfr cxgr cxr dd ddr de der dxr fidr fier fixr hdr her lcdr lcer lcxr lde lder ldxr ledr lexr
 lndr lner lnxr lpdr lper lpxr lrdr lrer ltdr lter ltxr lxd lxdr lxe lxer mad madr mae maer md mde
 mder mdr me mee meer mer msd msdr mse mser mxd mxdr mxr sd sdr se ser sqd sqdr sqe sqer sqxr su sur
-sw swr sxr""".split())
+sw swr sxr tbdr tbedr thdr thder""".split())
 EXTRA_FIELDS.update(gen_misc.EXTRA)
 
 def semantics(ctx):
