@@ -1,0 +1,38 @@
+# Builds this module for the three newest Ghidra releases using Ghidra-Rare's shared workflow.
+# Pushes keep the zips as workflow artifacts; a ghidra-rare-v* tag publishes a GitHub release.
+# Every Monday it checks for a new Ghidra release and, if no release here has builds for it yet,
+# publishes ghidra-rare-ghidra-<version>.
+name: Ghidra-Rare release builds
+
+on:
+  push:
+    branches: [ghidra-rare]
+    tags: ['ghidra-rare-v*']
+  pull_request:
+    branches: [ghidra-rare]
+  schedule:
+    - cron: '17 6 * * 1'
+  workflow_dispatch:
+    inputs:
+      ghidra_versions:
+        description: Space-separated Ghidra versions (default is the three newest releases)
+        required: false
+        default: ''
+      check_new:
+        description: Release only if no release has builds for the newest Ghidra yet (what the weekly run does)
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+jobs:
+  release:
+    uses: aleph-void/Ghidra-Rare/.github/workflows/module-release.yml@main
+    with:
+      module_dir: .
+      name: s390x
+      ghidra_versions: ${{ inputs.ghidra_versions || '' }}
+      check_new: ${{ github.event_name == 'schedule' || inputs.check_new == true }}
+    permissions:
+      contents: write
