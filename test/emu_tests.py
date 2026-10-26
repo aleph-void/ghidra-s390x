@@ -388,7 +388,7 @@ def _cipher_tests():
         T(f"kmctr_{nm}", "kmctr %r2,%r6,%r4", f"r0={fc:x},r1={DATA:x},r2={_OUT:x},r4={_IN:x},r5={n:x},r6={_CTR:x},m{kl}:{DATA:x}={key.hex()},m{n}:{_IN:x}={data.hex()},m{n}:{_CTR:x}={ctrs.hex()}",
           f"m{n}:{_OUT:x}={out.hex()},r2={_OUT + n:x},r4={_IN + n:x},r5=0,r6={_CTR + n:x},cc=0")
 _cipher_tests()
-T("km_query", "km %r2,%r4", f"r0=0,r1={DATA:x}", f"m16:{DATA:x}=f0003800000000000000000000000000")
+T("km_query", "km %r2,%r4", f"r0=0,r1={DATA:x}", f"m16:{DATA:x}=f0003800000028000000280000000000")
 
 # ---- KMAC (CBC-MAC of full blocks) and PCC (CMAC of the last block), checked against CMAC ----------
 from cryptography.hazmat.primitives import cmac as _cmac
@@ -424,7 +424,7 @@ def _mac_tests():
               f"m{bs}:{DATA + 8 + bs:x}={expect.hex()},cc=0")
         T(f"pcc_{nm}_toolong", "pcc", f"r0={fc:x},r1={DATA:x},m1:{DATA:x}={bs * 8 + 1:02x}", "cc=2")
 _mac_tests()
-T("pcc_query", "pcc", f"r0=0,r1={DATA:x}", f"m16:{DATA:x}=f0003800000000000000000000000000")
+T("pcc_query", "pcc", f"r0=0,r1={DATA:x}", f"m16:{DATA:x}=f0003800000028000000000000000000")
 
 def _kma_tests():
     from cryptography.hazmat.primitives.ciphers.aead import AESGCM
@@ -467,6 +467,77 @@ def _kma_tests():
           f"cc=2,r5=1,r7=0,r2={_OUT + 32:x},r4={_IN + 32:x},r6={AAD + 20:x},m32:{_OUT:x}={ct[:32].hex()},m4:{DATA + 12:x}=00000003")
 _kma_tests()
 T("kma_query", "kma %r2,%r6,%r4", f"r0=0,r1={DATA:x}", f"m16:{DATA:x}=" + "%032x" % (sum(1 << (127 - c) for c in (0, 18, 19, 20))))
+
+def _gf_dbl(x):
+    x <<= 1
+    return (x ^ 0x87) & ((1 << 128) - 1) if x >> 128 else x
+def _gf_mul(a, b):
+    z = 0
+    while b:
+        if b & 1:
+            z ^= a
+        a = _gf_dbl(a)
+        b >>= 1
+    return z
+def _gf_pow2(j):
+    r, p = 1, 2
+    while j:
+        if j & 1:
+            r = _gf_mul(r, p)
+        p = _gf_mul(p, p)
+        j >>= 1
+    return r
+def _le(b):
+    return int.from_bytes(b, "little")
+def _leb(x):
+    return x.to_bytes(16, "little")
+def _xts_tests():
+    from cryptography.hazmat.primitives.ciphers import Cipher, modes
+    def aes_e(key, blk):
+        return Cipher(algorithms.AES(key), modes.ECB()).encryptor().update(blk)
+    for nm, fc, fcf, kl in (("128", 50, 82, 16), ("256", 52, 84, 32)):
+        k1 = bytes((9 * i + fc) & 0xff for i in range(kl))
+        k2 = bytes((17 * i + 3) & 0xff for i in range(kl))
+        tw = bytes((23 * i + 5) & 0xff for i in range(16))
+        n = 5 * 16
+        data = bytes((29 * i + 11) & 0xff for i in range(n))
+        for dec in (0, 1):
+            ci = Cipher(algorithms.AES(k1 + k2), modes.XTS(tw))
+            out = (ci.decryptor() if dec else ci.encryptor()).update(data)
+            m = 0x80 if dec else 0
+            t0 = aes_e(k2, tw)
+            outp = _leb(_gf_mul(_le(t0), _gf_pow2(5)))
+            T(f"kmxts_{nm}_d{dec}", "km %r2,%r4", f"r0={fc | m:x},r1={DATA:x},r2={_OUT:x},r4={_IN:x},r5={n:x},m{kl + 16}:{DATA:x}={(k1 + t0).hex()},m{n}:{_IN:x}={data.hex()}",
+              f"m{n}:{_OUT:x}={out.hex()},m16:{DATA + kl:x}={outp.hex()},r2={_OUT + n:x},r4={_IN + n:x},r5=0,cc=0")
+            # full XTS from a given next alpha power (block 3 onwards)
+            for nap_e in (0, 3):
+                nap = _leb(1 << 0) if nap_e == 0 else _leb(_gf_pow2(nap_e))
+                if nap_e:
+                    pre = bytes(16 * nap_e)
+                    ci = Cipher(algorithms.AES(k1 + k2), modes.XTS(tw))
+                    full = (ci.decryptor() if dec else ci.encryptor()).update(pre + data)
+                    out2 = full[16 * nap_e:]
+                else:
+                    out2 = out
+                nap_out = _leb(_gf_mul(_le(nap), _gf_pow2(5)))
+                T(f"kmfull_{nm}_d{dec}_nap{nap_e}", "km %r2,%r4", f"r0={fcf | m:x},r1={DATA:x},r2={_OUT:x},r4={_IN:x},r5={n:x},m{2 * kl + 32}:{DATA:x}={(k1 + k2 + tw + nap).hex()},m{n}:{_IN:x}={data.hex()}",
+                  f"m{n}:{_OUT:x}={out2.hex()},m16:{DATA + 2 * kl + 16:x}={nap_out.hex()},m16:{DATA + 2 * kl:x}={tw.hex()},r2={_OUT + n:x},r4={_IN + n:x},r5=0,cc=0")
+        # PCC-Compute-XTS-Parameter
+        e = _le(aes_e(k1, tw))
+        for j in (0, 1, 5, 1000003, (1 << 70) + 12345, (1 << 127) + 1):
+            exp = _leb(_gf_mul(e, _gf_pow2(j)))
+            pb = k1 + tw + j.to_bytes(16, "big") + bytes(16) + bytes(16)
+            exp_t = "00000000000000000000000000000000" if j == 0 else "%032x" % 128
+            T(f"pcc_xts{nm}_j{j}", "pcc", f"r0={fc:x},r1={DATA:x},m{len(pb)}:{DATA:x}={pb.hex()}",
+              f"m16:{DATA + kl + 48:x}={exp.hex()},m16:{DATA + kl + 32:x}={exp_t},cc=0")
+        # resumed with a partial value
+        for t, jj, part in ((100, 5, 0), (126, 5, 4), (127, 5, 4)):
+            pb = k1 + tw + jj.to_bytes(16, "big") + t.to_bytes(16, "big") + _leb(_gf_mul(e, _gf_pow2(part)))
+            T(f"pcc_xts{nm}_resume{t}", "pcc", f"r0={fc:x},r1={DATA:x},m{len(pb)}:{DATA:x}={pb.hex()}",
+              f"m16:{DATA + kl + 48:x}={_leb(_gf_mul(e, _gf_pow2(jj))).hex()},m16:{DATA + kl + 32:x}={'%032x' % 128},cc=0")
+        pb = k1 + tw + (5).to_bytes(16, "big") + (200).to_bytes(16, "big") + bytes(16)
+        T(f"pcc_xts{nm}_cc2", "pcc", f"r0={fc:x},r1={DATA:x},m{len(pb)}:{DATA:x}={pb.hex()}", "cc=2")
+_xts_tests()
 
 
 def main():
