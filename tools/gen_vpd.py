@@ -104,10 +104,84 @@ def imm(blk, op, size):
     t = blk.local(8, op)
     return blk.local(size, f"{t}:{size}")
 
+
+def hexdigits(blk, v, size):
+    n = blk.local(8, "0")
+    t = blk.local(size, v)
+    l = lbl(blk, "hx")
+    blk.add(f"<{l}> if ({t} == 0) goto <{l}e>; {t} = {t} >> 4; {n} = {n} + 1; goto <{l}>;\n<{l}e>")
+    return n
+
+def hfp_norm(blk, N, n, D, size):
+    """fraction of D hex digits of N (n significant hex digits), left aligned"""
+    f = blk.local(size, "zext(0:8)")
+    l = lbl(blk, "hn")
+    blk.add(f"if ({n} s> {D}) goto <{l}r>; {f} = {N} << (4 * ({D} - {n})); goto <{l}e>;\n<{l}r> {f} = {N} >> (4 * ({n} - {D}));\n<{l}e>")
+    return f
+
+def scale_to_hfp(blk, n, o):
+    """VSCHP / VSCSHP: the packed decimal V2 times 10 ** (V3 byte 7 & 7) as HFP"""
+    a, neg = signed_in(blk, o[1], "0:1")
+    t3 = blk.local(16, f"{o[2]} >> 64")
+    sc = blk.local(8, f"zext({t3}:1 & 7)")
+    N = blk.local(16, f"{a}:16 * {pow10(blk, sc, 16)}")
+    s = blk.local(16, f"zext({neg})")
+    l = lbl(blk, "sh")
+    r = blk.local(16, "zext(0:8)")
+    blk.add(f"if ({N} == 0) goto <{l}e>;")
+    nd = hexdigits(blk, N, 16)
+    if n.startswith("vsch") and n != "vscshp":
+        if n == "vschp":
+            m4, m5 = imm(blk, o[3], 1), o[4]
+        else:
+            m4, m5 = blk.local(1, {"vschsp": "2", "vschdp": "3", "vschxp": "4"}[n]), o[3]
+        rm = blk.local(1, f"({imm(blk, m5, 1)} & 1) != 0")
+        D = blk.local(8, f"zext({m4} == 2) * 6 + zext({m4} == 3) * 14 + zext({m4} == 4) * 28")
+        blk.add(f"if (!{rm} || ({nd} s<= {D})) goto <{l}nr>; {N} = {N} + (zext(8:1) << (4 * ({nd} - {D} - 1)));\n<{l}nr>")
+        nd2 = hexdigits(blk, N, 16)
+        f = hfp_norm(blk, N, nd2, D, 16)
+        ch = blk.local(16, f"zext({nd2}:1 + 64)")
+        blk.add(f"if ({m4} != 2) goto <{l}l>; {r} = ((({s} << 31) | ({ch} << 24) | {f}) << 96); goto <{l}e>;\n"
+                f"<{l}l> if ({m4} != 3) goto <{l}x>; {r} = ((({s} << 63) | ({ch} << 56) | {f}) << 64); goto <{l}e>;\n"
+                f"<{l}x> {r} = ((({s} << 63) | ({ch} << 56) | ({f} >> 56)) << 64) | ({s} << 63) | ((({ch} - 14) & 0x7f) << 56) | ({f} & 0xffffffffffffff);\n"
+                f"<{l}e> {o[0]} = {r};")
+        return
+    f = hfp_norm(blk, N, nd, 6, 16)
+    ch = blk.local(16, f"zext({nd}:1 + 64)")
+    blk.add(f"{r} = (({s} << 31) | ({ch} << 24) | {f}) << 96; if ({nd} s<= 6) goto <{l}e>;")
+    R = blk.local(16, f"{N} & ((zext(1:1) << (4 * ({nd} - 6))) - 1)")
+    blk.add(f"if ({R} == 0) goto <{l}e>;")
+    n2 = hexdigits(blk, R, 16)
+    f2 = hfp_norm(blk, R, n2, 14, 16)
+    blk.add(f"{r} = {r} | ({s} << 63) | (zext({n2}:1 + 64) << 56) | {f2};\n<{l}e> {o[0]} = {r};")
+
+def hfp_to_scaled(blk, o):
+    """VCSPH: extended HFP V2 times 10 ** (V3 byte 7 & 31), rounded to an integer"""
+    x = blk.local(16, o[1])
+    t3 = blk.local(16, f"{o[2]} >> 64")
+    sc = blk.local(8, f"zext({t3}:1 & 0x1f)")
+    rm = blk.local(1, f"({imm(blk, o[3], 1)} & 1) != 0")
+    hi = blk.local(8, f"{x}(8)")
+    F = blk.local(64, "zext(0:8)")
+    blk.add(f"{F} = (zext(({hi} & 0xffffffffffffff) >> 8) << 64) | (zext({hi} & 0xff) << 56) | zext({x}:8 & 0xffffffffffffff);")
+    k = blk.local(8, f"zext(({hi} >> 56) & 0x7f) - 92")
+    N = blk.local(64, f"{F} * {pow10(blk, sc, 64)}")
+    q = blk.local(64, N)
+    l = lbl(blk, "cs")
+    blk.add(f"if ({k} s< 0) goto <{l}r>; {q} = {N} << (4 * {k}); goto <{l}d>;\n"
+            f"<{l}r> if ({k} s< -100) goto <{l}z>;")
+    sh = blk.local(8, f"-4 * {k}")
+    blk.add(f"{q} = {N} >> {sh}; if (!{rm}) goto <{l}d>;\n"
+            f"if ((({N} >> ({sh} - 1)) & 1) == 0) goto <{l}d>; {q} = {q} + 1; goto <{l}d>;\n"
+            f"<{l}z> {q} = 0;\n<{l}d>")
+    out, ov = to_digits(blk, q, "31:8", 64)
+    blk.add(f"{o[0]} = {out} | zext(0xc:1 + zext({hi} s< 0));\n"
+            f"if ({x} != 0) goto <{l}x>; {o[0]} = zext(0xc:1);\n<{l}x>")
+
 # ---- instructions -----------------------------------------------------------------------------
 ARITH = {"vap", "vsp", "vmp", "vmsp", "vdp", "vrp", "vsdp"}
 NAMES = ARITH | set("""vsrp vsrpr vcp vcvd vcvdg vcvdq vcvb vcvbg vcvbq vlip vpkz vupkz vupkzh vupkzl vpkzr
-vclzdp vpsop vtp vtz""".split())
+vclzdp vpsop vtp vtz vschp vschsp vschdp vschxp vscshp vcsph""".split())
 
 def semantics(ctx):
     n, o = ctx["name"], ctx["ops"]
@@ -354,6 +428,12 @@ def semantics(ctx):
                              f"(({stc} == 6) && (({s} == 0xc) || ({s} == 0xd) || ({s} == 0xf))) || "
                              f"(({stc} == 7) && (({s} == 0xc) || ({s} == 0xf) || (!{allz} && ({s} == 0xd))))")
         blk.add(f"gs_cc_flags(!{bad} && {valid}, !{bad} && !{valid}, {bad} && {valid}, {bad} && !{valid});")
+        return blk.text()
+    if n.startswith("vsch") or n == "vscshp":
+        scale_to_hfp(blk, n, o)
+        return blk.text()
+    if n == "vcsph":
+        hfp_to_scaled(blk, o)
         return blk.text()
     if n == "vtz":
         hi, lo = blk.local(16, o[0]), blk.local(16, o[1])
