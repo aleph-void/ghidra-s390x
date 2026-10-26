@@ -93,18 +93,109 @@ def wr(blk, sym, s, val, pair=None):
 def mem(blk, addr, s):
     return blk.local(s, f"*:{s} {addr}")
 
+def c16(v):
+    """16-byte constant."""
+    hi, lo = v >> 64, v & ((1 << 64) - 1)
+    return f"((zext({hi:#x}:8) << 64) | zext({lo:#x}:8))" if hi else f"zext({lo:#x}:8)"
+
+def ro_add(blk, x, y):
+    """Binary128 x + y rounded to odd: the TwoSum error tells whether the sum was inexact, and an
+    inexact even result moves one unit toward the exact value. Rounding a round-to-odd binary128
+    result to a format of at most 111 bits gives the correctly rounded result."""
+    s_ = blk.local(16, f"{x} f+ {y}")
+    bb = blk.local(16, f"{s_} f- {x}")
+    aa = blk.local(16, f"{s_} f- {bb}")
+    e = blk.local(16, f"({y} f- {bb}) f+ ({x} f- {aa})")
+    z = blk.local(16, "int2float(0:8)")
+    fix = blk.local(1, f"!nan({e}) && ({e} f!= {z}) && (({s_} & 1) == 0)")
+    same = blk.local(1, f"(({s_} ^ {e}) >> 127) == 0")
+    blk.add(f"{s_} = {s_} + zext({fix} && {same}) - zext({fix} && !{same});")
+    return s_
+
+def fma128(blk, a, b, c, sub):
+    """Exact binary128 a*b+c (c negated for sub), one rounding to nearest even, by integer
+    arithmetic on the significands. Infinities, NaNs and zero operands take the plain
+    binary128 formula (exact for them)."""
+    t = uid()
+    r = blk.local(16, f"({a} f* {b}) {'f-' if sub else 'f+'} {c}")
+    m112 = c16((1 << 112) - 1)
+    ex = {}
+    for nm, v in (("a", a), ("b", b), ("c", c)):
+        sh = blk.local(16, f"{v} >> 112")
+        ex[nm] = blk.local(4, f"{sh}:4 & 0x7fff")
+    blk.add(f"if (({ex['a']} == 0x7fff) || ({ex['b']} == 0x7fff) || ({ex['c']} == 0x7fff)) goto <fz{t}>;")
+    blk.add(f"if ((({a} << 1) == 0) || (({b} << 1) == 0) || (({c} << 1) == 0)) goto <fz{t}>;")
+    sig = {}
+    for nm, v in (("a", a), ("b", b), ("c", c)):
+        hb = blk.local(16, f"zext({ex[nm]} != 0) << 112")
+        sig[nm] = blk.local(16, f"({v} & {m112}) | {hb}")
+        blk.add(f"{ex[nm]} = {ex[nm]} + zext({ex[nm]} == 0);")
+    xab = blk.local(16, f"({a} ^ {b}) >> 127")
+    sp = blk.local(1, f"{xab}:1")
+    xc = blk.local(16, f"{c} >> 127")
+    sc = blk.local(1, f"{xc}:1 ^ {1 if sub else 0}")
+    # value = X * 2^(q - 16383 - 224): product X = Ma*Mb, q = Ea+Eb-16383; addend X = Mc<<112, q = Ec
+    P = blk.local(64, f"zext({sig['a']}) * zext({sig['b']})")
+    C = blk.local(64, f"zext({sig['c']}) << 112")
+    qp = blk.local(4, f"{ex['a']} + {ex['b']} - 16383")
+    qc = blk.local(4, f"{ex['c']}")
+    pbig = blk.local(1, f"{qp} s>= {qc}")
+    big = blk.local(64, f"zext({pbig}) * {P} + zext(!{pbig}) * {C}")
+    small = blk.local(64, f"zext({pbig}) * {C} + zext(!{pbig}) * {P}")
+    sbig = blk.local(1, f"({pbig} && {sp}) || (!{pbig} && {sc})")
+    ssmall = blk.local(1, f"({pbig} && {sc}) || (!{pbig} && {sp})")
+    d = blk.local(4, f"zext({pbig}) * ({qp} - {qc}) + zext(!{pbig}) * ({qc} - {qp})")
+    shl = blk.local(4, f"zext({d} s< 260) * {d} + zext({d} s>= 260) * 260")
+    shr = blk.local(4, f"{d} - {shl}")
+    q = blk.local(4, f"zext({pbig}) * {qp} + zext(!{pbig}) * {qc} - {shl}")
+    blk.add(f"{big} = {big} << {shl};")
+    # shift the small operand right with a sticky bit
+    lost = blk.local(64, f"{small} << (512 - {shr})")
+    blk.add(f"if ({shr} == 0) goto <ns{t}>;")
+    blk.add(f"if ({shr} s< 512) goto <nr{t}>; {small} = zext({small} != 0); goto <ns{t}>;")
+    blk.add(f"<nr{t}>")
+    blk.add(f"{small} = ({small} >> {shr}) | zext({lost} != 0);")
+    blk.add(f"<ns{t}>")
+    S = blk.local(64, f"{big} + {small}")
+    sg = blk.local(1, sbig)
+    blk.add(f"if ({sbig} == {ssmall}) goto <ad{t}>;")
+    ge = blk.local(1, f"{big} >= {small}")
+    blk.add(f"{S} = zext({ge}) * ({big} - {small}) + zext(!{ge}) * ({small} - {big});")
+    blk.add(f"{sg} = ({ge} && {sbig}) || (!{ge} && {ssmall});")
+    blk.add(f"if ({S} != 0) goto <ad{t}>; {r} = {c16(0)}; goto <fz{t}>;")      # exact zero: +0
+    blk.add(f"<ad{t}>")
+    n = blk.local(4, f"512 - lzcount({S})")
+    E = blk.local(4, f"{n} - 1 + {q} - 224")
+    sh = blk.local(4, f"{n} - 113 + zext({E} s< 1) * (1 - {E})")
+    blk.add(f"{E} = zext({E} s>= 1) * {E} + zext({E} s< 1);")
+    keep = blk.local(64, f"{S}")
+    blk.add(f"if ({sh} s> 0) goto <rd{t}>; {keep} = {S} << (0 - {sh}); goto <pk{t}>;")
+    blk.add(f"<rd{t}>")
+    rem = blk.local(64, f"{S} << (512 - {sh})")
+    blk.add(f"{keep} = {S} >> {sh};")
+    half = blk.local(64, f"zext(1:1) << 511")
+    up = blk.local(1, f"({rem} > {half}) || (({rem} == {half}) && (({keep} & 1) != 0))")
+    blk.add(f"{keep} = {keep} + zext({up});")
+    blk.add(f"<pk{t}>")
+    bits = blk.local(16, f"(zext({E} - 1) << 112) + {keep}:16")
+    inf = c16(0x7fff << 112)
+    blk.add(f"{bits} = zext({bits} < {inf}) * {bits} + zext({bits} >= {inf}) * {inf};")
+    blk.add(f"{r} = {bits} | (zext({sg}) << 127);")
+    blk.add(f"<fz{t}>")
+    return r
+
 def fma(blk, a, b, c, s, neg_prod=False, sub=False):
-    """a*b+c (or -, negated) with one rounding, computed in binary128 (exact for the product of
-    two binary32/64 values)."""
+    """a*b+c (or -, negated) with one rounding. Short and long: the product is exact in
+    binary128 and the sum is rounded to odd there before the final rounding; extended: exact
+    integer arithmetic (fma128)."""
     if s == 16:
-        p = blk.local(16, f"{a} f* {b}")
-        r = blk.local(16, f"{p} {'f-' if sub else 'f+'} {c}")
+        r = fma128(blk, a, b, c, sub)
         return blk.local(16, f"f- {r}") if neg_prod else r
     A = blk.local(16, f"float2float({a})")
     B = blk.local(16, f"float2float({b})")
     C = blk.local(16, f"float2float({c})")
     p = blk.local(16, f"{A} f* {B}")
-    r = blk.local(16, f"{p} {'f-' if sub else 'f+'} {C}")
+    r = ro_add(blk, p, blk.local(16, f"f- {C}") if sub else C)
     if neg_prod:
         r = blk.local(16, f"f- {r}")
     return blk.local(s, f"float2float({r})")
