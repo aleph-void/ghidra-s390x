@@ -45,6 +45,11 @@ def isqrt(n):
     return math.isqrt(n)
 
 K256 = [icbrt(p << 96) & 0xffffffff for p in primes(64)]
+_P16 = primes(16)
+IV256 = [isqrt(p << 64) & 0xffffffff for p in _P16[:8]]
+IV512 = [isqrt(p << 128) & 0xffffffffffffffff for p in _P16[:8]]
+IV384 = [isqrt(p << 128) & 0xffffffffffffffff for p in _P16[8:]]
+IV224 = [isqrt(p << 128) & 0xffffffff for p in _P16[8:]]
 K512 = [icbrt(p << 192) & 0xffffffffffffffff for p in primes(80)]
 RC = []
 _lfsr = 1
@@ -87,7 +92,7 @@ def md_engine(name, wb, bs, lenb, init, rounds_code, nsched, nwords, kinit):
     t.append(f"  <L_tail> if (cpfin == 0) goto <L_exit>; if (padded != 0) goto <L_exit>; padded = 1; src = 1;")
     # zero the pad buffer, copy the tail, 0x80, bit length
     t.append(f"  i = 0; <L_z> *[cpm]:8 ({PB:#x}:4 + i) = 0; i = i + 8; if (i < 256) goto <L_z>;")
-    t.append(f"  i = 0; <L_c> if (zext(i) >= cpl) goto <L_cd>; b = *:1 (cpa + zext(i)); *[cpm]:1 ({PB:#x}:4 + i) = b; i = i + 1; goto <L_c>;")
+    t.append(f"  i = 0; <L_c> if (zext(i) >= cpl) goto <L_cd>; b = *:1 (cpa + zext(i)); if (cpsm == 0) goto <L_cpmx>; b = *[cpm]:1 (cpa:4 + i); <L_cpmx> *[cpm]:1 ({PB:#x}:4 + i) = b; i = i + 1; goto <L_c>;")
     t.append(f"  <L_cd> j = i; *[cpm]:1 ({PB:#x}:4 + j) = 0x80; nb = 1; if (cpl + {1 + lenb} <= {bs}) goto <L_nb1>; nb = 2;")
     t.append(f"  <L_nb1> j = (nb * {bs}) - {lenb};")
     if lenb == 16:
@@ -96,7 +101,8 @@ def md_engine(name, wb, bs, lenb, init, rounds_code, nsched, nwords, kinit):
         t.append(f"  *[cpm]:8 ({PB:#x}:4 + j) = cpbl;")
     t.append(f"  bo = 0;")
     # stage the block into W[0..nw16)
-    t.append(f"  <L_do> i = 0; <L_st> if (src != 0) goto <L_sb>; w = *:{wb} (cpa + (zext(i) * {wb})); goto <L_sw>;")
+    t.append(f"  <L_do> i = 0; <L_st> if (src != 0) goto <L_sb>; if (cpsm != 0) goto <L_smx>; w = *:{wb} (cpa + (zext(i) * {wb})); goto <L_sw>;")
+    t.append(f"  <L_smx> w = *[cpm]:{wb} (cpa:4 + (i * {wb})); goto <L_sw>;")
     t.append(f"  <L_sb> w = *[cpm]:{wb} ({PB:#x}:4 + bo + (i * {wb}));")
     t.append(f"  <L_sw> *[cpm]:{wb} ({W:#x}:4 + (i * {wb})) = w; i = i + 1; if (i < {nw16}) goto <L_st>;")
     t.append(rounds_code)
@@ -298,6 +304,7 @@ DES_S = [
 # cipher scratch layout (cpm)
 KEYA, SBOX, ISBOX, RK, BLK, TMP, TMP2, MSG, J0A, LENS = 0x040, 0x1000, 0x1100, 0x1200, 0x1300, 0x1310, 0x1320, 0x1330, 0x1340, 0x1350
 TAU, NAP, KEYB, XPA = 0x1360, 0x1370, 0x1380, 0x13a0
+HKB, HFM = 0x1a00, 0x1a80   # HMAC: key block, final inner digest
 T_IP, T_FP, T_E, T_P, T_PC1, T_PC2, T_SH, T_SB, KS = 0x1400, 0x1440, 0x1480, 0x14c0, 0x14e0, 0x1520, 0x1560, 0x1600, 0x1800
 
 def store_table(base, data):
@@ -607,6 +614,58 @@ ENGINE = {1: "cp_sha1", 2: "cp_sha256", 3: "cp_sha512", 4: "cp_keccak", 5: "cp_g
 # cipher functions: code -> (cpalg, cpnk, key bytes)
 CIPHER = {1: (0, 0, 8), 2: (1, 0, 16), 3: (2, 0, 24), 18: (3, 4, 16), 19: (3, 6, 24), 20: (3, 8, 32)}
 # instruction -> (mode, has chaining value in the parameter block)
+HMAC = {112: (0, 64, 32, 28, 8), 113: (1, 64, 32, 32, 8), 114: (2, 128, 64, 48, 16), 115: (3, 128, 64, 64, 16)}   # variant, block, state, digest, IMBL bytes
+HMAC_IV = {0: IV224, 1: IV256, 2: IV384, 3: IV512}
+
+def hmac_code(r2a, r2l):
+    """KMAC-HMAC-SHA-224 / 256 / 384 / 512 with a clear key (functions 112-115): flags IKP, IIMP, CCUP
+    in bits 48-50 of general register 0 (0x8000, 0x4000, 0x2000)"""
+    t = ["local hv:1 = 0; local hbs:4 = 0; local hcv:4 = 0; local hdl:4 = 0; local hil:4 = 0; local hp:1 = 0; local fl2:8 = r0; local imbl:16 = 0; local imh:16 = 0;"]
+    for fc, (v, bs, cv, dl, il) in sorted(HMAC.items()):
+        t.append(f"if (fc != {fc}) goto <L_h{fc}>; hv = {v}; hbs = {bs}; hcv = {cv}; hdl = {dl}; hil = {il}; <L_h{fc}>")
+    t.append("if ((r0 & 0x80) == 0) goto <L_hf1>; trap_specification(); goto <L_done>;\n<L_hf1>")
+    t.append(f"if ((fl2 & 0x4000) == 0) goto <L_hf2>; if (({r2l} % zext(hbs)) != 0) goto <L_hbad>; if ((fl2 & 0x8000) != 0) goto <L_hf2>; if ({r2l} != 0) goto <L_hf2>;")
+    t.append("<L_hbad> trap_specification(); goto <L_done>;\n<L_hf2>")
+    # the input message bit length plus the key block, kept in cpbh : cpbl
+    t.append("ci = 0; if (hil == 16) goto <L_hi16>; imbl = zext(*:8 (r1 + zext(hcv)));  goto <L_hi8>;")
+    t.append("<L_hi16> imbl = *:16 (r1 + zext(hcv));")
+    t.append("<L_hi8> imh = zext(hbs) * 8; imbl = imbl + imh; imh = imbl >> 64; cpbh = imh:8; cpbl = imbl:8;")
+    t.append("hp = 0; if ((fl2 & 0x8000) != 0) goto <L_hcv>;")
+    # key ^ ipad (hp 0)
+    t.append("hp = 1; goto <L_hkey>;")
+    t.append("<L_hcv> ci = 0; <L_hcc> *[cpm]:4 (" + f"{CV:#x}:4 + ci) = *:4 (r1 + zext(ci)); ci = ci + 4; if (ci < hcv) goto <L_hcc>; hp = 2; goto <L_hrun2>;")
+    # build the key block into HKB: key ^ 0x36 (hp 1) or ^ 0x5c (hp 4)
+    t.append("<L_hkey> ci = 0; <L_hkl> *[cpm]:4 (" + f"{HKB:#x}:4 + ci) = *:4 (r1 + zext(hcv) + zext(hil) + zext(ci)) ^ " + "0x36363636" + "; ci = ci + 4; if (ci < hbs) goto <L_hkl>;")
+    t.append("if (hv >= 2) goto <L_hiv5>;")
+    for v in (0, 1):
+        t.append(f"if (hv != {v}) goto <L_hiv{v}>; " + " ".join(f"*[cpm]:4 ({CV + 4 * i:#x}:4) = {w:#x};" for i, w in enumerate(HMAC_IV[v])) + f" goto <L_hivd>; <L_hiv{v}>")
+    t.append("<L_hiv5>")
+    for v in (2, 3):
+        t.append(f"if (hv != {v}) goto <L_hiv{v}>; " + " ".join(f"*[cpm]:8 ({CV + 8 * i:#x}:4) = {w:#x};" for i, w in enumerate(HMAC_IV[v])) + f" goto <L_hivd>; <L_hiv{v}>")
+    t.append("<L_hivd> cpa = " + f"{HKB:#x}; cpl = zext(hbs); cpfin = 0; cpsm = 1; goto <L_hrun>;")
+    # run the engine once
+    t.append("<L_hrun> if (hv >= 2) goto <L_hr512>; build cp_sha256; goto <L_hrd>;\n<L_hr512> build cp_sha512;")
+    t.append("<L_hrd> cpsm = 0; if (hp == 1) goto <L_hrun2>; if (hp == 2) goto <L_hafter>; if (hp == 4) goto <L_hrun5>; goto <L_hfin>;")
+    # hp 1 done -> message
+    t.append(f"<L_hrun2> cpa = {r2a}; cpl = {r2l}; cpfin = 0; if ((fl2 & 0x4000) != 0) goto <L_hm1>; cpfin = 1;\n<L_hm1> hp = 2; goto <L_hrun>;")
+    t.append(f"<L_hafter> {r2a} = cpa; {r2l} = cpl; if ((fl2 & 0x4000) != 0) goto <L_hstore>;")
+    # last part: keep the inner digest, hash the outer key block (hp 4) then the digest (hp 5)
+    t.append("ci = 0; <L_hdg> *[cpm]:1 (" + f"{HFM:#x}:4 + ci) = *[cpm]:1 ({CV:#x}:4 + ci); ci = ci + 1; if (ci < hdl) goto <L_hdg>;")
+    t.append("hp = 4; ci = 0; <L_hok> *[cpm]:4 (" + f"{HKB:#x}:4 + ci) = *:4 (r1 + zext(hcv) + zext(hil) + zext(ci)) ^ " + "0x5c5c5c5c" + "; ci = ci + 4; if (ci < hbs) goto <L_hok>;")
+    t.append("cpbh = 0; cpbl = (zext(hbs) + zext(hdl)) * 8;")
+    t.append("if (hv >= 2) goto <L_ho5>;")
+    for v in (0, 1):
+        t.append(f"if (hv != {v}) goto <L_ho{v}>; " + " ".join(f"*[cpm]:4 ({CV + 4 * i:#x}:4) = {w:#x};" for i, w in enumerate(HMAC_IV[v])) + f" goto <L_hod>; <L_ho{v}>")
+    t.append("<L_ho5>")
+    for v in (2, 3):
+        t.append(f"if (hv != {v}) goto <L_ho{v}>; " + " ".join(f"*[cpm]:8 ({CV + 8 * i:#x}:4) = {w:#x};" for i, w in enumerate(HMAC_IV[v])) + f" goto <L_hod>; <L_ho{v}>")
+    t.append(f"<L_hod> cpa = {HKB:#x}; cpl = zext(hbs); cpfin = 0; cpsm = 1; goto <L_hrun>;")
+    t.append(f"<L_hrun5> cpa = {HFM:#x}; cpl = zext(hdl); cpfin = 1; cpsm = 1; hp = 5; goto <L_hrun>;")
+    t.append("<L_hfin> hp = 0;")
+    t.append("<L_hstore> ci = 0; <L_hso> *:4 (r1 + zext(ci)) = *[cpm]:4 (" + f"{CV:#x}:4 + ci); ci = ci + 4; if (ci < hcv) goto <L_hso>;")
+    t.append("r0 = (r0 | 0x8000) & ~0x2000; cc = 0; goto <L_done>;")
+    return "\n".join(t)
+
 CIPHER_INSN = {"km": (0, False), "kmc": (1, True), "kmf": (2, True), "kmo": (3, True), "kmctr": (4, False),
                "kmac": (7, True)}
 XTS_FC = {50: (3, 4, 16), 52: (3, 8, 32), 82: (3, 4, 16), 84: (3, 8, 32)}
@@ -644,6 +703,8 @@ def cipher_insn(n, o, x):
     fcs = dict(CIPHER)
     if n == "km":
         fcs.update(XTS_FC)
+    if mac:
+        fcs.update({fc: (9, 0, 0) for fc in HMAC})
     mask = fcmask([0] + sorted(fcs))
     t.append(f"*:8 r1 = {mask >> 64:#x}:8; *:8 (r1 + 8) = {mask & ((1 << 64) - 1):#x}:8; cc = 0; goto <L_done>;")
     t.append("<L_fn>")
@@ -657,6 +718,10 @@ def cipher_insn(n, o, x):
         extra = f" xk = {1 if fc in (50, 52) else 2}; md = {9 if fc in (50, 52) else 10};" if fc in XTS_FC else ""
         t.append(f"if (fc != {fc}) goto <L_g{fc}>; alg = {alg}; nk = {nk}; klen = {klen}; ok = 1;{extra} <L_g{fc}>")
     t.append("if (ok != 0) goto <L_valid>; trap_specification(); goto <L_done>;\n<L_valid>")
+    if mac:
+        t.append("if (fc < 112) goto <L_nohmac>;")
+        t.append(hmac_code(r2a, r2l))
+        t.append("<L_nohmac>")
     t.append("if (alg != 3) goto <L_bs>; bsz = 16;\n<L_bs>")
     t.append("lc = bsz;")
     if n == "kmf":

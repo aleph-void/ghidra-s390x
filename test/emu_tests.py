@@ -539,6 +539,63 @@ def _xts_tests():
         T(f"pcc_xts{nm}_cc2", "pcc", f"r0={fc:x},r1={DATA:x},m{len(pb)}:{DATA:x}={pb.hex()}", "cc=2")
 _xts_tests()
 
+def _hmac_tests():
+    import hmac as _hmac
+    IV = {112: [0xc1059ed8, 0x367cd507, 0x3070dd17, 0xf70e5939, 0xffc00b31, 0x68581511, 0x64f98fa7, 0xbefa4fa4],
+          113: list(struct.unpack(">8I", _IV256)),
+          114: [0xcbbb9d5dc1059ed8, 0x629a292a367cd507, 0x9159015a3070dd17, 0x152fecd8f70e5939, 0x67332667ffc00b31, 0x8eb44a8768581511, 0xdb0c2e0d64f98fa7, 0x47b5481dbefa4fa4],
+          115: list(struct.unpack(">8Q", _IV512))}
+    V = {112: ("sha224", 64, 28), 113: ("sha256", 64, 32), 114: ("sha384", 128, 48), 115: ("sha512", 128, 64)}
+    def comp(fc, st, blk):
+        return CM.sha256_compress(st, blk) if fc < 114 else CM.sha512_compress(st, blk)
+    def pack(fc, st):
+        return struct.pack(">8I" if fc < 114 else ">8Q", *st)
+    def pad(fc, msg, total):
+        bs = V[fc][1]
+        lb = 8 if bs == 64 else 16
+        m = msg + b"\x80"
+        m += bytes(-(len(m) + lb) % bs) + (total * 8).to_bytes(lb, "big")
+        return [m[i:i + bs] for i in range(0, len(m), bs)]
+    def hmac_state(fc, key, msg):
+        name, bs, dl = V[fc]
+        st = list(IV[fc])
+        st = comp(fc, st, bytes(b ^ 0x36 for b in key))
+        for b in pad(fc, msg, bs + len(msg)):
+            st = comp(fc, st, b)
+        inner = pack(fc, st)[:dl]
+        st = comp(fc, list(IV[fc]), bytes(b ^ 0x5c for b in key))
+        for b in pad(fc, inner, bs + dl):
+            st = comp(fc, st, b)
+        out = pack(fc, st)
+        assert out[:dl] == _hmac.new(key, msg, name).digest(), fc
+        return out
+    for fc, (name, bs, dl) in V.items():
+        cvl = 32 if bs == 64 else 64
+        il = 8 if bs == 64 else 16
+        key = bytes((31 * i + fc) & 0xff for i in range(bs))
+        for ln in (0, 5, bs - 1, bs, bs + 3, 2 * bs + 7):
+            msg = bytes((7 * i + 3) & 0xff for i in range(ln))
+            pb = bytes(cvl) + (ln * 8).to_bytes(il, "big") + key
+            r0 = fc
+            init = f"r0={r0:x},r1={DATA:x},r4={_IN:x},r5={ln:x},m{len(pb)}:{DATA:x}={pb.hex()}"
+            if ln:
+                init += f",m{ln}:{_IN:x}={msg.hex()}"
+            T(f"hmac_{name}_{ln}", "kmac %r0,%r4", init, f"m{cvl}:{DATA:x}={hmac_state(fc, key, msg).hex()},r0={r0 | 0x8000:x},r4={_IN + ln:x},r5=0,cc=0")
+        # intermediate parts: first two blocks with IKP=0 / IIMP=1, then the rest with IKP=1 / IIMP=0
+        msg = bytes((11 * i + 1) & 0xff for i in range(3 * bs + 9))
+        part1, rest = msg[:2 * bs], msg[2 * bs:]
+        st = comp(fc, list(IV[fc]), bytes(b ^ 0x36 for b in key))
+        for i in range(0, 2 * bs, bs):
+            st = comp(fc, st, part1[i:i + bs])
+        pb = bytes(cvl) + (len(msg) * 8).to_bytes(il, "big") + key
+        T(f"hmac_{name}_part1", "kmac %r0,%r4", f"r0={fc | 0x4000:x},r1={DATA:x},r4={_IN:x},r5={len(part1):x},m{len(pb)}:{DATA:x}={pb.hex()},m{len(part1)}:{_IN:x}={part1.hex()}",
+          f"m{cvl}:{DATA:x}={pack(fc, st).hex()},r0={fc | 0xc000:x},r4={_IN + len(part1):x},r5=0,cc=0")
+        pb2 = pack(fc, st) + (len(msg) * 8).to_bytes(il, "big") + key
+        T(f"hmac_{name}_part2", "kmac %r0,%r4", f"r0={fc | 0x8000:x},r1={DATA:x},r4={_IN:x},r5={len(rest):x},m{len(pb2)}:{DATA:x}={pb2.hex()},m{len(rest)}:{_IN:x}={rest.hex()}",
+          f"m{cvl}:{DATA:x}={hmac_state(fc, key, msg).hex()},r0={fc | 0x8000:x},r4={_IN + len(rest):x},r5=0,cc=0")
+_hmac_tests()
+T("kmac_query", "kmac %r0,%r4", f"r0=0,r1={DATA:x}", f"m16:{DATA:x}=f0003800000000000000000000000f00".replace("f0003800000000000000000000000f00", "f000380000000000" + "0000000000" + "00f000"))
+
 
 def main():
     out = sys.argv[1]
