@@ -113,10 +113,7 @@ public class S390_ElfRelocationHandler extends
 			case R_390_IRELATIVE:
 				// IFUNC resolvers cannot be invoked during static import;
 				// record the resolver address the way the runtime would
-				// before invoking it, and warn that it was not invoked.
-				markAsWarning(program, relocationAddress, type, symbolName, symbolIndex,
-					"IFUNC resolver not invoked; address of resolver recorded",
-					ctx.getLog());
+				// before invoking it (as Ghidra's x86-64 handler does).
 				memory.setLong(relocationAddress, relocbase + addend);
 				return new RelocationResult(Status.APPLIED, 8);
 			case R_390_COPY:
