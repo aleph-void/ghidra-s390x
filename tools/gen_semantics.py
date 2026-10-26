@@ -856,9 +856,14 @@ def icm(ctx):
 
 _semantics_tables = semantics
 import gen_vector
+import gen_fp
 
 def semantics(ctx):
     r = core(ctx)
+    if r is None and gen_fp.SCALAR_NAMES.match(ctx["name"]):
+        r = gen_fp.scalar(ctx)
     if r is None and ctx["name"][0] in "vw":
+        r = gen_fp.vfp(ctx)
+    if r is None and (ctx["name"][0] in "vw" or ctx["name"] in ("ldrv", "lerv", "stdrv", "sterv")):
         r = gen_vector.semantics(ctx)
     return r if r is not None else _semantics_tables(ctx)

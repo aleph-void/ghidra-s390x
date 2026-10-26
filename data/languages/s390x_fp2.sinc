@@ -194,14 +194,7 @@ attach variables [ RRsl_R2 ] [ f0 f1 f2 f3 f4 f5 f6 f7 f8 f9 f10 f11 f12 f13 f14
     fp_cc_hfp(RREl_R1, z);
 }
 
-:LXR RREl_R1 "," RREl_R2 is RREl_OP=0xB365 & RREl_IGN=0 & RREl_R1 & RREl_R2
-{
-    # LOAD (extended): R1(pair) = R2(pair).
-    # TODO: R fields must designate valid FP register pairs (PoP 9-8,
-    #   over-accepted); only the high-order 64 bits are modeled.
-    # PoP 9-31: CC unchanged.
-    RREl_R1 = RREl_R2;
-}
+# LXR: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 :LEXR RREls_R1 "," RREls_R2 is RREls_OP=0xB366 & RREls_IGN=0 & RREls_R1 & RREls_R2
 {

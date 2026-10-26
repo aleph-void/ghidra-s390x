@@ -207,20 +207,10 @@ macro cc_lttest(v, signbit) {
 
 # STE: STORE (short, 70). 32-bit short FP datum = HIGH half of FPR
 # (fNh alias, PoP 9-8); stored unchanged. CC unchanged.
-:STE RXs_R1 "," dxb_RXs_D2_RXs_X2_RXs_B2 is RXs_OP=0x70 & RXs_R1 & RXs_X2 & RXs_B2 & RXs_D2 & dxb_RXs_D2_RXs_X2_RXs_B2
-{
-    local ea:8;
-    ea_D12(ea, RXs_B2, RXs_X2, RXs_D2);
-    *:4 ea = RXs_R1;
-}
+# STE: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # STD: STORE (long, 60). 64-bit FPR stored unchanged. CC unchanged.
-:STD RXl_R1 "," dxb_RXl_D2_RXl_X2_RXl_B2 is RXl_OP=0x60 & RXl_R1 & RXl_X2 & RXl_B2 & RXl_D2 & dxb_RXl_D2_RXl_X2_RXl_B2
-{
-    local ea:8;
-    ea_D12(ea, RXl_B2, RXl_X2, RXl_D2);
-    *:8 ea = RXl_R1;
-}
+# STD: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 
 # ===========================================================================

@@ -57,6 +57,7 @@ REGS = {
     "vhi": [f"v{i}" for i in range(16, 32)],
     "gpro": [f"r{i + 1}" for i in range(15)] + ["r0"],   # odd register of an even/odd pair
     "gpror": [f"r{i | 1}" for i in range(16)],           # R|1 (BXH/BXLE comparand)
+    "fprp2": [f"f{(i + 2) % 16}" for i in range(16)],    # FPR n+2: low half of an extended pair
 }
 
 def field(L, shift, bits, kind="u"):
@@ -176,6 +177,8 @@ def fixed_bits(opcode, mask, bits, shift):
 def ident(name):
     return re.sub(r"[^A-Za-z0-9_]", "_", name)
 
+VINDEX = [None]
+
 def build(e):
     name, opcode, mask, L, operands, flags = e["name"], e["opcode"], e["mask"], e["len"], e["ops"], e["flags"]
     cons = mask_constraints(L, opcode, mask)
@@ -183,6 +186,7 @@ def build(e):
     items = []
     pairs.clear()
     ors.clear()
+    VINDEX[0] = None
     i = 0
     lenfld = None
     while i < len(operands):
@@ -197,6 +201,8 @@ def build(e):
             grp.append((operands[j],) + OPS[operands[j]])
             st, lf = addr_subtable(L, grp)
             lenfld = lenfld or lf
+            if len(grp) == 3 and grp[1][3] & VR:       # D(V,B): the semantics need the index vector
+                VINDEX[0] = vr_subtable(L, grp[1][2])
             items.append(("addr", st, st, None))
             i = j + 1
             continue
@@ -212,6 +218,8 @@ def build(e):
             items.append((kind, f, f, [f"{field(L, shift, bits, 'u')}=0"]))
             if fl & GPR and fl & PAIR:
                 pairs[len(items) - 1] = field(L, shift, bits, "gpro")
+            if fl & FPR:                      # extended operands use FPR n+2 (some table rows lack the pair flag)
+                pairs[len(items) - 1] = field(L, shift, bits, "fprp2")
             if fl & GPR and name in gen_semantics.NEEDS_OR:
                 ors[len(items) - 1] = field(L, shift, bits, "gpror")
         elif fl & LENGTH:
@@ -262,7 +270,8 @@ def build(e):
         disp = ",".join(it[1] for it in its)
         pat = " & ".join(cons + extra + [it[1] for it in its if it[1] not in cons] +
                          [pf for pi, pf in pairs.items() if items[pi] in its] +
-                         [of for oi, of in ors.items() if items[oi] in its])
+                         [of for oi, of in ors.items() if items[oi] in its] +
+                         ([VINDEX[0]] if VINDEX[0] else []))
         out.append(f":{mn} {disp} is {pat} {{\n{semantics(e, its, items, lenfld)}\n}}\n")
     return out
 
@@ -276,7 +285,7 @@ def semantics(e, its, items, lenfld):
         fm, fv = fixed_bits(e["opcode"], e["mask"], bits, shift)
         if fm == (1 << bits) - 1 and not fl & (DISP | BASE | INDEX):
             fixed[shift] = fv
-    ctx = dict(name=name, kinds=kinds, fixed=fixed, pairs=dict(pairs), ors=dict(ors),
+    ctx = dict(name=name, kinds=kinds, fixed=fixed, pairs=dict(pairs), ors=dict(ors), vindex=VINDEX[0],
                ops=[it[2] if it in its else "0" for it in items])
     try:
         t = gen_semantics.semantics(ctx)

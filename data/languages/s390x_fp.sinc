@@ -610,14 +610,7 @@ dxb_RXs_D2_RXs_X2_RXs_B2: RXs_D2 is RXs_D2 & RXs_X2=0 & RXs_B2=0  { }
 dxb_RXs_D2_RXs_X2_RXs_B2: RXs_D2(RXs_B2) is RXs_D2 & RXs_X2=0 & RXs_B2  { }
 dxb_RXs_D2_RXs_X2_RXs_B2: RXs_D2(RXs_X2,0) is RXs_D2 & RXs_X2 & RXs_B2=0  { }
 dxb_RXs_D2_RXs_X2_RXs_B2: RXs_D2(RXs_X2,RXs_B2) is RXs_D2 & RXs_X2 & RXs_B2  { }
-:LE RXs_R1 "," dxb_RXs_D2_RXs_X2_RXs_B2 is RXs_OP=0x78 & RXs_R1 & RXs_X2 & RXs_B2 & RXs_D2 & dxb_RXs_D2_RXs_X2_RXs_B2
-{
-    # LOAD (short): 4 bytes -> high half of FPR; low half unchanged (PoP 9-8).
-    # CC unchanged. No arithmetic exceptions (no operand inspection).
-    local ea:8;
-    ea_D12(ea, RXs_B2, RXs_X2, RXs_D2);
-    RXs_R1 = *:4 ea;
-}
+# LE: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 :AE RXs_R1 "," dxb_RXs_D2_RXs_X2_RXs_B2 is RXs_OP=0x7A & RXs_R1 & RXs_X2 & RXs_B2 & RXs_D2 & dxb_RXs_D2_RXs_X2_RXs_B2
 {
@@ -686,13 +679,7 @@ dxb_RXl_D2_RXl_X2_RXl_B2: RXl_D2 is RXl_D2 & RXl_X2=0 & RXl_B2=0  { }
 dxb_RXl_D2_RXl_X2_RXl_B2: RXl_D2(RXl_B2) is RXl_D2 & RXl_X2=0 & RXl_B2  { }
 dxb_RXl_D2_RXl_X2_RXl_B2: RXl_D2(RXl_X2,0) is RXl_D2 & RXl_X2 & RXl_B2=0  { }
 dxb_RXl_D2_RXl_X2_RXl_B2: RXl_D2(RXl_X2,RXl_B2) is RXl_D2 & RXl_X2 & RXl_B2  { }
-:LD RXl_R1 "," dxb_RXl_D2_RXl_X2_RXl_B2 is RXl_OP=0x68 & RXl_R1 & RXl_X2 & RXl_B2 & RXl_D2 & dxb_RXl_D2_RXl_X2_RXl_B2
-{
-    # LOAD (long): 8 bytes -> FPR. CC unchanged.
-    local ea:8;
-    ea_D12(ea, RXl_B2, RXl_X2, RXl_D2);
-    RXl_R1 = *:8 ea;
-}
+# LD: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 :AD RXl_R1 "," dxb_RXl_D2_RXl_X2_RXl_B2 is RXl_OP=0x6A & RXl_R1 & RXl_X2 & RXl_B2 & RXl_D2 & dxb_RXl_D2_RXl_X2_RXl_B2
 {
@@ -751,11 +738,7 @@ dxb_RXl_D2_RXl_X2_RXl_B2: RXl_D2(RXl_X2,RXl_B2) is RXl_D2 & RXl_X2 & RXl_B2  { }
 # HFP (hexadecimal floating-point) RR: short forms. TODO: HFP approx (see AE).
 # ============================================================================
 
-:LER RRs_R1 "," RRs_R2 is RRs_OP=0x38 & RRs_R1 & RRs_R2
-{
-    # LOAD (short, register): high half -> high half. CC unchanged.
-    RRs_R1 = RRs_R2;
-}
+# LER: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 :AER RRs_R1 "," RRs_R2 is RRs_OP=0x3A & RRs_R1 & RRs_R2
 {
@@ -805,11 +788,7 @@ dxb_RXl_D2_RXl_X2_RXl_B2: RXl_D2(RXl_X2,RXl_B2) is RXl_D2 & RXl_X2 & RXl_B2  { }
 # HFP (hexadecimal floating-point) RR: long forms. TODO: HFP approx (see AE).
 # ============================================================================
 
-:LDR RRl_R1 "," RRl_R2 is RRl_OP=0x28 & RRl_R1 & RRl_R2
-{
-    # LOAD (long, register). CC unchanged.
-    RRl_R1 = RRl_R2;
-}
+# LDR: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 :ADR RRl_R1 "," RRl_R2 is RRl_OP=0x2A & RRl_R1 & RRl_R2
 {
@@ -865,60 +844,15 @@ dxb_RXEs_DL2_RXEs_X2_RXEs_B2: dispRXEs_DL2 is RXEs_DL2 & RXEs_DH2 & RXEs_X2=0 & 
 dxb_RXEs_DL2_RXEs_X2_RXEs_B2: dispRXEs_DL2(RXEs_B2) is RXEs_DL2 & RXEs_DH2 & RXEs_X2=0 & RXEs_B2 [ dispRXEs_DL2 = ((RXEs_DH2 << 12) | RXEs_DL2) - (((RXEs_DH2 >> 7) & 1) << 20); ] { }
 dxb_RXEs_DL2_RXEs_X2_RXEs_B2: dispRXEs_DL2(RXEs_X2,0) is RXEs_DL2 & RXEs_DH2 & RXEs_X2 & RXEs_B2=0 [ dispRXEs_DL2 = ((RXEs_DH2 << 12) | RXEs_DL2) - (((RXEs_DH2 >> 7) & 1) << 20); ] { }
 dxb_RXEs_DL2_RXEs_X2_RXEs_B2: dispRXEs_DL2(RXEs_X2,RXEs_B2) is RXEs_DL2 & RXEs_DH2 & RXEs_X2 & RXEs_B2 [ dispRXEs_DL2 = ((RXEs_DH2 << 12) | RXEs_DL2) - (((RXEs_DH2 >> 7) & 1) << 20); ] { }
-:AEB RXEs_R1 "," dxb_RXEs_DL2_RXEs_X2_RXEs_B2 is RXEs_OP=0xED & RXEs_R1 & RXEs_X2 & RXEs_B2 & RXEs_DL2 & RXEs_DH2 & RXEs_OP2=0x0A & dxb_RXEs_DL2_RXEs_X2_RXEs_B2
-{
-    # ADD (short BFP). TODO: IEEE flags/rounding not modeled.
-    local ea:8; local a:4; local b:4; local z:4;
-    ea_D20(ea, RXEs_B2, RXEs_X2, RXEs_DH2, RXEs_DL2);
-    a = RXEs_R1; b = *:4 ea; z = 0;
-    a = a f+ b;
-    RXEs_R1 = a;
-    fp_cc_result(a, z);
-}
+# AEB: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:SEB RXEs_R1 "," dxb_RXEs_DL2_RXEs_X2_RXEs_B2 is RXEs_OP=0xED & RXEs_R1 & RXEs_X2 & RXEs_B2 & RXEs_DL2 & RXEs_DH2 & RXEs_OP2=0x0B & dxb_RXEs_DL2_RXEs_X2_RXEs_B2
-{
-    # SUBTRACT (short BFP). TODO: IEEE flags/rounding not modeled.
-    local ea:8; local a:4; local b:4; local z:4;
-    ea_D20(ea, RXEs_B2, RXEs_X2, RXEs_DH2, RXEs_DL2);
-    a = RXEs_R1; b = *:4 ea; z = 0;
-    a = a f- b;
-    RXEs_R1 = a;
-    fp_cc_result(a, z);
-}
+# SEB: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:MDEB RXEs_R1 "," dxb_RXEs_DL2_RXEs_X2_RXEs_B2 is RXEs_OP=0xED & RXEs_R1 & RXEs_X2 & RXEs_B2 & RXEs_DL2 & RXEs_DH2 & RXEs_OP2=0x0C & dxb_RXEs_DL2_RXEs_X2_RXEs_B2
-{
-    # MULTIPLY (short BFP operands, long BFP product).
-    # TODO: hardware produces a LONG (64-bit) exact product; modeled as a
-    #   short product into the high half. IEEE flags/rounding not modeled.
-    local ea:8; local a:4; local b:4; local z:4;
-    ea_D20(ea, RXEs_B2, RXEs_X2, RXEs_DH2, RXEs_DL2);
-    a = RXEs_R1; b = *:4 ea; z = 0;
-    a = a f* b;
-    RXEs_R1 = a;
-    fp_cc_result(a, z);
-}
+# MDEB: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:DEB RXEs_R1 "," dxb_RXEs_DL2_RXEs_X2_RXEs_B2 is RXEs_OP=0xED & RXEs_R1 & RXEs_X2 & RXEs_B2 & RXEs_DL2 & RXEs_DH2 & RXEs_OP2=0x0D & dxb_RXEs_DL2_RXEs_X2_RXEs_B2
-{
-    # DIVIDE (short BFP). TODO: IEEE flags/rounding not modeled.
-    local ea:8; local a:4; local b:4; local z:4;
-    ea_D20(ea, RXEs_B2, RXEs_X2, RXEs_DH2, RXEs_DL2);
-    a = RXEs_R1; b = *:4 ea; z = 0;
-    a = a f/ b;
-    RXEs_R1 = a;
-    fp_cc_result(a, z);
-}
+# DEB: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:CEB RXEs_R1 "," dxb_RXEs_DL2_RXEs_X2_RXEs_B2 is RXEs_OP=0xED & RXEs_R1 & RXEs_X2 & RXEs_B2 & RXEs_DL2 & RXEs_DH2 & RXEs_OP2=0x09 & dxb_RXEs_DL2_RXEs_X2_RXEs_B2
-{
-    # COMPARE (short BFP): CC 0=equal,1=low,2=high,3=unordered.
-    local ea:8; local a:4; local b:4;
-    ea_D20(ea, RXEs_B2, RXEs_X2, RXEs_DH2, RXEs_DL2);
-    a = RXEs_R1; b = *:4 ea;
-    fp_cc_compare(a, b);
-}
+# CEB: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # ============================================================================
 # BFP (IEEE-754) RXE: long forms + HFP LOAD LENGTHENED. R1 is the full FPR.
@@ -930,58 +864,15 @@ dxb_RXEl_DL2_RXEl_X2_RXEl_B2: dispRXEl_DL2 is RXEl_DL2 & RXEl_DH2 & RXEl_X2=0 & 
 dxb_RXEl_DL2_RXEl_X2_RXEl_B2: dispRXEl_DL2(RXEl_B2) is RXEl_DL2 & RXEl_DH2 & RXEl_X2=0 & RXEl_B2 [ dispRXEl_DL2 = ((RXEl_DH2 << 12) | RXEl_DL2) - (((RXEl_DH2 >> 7) & 1) << 20); ] { }
 dxb_RXEl_DL2_RXEl_X2_RXEl_B2: dispRXEl_DL2(RXEl_X2,0) is RXEl_DL2 & RXEl_DH2 & RXEl_X2 & RXEl_B2=0 [ dispRXEl_DL2 = ((RXEl_DH2 << 12) | RXEl_DL2) - (((RXEl_DH2 >> 7) & 1) << 20); ] { }
 dxb_RXEl_DL2_RXEl_X2_RXEl_B2: dispRXEl_DL2(RXEl_X2,RXEl_B2) is RXEl_DL2 & RXEl_DH2 & RXEl_X2 & RXEl_B2 [ dispRXEl_DL2 = ((RXEl_DH2 << 12) | RXEl_DL2) - (((RXEl_DH2 >> 7) & 1) << 20); ] { }
-:ADB RXEl_R1 "," dxb_RXEl_DL2_RXEl_X2_RXEl_B2 is RXEl_OP=0xED & RXEl_R1 & RXEl_X2 & RXEl_B2 & RXEl_DL2 & RXEl_DH2 & RXEl_OP2=0x1A & dxb_RXEl_DL2_RXEl_X2_RXEl_B2
-{
-    # ADD (long BFP). TODO: IEEE flags/rounding not modeled.
-    local ea:8; local a:8; local b:8; local z:8;
-    ea_D20(ea, RXEl_B2, RXEl_X2, RXEl_DH2, RXEl_DL2);
-    a = RXEl_R1; b = *:8 ea; z = 0;
-    a = a f+ b;
-    RXEl_R1 = a;
-    fp_cc_result(a, z);
-}
+# ADB: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:SDB RXEl_R1 "," dxb_RXEl_DL2_RXEl_X2_RXEl_B2 is RXEl_OP=0xED & RXEl_R1 & RXEl_X2 & RXEl_B2 & RXEl_DL2 & RXEl_DH2 & RXEl_OP2=0x1B & dxb_RXEl_DL2_RXEl_X2_RXEl_B2
-{
-    # SUBTRACT (long BFP). TODO: IEEE flags/rounding not modeled.
-    local ea:8; local a:8; local b:8; local z:8;
-    ea_D20(ea, RXEl_B2, RXEl_X2, RXEl_DH2, RXEl_DL2);
-    a = RXEl_R1; b = *:8 ea; z = 0;
-    a = a f- b;
-    RXEl_R1 = a;
-    fp_cc_result(a, z);
-}
+# SDB: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:MDB RXEl_R1 "," dxb_RXEl_DL2_RXEl_X2_RXEl_B2 is RXEl_OP=0xED & RXEl_R1 & RXEl_X2 & RXEl_B2 & RXEl_DL2 & RXEl_DH2 & RXEl_OP2=0x1C & dxb_RXEl_DL2_RXEl_X2_RXEl_B2
-{
-    # MULTIPLY (long BFP). TODO: IEEE flags/rounding not modeled.
-    local ea:8; local a:8; local b:8; local z:8;
-    ea_D20(ea, RXEl_B2, RXEl_X2, RXEl_DH2, RXEl_DL2);
-    a = RXEl_R1; b = *:8 ea; z = 0;
-    a = a f* b;
-    RXEl_R1 = a;
-    fp_cc_result(a, z);
-}
+# MDB: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:DDB RXEl_R1 "," dxb_RXEl_DL2_RXEl_X2_RXEl_B2 is RXEl_OP=0xED & RXEl_R1 & RXEl_X2 & RXEl_B2 & RXEl_DL2 & RXEl_DH2 & RXEl_OP2=0x1D & dxb_RXEl_DL2_RXEl_X2_RXEl_B2
-{
-    # DIVIDE (long BFP). TODO: IEEE flags/rounding not modeled.
-    local ea:8; local a:8; local b:8; local z:8;
-    ea_D20(ea, RXEl_B2, RXEl_X2, RXEl_DH2, RXEl_DL2);
-    a = RXEl_R1; b = *:8 ea; z = 0;
-    a = a f/ b;
-    RXEl_R1 = a;
-    fp_cc_result(a, z);
-}
+# DDB: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:CDB RXEl_R1 "," dxb_RXEl_DL2_RXEl_X2_RXEl_B2 is RXEl_OP=0xED & RXEl_R1 & RXEl_X2 & RXEl_B2 & RXEl_DL2 & RXEl_DH2 & RXEl_OP2=0x19 & dxb_RXEl_DL2_RXEl_X2_RXEl_B2
-{
-    # COMPARE (long BFP): CC 0=equal,1=low,2=high,3=unordered.
-    local ea:8; local a:8; local b:8;
-    ea_D20(ea, RXEl_B2, RXEl_X2, RXEl_DH2, RXEl_DL2);
-    a = RXEl_R1; b = *:8 ea;
-    fp_cc_compare(a, b);
-}
+# CDB: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 :LDE RXEl_R1 "," dxb_RXEl_DL2_RXEl_X2_RXEl_B2 is RXEl_OP=0xED & RXEl_R1 & RXEl_X2 & RXEl_B2 & RXEl_DL2 & RXEl_DH2 & RXEl_OP2=0x24 & dxb_RXEl_DL2_RXEl_X2_RXEl_B2
 {
@@ -1010,142 +901,43 @@ dxb_RXEl_DL2_RXEl_X2_RXEl_B2: dispRXEl_DL2(RXEl_X2,RXEl_B2) is RXEl_DL2 & RXEl_D
 # TODO: IEEE exception flags and FPC rounding not modeled.
 # ============================================================================
 
-:LPEBR RREs_R1 "," RREs_R2 is RREs_OP=0xB300 & RREs_R1 & RREs_R2
-{
-    # LOAD POSITIVE (short BFP): R1 = |R2|. CC 0=zero,2=positive,3=NaN.
-    local a:4; local z:4;
-    a = abs(RREs_R2); z = 0;
-    RREs_R1 = a;
-    fp_cc_result(a, z);
-}
+# LPEBR: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:LNEBR RREs_R1 "," RREs_R2 is RREs_OP=0xB301 & RREs_R1 & RREs_R2
-{
-    # LOAD NEGATIVE (short BFP): R1 = -|R2|. CC 0=zero,1=negative,3=NaN.
-    # (Implements LNGBR's obvious intent; no LNGBR exists in the PoP.)
-    local a:4; local z:4;
-    a = f- abs(RREs_R2); z = 0;
-    RREs_R1 = a;
-    fp_cc_result(a, z);
-}
+# LNEBR: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:LTEBR RREs_R1 "," RREs_R2 is RREs_OP=0xB302 & RREs_R1 & RREs_R2
-{
-    # LOAD AND TEST (short BFP): R1 = R2, CC set. 0=zero,1=neg,2=pos,3=NaN.
-    local z:4;
-    RREs_R1 = RREs_R2; z = 0;
-    fp_cc_result(RREs_R1, z);
-}
+# LTEBR: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:AEBR RREs_R1 "," RREs_R2 is RREs_OP=0xB30A & RREs_R1 & RREs_R2
-{
-    # ADD (short BFP, register). TODO: IEEE flags/rounding not modeled.
-    local a:4; local z:4;
-    a = RREs_R1 f+ RREs_R2; z = 0;
-    RREs_R1 = a;
-    fp_cc_result(a, z);
-}
+# AEBR: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:SEBR RREs_R1 "," RREs_R2 is RREs_OP=0xB30B & RREs_R1 & RREs_R2
-{
-    # SUBTRACT (short BFP, register). TODO: IEEE flags/rounding not modeled.
-    local a:4; local z:4;
-    a = RREs_R1 f- RREs_R2; z = 0;
-    RREs_R1 = a;
-    fp_cc_result(a, z);
-}
+# SEBR: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:MDEBR RREs_R1 "," RREs_R2 is RREs_OP=0xB30C & RREs_R1 & RREs_R2
-{
-    # MULTIPLY (short BFP operands, long BFP product, register).
-    # TODO: hardware produces a LONG exact product; modeled as short product
-    #   into the high half. IEEE flags/rounding not modeled.
-    local a:4; local z:4;
-    a = RREs_R1 f* RREs_R2; z = 0;
-    RREs_R1 = a;
-    fp_cc_result(a, z);
-}
+# MDEBR: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:DEBR RREs_R1 "," RREs_R2 is RREs_OP=0xB30D & RREs_R1 & RREs_R2
-{
-    # DIVIDE (short BFP, register). TODO: IEEE flags/rounding not modeled.
-    local a:4; local z:4;
-    a = RREs_R1 f/ RREs_R2; z = 0;
-    RREs_R1 = a;
-    fp_cc_result(a, z);
-}
+# DEBR: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:CEBR RREs_R1 "," RREs_R2 is RREs_OP=0xB309 & RREs_R1 & RREs_R2
-{
-    # COMPARE (short BFP, register): CC 0=equal,1=low,2=high,3=unordered.
-    fp_cc_compare(RREs_R1, RREs_R2);
-}
+# CEBR: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # ============================================================================
 # BFP RRE: short->long forms (R1 long, R2 short).
 # ============================================================================
 
-:LDEBR RREsl_R1 "," RREsl_R2 is RREsl_OP=0xB304 & RREsl_R1 & RREsl_R2
-{
-    # LOAD LENGTHENED (short->long BFP): exact, value-preserving.
-    # CC unchanged.
-    RREsl_R1 = float2float(RREsl_R2);
-}
+# LDEBR: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # ============================================================================
 # BFP (IEEE-754) RRE: long forms. TODO: IEEE flags/rounding not modeled.
 # ============================================================================
 
-:ADBR RREl_R1 "," RREl_R2 is RREl_OP=0xB31A & RREl_R1 & RREl_R2
-{
-    # ADD (long BFP, register). TODO: IEEE flags/rounding not modeled.
-    local a:8; local z:8;
-    a = RREl_R1 f+ RREl_R2; z = 0;
-    RREl_R1 = a;
-    fp_cc_result(a, z);
-}
+# ADBR: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:SDBR RREl_R1 "," RREl_R2 is RREl_OP=0xB31B & RREl_R1 & RREl_R2
-{
-    # SUBTRACT (long BFP, register). TODO: IEEE flags/rounding not modeled.
-    local a:8; local z:8;
-    a = RREl_R1 f- RREl_R2; z = 0;
-    RREl_R1 = a;
-    fp_cc_result(a, z);
-}
+# SDBR: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:MDBR RREl_R1 "," RREl_R2 is RREl_OP=0xB31C & RREl_R1 & RREl_R2
-{
-    # MULTIPLY (long BFP, register). TODO: IEEE flags/rounding not modeled.
-    local a:8; local z:8;
-    a = RREl_R1 f* RREl_R2; z = 0;
-    RREl_R1 = a;
-    fp_cc_result(a, z);
-}
+# MDBR: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:DDBR RREl_R1 "," RREl_R2 is RREl_OP=0xB31D & RREl_R1 & RREl_R2
-{
-    # DIVIDE (long BFP, register). TODO: IEEE flags/rounding not modeled.
-    local a:8; local z:8;
-    a = RREl_R1 f/ RREl_R2; z = 0;
-    RREl_R1 = a;
-    fp_cc_result(a, z);
-}
+# DDBR: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:CDBR RREl_R1 "," RREl_R2 is RREl_OP=0xB319 & RREl_R1 & RREl_R2
-{
-    # COMPARE (long BFP, register): CC 0=equal,1=low,2=high,3=unordered.
-    fp_cc_compare(RREl_R1, RREl_R2);
-}
+# CDBR: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:LXDBR RREl_R1 "," RREl_R2 is RREl_OP=0xB305 & RREl_R1 & RREl_R2
-{
-    # LOAD LENGTHENED (long->extended BFP).
-    # TODO: R1 must designate a valid FP register pair (PoP 9-8); only the
-    #   high-order 64 bits are modeled, the low-order 64 bits (F(R1+2),
-    #   zero for BFP lengthening) are not. CC unchanged.
-    RREl_R1 = RREl_R2;
-}
+# LXDBR: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 :LXDR RREl_R1 "," RREl_R2 is RREl_OP=0xB325 & RREl_R1 & RREl_R2
 {
@@ -1164,19 +956,9 @@ dxb_RXEl_DL2_RXEl_X2_RXEl_B2: dispRXEl_DL2(RXEl_X2,RXEl_B2) is RXEl_DL2 & RXEl_D
 #   mode) and IEEE exception flags are not modeled.
 # ============================================================================
 
-:CEFBR RREsg_R1 "," RREsg_R2 is RREsg_OP=0xB394 & RREsg_IGN=0 & RREsg_R1 & RREsg_R2
-{
-    # CONVERT FROM FIXED (32-bit -> short BFP). CC unchanged.
-    local src:8;
-    src = (RREsg_R2 << 32) s>> 32;
-    RREsg_R1 = int2float(src);
-}
+# CEFBR: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:CEGBR RREsg_R1 "," RREsg_R2 is RREsg_OP=0xB3A4 & RREsg_IGN=0 & RREsg_R1 & RREsg_R2
-{
-    # CONVERT FROM FIXED (64-bit -> short BFP). CC unchanged.
-    RREsg_R1 = int2float(RREsg_R2);
-}
+# CEGBR: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 :CEGR RREsg_R1 "," RREsg_R2 is RREsg_OP=0xB3C4 & RREsg_R1 & RREsg_R2
 {
@@ -1185,19 +967,9 @@ dxb_RXEl_DL2_RXEl_X2_RXEl_B2: dispRXEl_DL2(RXEl_X2,RXEl_B2) is RXEl_DL2 & RXEl_D
     RREsg_R1 = int2float(RREsg_R2);
 }
 
-:CDFBR RRElg_R1 "," RRElg_R2 is RRElg_OP=0xB395 & RRElg_IGN=0 & RRElg_R1 & RRElg_R2
-{
-    # CONVERT FROM FIXED (32-bit -> long BFP). CC unchanged.
-    local src:8;
-    src = (RRElg_R2 << 32) s>> 32;
-    RRElg_R1 = int2float(src);
-}
+# CDFBR: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:CDGBR RRElg_R1 "," RRElg_R2 is RRElg_OP=0xB3A5 & RRElg_IGN=0 & RRElg_R1 & RRElg_R2
-{
-    # CONVERT FROM FIXED (64-bit -> long BFP). CC unchanged.
-    RRElg_R1 = int2float(RRElg_R2);
-}
+# CDGBR: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 :CDGR RRElg_R1 "," RRElg_R2 is RRElg_OP=0xB3C5 & RRElg_R1 & RRElg_R2
 {
@@ -1214,27 +986,11 @@ dxb_RXEl_DL2_RXEl_X2_RXEl_B2: dispRXEl_DL2(RXEl_X2,RXEl_B2) is RXEl_DL2 & RXEl_D
 #   the IEEE inexact flag are not modeled.
 # ============================================================================
 
-:FIEBR RRFs_R1 "," RRFs_M3 "," RRFs_R2 is RRFs_OP=0xB357 & RRFs_M3 & RRFs_M4=0 & RRFs_R1 & RRFs_R2
-{
-    # LOAD FP INTEGER (short BFP). CC unchanged.
-    RRFs_R1 = round(RRFs_R2);
-}
+# FIEBR: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:FIDBR RRFl_R1 "," RRFl_M3 "," RRFl_R2 is RRFl_OP=0xB35F & RRFl_M3 & RRFl_M4=0 & RRFl_R1 & RRFl_R2
-{
-    # LOAD FP INTEGER (long BFP). CC unchanged.
-    RRFl_R1 = round(RRFl_R2);
-}
+# FIDBR: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:FIXBR RRFl_R1 "," RRFl_M3 "," RRFl_R2 is RRFl_OP=0xB347 & RRFl_M3 & RRFl_M4=0 & RRFl_R1 & RRFl_R2
-{
-    # LOAD FP INTEGER (extended BFP).
-    # TODO: R1/R2 must designate valid FP register pairs (PoP 9-8); only the
-    #   high-order 64 bits are modeled, the low-order 64 bits (F(R1+2)) are
-    #   not. M3 method selection and IEEE inexact flag not modeled.
-    #   CC unchanged.
-    RRFl_R1 = round(RRFl_R2);
-}
+# FIXBR: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # ============================================================================
 # CONVERT FROM LOGICAL (RRF-e): unsigned GPR integer -> BFP. CC unchanged.
@@ -1242,21 +998,9 @@ dxb_RXEl_DL2_RXEl_X2_RXEl_B2: dispRXEl_DL2(RXEl_X2,RXEl_B2) is RXEl_DL2 & RXEl_D
 #   and IEEE exception flags are not modeled.
 # ============================================================================
 
-:CELFBR RRFsg_R1 "," RRFsg_M3 "," RRFsg_R2 "," RRFsg_M4 is RRFsg_OP=0xB390 & RRFsg_M3 & RRFsg_M4 & RRFsg_R1 & RRFsg_R2
-{
-    # CONVERT FROM LOGICAL (32-bit -> short BFP). CC unchanged.
-    local src:8;
-    src = (RRFsg_R2 << 32) >> 32;
-    RRFsg_R1 = int2float(src);
-}
+# CELFBR: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:CDLFBR RRFlg_R1 "," RRFlg_M3 "," RRFlg_R2 "," RRFlg_M4 is RRFlg_OP=0xB391 & RRFlg_M3 & RRFlg_M4 & RRFlg_R1 & RRFlg_R2
-{
-    # CONVERT FROM LOGICAL (32-bit -> long BFP). CC unchanged.
-    local src:8;
-    src = (RRFlg_R2 << 32) >> 32;
-    RRFlg_R1 = int2float(src);
-}
+# CDLFBR: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # ============================================================================
 # Remaining Capstone-validated BFP/HFP/DFP instructions.
@@ -1445,13 +1189,7 @@ dxb_RXEl_DL2_RXEl_X2_RXEl_B2: dispRXEl_DL2(RXEl_X2,RXEl_B2) is RXEl_DL2 & RXEl_D
 # TODO: HFP approx. CC unchanged except where noted.
 # ============================================================================
 
-:LDER RREsl_R1 "," RREsl_R2 is RREsl_OP=0xB324 & RREsl_IGN=0 & RREsl_R1 & RREsl_R2
-{
-    # LOAD LENGTHENED (short->long HFP): value-preserving.
-    # TODO: HFP approx (float2float reinterprets the HFP bits as IEEE).
-    # CC unchanged.
-    RREsl_R1 = float2float(RREsl_R2);
-}
+# LDER: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 :LXER RREl_R1 "," RREl_R2 is RREl_OP=0xB326 & RREl_IGN=0 & RREl_R1 & RREl_R2
 {
@@ -1660,91 +1398,29 @@ dxb_RXFs_DL2_RXFs_X2_RXFs_B2: RXFs_DL2(RXFs_X2,RXFs_B2) is RXFs_DL2 & RXFs_X2 & 
 # TODO: IEEE flags/rounding not modeled.
 # ============================================================================
 
-:LCEBR RREs_R1 "," RREs_R2 is RREs_OP=0xB303 & RREs_IGN=0 & RREs_R1 & RREs_R2
-{
-    # LOAD COMPLEMENT (short BFP): R1 = -R2. CC unchanged.
-    RREs_R1 = f- RREs_R2;
-}
+# LCEBR: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:LXEBR RREsl_R1 "," RREsl_R2 is RREsl_OP=0xB306 & RREsl_IGN=0 & RREsl_R1 & RREsl_R2
-{
-    # LOAD LENGTHENED (extended->short BFP): exact, value-preserving.
-    # TODO: only the high-order 64 bits of the extended source are read.
-    # CC unchanged.
-    RREsl_R1 = float2float(RREsl_R2);
-}
+# LXEBR: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:MXDBR RREl_R1 "," RREl_R2 is RREl_OP=0xB307 & RREl_IGN=0 & RREl_R1 & RREl_R2
-{
-    # MULTIPLY (long BFP multiplier and multiplicand, extended product).
-    # TODO: R1 must designate a valid FP register pair (PoP 9-8); only the
-    #   high-order 64 bits of the extended product are modeled.
-    local a:8; local z:8;
-    a = RREl_R1 f* RREl_R2; z = 0;
-    RREl_R1 = a;
-    fp_cc_result(a, z);
-}
+# MXDBR: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:KEBR RREs_R1 "," RREs_R2 is RREs_OP=0xB308 & RREs_IGN=0 & RREs_R1 & RREs_R2
-{
-    # COMPARE AND SIGNAL (short BFP). Same as CEBR except a quiet NaN
-    # operand raises invalid-operation (not modeled); CC identical.
-    fp_cc_compare(RREs_R1, RREs_R2);
-}
+# KEBR: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:LPDBR RREl_R1 "," RREl_R2 is RREl_OP=0xB310 & RREl_IGN=0 & RREl_R1 & RREl_R2
-{
-    # LOAD POSITIVE (long BFP): R1 = |R2|. CC unchanged.
-    RREl_R1 = abs(RREl_R2);
-}
+# LPDBR: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:LNDBR RREl_R1 "," RREl_R2 is RREl_OP=0xB311 & RREl_IGN=0 & RREl_R1 & RREl_R2
-{
-    # LOAD NEGATIVE (long BFP): R1 = -|R2|. CC unchanged.
-    RREl_R1 = f- abs(RREl_R2);
-}
+# LNDBR: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:LTDBR RREl_R1 "," RREl_R2 is RREl_OP=0xB312 & RREl_IGN=0 & RREl_R1 & RREl_R2
-{
-    # LOAD AND TEST (long BFP): R1 = R2, CC set.
-    local z:8;
-    RREl_R1 = RREl_R2; z = 0;
-    fp_cc_result(RREl_R1, z);
-}
+# LTDBR: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:LCDBR RREl_R1 "," RREl_R2 is RREl_OP=0xB313 & RREl_IGN=0 & RREl_R1 & RREl_R2
-{
-    # LOAD COMPLEMENT (long BFP): R1 = -R2. CC unchanged.
-    RREl_R1 = f- RREl_R2;
-}
+# LCDBR: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:MEEBR RREs_R1 "," RREs_R2 is RREs_OP=0xB317 & RREs_IGN=0 & RREs_R1 & RREs_R2
-{
-    # MULTIPLY (short BFP): R1 = R1 * R2.
-    local a:4; local z:4;
-    a = RREs_R1 f* RREs_R2; z = 0;
-    RREs_R1 = a;
-    fp_cc_result(a, z);
-}
+# MEEBR: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:KDBR RREl_R1 "," RREl_R2 is RREl_OP=0xB318 & RREl_IGN=0 & RREl_R1 & RREl_R2
-{
-    # COMPARE AND SIGNAL (long BFP). Same as CDBR except a quiet NaN
-    # operand raises invalid-operation (not modeled); CC identical.
-    fp_cc_compare(RREl_R1, RREl_R2);
-}
+# KDBR: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:SQEBR RREs_R1 "," RREs_R2 is RREs_OP=0xB314 & RREs_IGN=0 & RREs_R1 & RREs_R2
-{
-    # SQUARE ROOT (short BFP): R1 = sqrt(R2). CC unchanged.
-    RREs_R1 = sqrt(RREs_R2);
-}
+# SQEBR: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:SQDBR RREl_R1 "," RREl_R2 is RREl_OP=0xB315 & RREl_IGN=0 & RREl_R1 & RREl_R2
-{
-    # SQUARE ROOT (long BFP): R1 = sqrt(R2). CC unchanged.
-    RREl_R1 = sqrt(RREl_R2);
-}
+# SQDBR: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # ============================================================================
 # BFP RRD: MULTIPLY AND ADD / MULTIPLY AND SUBTRACT (register).
@@ -1755,37 +1431,13 @@ dxb_RXFs_DL2_RXFs_X2_RXFs_B2: RXFs_DL2(RXFs_X2,RXFs_B2) is RXFs_DL2 & RXFs_X2 & 
 #   modeled.
 # ============================================================================
 
-:MAEBR RRDs_R1 "," RRDs_R3 "," RRDs_R2 is RRDs_OP=0xB30E & RRDs_IGN=0 & RRDs_R1 & RRDs_R3 & RRDs_R2
-{
-    # MULTIPLY AND ADD (short BFP): R1 = R3 * R2 + R1. CC unchanged.
-    local p:4;
-    p = RRDs_R3 f* RRDs_R2;
-    RRDs_R1 = p f+ RRDs_R1;
-}
+# MAEBR: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:MSEBR RRDs_R1 "," RRDs_R3 "," RRDs_R2 is RRDs_OP=0xB30F & RRDs_IGN=0 & RRDs_R1 & RRDs_R3 & RRDs_R2
-{
-    # MULTIPLY AND SUBTRACT (short BFP): R1 = R3 * R2 - R1. CC unchanged.
-    local p:4;
-    p = RRDs_R3 f* RRDs_R2;
-    RRDs_R1 = p f- RRDs_R1;
-}
+# MSEBR: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:MADBR RRDl_R1 "," RRDl_R3 "," RRDl_R2 is RRDl_OP=0xB31E & RRDl_IGN=0 & RRDl_R1 & RRDl_R3 & RRDl_R2
-{
-    # MULTIPLY AND ADD (long BFP): R1 = R3 * R2 + R1. CC unchanged.
-    local p:8;
-    p = RRDl_R3 f* RRDl_R2;
-    RRDl_R1 = p f+ RRDl_R1;
-}
+# MADBR: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:MSDBR RRDl_R1 "," RRDl_R3 "," RRDl_R2 is RRDl_OP=0xB31F & RRDl_IGN=0 & RRDl_R1 & RRDl_R3 & RRDl_R2
-{
-    # MULTIPLY AND SUBTRACT (long BFP): R1 = R3 * R2 - R1. CC unchanged.
-    local p:8;
-    p = RRDl_R3 f* RRDl_R2;
-    RRDl_R1 = p f- RRDl_R1;
-}
+# MSDBR: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # ============================================================================
 # BFP RXE (ED): lengthen, multiply, compare-and-signal, sqrt from storage.
@@ -1793,90 +1445,23 @@ dxb_RXFs_DL2_RXFs_X2_RXFs_B2: RXFs_DL2(RXFs_X2,RXFs_B2) is RXFs_DL2 & RXFs_X2 & 
 # TODO: IEEE flags/rounding not modeled.
 # ============================================================================
 
-:LDEB RXEl_R1 "," dxb_RXEl_DL2_RXEl_X2_RXEl_B2 is RXEl_OP=0xED & RXEl_OP2=0x04 & RXEl_DH2=0 & RXEl_R1 & RXEl_X2 & RXEl_B2 & RXEl_DL2 & dxb_RXEl_DL2_RXEl_X2_RXEl_B2
-{
-    # LOAD LENGTHENED (short->long BFP): exact, value-preserving.
-    # CC unchanged.
-    local ea:8;
-    ea_D12(ea, RXEl_B2, RXEl_X2, RXEl_DL2);
-    RXEl_R1 = float2float(*:4 ea);
-}
+# LDEB: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:LXDB RXEl_R1 "," dxb_RXEl_DL2_RXEl_X2_RXEl_B2 is RXEl_OP=0xED & RXEl_OP2=0x05 & RXEl_DH2=0 & RXEl_R1 & RXEl_X2 & RXEl_B2 & RXEl_DL2 & dxb_RXEl_DL2_RXEl_X2_RXEl_B2
-{
-    # LOAD LENGTHENED (extended->long BFP).
-    # TODO: only the high-order 64 bits of the 16-byte source are read.
-    # CC unchanged.
-    local ea:8;
-    ea_D12(ea, RXEl_B2, RXEl_X2, RXEl_DL2);
-    RXEl_R1 = *:8 ea;
-}
+# LXDB: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:LXEB RXEs_R1 "," dxb_RXEs_DL2_RXEs_X2_RXEs_B2 is RXEs_OP=0xED & RXEs_OP2=0x06 & RXEs_DH2=0 & RXEs_R1 & RXEs_X2 & RXEs_B2 & RXEs_DL2 & dxb_RXEs_DL2_RXEs_X2_RXEs_B2
-{
-    # LOAD LENGTHENED (extended->short BFP): exact, value-preserving.
-    # TODO: only the high-order 64 bits of the 16-byte source are read.
-    # CC unchanged.
-    local ea:8;
-    ea_D12(ea, RXEs_B2, RXEs_X2, RXEs_DL2);
-    RXEs_R1 = float2float(*:8 ea);
-}
+# LXEB: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:MXDB RXEl_R1 "," dxb_RXEl_DL2_RXEl_X2_RXEl_B2 is RXEl_OP=0xED & RXEl_OP2=0x07 & RXEl_DH2=0 & RXEl_R1 & RXEl_X2 & RXEl_B2 & RXEl_DL2 & dxb_RXEl_DL2_RXEl_X2_RXEl_B2
-{
-    # MULTIPLY (long BFP multiplier and multiplicand, extended product).
-    # TODO: R1 must designate a valid FP register pair (PoP 9-8); only the
-    #   high-order 64 bits of the extended product are modeled.
-    local ea:8; local a:8; local z:8;
-    ea_D12(ea, RXEl_B2, RXEl_X2, RXEl_DL2);
-    a = RXEl_R1 f* *:8 ea; z = 0;
-    RXEl_R1 = a;
-    fp_cc_result(a, z);
-}
+# MXDB: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:KEB RXEs_R1 "," dxb_RXEs_DL2_RXEs_X2_RXEs_B2 is RXEs_OP=0xED & RXEs_OP2=0x08 & RXEs_DH2=0 & RXEs_R1 & RXEs_X2 & RXEs_B2 & RXEs_DL2 & dxb_RXEs_DL2_RXEs_X2_RXEs_B2
-{
-    # COMPARE AND SIGNAL (short BFP). Same as CEB except a quiet NaN
-    # operand raises invalid-operation (not modeled); CC identical.
-    local ea:8;
-    ea_D12(ea, RXEs_B2, RXEs_X2, RXEs_DL2);
-    fp_cc_compare(RXEs_R1, *:4 ea);
-}
+# KEB: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:SQEB RXEs_R1 "," dxb_RXEs_DL2_RXEs_X2_RXEs_B2 is RXEs_OP=0xED & RXEs_OP2=0x14 & RXEs_DH2=0 & RXEs_R1 & RXEs_X2 & RXEs_B2 & RXEs_DL2 & dxb_RXEs_DL2_RXEs_X2_RXEs_B2
-{
-    # SQUARE ROOT (short BFP): R1 = sqrt(*ea). CC unchanged.
-    local ea:8;
-    ea_D12(ea, RXEs_B2, RXEs_X2, RXEs_DL2);
-    RXEs_R1 = sqrt(*:4 ea);
-}
+# SQEB: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:SQDB RXEl_R1 "," dxb_RXEl_DL2_RXEl_X2_RXEl_B2 is RXEl_OP=0xED & RXEl_OP2=0x15 & RXEl_DH2=0 & RXEl_R1 & RXEl_X2 & RXEl_B2 & RXEl_DL2 & dxb_RXEl_DL2_RXEl_X2_RXEl_B2
-{
-    # SQUARE ROOT (long BFP): R1 = sqrt(*ea). CC unchanged.
-    local ea:8;
-    ea_D12(ea, RXEl_B2, RXEl_X2, RXEl_DL2);
-    RXEl_R1 = sqrt(*:8 ea);
-}
+# SQDB: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:MEEB RXEs_R1 "," dxb_RXEs_DL2_RXEs_X2_RXEs_B2 is RXEs_OP=0xED & RXEs_OP2=0x17 & RXEs_DH2=0 & RXEs_R1 & RXEs_X2 & RXEs_B2 & RXEs_DL2 & dxb_RXEs_DL2_RXEs_X2_RXEs_B2
-{
-    # MULTIPLY (short BFP): R1 = R1 * *ea.
-    local ea:8; local a:4; local z:4;
-    ea_D12(ea, RXEs_B2, RXEs_X2, RXEs_DL2);
-    a = RXEs_R1 f* *:4 ea; z = 0;
-    RXEs_R1 = a;
-    fp_cc_result(a, z);
-}
+# MEEB: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:KDB RXEl_R1 "," dxb_RXEl_DL2_RXEl_X2_RXEl_B2 is RXEl_OP=0xED & RXEl_OP2=0x18 & RXEl_DH2=0 & RXEl_R1 & RXEl_X2 & RXEl_B2 & RXEl_DL2 & dxb_RXEl_DL2_RXEl_X2_RXEl_B2
-{
-    # COMPARE AND SIGNAL (long BFP). Same as CDB except a quiet NaN
-    # operand raises invalid-operation (not modeled); CC identical.
-    local ea:8;
-    ea_D12(ea, RXEl_B2, RXEl_X2, RXEl_DL2);
-    fp_cc_compare(RXEl_R1, *:8 ea);
-}
+# KDB: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # ============================================================================
 # TEST DATA CLASS (RXE): TCEB/TCDB/TCXB.
@@ -1894,38 +1479,11 @@ dxb_RXFs_DL2_RXFs_X2_RXFs_B2: RXFs_DL2(RXFs_X2,RXFs_B2) is RXFs_DL2 & RXFs_X2 & 
 #   bit, matching IEEE 754.
 # ============================================================================
 
-:TCEB RXEs_R1 "," dxb_RXEs_DL2_RXEs_X2_RXEs_B2 is RXEs_OP=0xED & RXEs_OP2=0x10 & RXEs_DH2=0 & RXEs_R1 & RXEs_X2 & RXEs_B2 & RXEs_DL2 & dxb_RXEs_DL2_RXEs_X2_RXEs_B2
-{
-    # TEST DATA CLASS (short BFP): decode-only.
-    # TODO: Full p-code modeling was attempted (extract exponent/fraction,
-    #   classify as zero/subnormal/normal/inf/qNaN/sNaN, index the EA mask
-    #   bit, set CC). The bit-manipulation p-code hit SLEIGH size-restriction
-    #   errors on the And operator that could not be resolved (constants
-    #   would not adapt to the required operand sizes in this context).
-    #   The EA is a 12-bit mask (not memory); CC is set to 0 or 1.
-}
+# TCEB: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:TCDB RXEl_R1 "," dxb_RXEl_DL2_RXEl_X2_RXEl_B2 is RXEl_OP=0xED & RXEl_OP2=0x11 & RXEl_DH2=0 & RXEl_R1 & RXEl_X2 & RXEl_B2 & RXEl_DL2 & dxb_RXEl_DL2_RXEl_X2_RXEl_B2
-{
-    # TEST DATA CLASS (long BFP): decode-only.
-    # TODO: Full p-code modeling was attempted (extract exponent/fraction,
-    #   classify as zero/subnormal/normal/inf/qNaN/sNaN, index the EA mask
-    #   bit, set CC). The bit-manipulation p-code hit SLEIGH size-restriction
-    #   errors on the And operator that could not be resolved (constants
-    #   would not adapt to the required operand sizes in this context).
-    #   The EA is a 12-bit mask (not memory); CC is set to 0 or 1.
-}
+# TCDB: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:TCXB RXEl_R1 "," dxb_RXEl_DL2_RXEl_X2_RXEl_B2 is RXEl_OP=0xED & RXEl_OP2=0x12 & RXEl_DH2=0 & RXEl_R1 & RXEl_X2 & RXEl_B2 & RXEl_DL2 & dxb_RXEl_DL2_RXEl_X2_RXEl_B2
-{
-    # TEST DATA CLASS (extended BFP): decode-only.
-    # TODO: Full p-code modeling was attempted (extract exponent/fraction,
-    #   classify as zero/subnormal/normal/inf/qNaN/sNaN, index the EA mask
-    #   bit, set CC). The bit-manipulation p-code hit SLEIGH size-restriction
-    #   errors on the And operator that could not be resolved (constants
-    #   would not adapt to the required operand sizes in this context).
-    #   The EA is a 12-bit mask (not memory); CC is set to 0 or 1.
-}
+# TCXB: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # ============================================================================
 # RXY-a FP loads/stores: LEY/LDY/STEY/STDY (20-bit displacement).
@@ -1938,55 +1496,18 @@ dxb_RXYFs_D20_RXYFs_X2_RXYFs_B2: dispRXYFs_DL2 is RXYFs_DL2 & RXYFs_DH2 & RXYFs_
 dxb_RXYFs_D20_RXYFs_X2_RXYFs_B2: dispRXYFs_DL2(RXYFs_B2) is RXYFs_DL2 & RXYFs_DH2 & RXYFs_X2=0 & RXYFs_B2 [ dispRXYFs_DL2 = ((RXYFs_DH2 << 12) | RXYFs_DL2) - (((RXYFs_DH2 >> 7) & 1) << 20); ] { }
 dxb_RXYFs_D20_RXYFs_X2_RXYFs_B2: dispRXYFs_DL2(RXYFs_X2,0) is RXYFs_DL2 & RXYFs_DH2 & RXYFs_X2 & RXYFs_B2=0 [ dispRXYFs_DL2 = ((RXYFs_DH2 << 12) | RXYFs_DL2) - (((RXYFs_DH2 >> 7) & 1) << 20); ] { }
 dxb_RXYFs_D20_RXYFs_X2_RXYFs_B2: dispRXYFs_DL2(RXYFs_X2,RXYFs_B2) is RXYFs_DL2 & RXYFs_DH2 & RXYFs_X2 & RXYFs_B2 [ dispRXYFs_DL2 = ((RXYFs_DH2 << 12) | RXYFs_DL2) - (((RXYFs_DH2 >> 7) & 1) << 20); ] { }
-:LEY RXYFs_R1 "," dxb_RXYFs_D20_RXYFs_X2_RXYFs_B2 is RXYFs_OP=0xED & RXYFs_OP2=0x64 & RXYFs_R1 & RXYFs_X2 & RXYFs_B2 & RXYFs_DL2 & RXYFs_DH2 & dxb_RXYFs_D20_RXYFs_X2_RXYFs_B2
-{
-    # LOAD (short HFP, 20-bit displacement). CC unchanged.
-    # TODO: HFP approx. D20 is displayed unsigned; negative displacements
-    #   appear as large hex (p-code sign-extends correctly).
-    local ea:8; local d:8; local dh:8; local dl:8;
-    dh = RXYFs_DH2;
-    dl = RXYFs_DL2;
-    ea_D20(ea, RXYFs_B2, RXYFs_X2, dh, dl);
-    RXYFs_R1 = *:4 ea;
-}
+# LEY: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # display-only address operand (tools/fix_display.py)
 dxb_RXYFl_D20_RXYFl_X2_RXYFl_B2: dispRXYFl_DL2 is RXYFl_DL2 & RXYFl_DH2 & RXYFl_X2=0 & RXYFl_B2=0 [ dispRXYFl_DL2 = ((RXYFl_DH2 << 12) | RXYFl_DL2) - (((RXYFl_DH2 >> 7) & 1) << 20); ] { }
 dxb_RXYFl_D20_RXYFl_X2_RXYFl_B2: dispRXYFl_DL2(RXYFl_B2) is RXYFl_DL2 & RXYFl_DH2 & RXYFl_X2=0 & RXYFl_B2 [ dispRXYFl_DL2 = ((RXYFl_DH2 << 12) | RXYFl_DL2) - (((RXYFl_DH2 >> 7) & 1) << 20); ] { }
 dxb_RXYFl_D20_RXYFl_X2_RXYFl_B2: dispRXYFl_DL2(RXYFl_X2,0) is RXYFl_DL2 & RXYFl_DH2 & RXYFl_X2 & RXYFl_B2=0 [ dispRXYFl_DL2 = ((RXYFl_DH2 << 12) | RXYFl_DL2) - (((RXYFl_DH2 >> 7) & 1) << 20); ] { }
 dxb_RXYFl_D20_RXYFl_X2_RXYFl_B2: dispRXYFl_DL2(RXYFl_X2,RXYFl_B2) is RXYFl_DL2 & RXYFl_DH2 & RXYFl_X2 & RXYFl_B2 [ dispRXYFl_DL2 = ((RXYFl_DH2 << 12) | RXYFl_DL2) - (((RXYFl_DH2 >> 7) & 1) << 20); ] { }
-:LDY RXYFl_R1 "," dxb_RXYFl_D20_RXYFl_X2_RXYFl_B2 is RXYFl_OP=0xED & RXYFl_OP2=0x65 & RXYFl_R1 & RXYFl_X2 & RXYFl_B2 & RXYFl_DL2 & RXYFl_DH2 & dxb_RXYFl_D20_RXYFl_X2_RXYFl_B2
-{
-    # LOAD (long HFP, 20-bit displacement). CC unchanged.
-    # TODO: HFP approx. D20 displayed unsigned; p-code sign-extends.
-    local ea:8; local d:8; local dh:8; local dl:8;
-    dh = RXYFl_DH2;
-    dl = RXYFl_DL2;
-    ea_D20(ea, RXYFl_B2, RXYFl_X2, dh, dl);
-    RXYFl_R1 = *:8 ea;
-}
+# LDY: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:STEY RXYFs_R1 "," dxb_RXYFs_D20_RXYFs_X2_RXYFs_B2 is RXYFs_OP=0xED & RXYFs_OP2=0x66 & RXYFs_R1 & RXYFs_X2 & RXYFs_B2 & RXYFs_DL2 & RXYFs_DH2 & dxb_RXYFs_D20_RXYFs_X2_RXYFs_B2
-{
-    # STORE (short HFP, 20-bit displacement). CC unchanged.
-    # D20 displayed unsigned; p-code sign-extends.
-    local ea:8; local d:8; local dh:8; local dl:8;
-    dh = RXYFs_DH2;
-    dl = RXYFs_DL2;
-    ea_D20(ea, RXYFs_B2, RXYFs_X2, dh, dl);
-    *:4 ea = RXYFs_R1;
-}
+# STEY: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:STDY RXYFl_R1 "," dxb_RXYFl_D20_RXYFl_X2_RXYFl_B2 is RXYFl_OP=0xED & RXYFl_OP2=0x67 & RXYFl_R1 & RXYFl_X2 & RXYFl_B2 & RXYFl_DL2 & RXYFl_DH2 & dxb_RXYFl_D20_RXYFl_X2_RXYFl_B2
-{
-    # STORE (long HFP, 20-bit displacement). CC unchanged.
-    # D20 displayed unsigned; p-code sign-extends.
-    local ea:8; local d:8; local dh:8; local dl:8;
-    dh = RXYFl_DH2;
-    dl = RXYFl_DL2;
-    ea_D20(ea, RXYFl_B2, RXYFl_X2, dh, dl);
-    *:8 ea = RXYFl_R1;
-}
+# STDY: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # ============================================================================
 # BFP RRF-b: DIEBR/DIDBR (decode-only), CPSDR (copy sign).
@@ -2008,18 +1529,7 @@ dxb_RXYFl_D20_RXYFl_X2_RXYFl_B2: dispRXYFl_DL2(RXYFl_X2,RXYFl_B2) is RXYFl_DL2 &
     #   Not modeled.
 }
 
-:CPSDR RRFbl_R1 "," RRFbl_R3 "," RRFbl_R2 is RRFbl_OP=0xB372 & RRFbl_M4=0 & RRFbl_R1 & RRFbl_R3 & RRFbl_R2
-{
-    # COPY SIGN (long BFP): R1 = |R2| with the sign of R3. CC unchanged.
-    local a:8; local z:8;
-    a = abs(RRFbl_R2); z = 0;
-    if (RRFbl_R3 f< z) goto <cpsdr_neg>;
-    RRFbl_R1 = a;
-    goto <cpsdr_done>;
-<cpsdr_neg>
-    RRFbl_R1 = f- a;
-<cpsdr_done>
-}
+# CPSDR: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # ============================================================================
 # BFP RRF-e: CONVERT BFP TO FIXED (32/64-bit), base (M4=0) and A-form.
@@ -2029,69 +1539,21 @@ dxb_RXYFl_D20_RXYFl_X2_RXYFl_B2: dispRXYFl_DL2(RXYFl_X2,RXYFl_B2) is RXYFl_DL2 &
 #   inexact flag not modeled.
 # ============================================================================
 
-:CFEBR RRFgs_R1 "," RRFgs_M3 "," RRFgs_R2 is RRFgs_OP=0xB398 & RRFgs_M3 & RRFgs_M4=0 & RRFgs_R1 & RRFgs_R2
-{
-    # CONVERT TO FIXED: decode-only.
-    # TODO: SLEIGH p-code has no float-to-integer conversion operator
-    #   (only INT2FLOAT exists); the rounded result cannot be materialized
-    #   as an integer honestly. CC unchanged.
-}
+# CFEBR: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:CFEBRA RRFgs_R1 "," RRFgs_M3 "," RRFgs_R2 "," RRFgs_M4 is RRFgs_OP=0xB398 & RRFgs_M3 & RRFgs_M4 & RRFgs_R1 & RRFgs_R2
-{
-    # CONVERT TO FIXED: decode-only.
-    # TODO: SLEIGH p-code has no float-to-integer conversion operator
-    #   (only INT2FLOAT exists); the rounded result cannot be materialized
-    #   as an integer honestly. CC unchanged.
-}
+# CFEBRA: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:CFDBR RRFgl_R1 "," RRFgl_M3 "," RRFgl_R2 is RRFgl_OP=0xB399 & RRFgl_M3 & RRFgl_M4=0 & RRFgl_R1 & RRFgl_R2
-{
-    # CONVERT TO FIXED: decode-only.
-    # TODO: SLEIGH p-code has no float-to-integer conversion operator
-    #   (only INT2FLOAT exists); the rounded result cannot be materialized
-    #   as an integer honestly. CC unchanged.
-}
+# CFDBR: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:CFDBRA RRFgl_R1 "," RRFgl_M3 "," RRFgl_R2 "," RRFgl_M4 is RRFgl_OP=0xB399 & RRFgl_M3 & RRFgl_M4 & RRFgl_R1 & RRFgl_R2
-{
-    # CONVERT TO FIXED: decode-only.
-    # TODO: SLEIGH p-code has no float-to-integer conversion operator
-    #   (only INT2FLOAT exists); the rounded result cannot be materialized
-    #   as an integer honestly. CC unchanged.
-}
+# CFDBRA: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:CGEBR RRFgs_R1 "," RRFgs_M3 "," RRFgs_R2 is RRFgs_OP=0xB3A8 & RRFgs_M3 & RRFgs_M4=0 & RRFgs_R1 & RRFgs_R2
-{
-    # CONVERT TO FIXED: decode-only.
-    # TODO: SLEIGH p-code has no float-to-integer conversion operator
-    #   (only INT2FLOAT exists); the rounded result cannot be materialized
-    #   as an integer honestly. CC unchanged.
-}
+# CGEBR: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:CGEBRA RRFgs_R1 "," RRFgs_M3 "," RRFgs_R2 "," RRFgs_M4 is RRFgs_OP=0xB3A8 & RRFgs_M3 & RRFgs_M4 & RRFgs_R1 & RRFgs_R2
-{
-    # CONVERT TO FIXED: decode-only.
-    # TODO: SLEIGH p-code has no float-to-integer conversion operator
-    #   (only INT2FLOAT exists); the rounded result cannot be materialized
-    #   as an integer honestly. CC unchanged.
-}
+# CGEBRA: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:CGDBR RRFgl_R1 "," RRFgl_M3 "," RRFgl_R2 is RRFgl_OP=0xB3A9 & RRFgl_M3 & RRFgl_M4=0 & RRFgl_R1 & RRFgl_R2
-{
-    # CONVERT TO FIXED: decode-only.
-    # TODO: SLEIGH p-code has no float-to-integer conversion operator
-    #   (only INT2FLOAT exists); the rounded result cannot be materialized
-    #   as an integer honestly. CC unchanged.
-}
+# CGDBR: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:CGDBRA RRFgl_R1 "," RRFgl_M3 "," RRFgl_R2 "," RRFgl_M4 is RRFgl_OP=0xB3A9 & RRFgl_M3 & RRFgl_M4 & RRFgl_R1 & RRFgl_R2
-{
-    # CONVERT TO FIXED: decode-only.
-    # TODO: SLEIGH p-code has no float-to-integer conversion operator
-    #   (only INT2FLOAT exists); the rounded result cannot be materialized
-    #   as an integer honestly. CC unchanged.
-}
+# CGDBRA: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # ============================================================================
 # CONVERT FROM FIXED to extended BFP: CXFBR/CXGBR (base, byte2=0) and
@@ -2099,94 +1561,37 @@ dxb_RXYFl_D20_RXYFl_X2_RXYFl_B2: dispRXYFl_DL2(RXYFl_X2,RXYFl_B2) is RXYFl_DL2 &
 # high-order 64 bits are modeled. CC unchanged.
 # ============================================================================
 
-:CXFBR RRElg_R1 "," RRElg_R2 is RRElg_OP=0xB396 & RRElg_IGN=0 & RRElg_R1 & RRElg_R2
-{
-    # CONVERT FROM FIXED (32-bit -> extended BFP).
-    # TODO: low-order 64 bits of the pair (zero) not modeled.
-    local src:8;
-    src = (RRElg_R2 << 32) s>> 32;
-    RRElg_R1 = int2float(src);
-}
+# CXFBR: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:CXFBRA RRFlg_R1 "," RRFlg_M3 "," RRFlg_R2 "," RRFlg_M4 is RRFlg_OP=0xB396 & RRFlg_M3 & RRFlg_M4 & RRFlg_R1 & RRFlg_R2
-{
-    # CONVERT FROM FIXED (32-bit -> extended BFP), M3/M4 displayed.
-    # TODO: low-order 64 bits of the pair (zero) not modeled.
-    local src:8;
-    src = (RRFlg_R2 << 32) s>> 32;
-    RRFlg_R1 = int2float(src);
-}
+# CXFBRA: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:CXGBR RRElg_R1 "," RRElg_R2 is RRElg_OP=0xB3A6 & RRElg_IGN=0 & RRElg_R1 & RRElg_R2
-{
-    # CONVERT FROM FIXED (64-bit -> extended BFP).
-    # TODO: low-order 64 bits of the pair (zero) not modeled.
-    RRElg_R1 = int2float(RRElg_R2);
-}
+# CXGBR: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:CXGBRA RRFlg_R1 "," RRFlg_M3 "," RRFlg_R2 "," RRFlg_M4 is RRFlg_OP=0xB3A6 & RRFlg_M3 & RRFlg_M4 & RRFlg_R1 & RRFlg_R2
-{
-    # CONVERT FROM FIXED (64-bit -> extended BFP), M3/M4 displayed.
-    # TODO: low-order 64 bits of the pair (zero) not modeled.
-    RRFlg_R1 = int2float(RRFlg_R2);
-}
+# CXGBRA: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # ============================================================================
 # A-forms for CONVERT FROM FIXED (32/64-bit -> short/long BFP).
 # Base forms (byte2=0) are defined earlier; these follow (first-match).
 # ============================================================================
 
-:CEFBRA RRFsg_R1 "," RRFsg_M3 "," RRFsg_R2 "," RRFsg_M4 is RRFsg_OP=0xB394 & RRFsg_M3 & RRFsg_M4 & RRFsg_R1 & RRFsg_R2
-{
-    # CONVERT FROM FIXED (32-bit -> short BFP), M3/M4 displayed.
-    local src:8;
-    src = (RRFsg_R2 << 32) s>> 32;
-    RRFsg_R1 = int2float(src);
-}
+# CEFBRA: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:CEGBRA RRFsg_R1 "," RRFsg_M3 "," RRFsg_R2 "," RRFsg_M4 is RRFsg_OP=0xB3A4 & RRFsg_M3 & RRFsg_M4 & RRFsg_R1 & RRFsg_R2
-{
-    # CONVERT FROM FIXED (64-bit -> short BFP), M3/M4 displayed.
-    RRFsg_R1 = int2float(RRFsg_R2);
-}
+# CEGBRA: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:CDFBRA RRFlg_R1 "," RRFlg_M3 "," RRFlg_R2 "," RRFlg_M4 is RRFlg_OP=0xB395 & RRFlg_M3 & RRFlg_M4 & RRFlg_R1 & RRFlg_R2
-{
-    # CONVERT FROM FIXED (32-bit -> long BFP), M3/M4 displayed.
-    local src:8;
-    src = (RRFlg_R2 << 32) s>> 32;
-    RRFlg_R1 = int2float(src);
-}
+# CDFBRA: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:CDGBRA RRFlg_R1 "," RRFlg_M3 "," RRFlg_R2 "," RRFlg_M4 is RRFlg_OP=0xB3A5 & RRFlg_M3 & RRFlg_M4 & RRFlg_R1 & RRFlg_R2
-{
-    # CONVERT FROM FIXED (64-bit -> long BFP), M3/M4 displayed.
-    RRFlg_R1 = int2float(RRFlg_R2);
-}
+# CDGBRA: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # ============================================================================
 # A-forms for LOAD FP INTEGER (FIEBRA/FIDBRA/FIXBRA).
 # Base forms (M4=0) are defined earlier; these follow (first-match).
 # ============================================================================
 
-:FIEBRA RRFs_R1 "," RRFs_M3 "," RRFs_R2 "," RRFs_M4 is RRFs_OP=0xB357 & RRFs_M3 & RRFs_M4 & RRFs_R1 & RRFs_R2
-{
-    # LOAD FP INTEGER (short BFP), M4 displayed. CC unchanged.
-    RRFs_R1 = round(RRFs_R2);
-}
+# FIEBRA: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:FIDBRA RRFl_R1 "," RRFl_M3 "," RRFl_R2 "," RRFl_M4 is RRFl_OP=0xB35F & RRFl_M3 & RRFl_M4 & RRFl_R1 & RRFl_R2
-{
-    # LOAD FP INTEGER (long BFP), M4 displayed. CC unchanged.
-    RRFl_R1 = round(RRFl_R2);
-}
+# FIDBRA: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:FIXBRA RRFl_R1 "," RRFl_M3 "," RRFl_R2 "," RRFl_M4 is RRFl_OP=0xB347 & RRFl_M3 & RRFl_M4 & RRFl_R1 & RRFl_R2
-{
-    # LOAD FP INTEGER (extended BFP), M4 displayed.
-    # TODO: only the high-order 64 bits are modeled. CC unchanged.
-    RRFl_R1 = round(RRFl_R2);
-}
+# FIXBRA: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # ============================================================================
 # A-forms for CONVERT HFP TO FIXED (CFERA/CFDRA/CGERA/CGDRA).
@@ -2229,61 +1634,27 @@ dxb_RXYFl_D20_RXYFl_X2_RXYFl_B2: dispRXYFl_DL2(RXYFl_X2,RXYFl_B2) is RXYFl_DL2 &
 # LOAD ROUNDED (long->short BFP): LEDBR (base, byte2=0) and LEDBRA.
 # ============================================================================
 
-:LEDBR RREls_R1 "," RREls_R2 is RREls_OP=0xB344 & RREls_IGN=0 & RREls_R1 & RREls_R2
-{
-    # LOAD ROUNDED (long->short BFP): R1 = round(R2). CC unchanged.
-    # TODO: rounding mode is per current BFP mode; modeled as round().
-    local r:8;
-    r = round(RREls_R2);
-    RREls_R1 = float2float(r);
-}
+# LEDBR: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:LEDBRA RRFsl_R1 "," RRFsl_M3 "," RRFsl_R2 "," RRFsl_M4 is RRFsl_OP=0xB344 & RRFsl_M3 & RRFsl_M4 & RRFsl_R1 & RRFsl_R2
-{
-    # LOAD ROUNDED (long->short BFP), M3/M4 displayed. CC unchanged.
-    # TODO: M3 method selection not modeled; modeled as round().
-    local r:8;
-    r = round(RRFsl_R2);
-    RRFsl_R1 = float2float(r);
-}
+# LEDBRA: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # ============================================================================
 # Additional confirmed instructions.
 # ============================================================================
 
 # HFP RRE sign operations (long).
-:LPDFR RREl_R1 "," RREl_R2 is RREl_OP=0xB370 & RREl_IGN=0 & RREl_R1 & RREl_R2
-{
-    # LOAD POSITIVE (long HFP). TODO: HFP approx.
-    RREl_R1 = abs(RREl_R2);
-}
+# LPDFR: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:LNDFR RREl_R1 "," RREl_R2 is RREl_OP=0xB371 & RREl_IGN=0 & RREl_R1 & RREl_R2
-{
-    # LOAD NEGATIVE (long HFP). TODO: HFP approx.
-    RREl_R1 = -abs(RREl_R2);
-}
+# LNDFR: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:LCDFR RREl_R1 "," RREl_R2 is RREl_OP=0xB373 & RREl_IGN=0 & RREl_R1 & RREl_R2
-{
-    # LOAD COMPLEMENT (long HFP). TODO: HFP approx.
-    RREl_R1 = -RREl_R2;
-}
+# LCDFR: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # Load FPR from GR / Load GR from FPR. These move the 64-bit pattern
 # unchanged between a GPR and a full FPR (PoP 9-28/9-29); the RREfg/RREgf
 # tokens attach R1/R2 to the correct register files.
-:LDGR RREfg_R1 "," RREfg_R2 is RREfg_OP=0xB3C1 & RREfg_IGN=0 & RREfg_R1 & RREfg_R2
-{
-    # LOAD FPR FROM GR (PoP 9-28): FPR R1 = GPR R2 (bit pattern).
-    RREfg_R1 = RREfg_R2;
-}
+# LDGR: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:LGDR RREgf_R1 "," RREgf_R2 is RREgf_OP=0xB3CD & RREgf_IGN=0 & RREgf_R1 & RREgf_R2
-{
-    # LOAD GR FROM FPR (PoP 9-29): GPR R1 = FPR R2 (bit pattern).
-    RREgf_R1 = RREgf_R2;
-}
+# LGDR: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # FPC operations. SFPC/EFPC use general registers (PoP 9-30/9-47), hence
 # the RREg token (R1 -> GPR), not the FPR-attached RREl.
@@ -2323,48 +1694,15 @@ dxb_RXFss_DL2_RXFss_X2_RXFss_B2: RXFss_DL2 is RXFss_DL2 & RXFss_X2=0 & RXFss_B2=
 dxb_RXFss_DL2_RXFss_X2_RXFss_B2: RXFss_DL2(RXFss_B2) is RXFss_DL2 & RXFss_X2=0 & RXFss_B2  { }
 dxb_RXFss_DL2_RXFss_X2_RXFss_B2: RXFss_DL2(RXFss_X2,0) is RXFss_DL2 & RXFss_X2 & RXFss_B2=0  { }
 dxb_RXFss_DL2_RXFss_X2_RXFss_B2: RXFss_DL2(RXFss_X2,RXFss_B2) is RXFss_DL2 & RXFss_X2 & RXFss_B2  { }
-:MAEB RXFss_R1 "," RXFss_R3 "," dxb_RXFss_DL2_RXFss_X2_RXFss_B2 is RXFss_OP=0xED & RXFss_OP2=0x0E & RXFss_IGN=0 & RXFss_R1 & RXFss_R3 & RXFss_X2 & RXFss_B2 & RXFss_DL2 & dxb_RXFss_DL2_RXFss_X2_RXFss_B2
-{
-    # MULTIPLY AND ADD (short BFP): R1 = R3 * MEM[EA] + old_R1.
-    # TODO: multiply-then-add, not fused. CC unchanged.
-    local ea:8; local b:4; local old:4;
-    ea_D12(ea, RXFss_B2, RXFss_X2, RXFss_DL2);
-    b = *:4 ea;
-    old = RXFss_R1;
-    RXFss_R1 = RXFss_R3 * b + old;
-}
+# MAEB: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:MSEB RXFss_R1 "," RXFss_R3 "," dxb_RXFss_DL2_RXFss_X2_RXFss_B2 is RXFss_OP=0xED & RXFss_OP2=0x0F & RXFss_IGN=0 & RXFss_R1 & RXFss_R3 & RXFss_X2 & RXFss_B2 & RXFss_DL2 & dxb_RXFss_DL2_RXFss_X2_RXFss_B2
-{
-    # MULTIPLY AND SUBTRACT (short BFP): R1 = R3 * MEM[EA] - old_R1. CC unchanged.
-    local ea:8; local b:4; local old:4;
-    ea_D12(ea, RXFss_B2, RXFss_X2, RXFss_DL2);
-    b = *:4 ea;
-    old = RXFss_R1;
-    RXFss_R1 = RXFss_R3 * b - old;
-}
+# MSEB: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 # display-only address operand (tools/fix_display.py)
 dxb_RXFl_DL2_RXFl_X2_RXFl_B2: RXFl_DL2 is RXFl_DL2 & RXFl_X2=0 & RXFl_B2=0  { }
 dxb_RXFl_DL2_RXFl_X2_RXFl_B2: RXFl_DL2(RXFl_B2) is RXFl_DL2 & RXFl_X2=0 & RXFl_B2  { }
 dxb_RXFl_DL2_RXFl_X2_RXFl_B2: RXFl_DL2(RXFl_X2,0) is RXFl_DL2 & RXFl_X2 & RXFl_B2=0  { }
 dxb_RXFl_DL2_RXFl_X2_RXFl_B2: RXFl_DL2(RXFl_X2,RXFl_B2) is RXFl_DL2 & RXFl_X2 & RXFl_B2  { }
-:MADB RXFl_R1 "," RXFl_R3 "," dxb_RXFl_DL2_RXFl_X2_RXFl_B2 is RXFl_OP=0xED & RXFl_OP2=0x1E & RXFl_IGN=0 & RXFl_R1 & RXFl_R3 & RXFl_X2 & RXFl_B2 & RXFl_DL2 & dxb_RXFl_DL2_RXFl_X2_RXFl_B2
-{
-    # MULTIPLY AND ADD (long BFP): R1 = R3 * MEM[EA] + old_R1. CC unchanged.
-    local ea:8; local b:8; local old:8;
-    ea_D12(ea, RXFl_B2, RXFl_X2, RXFl_DL2);
-    b = *:8 ea;
-    old = RXFl_R1;
-    RXFl_R1 = RXFl_R3 * b + old;
-}
+# MADB: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:MSDB RXFl_R1 "," RXFl_R3 "," dxb_RXFl_DL2_RXFl_X2_RXFl_B2 is RXFl_OP=0xED & RXFl_OP2=0x1F & RXFl_IGN=0 & RXFl_R1 & RXFl_R3 & RXFl_X2 & RXFl_B2 & RXFl_DL2 & dxb_RXFl_DL2_RXFl_X2_RXFl_B2
-{
-    # MULTIPLY AND SUBTRACT (long BFP): R1 = R3 * MEM[EA] - old_R1. CC unchanged.
-    local ea:8; local b:8; local old:8;
-    ea_D12(ea, RXFl_B2, RXFl_X2, RXFl_DL2);
-    b = *:8 ea;
-    old = RXFl_R1;
-    RXFl_R1 = RXFl_R3 * b - old;
-}
+# MSDB: generated in s390x_table_gen.sinc (tools/gen_semantics.py)

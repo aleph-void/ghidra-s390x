@@ -19,6 +19,7 @@ class Block:
     def __init__(self):
         self.lines = []
         self.tag = uid()
+        self.loop_sh = None     # inside an element loop: name of the run-time shift amount
 
     def local(self, size, expr, base="t"):
         name = f"{base}{self.tag}_{uid()}"
@@ -28,6 +29,9 @@ class Block:
     def elem(self, v, i, s):
         if s == 16:
             return self.local(16, v, "e")
+        if self.loop_sh is not None and i == LOOP_ELEM:
+            w = self.local(16, f"{v} >> {self.loop_sh}", "w")
+            return self.local(s, f"{w}:{s}", "e")
         sh = 8 * (16 - (i + 1) * s)
         w = self.local(16, f"{v} >> {sh}" if sh else v, "w")
         return self.local(s, f"{w}:{s}", "e")
@@ -38,8 +42,45 @@ class Block:
     def text(self):
         return "\n".join(self.lines)
 
+# Element loops. A per-element body longer than LOOP_MIN lines is emitted once inside a p-code
+# loop over the elements instead of once per element: unrolled, the vector facility alone
+# would exceed the 16 MiB a .sla may decode to (SlaFormat.MAX_FILE_SIZE).
+LOOP_MIN = 12
+LOOP_ELEM = "loop"          # element index meaning "the current loop element"
+
+class LoopResult(str):
+    """Name of a 16-byte value already assembled by an element loop."""
+
+def loop_elems(blk, s, fn):
+    """Run fn(LOOP_ELEM) once per element in a loop; returns the assembled 16-byte value."""
+    sh = blk.local(8, f"{128 - 8 * s}", "sh")
+    acc = blk.local(16, "zext(0:8)", "r")
+    top = f"lp{blk.tag}_{uid()}"
+    blk.add(f"<{top}>")
+    saved, blk.loop_sh = blk.loop_sh, sh
+    r = fn(LOOP_ELEM)
+    blk.loop_sh = saved
+    blk.add(f"{acc} = {acc} | (zext({r}) << {sh});")
+    blk.add(f"{sh} = {sh} - {8 * s};")
+    blk.add(f"if ({sh} s>= 0) goto <{top}>;")
+    return LoopResult(acc)
+
+def parts_or_loop(blk, s, fn, n=None):
+    """Element results fn(i) for i in range(n): unrolled when short, else an element loop."""
+    n = 16 // s if n is None else n
+    if n == 1 or n != 16 // s:
+        return [fn(i) for i in range(n)]
+    mark = len(blk.lines)
+    first = fn(0)
+    if len(blk.lines) - mark <= LOOP_MIN:
+        return [first] + [fn(i) for i in range(1, n)]
+    del blk.lines[mark:]
+    return loop_elems(blk, s, fn)
+
 def assemble(blk, parts, s):
     """16-byte value from element values (list of names, leftmost first)."""
+    if isinstance(parts, LoopResult):
+        return parts
     acc = blk.local(16, "zext(0:8)", "r")
     for i, p in enumerate(parts):
         sh = 8 * (16 - (i + 1) * s)
@@ -149,12 +190,7 @@ def dispatch(sizes, body_for, m_operand):
 
 def elementwise(o0, o1, o2, s, fn, cc=None):
     blk = Block()
-    n = 16 // s
-    parts = []
-    for i in range(n):
-        a = blk.elem(o1, i, s)
-        b = blk.elem(o2, i, s)
-        parts.append(fn(blk, a, b, s))
+    parts = parts_or_loop(blk, s, lambda i: fn(blk, blk.elem(o1, i, s), blk.elem(o2, i, s), s))
     r = assemble(blk, parts, s)
     if cc:     # compare with CS: 0 all true, 1 some, 3 none
         ones = blk.local(16, "~zext(0:8)")
@@ -164,7 +200,7 @@ def elementwise(o0, o1, o2, s, fn, cc=None):
 
 def unary(o0, o1, s, fn):
     blk = Block()
-    parts = [fn(blk, blk.elem(o1, i, s), s) for i in range(16 // s)]
+    parts = parts_or_loop(blk, s, lambda i: fn(blk, blk.elem(o1, i, s), s))
     r = assemble(blk, parts, s)
     blk.add(f"{o0} = {r};")
     return blk.text()
@@ -215,6 +251,12 @@ def semantics(ctx):
             allowed = {0: 1, 1: 2, 2: 4, 3: 8, 4: 16} if base in ("va", "vs", "vacc", "vscbi") else {0: 1, 1: 2, 2: 4, 3: 8}
             return dispatch(allowed, lambda s: elementwise(o[0], o[1], o[2], s, fn), m)
     r = batch2(ctx)
+    if r is not None:
+        return r
+    r = batch3(ctx)
+    if r is not None:
+        return r
+    r = batch4(ctx)
     if r is not None:
         return r
     for base, fn in UNARY.items():
@@ -592,8 +634,10 @@ def vgfm(o, s, acc=None):
         for j in (2 * i, 2 * i + 1):
             a, b = blk.elem(o[1], j, s), blk.elem(o[2], j, s)
             wa = blk.local(2 * s, f"zext({a})")
-            for bit in range(8 * s):
-                blk.add(f"{res} = {res} ^ ({wa} << {bit}) * zext((({b} >> {bit}) & 1) != 0);")
+            bt = f"bt{blk.tag}_{uid()}"
+            close = loop(blk, bt, 0, 8 * s)
+            blk.add(f"{res} = {res} ^ ({wa} << {bt}) * zext((({b} >> {bt}) & 1) != 0);")
+            blk.add(close)
         if acc:
             blk.add(f"{res} = {res} ^ {blk.elem(acc, i, 2 * s)};")
         parts.append(res)
@@ -616,8 +660,33 @@ def vreverse(o, s, mode, store=False):
     blk.add(f"*:16 {o[1]} = {r};" if store else f"{o[0]} = {r};")
     return blk.text()
 
+def vec(o, s, signed):
+    """VECTOR ELEMENT COMPARE (LOGICAL): the rightmost element of the leftmost doubleword."""
+    blk = Block()
+    idx = max(0, 8 // s - 1)
+    a, b = blk.elem(o[0], idx, s), blk.elem(o[1], idx, s)
+    blk.add(f"cc = zext({a} {'s<' if signed else '<'} {b}) + zext({a} {'s>' if signed else '>'} {b}) * 2;")
+    return blk.text()
+
 def batch2(ctx):
     n, o = ctx["name"], ctx["ops"]
+    # halfword forms whose plain name would collide with another mnemonic
+    hw = {"vuplhw": lambda: vup(o, 2, True, False), "vmlhw": lambda: elementwise(o[0], o[1], o[2], 2, _bin("*")),
+          "vmalhw": lambda: vma(o, 2, "l")}
+    if n in hw:
+        return hw[n]()
+    # VLLEBRZ/VSTEBR extended mnemonics: byte-reversed element 0 (doubleword) / leftmost word
+    if n in ("ldrv", "lerv"):
+        return vllez(o, 8 if n == "ldrv" else 4, n == "lerv", True)
+    if n in ("stdrv", "sterv"):
+        blk = Block()
+        s_ = 8 if n == "stdrv" else 4
+        e = byterev(blk, blk.elem(o[0], 0, s_), s_)
+        blk.add(f"*:{s_} {o[1]} = {e};")
+        return blk.text()
+    m = re.fullmatch(r"vec(l?)([bhfg]?)", n)
+    if m:
+        return sized(n, "vec" + m.group(1), 2, o, lambda s: vec(o, s, not m.group(1)))
     m = re.fullmatch(r"vrep([bhfg]?)", n)
     if m:
         return sized(n, "vrep", 3, o, lambda s: vrep(o, s))
@@ -633,9 +702,9 @@ def batch2(ctx):
     m = re.fullmatch(r"vl(br)?rep([bhfg]?)", n)
     if m:
         return sized(n, "vlbrrep" if m.group(1) else "vlrep", 2, o, lambda s: vlrep(o, s, bool(m.group(1))))
-    m = re.fullmatch(r"vll(ebr)?z(lf|[bhfg]?)", n)
+    m = re.fullmatch(r"vll(e|ebr)z(lf|[bhfg]?)", n)
     if m:
-        rev = bool(m.group(1))
+        rev = m.group(1) == "ebr"
         if m.group(2) == "lf":
             return vllez(o, 4, True, rev)
         base = "vllebrz" if rev else "vllez"
@@ -725,4 +794,359 @@ def batch2(ctx):
     if m:
         base = "v" + m.group(1) + m.group(2)
         return sized(n, base, 2, o, lambda s: vreverse(o, s, m.group(2), m.group(1) == "st"), (2, 4, 8, 16))
+    return None
+
+# ---------------------------------------------------------------------------------------------
+# quadword carry arithmetic, multiply-sum, element rotate-and-insert, bit permute, strings
+
+def vquad(o, kind):
+    """VAC/VACCC/VSBI/VSBCBI (quadword): V2 + V3 (or + ~V3) + carry-in (V4 bit 127)."""
+    blk = Block()
+    b = o[2] if kind in ("ac", "accc") else f"~{o[2]}"
+    c = blk.local(16, f"{o[3]} & zext(1:8)")
+    a = blk.local(16, o[1])
+    bb = blk.local(16, b)
+    s1 = blk.local(16, f"{a} + {bb}")
+    if kind in ("ac", "sbi"):
+        blk.add(f"{o[0]} = {s1} + {c};")
+    else:
+        co = blk.local(1, f"carry({a}, {bb}) || carry({s1}, {c})")
+        blk.add(f"{o[0]} = zext({co});")
+    return blk.text()
+
+def vmsl(o, m6):
+    blk = Block()
+    blk.add(f"local sf{blk.tag}:8 = {m6};")
+    p = []
+    for i, bit in ((0, 8), (1, 4)):
+        a = blk.local(16, f"zext({blk.elem(o[1], i, 8)})")
+        b = blk.local(16, f"zext({blk.elem(o[2], i, 8)})")
+        p.append(blk.local(16, f"({a} * {b}) << zext((sf{blk.tag} & {bit}) != 0)"))
+    blk.add(f"{o[0]} = {p[0]} + {p[1]} + {o[3]};")
+    return blk.text()
+
+def verim(o, s):
+    blk = Block()
+    bits = 8 * s
+    blk.add(f"local am{blk.tag}:8 = {o[3]} & {bits - 1};")
+    amt = blk.local(s, f"am{blk.tag}:{s}" if s < 8 else f"am{blk.tag}")
+    parts = []
+    for i in range(16 // s):
+        b, m, a = blk.elem(o[1], i, s), blk.elem(o[2], i, s), blk.elem(o[0], i, s)
+        r = blk.local(s, f"({b} << {amt}) | ({b} >> (({bits} - {amt}) & {bits - 1}))")
+        parts.append(blk.local(s, f"({a} & ~{m}) | ({r} & {m})"))
+    blk.add(f"{o[0]} = {assemble(blk, parts, s)};")
+    return blk.text()
+
+def vbperm(o):
+    blk = Block()
+    acc = blk.local(2, "0")
+    for i in range(16):
+        ix = blk.elem(o[2], i, 1)
+        sh = blk.local(16, f"zext(127 - {ix})")
+        t = blk.local(16, f"({o[1]} >> {sh}) & zext(1:8)")
+        bit = blk.local(2, f"{t}:2 * zext({ix} < 128)")
+        blk.add(f"{acc} = {acc} | ({bit} << {15 - i});")
+    blk.add(f"{o[0]} = zext({acc}) << 64;")
+    return blk.text()
+
+def first_index(blk, conds, s):
+    """Byte index of the first true condition, 16 if none."""
+    idx = blk.local(8, "16")
+    for i in reversed(range(len(conds))):
+        blk.add(f"{idx} = zext({conds[i]}) * {i * s} + zext(!{conds[i]}) * {idx};")
+    return idx
+
+def string_cc(blk, fm, fz):
+    """0: zero found first (or only); 1: matches but no zero; 2: match before zero; 3: neither."""
+    return (f"cc = zext({fz} == 16) * (zext({fm} == 16) * 3 + zext({fm} != 16)) + "
+            f"zext({fz} != 16) * zext({fm} < {fz}) * 2;")
+
+def elem_at(blk, v, idx, s):
+    """Element of size s at run-time element index idx (8-byte local) of vector v."""
+    sh = blk.local(8, f"{128 - 8 * s} - {idx} * {8 * s}", "sh")
+    w = blk.local(16, f"{v} >> {sh}", "w")
+    return blk.local(s, f"{w}:{s}", "e"), sh
+
+def loop(blk, var, start, stop, step=1):
+    """Open a counted loop: var runs start, start+step, ... while var < stop (all 8-byte).
+    Returns the closing text to add after the body."""
+    top = f"lp{blk.tag}_{uid()}"
+    blk.add(f"local {var}:8 = {start};")
+    blk.add(f"<{top}>")
+    return f"{var} = {var} + {step};\nif ({var} < {stop}) goto <{top}>;"
+
+def vstring(kind, o, s, flags):
+    """VFAE/VFEE/VFENE/VISTR/VSTRC/VSTRS for element size s. flags: M flag value expression
+    (IN 8, RT 4, ZS 2, CS 1). Element loops (the unrolled form is quadratic in the number of
+    elements)."""
+    blk = Block()
+    t = blk.tag
+    n = 16 // s
+    blk.add(f"local fl{t}:8 = {flags};")
+    zs = blk.local(1, f"(fl{t} & 2) != 0")
+    inv = blk.local(1, f"(fl{t} & 8) != 0")
+    rt = blk.local(1, f"(fl{t} & 4) != 0")
+    fm = blk.local(8, "16")             # byte index of the first match, 16 if none
+    fz = blk.local(8, "16")             # byte index of the first zero element (with ZS), 16 if none
+    msk = blk.local(16, "zext(0:8)")
+    sm = blk.local(1, "0")              # VFENE: first mismatch has a(i) < b(i)
+    seen = blk.local(1, "0")            # VISTR: zero element seen
+    i, j, d = f"i{t}", f"j{t}", f"d{t}"
+    if kind == "strs":
+        b7 = blk.elem(o[3], 7, 1)
+        el = blk.local(8, f"zext({b7}) >> {s.bit_length() - 1}")
+        bz = blk.local(8, "16")         # element index of the first zero element of V3
+        close = loop(blk, j, 0, n)
+        bj, _ = elem_at(blk, o[2], j, s)
+        blk.add(f"{bz} = zext({bj} == 0 && {bz} == 16) * {j} + zext(!({bj} == 0 && {bz} == 16)) * {bz};")
+        blk.add(close)
+        blk.add(f"if (!{zs}) goto <nz{t}>;")
+        blk.add(f"{el} = zext({el} < {n}) * {el} + zext({el} >= {n}) * {n};")
+        blk.add(f"{el} = zext({el} < {bz}) * {el} + zext({el} >= {bz}) * {bz};")
+        blk.add(f"<nz{t}>")
+        k = blk.local(8, "16")          # element index of the first full or partial match
+    close_i = loop(blk, i, 0, n)
+    ai, shi = elem_at(blk, o[1], i, s)
+    pos = blk.local(8, f"{i} * {s}")
+    z = blk.local(1, f"{zs} && ({ai} == 0)")
+    blk.add(f"{fz} = zext({z} && {fz} == 16) * {pos} + zext(!({z} && {fz} == 16)) * {fz};")
+    if kind in ("fae", "strc", "fee", "fene"):
+        if kind == "fae":
+            r = blk.local(1, "0")
+            cj = loop(blk, j, 0, n)
+            bj, _ = elem_at(blk, o[2], j, s)
+            blk.add(f"{r} = {r} || ({ai} == {bj});")
+            blk.add(cj)
+            blk.add(f"{r} = {r} != {inv};")
+        elif kind == "strc":
+            r = blk.local(1, "0")
+            cj = loop(blk, j, 0, n, 2)
+            tt = []
+            for off in (0, 1):
+                jj = blk.local(8, f"{j} + {off}")
+                bj, _ = elem_at(blk, o[2], jj, s)
+                c, _ = elem_at(blk, o[3], blk.local(8, f"{jj} * {s}"), 1)
+                tt.append(blk.local(1, f"(({ai} == {bj}) && (({c} & 0x80) != 0)) || (({ai} < {bj}) && (({c} & 0x40) != 0)) || "
+                                       f"(({ai} > {bj}) && (({c} & 0x20) != 0))"))
+            blk.add(f"{r} = {r} || ({tt[0]} && {tt[1]});")
+            blk.add(cj)
+            blk.add(f"{r} = {r} != {inv};")
+        else:
+            bi, _ = elem_at(blk, o[2], i, s)
+            r = blk.local(1, f"{ai} {'==' if kind == 'fee' else '!='} {bi}")
+            if kind == "fene":
+                first = blk.local(1, f"{r} && ({fm} == 16)")
+                blk.add(f"{sm} = ({first} && ({ai} < {bi})) || (!{first} && {sm});")
+        blk.add(f"{fm} = zext({r} && {fm} == 16) * {pos} + zext(!({r} && {fm} == 16)) * {fm};")
+        if kind in ("fae", "strc"):
+            me = blk.local(s, f"-zext({r})")
+            blk.add(f"{msk} = {msk} | (zext({me}) << {shi});")
+    elif kind == "istr":
+        blk.add(f"{seen} = {seen} || ({ai} == 0);")
+        part = blk.local(s, f"{ai} * zext(!{seen})" if s > 1 else f"{ai} * {seen} ^ {ai}")
+        blk.add(f"{msk} = {msk} | (zext({part}) << {shi});")
+    else:   # strs: does the substring V3[0:el) match (fully, or partially at the end) at i?
+        mt = blk.local(1, "1")
+        cd = loop(blk, d, 0, f"{n} - {i}")
+        ad, _ = elem_at(blk, o[1], blk.local(8, f"{i} + {d}"), s)
+        bd, _ = elem_at(blk, o[2], d, s)
+        blk.add(f"{mt} = {mt} && (({d} >= {el}) || ({ad} == {bd}));")
+        blk.add(cd)
+        blk.add(f"{k} = zext({mt} && {k} == 16) * {i} + zext(!({mt} && {k} == 16)) * {k};")
+    blk.add(close_i)
+    if kind in ("fae", "strc"):
+        mn = blk.local(8, f"zext({fm} < {fz}) * {fm} + zext({fm} >= {fz}) * {fz}")
+        blk.add(f"{o[0]} = zext({rt}) * {msk} + zext(!{rt}) * (zext({mn}) << 64);")
+        blk.add(f"if ((fl{t} & 1) == 0) goto <ns{t}>;")
+        blk.add(string_cc(blk, fm, fz))
+        blk.add(f"<ns{t}>")
+    elif kind in ("fee", "fene"):
+        mn = blk.local(8, f"zext({fm} < {fz}) * {fm} + zext({fm} >= {fz}) * {fz}")
+        blk.add(f"{o[0]} = zext({mn}) << 64;")
+        blk.add(f"if ((fl{t} & 1) == 0) goto <ns{t}>;")
+        if kind == "fee":
+            blk.add(string_cc(blk, fm, fz))
+        else:
+            blk.add(f"cc = zext({fz} == 16 && {fm} == 16) * 3 + zext(!({fz} == 16 && {fm} == 16)) * "
+                    f"zext({fz} >= {fm}) * (2 - zext({sm}));")
+        blk.add(f"<ns{t}>")
+    elif kind == "istr":
+        blk.add(f"{o[0]} = {msk};")
+        blk.add(f"if ((fl{t} & 1) == 0) goto <ns{t}>;")
+        blk.add(f"cc = 3 * zext(!{seen});")
+        blk.add(f"<ns{t}>")
+    else:
+        sl0 = blk.local(8, f"{fz} >> {s.bit_length() - 1}")     # element index; 16 >> .. if none
+        blk.add(f"{sl0} = zext({fz} == 16) * 16 + zext({fz} != 16) * {sl0};")
+        blk.add(f"{sl0} = zext({sl0} > {n}) * {n} + zext({sl0} <= {n}) * {sl0};")
+        res = blk.local(8, f"{k}")
+        blk.add(f"cc = zext({k} == 16) * zext({sl0} != {n}) + zext({k} != 16) * "
+                f"(zext({k} > {sl0}) + zext({k} <= {sl0}) * (2 + zext({n} - {k} < {el})));")
+        blk.add(f"{res} = zext({k} == 16 || {k} > {sl0}) * {n} + zext({k} != 16 && {k} <= {sl0}) * {k};")
+        blk.add(f"{res} = zext({el} != 0) * {res};")
+        blk.add(f"cc = zext({el} != 0) * cc + zext({el} == 0) * 2;")
+        blk.add(f"{o[0]} = zext({res} << {s.bit_length() - 1}) << 64;")
+    return blk.text()
+
+STRING_ARGS = {      # kind: (index of the M element-size operand in base form, number of vector operands)
+    "fae": 3, "fee": 3, "fene": 3, "istr": 2, "strc": 4, "strs": 4}
+
+def batch3(ctx):
+    n, o = ctx["name"], ctx["ops"]
+    m = re.fullmatch(r"v(ac|accc|sbi|sbcbi)(q?)", n)
+    if m:
+        return vquad(o, m.group(1))
+    m = re.fullmatch(r"vmsl(g?)", n)
+    if m:
+        return vmsl(o, o[4] if m.group(1) else (o[5] if len(o) > 5 else "0"))
+    m = re.fullmatch(r"verim([bhfg]?)", n)
+    if m:
+        return sized(n, "verim", 4, o, lambda s: verim(o, s))
+    if n == "vbperm":
+        return vbperm(o)
+    m = re.fullmatch(r"v(fae|fee|fene|istr|strc|strs)(z?)([bhf]?)(s?)", n)
+    if m:
+        kind, z, suf, cs = m.groups()
+        nv = STRING_ARGS[kind]
+        fixed = (2 if z else 0) | (1 if cs else 0)
+        if kind == "strs":
+            fixed |= 1                          # VSTRS always sets the condition code
+        if suf:
+            fl = o[nv] if len(o) > nv else "0"
+            flags = f"({fl}) | {fixed}"
+            return vstring(kind, o, SIZES[suf], flags)
+        fl = o[nv + 1] if len(o) > nv + 1 else "0"
+        return dispatch({0: 1, 1: 2, 2: 4}, lambda s: vstring(kind, o, s, f"({fl}) | {fixed}"), o[nv])
+    return None
+
+# ---------------------------------------------------------------------------------------------
+# z17 (vector-enhancements facility 3) and the remaining vector loads/stores
+
+def vgather(o, vx, s, store):
+    """VGEF/VGEG/VSCEF/VSCEG: element M3 addressed by D2 + B2 + element M3 of the index vector."""
+    blk = Block()
+    blk.add(f"local ix{blk.tag}:8 = {o[2]} & {16 // s - 1};")
+    off = get_rt(blk, vx, f"ix{blk.tag}", s)
+    ea = blk.local(8, f"{o[1]} + zext({off})" if s < 8 else f"{o[1]} + {off}")
+    if store:
+        e = get_rt(blk, o[0], f"ix{blk.tag}", s)
+        blk.add(f"*:{s} {ea} = {e};")
+    else:
+        v = blk.local(s, f"*:{s} {ea}")
+        set_rt(blk, o[0], f"ix{blk.tag}", s, v)
+    return blk.text()
+
+def vlbb(o):
+    """VECTOR LOAD TO BLOCK BOUNDARY: bytes up to the next 64 << M3 byte boundary (at most 16);
+    the remaining bytes of V1 are left unchanged (architecturally unpredictable)."""
+    blk = Block()
+    t = blk.tag
+    blk.add(f"local bs{t}:8 = 64 << ({o[2]} & 7);")
+    n = blk.local(8, f"bs{t} - ({o[1]} & (bs{t} - 1))")
+    acc = blk.local(16, o[0])
+    for i in range(16):
+        blk.add(f"if ({n} <= {i}) goto <lb{t}>;")
+        b = blk.local(1, f"*:1 ({o[1]} + {i})")
+        sh = 8 * (15 - i)
+        blk.add(f"{acc} = ({acc} & ~(zext(0xff:1) << {sh})) | (zext({b}) << {sh});")
+    blk.add(f"<lb{t}>")
+    blk.add(f"{o[0]} = {acc};")
+    return blk.text()
+
+def vblend(o, s):
+    blk = Block()
+    parts = []
+    for i in range(16 // s):
+        a, b, c = blk.elem(o[1], i, s), blk.elem(o[2], i, s), blk.elem(o[3], i, s)
+        m = blk.local(1, f"{c} s< 0")
+        parts.append(blk.local(s, f"zext({m}) * {a} + zext(!{m}) * {b}" if s < 16 else
+                               f"(zext({m}) * {a}) + (zext(!{m}) * {b})"))
+    blk.add(f"{o[0]} = {assemble(blk, parts, s)};")
+    return blk.text()
+
+def vdiv(o, s, signed, rem, idc):
+    """VD/VDL/VR/VRL: a zero divisor (or, signed, the most negative value divided by -1) gives
+    0 when the IDC bit of M5 is set and an integer-divide exception otherwise; p-code cannot
+    raise the exception, so 0 is produced either way."""
+    blk = Block()
+    parts = []
+    op = ("s%" if rem else "s/") if signed else ("%" if rem else "/")
+    for i in range(16 // s):
+        a, b = blk.elem(o[1], i, s), blk.elem(o[2], i, s)
+        z = ZEROS(s)
+        bad = blk.local(1, f"{b} == {z}")
+        if signed:
+            mn = f"{1 << (8 * s - 1)}:{s}" if s < 16 else "zext(1:8) << 127"
+            ones = f"{(1 << 8 * s) - 1}:{s}" if s < 16 else "~zext(0:8)"
+            blk.add(f"{bad} = {bad} || (({a} == {mn}) && ({b} == {ones}));")
+        d = blk.local(s, f"{b} + zext({bad})")
+        q = blk.local(s, f"{a} {op} {d}")
+        parts.append(blk.local(s, f"{q} * zext(!{bad})"))
+    blk.add(f"{o[0]} = {assemble(blk, parts, s)};")
+    return blk.text()
+
+def ZEROS(s):
+    return f"0:{s}" if s < 16 else "zext(0:8)"
+
+def veval(o):
+    blk = Block()
+    blk.add(f"local tt{blk.tag}:8 = {o[4]};")
+    a, b, c = o[1], o[2], o[3]
+    acc = blk.local(16, "zext(0:8)")
+    for k in range(8):
+        terms = [(a if k & 4 else f"~{a}"), (b if k & 2 else f"~{b}"), (c if k & 1 else f"~{c}")]
+        m = blk.local(16, f"-zext((tt{blk.tag} >> {7 - k}) & 1)")
+        blk.add(f"{acc} = {acc} | ({m} & ({terms[0]}) & ({terms[1]}) & ({terms[2]}));")
+    blk.add(f"{o[0]} = {acc};")
+    return blk.text()
+
+def vgem(o, s):
+    """Element i of V1 is all ones when bit i (from the left) of word 0 of V2 is one."""
+    blk = Block()
+    w = blk.elem(o[1], 0, 4)
+    parts = []
+    for i in range(16 // s):
+        bit = blk.local(1, f"(({w} >> {31 - i}) & 1) != 0")
+        parts.append(blk.local(s, f"-zext({bit})" if s < 16 else f"~zext(0:8) * zext({bit})"))
+    blk.add(f"{o[0]} = {assemble(blk, parts, s)};")
+    return blk.text()
+
+def batch4(ctx):
+    n, o = ctx["name"], ctx["ops"]
+    m = re.fullmatch(r"v(ge|sce)(f|g)", n)
+    if m and ctx.get("vindex"):
+        return vgather(o, ctx["vindex"], SIZES[m.group(2)], m.group(1) == "sce")
+    if n == "vlbb":
+        return vlbb(o)
+    m = re.fullmatch(r"vblend([bhfgq]?)", n)
+    if m:
+        return sized(n, "vblend", 4, o, lambda s: vblend(o, s), (1, 2, 4, 8, 16))
+    m = re.fullmatch(r"v(d|dl|r|rl)([fgq]?)", n)
+    if m:
+        base = "v" + m.group(1)
+        idc = o[3] if m.group(2) else (o[4] if len(o) > 4 else "0")
+        return sized(n, base, 3, o, lambda s: vdiv(o, s, m.group(1) in ("d", "r"), m.group(1) in ("r", "rl"), idc), (4, 8, 16))
+    if n == "veval":
+        return veval(o)
+    m = re.fullmatch(r"vgem([bhfgq]?)", n)
+    if m:
+        return sized(n, "vgem", 2, o, lambda s: vgem(o, s), (1, 2, 4, 8, 16))
+    # 64-bit element forms of the multiply family (z17)
+    m = re.fullmatch(r"vm(l?)(e|o)g", n)
+    if m:
+        return vmul_eo(o, 8, not m.group(1), m.group(2) == "o")
+    m = re.fullmatch(r"vma(l?)(e|o)g", n)
+    if m:
+        return vmul_eo(o, 8, not m.group(1), m.group(2) == "o", o[3])
+    m = re.fullmatch(r"vma(l|h|lh)(g|q)", n)
+    if m:
+        return vma(o, SIZES[m.group(2)], m.group(1))
+    m = re.fullmatch(r"vup(h|l|lh|ll)g", n)
+    if m:
+        k = m.group(1)
+        return vup(o, 8, k in ("h", "l"), k in ("h", "lh"))
+    m = re.fullmatch(r"vec(l?)q", n)
+    if m:
+        return vec(o, 16, not m.group(1))
     return None
