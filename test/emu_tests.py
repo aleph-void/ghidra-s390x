@@ -352,6 +352,43 @@ T("kimd_ghash", "kimd %r0,%r4", f"r0=41,r1={_P:x},r4={_M:x},r5=20,m32:{_P:x}={(_
   f"m16:{_P:x}={_y.to_bytes(16, 'big').hex()},m16:{_P + 16:x}={_H.hex()},r5=0,cc=0")
 
 
+# ---- ciphers: KM / KMC / KMF / KMO / KMCTR with DEA, TDEA and AES (cryptography is the oracle) -------
+_CF = {"dea": (1, 8), "tdea128": (2, 16), "tdea192": (3, 24), "aes128": (18, 16), "aes192": (19, 24), "aes256": (20, 32)}
+_IN, _OUT, _CTR = DATA + 0x100, DATA + 0x300, DATA + 0x500
+def _cipher_tests():
+    for nm, (fc, kl) in _CF.items():
+        alg = "aes" if nm.startswith("aes") else nm
+        key = bytes((7 * i + fc) & 0xff for i in range(kl))
+        bs = 16 if alg == "aes" else 8
+        iv = bytes((11 * i + 3) & 0xff for i in range(bs))
+        data = bytes((5 * i + 1) & 0xff for i in range(4 * bs))
+        n = len(data)
+        for dec in (0, 1):
+            m = 0x80 if dec else 0
+            r0 = f"r0={fc | m:x}"
+            regs = f"{r0},r1={DATA:x},r2={_OUT:x},r4={_IN:x},r5={n:x}"
+            end = f"r2={_OUT + n:x},r4={_IN + n:x},r5=0,cc=0"
+            out, _ = CM.mode_ecb(alg, key, data, dec)
+            T(f"km_{nm}_{'dec' if dec else 'enc'}", "km %r2,%r4", f"{regs},m{kl}:{DATA:x}={key.hex()},m{n}:{_IN:x}={data.hex()}",
+              f"m{n}:{_OUT:x}={out.hex()},{end}")
+            out, cv = CM.mode_cbc(alg, key, iv, data, dec)
+            T(f"kmc_{nm}_{'dec' if dec else 'enc'}", "kmc %r2,%r4", f"{regs},m{bs + kl}:{DATA:x}={(iv + key).hex()},m{n}:{_IN:x}={data.hex()}",
+              f"m{n}:{_OUT:x}={out.hex()},m{bs}:{DATA:x}={cv.hex()},{end}")
+            for s in sorted({1, bs // 2, bs}):
+                out, cv = CM.mode_cfb(alg, key, iv, data, dec, s)
+                T(f"kmf_{nm}_{'dec' if dec else 'enc'}_s{s}", "kmf %r2,%r4",
+                  f"r0={fc | m | (s << 24):x},r1={DATA:x},r2={_OUT:x},r4={_IN:x},r5={n:x},m{bs + kl}:{DATA:x}={(iv + key).hex()},m{n}:{_IN:x}={data.hex()}",
+                  f"m{n}:{_OUT:x}={out.hex()},m{bs}:{DATA:x}={cv.hex()},{end}")
+        out, cv = CM.mode_ofb(alg, key, iv, data)
+        T(f"kmo_{nm}", "kmo %r2,%r4", f"r0={fc:x},r1={DATA:x},r2={_OUT:x},r4={_IN:x},r5={n:x},m{bs + kl}:{DATA:x}={(iv + key).hex()},m{n}:{_IN:x}={data.hex()}",
+          f"m{n}:{_OUT:x}={out.hex()},m{bs}:{DATA:x}={cv.hex()},r2={_OUT + n:x},r4={_IN + n:x},r5=0,cc=0")
+        ctrs = b"".join(((0x0123456789abcdef0011223344556677 + i) & ((1 << (8 * bs)) - 1)).to_bytes(bs, "big") for i in range(4))
+        out, _ = CM.mode_ctr(alg, key, ctrs, data)
+        T(f"kmctr_{nm}", "kmctr %r2,%r6,%r4", f"r0={fc:x},r1={DATA:x},r2={_OUT:x},r4={_IN:x},r5={n:x},r6={_CTR:x},m{kl}:{DATA:x}={key.hex()},m{n}:{_IN:x}={data.hex()},m{n}:{_CTR:x}={ctrs.hex()}",
+          f"m{n}:{_OUT:x}={out.hex()},r2={_OUT + n:x},r4={_IN + n:x},r5=0,r6={_CTR + n:x},cc=0")
+_cipher_tests()
+T("km_query", "km %r2,%r4", f"r0=0,r1={DATA:x}", f"m16:{DATA:x}=f0003800000000000000000000000000")
+
 
 def main():
     out = sys.argv[1]

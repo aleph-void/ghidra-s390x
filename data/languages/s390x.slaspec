@@ -356,7 +356,8 @@ define register offset=0x15000 size=5120 [ pfw4 ];
 # the "last block" flag, the message bit length (cpbh:cpbl) and a pointer for the engines.
 define register offset=0x16400 size=8 [ cpa cpl cpbh cpbl cpo cpn ];
 define register offset=0x16430 size=8 [ cprt ];
-define register offset=0x16440 size=1 [ cpfin cpps cpmd cpdm ];
+define register offset=0x16440 size=1 [ cpfin cpps cpmd cpdm cpalg cpdec cpnk ];
+define register offset=0x16460 size=8 [ cps cpc ];
 
 # Disassembly context. xplink: set to 1 by the zos_xplink compiler spec, where "BR 7" and
 # "B 2(,7)"/"B 4(,7)" are function returns (the XPLINK return address is in R7, and a

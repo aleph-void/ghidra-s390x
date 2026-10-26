@@ -316,95 +316,19 @@ define pcodeop unkval;
 # bits 16-23 of the instruction are IGNORED.
 # ---------------------------------------------------------------------------
 
-:KM RRE_R1 "," RRE_R2 is RRE_OP=0xB92E & RRE_R1 & RRE_R2
-{
-    # CIPHER MESSAGE (PoP 7-54): block-cipher operation selected by
-    # the function code in GR0 bits 57-63 (e.g. 18 = KM-AES-128).
-    # R1 = parameter-block address, R2 = operand address.
-    # Conservative clobber model: exact emulation is impossible
-    # statically (function code, key, and data are all dynamic). The
-    # address/length registers are updated by the real instruction,
-    # the chaining value in the parameter block and the (in-place)
-    # operand are rewritten, and CC is set (0 = completed,
-    # 3 = partial). The stores precede the register clobbers so the
-    # memory addresses are the true operand addresses.
-    *:8 RRE_R1 = unkval();
-    *:8 RRE_R2 = unkval();
-    RRE_R1 = unkval();
-    RRE_R2 = unkval();
-    cc = unkval(); cc_sync();
-}
+# KM: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:KMC RRE_R1 "," RRE_R2 is RRE_OP=0xB92F & RRE_R1 & RRE_R2
-{
-    # CIPHER MESSAGE WITH CHAINING (PoP 7-54): as KM, with chaining
-    # value carried across invocations. Same conservative clobber
-    # model as KM.
-    *:8 RRE_R1 = unkval();
-    *:8 RRE_R2 = unkval();
-    RRE_R1 = unkval();
-    RRE_R2 = unkval();
-    cc = unkval(); cc_sync();
-}
+# KMC: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:KMF RRE_R1 "," RRE_R2 is RRE_OP=0xB92A & RRE_R1 & RRE_R2
-{
-    # CIPHER MESSAGE WITH CIPHER FEEDBACK (PoP 7-102). Same
-    # conservative clobber model as KM.
-    *:8 RRE_R1 = unkval();
-    *:8 RRE_R2 = unkval();
-    RRE_R1 = unkval();
-    RRE_R2 = unkval();
-    cc = unkval(); cc_sync();
-}
+# KMF: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:KMO RRE_R1 "," RRE_R2 is RRE_OP=0xB92B & RRE_R1 & RRE_R2
-{
-    # CIPHER MESSAGE WITH OUTPUT FEEDBACK (PoP 7-133). Same
-    # conservative clobber model as KM.
-    *:8 RRE_R1 = unkval();
-    *:8 RRE_R2 = unkval();
-    RRE_R1 = unkval();
-    RRE_R2 = unkval();
-    cc = unkval(); cc_sync();
-}
+# KMO: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:KMAC RRE_R1 "," RRE_R2 is RRE_OP=0xB91E & RRE_R1 & RRE_R2
-{
-    # COMPUTE MESSAGE AUTHENTICATION CODE (PoP 7-239): R1 =
-    # parameter-block address (chaining value updated, MAC stored
-    # into the block), R2 = message address. Same conservative
-    # clobber model as KM (the message operand is only read, but
-    # clobbering it is the safe over-approximation).
-    *:8 RRE_R1 = unkval();
-    *:8 RRE_R2 = unkval();
-    RRE_R1 = unkval();
-    RRE_R2 = unkval();
-    cc = unkval(); cc_sync();
-}
+# KMAC: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:PCC is RRE_OP=0xB92C
-{
-    # PERFORM CRYPTOGRAPHIC COMPUTATION (PoP 7-358): bits 16-31 of
-    # the instruction are ignored (no operands); function code in
-    # GR0. Used e.g. for XTS-parameter setup. Conservative clobber
-    # model: the parameter-block address is the implicit operand in
-    # GR1; the block is rewritten and CC is set. GR1 itself is not
-    # described as modified by PoP 7-358, so only the block and CC
-    # are clobbered.
-    *:8 r1 = unkval();
-    cc = unkval(); cc_sync();
-}
+# PCC: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:PCKMO is RRE_OP=0xB928
-{
-    # PERFORM CRYPTOGRAPHIC KEY MANAGEMENT OPERATION (PoP 10-78):
-    # bits 16-31 of the instruction are ignored (no operands);
-    # function code in GR0 bits 57-63. PRIVILEGED. Same conservative
-    # clobber model as PCC (parameter block at GR1, CC set).
-    *:8 r1 = unkval();
-    cc = unkval(); cc_sync();
-}
+# PCKMO: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
 :PPNO RRE_R1 "," RRE_R2 is RRE_OP=0xB93C & RRE_R1 & RRE_R2
 {
@@ -418,61 +342,10 @@ define pcodeop unkval;
 # Message-security-assist: RRF-b (R3 field) and RRF-c (M3 field).
 # ---------------------------------------------------------------------------
 
-:KMA RRFb_R1 "," RRFb_R3 "," RRFb_R2 is RRFb_OP=0xB929 & RRFb_R1 & RRFb_R3 & RRFb_R2
-{
-    # CIPHER MESSAGE WITH AUTHENTICATION (PoP 7-86): RRF-b format;
-    # R3 (bits 16-19) designates the register holding the
-    # authentication tag/parameter; bits 20-23 ignored. Function
-    # code in GR0. Conservative clobber model as for KM: the R1/R3/R2
-    # registers are updated, the parameter block (chaining value) and
-    # the operand are rewritten, and CC is set. R3's memory role is
-    # instruction-specific, so only the register itself is clobbered.
-    *:8 RRFb_R1 = unkval();
-    *:8 RRFb_R2 = unkval();
-    RRFb_R1 = unkval();
-    RRFb_R3 = unkval();
-    RRFb_R2 = unkval();
-    cc = unkval(); cc_sync();
-}
+# KMA: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:KMCTR RRFb_R1 "," RRFb_R3 "," RRFb_R2 is RRFb_OP=0xB92D & RRFb_R1 & RRFb_R3 & RRFb_R2
-{
-    # CIPHER MESSAGE WITH COUNTER (PoP 7-119): RRF-b format; R3
-    # (bits 16-19) designates the counter register; bits 20-23
-    # ignored. Function code in GR0. Same conservative clobber model
-    # as KMA (R3 holds the counter value, updated by the
-    # instruction).
-    *:8 RRFb_R1 = unkval();
-    *:8 RRFb_R2 = unkval();
-    RRFb_R1 = unkval();
-    RRFb_R3 = unkval();
-    RRFb_R2 = unkval();
-    cc = unkval(); cc_sync();
-}
+# KMCTR: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:KIMD RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB93E & RRFc_R1 & RRFc_R2
-{
-    # COMPUTE INTERMEDIATE MESSAGE DIGEST (PoP 7-203): RRF-c format;
-    # M3 (bits 16-19) is a modifier (bit 0 = extension-12 flags
-    # enable), bits 20-23 reserved. M3 is parsed but not displayed
-    # (PoP syntax "KIMD R1,R2[,M3]"; Capstone never prints it).
-    # Function code in GR0. Conservative clobber model as for KM:
-    # R1 = parameter-block address (chaining value updated), R2 =
-    # message address.
-    *:8 RRFc_R1 = unkval();
-    *:8 RRFc_R2 = unkval();
-    RRFc_R1 = unkval();
-    RRFc_R2 = unkval();
-    cc = unkval(); cc_sync();
-}
+# KIMD: generated in s390x_table_gen.sinc (tools/gen_semantics.py)
 
-:KLMD RRFc_R1 "," RRFc_R2 is RRFc_OP=0xB93F & RRFc_R1 & RRFc_R2
-{
-    # COMPUTE LAST MESSAGE DIGEST (PoP 7-218): as KIMD, finalizes
-    # the digest. Same conservative clobber model as KIMD.
-    *:8 RRFc_R1 = unkval();
-    *:8 RRFc_R2 = unkval();
-    RRFc_R1 = unkval();
-    RRFc_R2 = unkval();
-    cc = unkval(); cc_sync();
-}
+# KLMD: generated in s390x_table_gen.sinc (tools/gen_semantics.py)

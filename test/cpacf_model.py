@@ -131,3 +131,67 @@ def selftest():
 if __name__ == "__main__":
     selftest()
     print("ok")
+
+# ---- block ciphers (cryptography is the oracle for single blocks; the modes are done here) ---------
+import warnings
+warnings.simplefilter("ignore")
+from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
+try:
+    from cryptography.hazmat.decrepit.ciphers.algorithms import TripleDES
+except Exception:
+    from cryptography.hazmat.primitives.ciphers.algorithms import TripleDES
+
+def ecb_block(alg, key):
+    """-> (encrypt, decrypt, block size) for alg 'dea' (8-byte key), 'tdea128' (16), 'tdea192' (24), 'aes' (16/24/32)"""
+    if alg == "aes":
+        a = algorithms.AES(key); bs = 16
+    else:
+        k = {"dea": key * 3, "tdea128": key + key[:8], "tdea192": key}[alg]
+        a = TripleDES(k); bs = 8
+    def enc(b):
+        return Cipher(a, modes.ECB()).encryptor().update(b)
+    def dec(b):
+        return Cipher(a, modes.ECB()).decryptor().update(b)
+    return enc, dec, bs
+
+def mode_ecb(alg, key, data, dec):
+    e, d, bs = ecb_block(alg, key)
+    f = d if dec else e
+    return b"".join(f(data[i:i + bs]) for i in range(0, len(data), bs)), None
+
+def mode_cbc(alg, key, cv, data, dec):
+    e, d, bs = ecb_block(alg, key)
+    out = b""
+    for i in range(0, len(data), bs):
+        blk = data[i:i + bs]
+        if dec:
+            o = bytes(x ^ y for x, y in zip(d(blk), cv))
+            cv = blk
+        else:
+            o = e(bytes(x ^ y for x, y in zip(blk, cv)))
+            cv = o
+        out += o
+    return out, cv
+
+def mode_cfb(alg, key, cv, data, dec, s):
+    e, d, bs = ecb_block(alg, key)
+    out = b""
+    for i in range(0, len(data), s):
+        seg = data[i:i + s]
+        ks = e(cv)[:s]
+        o = bytes(x ^ y for x, y in zip(seg, ks))
+        out += o
+        cv = cv[s:] + (seg if dec else o)
+    return out, cv
+
+def mode_ofb(alg, key, cv, data):
+    e, d, bs = ecb_block(alg, key)
+    out = b""
+    for i in range(0, len(data), bs):
+        cv = e(cv)
+        out += bytes(x ^ y for x, y in zip(data[i:i + bs], cv))
+    return out, cv
+
+def mode_ctr(alg, key, counters, data):
+    e, d, bs = ecb_block(alg, key)
+    return b"".join(bytes(x ^ y for x, y in zip(data[i:i + bs], e(counters[i:i + bs]))) for i in range(0, len(data), bs)), None
