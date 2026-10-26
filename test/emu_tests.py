@@ -596,6 +596,51 @@ def _hmac_tests():
 _hmac_tests()
 T("kmac_query", "kmac %r0,%r4", f"r0=0,r1={DATA:x}", f"m16:{DATA:x}=f0003800000000000000000000000f00".replace("f0003800000000000000000000000f00", "f000380000000000" + "0000000000" + "00f000"))
 
+def _prno_tests():
+    sha = lambda b: hashlib.sha512(b).digest()
+    M = (1 << 888) - 1
+    def hash_df(data):
+        return (sha(b"\x01" + (888).to_bytes(4, "big") + data) + sha(b"\x02" + (888).to_bytes(4, "big") + data))[:111]
+    def seed(v_old, ctr, inp):
+        mat = (b"\x01" + v_old if ctr else b"") + inp
+        v = hash_df(mat)
+        return v, hash_df(b"\x00" + v)
+    def generate(v, c, ctr, n):
+        out, x = b"", int.from_bytes(v, "big")
+        for _ in range((n + 63) // 64):
+            out += sha(x.to_bytes(111, "big"))
+            x = (x + 1) & M
+        h = int.from_bytes(sha(b"\x03" + v), "big")
+        nv = (int.from_bytes(v, "big") + int.from_bytes(c, "big") + h + ctr) & M
+        return out[:n], nv.to_bytes(111, "big")
+    PB = DATA
+    def blk(ctr, strm, v, c):
+        return bytes(4) + ctr.to_bytes(4, "big") + strm.to_bytes(8, "big") + b"\x00" + v + b"\x00" + c
+    inp = bytes((13 * i + 5) & 0xff for i in range(40))
+    v1, c1 = seed(b"", 0, inp)
+    T("prno_instantiate", "prno %r2,%r4", f"r0=83,r1={PB:x},r4={_IN:x},r5={len(inp):x},m240:{PB:x}={bytes(240).hex()},m{len(inp)}:{_IN:x}={inp.hex()}",
+      f"m240:{PB:x}={blk(1, 0, v1, c1).hex()},cc=0")
+    v0 = bytes((7 * i + 1) & 0xff for i in range(111)); c0 = bytes((11 * i + 3) & 0xff for i in range(111))
+    for ln in (0, 1, 47, 512):
+        inp2 = bytes((17 * i + 9) & 0xff for i in range(ln))
+        v2, c2 = seed(v0, 5, inp2)
+        init = f"r0=83,r1={PB:x},r4={_IN:x},r5={ln:x},m240:{PB:x}={blk(5, 100, v0, c0).hex()}" + (f",m{ln}:{_IN:x}={inp2.hex()}" if ln else "")
+        T(f"prno_reseed_{ln}", "prno %r2,%r4", init, f"m240:{PB:x}={blk(1, 100, v2, c2).hex()},cc=0")
+    for n in (0, 1, 63, 64, 65, 130, 200):
+        out, nv = generate(v0, c0, 3, n)
+        init = f"r0=3,r1={PB:x},r2={_OUT:x},r3={n:x},m240:{PB:x}={blk(3, 7, v0, c0).hex()}"
+        exp = f"m240:{PB:x}={blk(4, 7 + n, nv, c0).hex()},r2={_OUT:x},r3=0,cc=0" + (f",m{n}:{_OUT:x}={out.hex()}" if n else "")
+        T(f"prno_generate_{n}", "prno %r2,%r4", init, exp)
+    # carry through the 888-bit value: V = 2^888 - 2 gives blocks V, V+1, V+2 = 0
+    vmax = ((1 << 888) - 2).to_bytes(111, "big")
+    out, nv = generate(vmax, c0, 1, 192)
+    T("prno_generate_wrap", "prno %r2,%r4", f"r0=3,r1={PB:x},r2={_OUT:x},r3=c0,m240:{PB:x}={blk(1, 0, vmax, c0).hex()}",
+      f"m240:{PB:x}={blk(2, 192, nv, c0).hex()},m192:{_OUT:x}={out.hex()},r3=0,cc=0")
+    T("prno_query", "prno %r2,%r4", f"r0=0,r1={DATA:x}", f"m16:{DATA:x}=9000000000000000000000000000a000")
+_prno_tests()
+T("prno_trng_ratio", "prno %r2,%r4", f"r0=70,r1={DATA:x}", f"m8:{DATA:x}=0000000100000001,cc=0")
+T("prno_trng_empty", "prno %r2,%r4", f"r0=72,r1={DATA:x},r2={_OUT:x},r3=0,r4={_IN:x},r5=0", f"r2={_OUT:x},r3=0,r4={_IN:x},r5=0,cc=0")
+
 
 def main():
     out = sys.argv[1]

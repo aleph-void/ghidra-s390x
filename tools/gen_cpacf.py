@@ -671,7 +671,90 @@ CIPHER_INSN = {"km": (0, False), "kmc": (1, True), "kmf": (2, True), "kmo": (3, 
 XTS_FC = {50: (3, 4, 16), 52: (3, 8, 32), 82: (3, 4, 16), 84: (3, 8, 32)}
 KMA_FC = {18: (3, 4, 16), 19: (3, 6, 24), 20: (3, 8, 32)}
 
-NAMES = {"kimd", "klmd", "km", "kmc", "kmf", "kmo", "kmctr", "kmac", "pcc", "kma"}
+# ---- PERFORM RANDOM NUMBER OPERATION ---------------------------------------------------------------
+SB, DV, DC, VN, HB = 0x2000, 0x2300, 0x2380, 0x2400, 0x2480   # seed buffer, V, C, new V (112 bytes each, one leading zero byte), hash input
+
+def prno_insn(o, x):
+    """PRNO: the query (0), SHA-512-DRNG (3: generate and seed) and the TRNG functions (112, 114). The
+    DRNG is exactly the PoO's SHA-512 construction; the TRNG bytes come from s390_trng_byte().
+    x: R1 + 1, R1 number, R2 + 1, R2 number."""
+    r1a, r2a = o[0], o[1]
+    r1l, r2l = x[0], x[2]
+    t = [f"local r1num:4 = {x[1]}; local r2num:4 = {x[3]};"]
+    t.append("local fc:1 = r0:1 & 0x7f; local ci:4 = 0; local hp:1 = 0; local cnt:4 = 0; local strm:8 = 0; local jb:8 = 0; local rem:8 = 0; local sb:1 = 0;")
+    t.append("local vv:112 = 0; local cq2:112 = 0; local hh:112 = 0; local tt:112 = 0; local tw:112 = 0; local sh:4 = 0; local sl:4 = 0; local sl4:4 = 0; local ct:1 = 0; local slen:8 = 0; local nout:8 = 0;")
+    t.append("if (fc != 0) goto <L_fn>;")
+    mask = fcmask([0, 3, 112, 114])
+    t.append(f"*:8 r1 = {mask >> 64:#x}:8; *:8 (r1 + 8) = {mask & ((1 << 64) - 1):#x}:8; cc = 0; goto <L_done>;")
+    t.append("<L_fn>")
+    t.append("if (fc == 3) goto <L_drng>; if (fc == 112) goto <L_t112>; if (fc == 114) goto <L_t114>; trap_specification(); goto <L_done>;")
+    t.append("<L_t112> *:4 r1 = 1; *:4 (r1 + 4) = 1; cc = 0; goto <L_done>;")
+    # TRNG: both operands receive random bytes
+    t.append(f"<L_t114> if ((((r1num & 1) == 0) && (r1num != 0)) && (((r2num & 1) == 0) && (r2num != 0))) goto <L_tr>; trap_specification(); goto <L_done>;")
+    t.append(f"<L_tr> ci = 0; <L_tl1> if ({r1l} == 0) goto <L_tl2>; sb = s390_trng_byte(); *:1 {r1a} = sb; {r1a} = {r1a} + 1; {r1l} = {r1l} - 1; goto <L_tl1>;")
+    t.append(f"<L_tl2> if ({r2l} == 0) goto <L_tl3>; sb = s390_trng_byte(); *:1 {r2a} = sb; {r2a} = {r2a} + 1; {r2l} = {r2l} - 1; goto <L_tl2>;")
+    t.append("<L_tl3> cc = 0; goto <L_done>;")
+    # ---- SHA-512 DRNG
+    uid = [0]
+    def U():
+        uid[0] += 1
+        return uid[0]
+    def ld112(var, addr):
+        u = U()
+        return f"{var} = 0; sl = 0; <L_pl{u}> {var} = ({var} << 64) | zext(*[cpm]:8 ({addr:#x}:4 + sl)); sl = sl + 8; if (sl < 112) goto <L_pl{u}>;"
+    def st112(var, addr):
+        u = U()
+        return f"sl = 0; <L_ps{u}> sh = (104 - sl) * 8; tw = {var} >> sh; *[cpm]:8 ({addr:#x}:4 + sl) = tw:8; sl = sl + 8; if (sl < 112) goto <L_ps{u}>;"
+    t.append("<L_drng> if ((r0 & 0x80) != 0) goto <L_seedq>;")
+    t.append(f"if (((r1num & 1) == 0) && (r1num != 0)) goto <L_gen>; trap_specification(); goto <L_done>;\n<L_seedq>")
+    t.append(f"if (((r2num & 1) == 0) && (r2num != 0) && ({r2l} <= 512)) goto <L_seed>; trap_specification(); goto <L_done>;\n<L_gen> goto <L_gen1>;\n<L_seed> goto <L_seed1>;")
+    # parameter block -> cpm (V and C with a leading zero byte), counter and stream bytes
+    load = []
+    load.append("cnt = *:4 (r1 + 4); strm = *:8 (r1 + 8);")
+    load.append(f"ci = 0; <L_pv@> *[cpm]:1 ({DV:#x}:4 + 1 + ci) = *:1 (r1 + 17 + zext(ci)); *[cpm]:1 ({DC:#x}:4 + 1 + ci) = *:1 (r1 + 129 + zext(ci)); ci = ci + 1; if (ci < 111) goto <L_pv@>;")
+    load.append(f"*[cpm]:1 ({DV:#x}:4) = 0; *[cpm]:1 ({DC:#x}:4) = 0;")
+    # generate
+    t.append("<L_gen1> " + " ".join(load).replace("@", "g"))
+    t.append("if (cnt != 0) goto <L_gok>; trap_data_exception(); goto <L_done>;\n<L_gok> jb = 0; rem = " + f"{r1l}; nout = 0; " + ld112("vv", DV))
+    # block loop: HB+1 = V + jb
+    t.append("<L_gblk> if (rem == 0) goto <L_gfin>; tt = vv + zext(jb); tt = (tt << 8) >> 8; " + st112("tt", HB) + " hp = 1; cpa = " + f"{HB + 1:#x}; cpl = 111; cpbl = 888; goto <L_ginit>;")
+    # final: 03 || V
+    t.append(f"<L_gfin> *[cpm]:1 ({SB:#x}:4) = 3; ci = 0; <L_gf3> *[cpm]:1 ({SB + 1:#x}:4 + ci) = *[cpm]:1 ({DV + 1:#x}:4 + ci); ci = ci + 1; if (ci < 111) goto <L_gf3>;")
+    t.append(f"hp = 2; cpa = {SB:#x}; cpl = 112; cpbl = 896; goto <L_ginit>;")
+    # seed: build the first hash_df message
+    t.append("<L_seed1> " + " ".join(load).replace("@", "s"))
+    t.append("if (cnt != 0) goto <L_sre>; strm = 0; slen = 5; goto <L_sm1>;")
+    t.append(f"<L_sre> *[cpm]:1 ({SB + 5:#x}:4) = 1; ci = 0; <L_sv> *[cpm]:1 ({SB + 6:#x}:4 + ci) = *[cpm]:1 ({DV + 1:#x}:4 + ci); ci = ci + 1; if (ci < 111) goto <L_sv>; slen = 117;")
+    t.append(f"<L_sm1> *[cpm]:4 ({SB + 1:#x}:4) = 888; ci = 0; sl4 = slen:4; <L_sc> if (zext(ci) >= {r2l}) goto <L_sc2>; *[cpm]:1 ({SB:#x}:4 + sl4 + ci) = *:1 ({r2a} + zext(ci)); ci = ci + 1; goto <L_sc>;")
+    t.append(f"<L_sc2> slen = slen + {r2l}; ct = 1; *[cpm]:1 ({SB:#x}:4) = 1; hp = 3; cpa = {SB:#x}; cpl = slen; cpbl = (slen * 8); goto <L_ginit>;")
+    # the engine, once (SHA-512 from the initial hash value)
+    iv = " ".join(f"*[cpm]:8 ({CV + 8 * i:#x}:4) = {w:#x};" for i, w in enumerate(IV512))
+    t.append(f"<L_ginit> {iv} cpbh = 0; cpfin = 1; cpsm = 1; build cp_sha512; cpsm = 0;")
+    t.append("if (hp == 1) goto <L_hp1>; if (hp == 2) goto <L_hp2>; if (hp == 3) goto <L_hp3>; if (hp == 4) goto <L_hp4>; if (hp == 5) goto <L_hp5>; goto <L_hp6>;")
+    # hp 1: one block of output
+    t.append(f"<L_hp1> ci = 0; sb = 0; <L_ho> if (rem == 0) goto <L_ho2>; if (ci >= 64) goto <L_ho2>; *:1 ({r1a} + (jb * 64) + zext(ci)) = *[cpm]:1 ({CV:#x}:4 + ci); ci = ci + 1; rem = rem - 1; nout = nout + 1; goto <L_ho>;")
+    t.append("<L_ho2> jb = jb + 1; goto <L_gblk>;")
+    # hp 2: V = V + C + counter + H(03 || V)
+    t.append(f"<L_hp2> hh = 0; ci = 0; <L_hh> hh = (hh << 64) | zext(*[cpm]:8 ({CV:#x}:4 + ci)); ci = ci + 8; if (ci < 64) goto <L_hh>;")
+    t.append(ld112("cq2", DC))
+    t.append("vv = vv + cq2; vv = vv + hh; vv = vv + zext(cnt); vv = (vv << 8) >> 8; " + st112("vv", DV))
+    t.append(f"ci = 0; <L_pw> *:1 (r1 + 17 + zext(ci)) = *[cpm]:1 ({DV + 1:#x}:4 + ci); ci = ci + 1; if (ci < 111) goto <L_pw>;")
+    t.append(f"*:4 (r1 + 4) = cnt + 1; *:8 (r1 + 8) = strm + nout; {r1l} = rem; cc = 0; goto <L_done>;")
+    # hp 3 / 4: V_new = first 111 bytes of hash_df(1) || hash_df(2)
+    t.append(f"<L_hp3> ci = 0; <L_v1> *[cpm]:1 ({VN + 1:#x}:4 + ci) = *[cpm]:1 ({CV:#x}:4 + ci); ci = ci + 1; if (ci < 64) goto <L_v1>;")
+    t.append(f"*[cpm]:1 ({SB:#x}:4) = 2; hp = 4; cpa = {SB:#x}; cpl = slen; cpbl = (slen * 8); goto <L_ginit>;")
+    t.append(f"<L_hp4> ci = 0; <L_v2> *[cpm]:1 ({VN + 65:#x}:4 + ci) = *[cpm]:1 ({CV:#x}:4 + ci); ci = ci + 1; if (ci < 47) goto <L_v2>;")
+    # C: hash_df over 0x00 || V_new
+    t.append(f"*[cpm]:1 ({VN:#x}:4) = 0; *[cpm]:1 ({SB:#x}:4) = 1; *[cpm]:4 ({SB + 1:#x}:4) = 888; *[cpm]:1 ({SB + 5:#x}:4) = 0; ci = 0; <L_c0> *[cpm]:1 ({SB + 6:#x}:4 + ci) = *[cpm]:1 ({VN + 1:#x}:4 + ci); ci = ci + 1; if (ci < 111) goto <L_c0>;")
+    t.append(f"hp = 5; cpa = {SB:#x}; cpl = 117; cpbl = 936; goto <L_ginit>;")
+    t.append(f"<L_hp5> ci = 0; <L_c1x> *[cpm]:1 ({DC + 1:#x}:4 + ci) = *[cpm]:1 ({CV:#x}:4 + ci); ci = ci + 1; if (ci < 64) goto <L_c1x>;")
+    t.append(f"*[cpm]:1 ({SB:#x}:4) = 2; hp = 6; cpa = {SB:#x}; cpl = 117; cpbl = 936; goto <L_ginit>;")
+    t.append(f"<L_hp6> ci = 0; <L_c2x> *[cpm]:1 ({DC + 65:#x}:4 + ci) = *[cpm]:1 ({CV:#x}:4 + ci); ci = ci + 1; if (ci < 47) goto <L_c2x>;")
+    t.append(f"ci = 0; <L_sw> *:1 (r1 + 17 + zext(ci)) = *[cpm]:1 ({VN + 1:#x}:4 + ci); *:1 (r1 + 129 + zext(ci)) = *[cpm]:1 ({DC + 1:#x}:4 + ci); ci = ci + 1; if (ci < 111) goto <L_sw>;")
+    t.append("*:4 (r1 + 4) = 1; *:8 (r1 + 8) = strm; cc = 0;\n<L_done>")
+    return "\n".join(t)
+
+NAMES = {"kimd", "klmd", "km", "kmc", "kmf", "kmo", "kmctr", "kmac", "pcc", "kma", "prno"}
 
 def semantics(ctx):
     n, o = ctx["name"], ctx["ops"]
@@ -682,6 +765,8 @@ def semantics(ctx):
         return cipher_insn(n, o, x)
     if n == "pcc":
         return pcc_insn(x)
+    if n == "prno" and len(x) >= 4:
+        return prno_insn(o, x)
     if n == "kma" and len(x) >= 5:
         return kma_insn(o, x)
     return None
