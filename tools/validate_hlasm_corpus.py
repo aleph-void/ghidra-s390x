@@ -2,7 +2,7 @@
 """Validate HLASM-extracted machine code against the SLEIGH decoder.
 
 Usage:
-  python3 validate_hlasm_corpus.py --manifest hlasm_batches/manifest.json \
+  python3 validate_hlasm_corpus.py --manifest tests/hlasm_batches/manifest.json \
       --extracted extracted.json --out corpus_new.json --report report.txt
 
 - manifest: label -> {mnemonic (as written to HLASM), operands, spec_mnemonic, srcfile}

@@ -57,7 +57,7 @@ def mnem_match(decoded, hlasm):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--results', required=True)
-    ap.add_argument('--manifest-dir', default='hlasm_batches')
+    ap.add_argument('--manifest-dir', default='tests/hlasm_batches')
     ap.add_argument('--out', required=True)
     args = ap.parse_args()
 

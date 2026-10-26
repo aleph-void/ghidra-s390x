@@ -280,7 +280,7 @@ def build_operands(template, label_state):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--batch-size', type=int, default=400)
-    ap.add_argument('--out', default='hlasm_batches')
+    ap.add_argument('--out', default='tests/hlasm_batches')
     args = ap.parse_args()
 
     os.makedirs(args.out, exist_ok=True)

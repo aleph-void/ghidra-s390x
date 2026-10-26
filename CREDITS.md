@@ -11,7 +11,7 @@ License 2.0 (`LICENSE` and `NOTICE`, unchanged).
 Original author: Paulo Pereira ([@paulovitorjp](https://github.com/paulovitorjp)). Upstream
 wrote the SLEIGH specification, the z/OS loaders (classic load modules, GOFF, program
 objects), the z/OS Language Environment and XPLINK compiler specs, the ELF relocation handler,
-and the HLASM-assembled validation corpus (`hlasm_batches/`, `tests/`).
+and the HLASM-assembled validation corpus (`tests/`, including `tests/hlasm_batches/`).
 
 Upstream files keep their copyright and license headers. Changes made here are also licensed
 under Apache-2.0 and exist as commits on top of the upstream history (branch `ghidra-rare` of

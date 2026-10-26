@@ -59,7 +59,7 @@ src/main/java/         Java sources: z/OS loaders (ZosLoadModuleLoader, ZosGoffL
 tools/               Generators, validators, loader build scripts
 tests/               Differential corpora, decoder/p-code harness sources,
                      Ghidra headless smoke scripts and fixtures
-hlasm_batches/       HLASM source batches used to build the z/OS corpus
+tests/hlasm_batches/ HLASM source batches used to build the z/OS corpus
 CONVENTIONS.md       SLEIGH authoring conventions (read before editing the spec)
 CHANGELOG.md         Dated history of fixes
 LOADERS.md           Loader design, formats, validation, limits
@@ -103,7 +103,7 @@ The upstream harness (`tests/sleigh_diff.py` against recorded Capstone output, t
 `tests/validate_*.py` p-code validators and the headless smoke scripts) is unchanged; it
 predates the fixes, so some of its recorded expectations reflect the old decoding. The HLASM
 corpus (`tests/corpus_zos_hlasm_full.json`, 4,326 entries) was built by assembling
-`hlasm_batches/*.asm` with IBM HLASM R6.0 on z/OS.
+`tests/hlasm_batches/*.asm` with IBM HLASM R6.0 on z/OS.
 
 ## Known limitations
 

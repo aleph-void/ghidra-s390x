@@ -21,5 +21,5 @@ copyDependencies.enabled = false
 
 // Release zips carry only what Ghidra loads; generators and test suites stay in the repository.
 buildExtension {
-	exclude 'test/**', 'tests/**', 'tools/**', 'hlasm_batches/**', 'data/languages/*.py'
+	exclude 'test/**', 'tests/**', 'tools/**', 'data/languages/*.py'
 }

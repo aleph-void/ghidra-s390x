@@ -15,7 +15,7 @@ import json, os, re, subprocess, sys
 HERE = os.path.dirname(os.path.abspath(__file__))
 SLA = os.path.normpath(os.path.join(HERE, '..', 'data', 'languages', 's390x.sla'))
 DECODER = os.path.join(HERE, 's390x_decode')
-BATCH_DIR = os.path.normpath(os.path.join(HERE, '..', 'hlasm_batches'))
+BATCH_DIR = os.path.normpath(os.path.join(HERE, '..', 'tests', 'hlasm_batches'))
 
 def load_sources():
     """label -> (mnemonic, operands) from batch .asm files."""

@@ -1,6 +1,6 @@
 {
  "meta": {
-  "batch": "hlasm_batches/batch_ebcdic.asm",
+  "batch": "tests/hlasm_batches/batch_ebcdic.asm",
   "assembler": "IBM HLASM R6.0 PTF UI30594",
   "system": "z/OS V2R2 ADCD (ADCD.Z22A)",
   "job": "TASM0012/JOB00525",
