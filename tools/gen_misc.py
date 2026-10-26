@@ -602,6 +602,208 @@ def sac(o):
     return (f"local code:8 = ({o[0]} >> 8) & 0xf; local asc:8 = ((code & 1) << 1) | ((code >> 1) & 1);\n"
             "pswm = (pswm & ~(3 << 46)) | (asc << 46);")
 
+# ---- z17 and other general instructions (checked against the Principles of Operation,
+#      SA22-7832-14, and hand-computed emulator tests: qemu-s390x lacks them) ------------------
+for _n, _k in (("lxab", 0), ("lxah", 1), ("lxaf", 2), ("lxag", 3), ("lxaq", 4)):
+    EXTRA[_n] = EXTRA["l" + _n] = [(12, 4, "u"), (12, 4, "gpr"), (16, 4, "u"), (16, 4, "gpr"), (20, 12, "u"), (32, 8, "s")]
+for _n in ("trte", "trtre", "cuse"):
+    EXTRA[_n] = [(24, 4, "u"), (28, 4, "u")]                 # R1, R2 numbers
+EXTRA["plo"] = [(8, 4, "gpro"), (12, 4, "gpro")]          # R1 + 1, R3 + 1
+
+def lxa(n, o, x):
+    """LOAD (LOGICAL) INDEXED ADDRESS: R1 = B2 + (ext(X2 bits 32-63 + DX2) << k)."""
+    k = {"b": 0, "h": 1, "f": 2, "g": 3, "q": 4}[n[-1]]
+    xn, xr, bn, br, dl, dh = x
+    ext = "zext" if n.startswith("ll") else "sext"
+    return "\n".join([
+        f"local dh4:4 = {dh}; local dl4:4 = {dl}; local dx:4 = (dh4 << 12) | dl4; local xi:4 = 0; local bv:8 = 0;",
+        f"local xn:1 = {xn}; local bn:1 = {bn};",
+        f"if (xn == 0) goto <nx>; xi = {xr}:4;\n<nx>",
+        f"if (bn == 0) goto <nb>; bv = {br};\n<nb>",
+        f"local ix:4 = xi + dx; {o[0]} = bv + ({ext}(ix) << {k});"])
+
+def cal(n, o):
+    """COMPARE AND LOAD: first operand (D1(B1)) equal to the third (R3): R3 = second operand,
+    cc 0; else R3 = first operand, cc 1."""
+    if n == "calg":
+        return "\n".join([f"local a:8 = *:8 {o[1]};",
+                          f"if (a != {o[0]}) goto <ne>; {o[0]} = *:8 {o[2]}; cc = 0; goto <done>;",
+                          f"<ne> {o[0]} = a; cc = 1;", "<done>"])
+    if n == "calgf":
+        return "\n".join([f"local a:4 = *:4 {o[1]};",
+                          f"if (a != {o[0]}:4) goto <ne>; {o[0]} = *:8 {o[2]}; cc = 0; goto <done>;",
+                          f"<ne> {o[0]} = zext(a); cc = 1;", "<done>"])
+    return "\n".join([f"local a:4 = *:4 {o[1]};",
+                      f"if (a != {o[0]}:4) goto <ne>; local b:4 = *:4 {o[2]}; {_set32(o[0], 'b', 'e')} cc = 0; goto <done>;",
+                      f"<ne> {_set32(o[0], 'a', 'n')} cc = 1;", "<done>"])
+
+def bitdep(o, extract):
+    """BIT DEPOSIT / BIT EXTRACT with the R3 mask, bits counted from the left (bit 0)."""
+    if extract:
+        body = ("if (((m >> k) & 1) == 0) goto <nx>; r = r | (((s >> k) & 1) << (63 - c)); c = c + 1;")
+    else:
+        body = ("if (((m >> k) & 1) == 0) goto <nx>; r = r | (((s >> (63 - c)) & 1) << k); c = c + 1;")
+    return "\n".join([f"local s:8 = {o[1]}; local m:8 = {o[2]}; local r:8 = 0; local c:8 = 0; local k:8 = 64;",
+                      "<lp> if (k == 0) goto <done>; k = k - 1;", body, "<nx> goto <lp>;",
+                      f"<done> {o[0]} = r;"])
+
+def trte(o, p, x, reverse):
+    """TRANSLATE AND TEST (REVERSE) EXTENDED: arguments of 1 or 2 bytes (M3 A) from R1 (length
+    R1+1) look up 1- or 2-byte function codes (M3 F) in the table at GR1; arguments above 255
+    give 0 when M3 L is one. Stops at the first nonzero function code (stored in R2 unless R2
+    is R1 or R1+1; cc 1) or at the end of the operand (cc 0)."""
+    step = "-" if reverse else "+"
+    return "\n".join([
+        f"local m3:1 = {o[2]}:1; local A:1 = (m3 & 8) != 0; local F:1 = (m3 & 4) != 0; local L:1 = (m3 & 2) != 0;",
+        f"local ad:8 = {o[0]}; local ln:8 = {p[0]}; local fc:2 = 0; local arg:2 = 0; local w:8 = 1 + zext(A);",
+        "<lp> if (ln == 0) goto <end>;",
+        "arg = zext(*:1 ad); if (!A) goto <aa1>; arg = *:2 ad;\n<aa1>",
+        "fc = 0; if (L && (arg > 255)) goto <tt>;",
+        "if (F) goto <ff2>; fc = zext(*:1 (r1 + zext(arg))); goto <tt>;",
+        "<ff2> fc = *:2 (r1 + zext(arg) * 2);",
+        f"<tt> if (fc != 0) goto <end>; ad = ad {step} w; ln = ln - w; goto <lp>;",
+        f"<end> {o[0]} = ad; {p[0]} = ln; cc = zext(fc != 0);",
+        f"local n1:1 = {x[0]}; local n2:1 = {x[1]};",
+        f"if ((fc == 0) || (n2 == n1) || (n2 == n1 + 1)) goto <done>; {o[1]} = zext(fc);",
+        "<done>"])
+
+def cuse(o, p, x):
+    """COMPARE UNTIL SUBSTRING EQUAL: GR0 bits 56-63 substring length, GR1 bits 56-63 pad byte;
+    operands R1/R1+1 and R2/R2+1 compared byte by byte (the shorter one padded) until that many
+    consecutive equal bytes: cc 0 with R1, R2 at the substring; cc 1 when the operands end
+    inside a partial substring (registers at it); cc 2 when they end without one; cc 3 after
+    4096 bytes without a partial substring (CPU-determined amount)."""
+    return "\n".join([
+        f"local sl:1 = r0:1; local pd:1 = r1:1; local ad1:8 = {o[0]}; local l1:8 = {p[0]}; local ad2:8 = {o[1]}; local l2:8 = {p[1]};",
+        "local e1:8 = ad1; local e2:8 = ad2; local q1:8 = l1; local q2:8 = l2; local eq:1 = 0; local i:8 = 0; local b1:1 = 0; local b2:1 = 0;",
+        "cc = 0; if (sl == 0) goto <done>; cc = 2; if ((l1 s<= 0) && (l2 s<= 0)) goto <done>;",
+        f"local n1:1 = {x[0]}; local n2:1 = {x[1]};",
+        f"if (n1 != n2) goto <lp>; cc = zext(l1 s< zext(sl)); goto <done>;",
+        "<lp> if ((l1 s<= 0) && (l2 s<= 0)) goto <end>;",
+        "if (eq == sl) goto <found>;",
+        f"if ((eq == 0) && (i >= {CAP})) goto <part>;",
+        "b1 = pd; if (l1 s<= 0) goto <nn1>; b1 = *:1 ad1;\n<nn1> b2 = pd; if (l2 s<= 0) goto <nn2>; b2 = *:1 ad2;\n<nn2>",
+        "if (b1 != b2) goto <ne>; if (eq != 0) goto <inc>; e1 = ad1; e2 = ad2; q1 = l1; q2 = l2;\n<inc> eq = eq + 1; cc = 1; goto <adv>;",
+        "<ne> eq = 0; cc = 2;",
+        "<adv> i = i + 1; if (l1 s<= 0) goto <vv1>; ad1 = ad1 + 1; l1 = l1 - 1;\n<vv1> if (l2 s<= 0) goto <lp>; ad2 = ad2 + 1; l2 = l2 - 1; goto <lp>;",
+        "<end> if (eq != sl) goto <fin>;",
+        "<found> cc = 0;",
+        "<fin> if ((cc >= 2) || (eq == 0)) goto <cur>;",
+        f"{o[0]} = e1; {p[0]} = q1; {o[1]} = e2; {p[1]} = q2; goto <done>;",
+        "<part> cc = 3;",
+        f"<cur> {o[0]} = ad1; {p[0]} = l1; {o[1]} = ad2; {p[1]} = l2;",
+        "<done>"])
+
+def cfc(o):
+    """COMPARE AND FORM CODEWORD (64-bit mode: 6-byte units, codeword in GR2)."""
+    return "\n".join([
+        f"local ea:8 = {o[0]}; local mx:8 = ea & 0x7ffe; local ds:1 = (ea & 1) != 0; local o1:6 = 0; local o3:6 = 0;",
+        "<lp> local ix:8 = r2 & 0xffff; if (ix <= mx) goto <cmp>; cc = 0; r2 = r3 | 0x8000000000000000; goto <done>;",
+        "<cmp> o1 = *:6 (r1 + ix); o3 = *:6 (r3 + ix); r2 = r2 + 6; if (o1 == o3) goto <lp>;",
+        "local tm:6 = 0; local sw:1 = 0;",
+        "if (o1 > o3) goto <gt>; if (ds) goto <ld>; cc = 1; tm = ~o3; goto <cw>;\n<ld> cc = 2; tm = o1; sw = 1; goto <cw>;",
+        "<gt> if (ds) goto <gd>; cc = 2; tm = ~o1; sw = 1; goto <cw>;\n<gd> cc = 1; tm = o3;",
+        "<cw> if (!sw) goto <ns>; local t1:8 = r1; r1 = r3; r3 = t1;",
+        "<ns> r2 = (r2 << 48) | zext(tm);",
+        "<done>"])
+
+UPT = "\n".join([
+    "local ix:8 = 0; local nc:8 = 0; local nd:8 = 0;",
+    "<lp> ix = (r5 >> 1) & 0xfffffffffffffff0;",
+    "if (ix != 0) goto <ck3>; cc = 1; goto <out>;",
+    "<ck3> if ((r0 >> 63) == 0) goto <node>; cc = 3; goto <out>;",
+    "<node> nc = *:8 (r4 + ix); nd = *:8 (r4 + ix + 8); r5 = ix;",
+    "if (nc != r0) goto <cmp>; r2 = nc; r3 = nd; cc = 0; goto <done>;",
+    "<cmp> if (nc < r0) goto <lp>;",
+    "*:8 (r4 + ix) = r0; *:8 (r4 + ix + 8) = r1; r0 = nc; r1 = nd; goto <lp>;",
+    "<out> r5 = ix;",
+    "<done>"])
+
+def plo(o, x):
+    """PERFORM LOCKED OPERATION, function codes 0-23 (GR0 bits 56-63; bit 55 tests the code):
+    compare and load / swap / double swap / swap and store (single, double, triple), with
+    32-bit (register), 64-bit (parameter list at the fourth operand), 64-bit register and
+    128-bit (parameter list) operands. The lock (GR1) needs no modelling: p-code is atomic."""
+    r1, a2, r3, a4 = o
+    r1o, r3o = x
+    L = []
+    cnt = [0]
+    def _s32(r, v, t):
+        cnt[0] += 1
+        return _set32(r, v, f"p{cnt[0]}")
+    L.append("local fc:1 = r0:1; if ((r0 & 0x100) == 0) goto <run>;")
+    L.append("cc = 3 * zext(fc > 23); goto <done>;")
+    L.append("<run> local pl:8 = " + a4 + "; local op2:8 = " + a2 + ";")
+    def jt(k):
+        return f"if (fc == {k}) goto <pf{k}>;"
+    L.append(" ".join(jt(k) for k in range(24)) + " goto <done>;")
+    def cmp_load(k, sz, kind):
+        # kind: "r" register 32/64 (R1 vs op2; R3 <- op4), "p" param list 64, "x" param list 128
+        if kind == "r":
+            g = (lambda r: f"{r}:4") if sz == 4 else (lambda r: r)
+            put = (lambda r, v: _s32(r, v, k)) if sz == 4 else (lambda r, v: f"{r} = {v};")
+            return (f"<pf{k}> local v2_{k}:{sz} = *:{sz} op2; if ({g(r1)} != v2_{k}) goto <pn{k}>; "
+                    f"local v4_{k}:{sz} = *:{sz} pl; {put(r3, f'v4_{k}')} cc = 0; goto <done>;\n"
+                    f"<pn{k}> {put(r1, f'v2_{k}')} cc = 1; goto <done>;")
+        off = 8 if kind == "p" else 0
+        res = 40 if kind == "p" else 32
+        return (f"<pf{k}> local v2_{k}:{sz} = *:{sz} op2; local c1_{k}:{sz} = *:{sz} (pl + {off}); "
+                f"if (c1_{k} != v2_{k}) goto <pn{k}>; local a4_{k}:8 = *:8 (pl + 72); "
+                f"*:{sz} (pl + {res}) = *:{sz} a4_{k}; cc = 0; goto <done>;\n"
+                f"<pn{k}> *:{sz} (pl + {off}) = v2_{k}; cc = 1; goto <done>;")
+    def swap_store(k, sz, kind, stores):
+        # compare-and-swap with 0-3 extra stores (op3/op4, op5/op6, op7/op8)
+        if kind == "r":
+            g = (lambda r: f"{r}:4") if sz == 4 else (lambda r: r)
+            put = (lambda r, v: _s32(r, v, k)) if sz == 4 else (lambda r, v: f"{r} = {v};")
+            s = [f"<pf{k}> local v2_{k}:{sz} = *:{sz} op2; if ({g(r1)} != v2_{k}) goto <pn{k}>;"]
+            if stores == 1 and k in (12, 14):        # CSST (32-bit / 64-bit register): R3 stored at op4
+                s.append(f"*:{sz} pl = {g(r3)};")
+            elif stores:
+                for j in range(stores):           # op3/op5/op7 and their addresses from the parameter list
+                    vo, ao = 56 + 32 * j + (4 if sz == 4 else 0), 72 + 32 * j
+                    s.append(f"local s{j}_{k}:{sz} = *:{sz} (pl + {vo}); local d{j}_{k}:8 = *:8 (pl + {ao}); *:{sz} d{j}_{k} = s{j}_{k};")
+            s.append(f"*:{sz} op2 = {g(r1o)}; cc = 0; goto <done>;")
+            s.append(f"<pn{k}> {put(r1, f'v2_{k}')} cc = 1; goto <done>;")
+            return "\n".join(s)
+        off, rep = (8, 24) if kind == "p" else (0, 16)
+        s = [f"<pf{k}> local v2_{k}:{sz} = *:{sz} op2; local c1_{k}:{sz} = *:{sz} (pl + {off}); if (c1_{k} != v2_{k}) goto <pn{k}>;",
+             f"local r1_{k}:{sz} = *:{sz} (pl + {rep});"]
+        for j in range(stores):
+            vo, ao = (56 if kind == "p" else 48) + 32 * j, 72 + 32 * j
+            s.append(f"local s{j}_{k}:{sz} = *:{sz} (pl + {vo}); local d{j}_{k}:8 = *:8 (pl + {ao}); *:{sz} d{j}_{k} = s{j}_{k};")
+        s.append(f"*:{sz} op2 = r1_{k}; cc = 0; goto <done>;")
+        s.append(f"<pn{k}> *:{sz} (pl + {off}) = v2_{k}; cc = 1; goto <done>;")
+        return "\n".join(s)
+    def dcs(k, sz, kind):
+        if kind == "r":
+            g = (lambda r: f"{r}:4") if sz == 4 else (lambda r: r)
+            put = (lambda r, v, t: _s32(r, v, k)) if sz == 4 else (lambda r, v, t: f"{r} = {v};")
+            return "\n".join([
+                f"<pf{k}> local v2_{k}:{sz} = *:{sz} op2; if ({g(r1)} == v2_{k}) goto <pe{k}>; {put(r1, f'v2_{k}', 'a')} cc = 1; goto <done>;",
+                f"<pe{k}> local v4_{k}:{sz} = *:{sz} pl; if ({g(r3)} == v4_{k}) goto <ps{k}>; {put(r3, f'v4_{k}', 'b')} cc = 2; goto <done>;",
+                f"<ps{k}> *:{sz} pl = {g(r3o)}; *:{sz} op2 = {g(r1o)}; cc = 0; goto <done>;"])
+        o1c, o1r, o3c, o3r = (8, 24, 40, 56) if kind == "p" else (0, 16, 32, 48)
+        return "\n".join([
+            f"<pf{k}> local v2_{k}:{sz} = *:{sz} op2; local c1_{k}:{sz} = *:{sz} (pl + {o1c}); if (c1_{k} == v2_{k}) goto <pe{k}>;",
+            f"*:{sz} (pl + {o1c}) = v2_{k}; cc = 1; goto <done>;",
+            f"<pe{k}> local a4_{k}:8 = *:8 (pl + 72); local v4_{k}:{sz} = *:{sz} a4_{k}; local c3_{k}:{sz} = *:{sz} (pl + {o3c});",
+            f"if (c3_{k} == v4_{k}) goto <ps{k}>; *:{sz} (pl + {o3c}) = v4_{k}; cc = 2; goto <done>;",
+            f"<ps{k}> local w3_{k}:{sz} = *:{sz} (pl + {o3r}); local w1_{k}:{sz} = *:{sz} (pl + {o1r}); *:{sz} a4_{k} = w3_{k}; *:{sz} op2 = w1_{k}; cc = 0; goto <done>;"])
+    # function codes: 0 CL, 1 CLG, 2 CLGR, 3 CLX, 4 CS, 5 CSG, 6 CSGR, 7 CSX, 8 DCS, 9 DCSG,
+    # 10 DCSGR, 11 DCSX, 12 CSST, 13 CSSTG, 14 CSSTGR, 15 CSSTX, 16 CSDST, 17 CSDSTG, 18 CSDSTGR,
+    # 19 CSDSTX, 20 CSTST, 21 CSTSTG, 22 CSTSTGR, 23 CSTSTX
+    kinds = [(4, "r"), (8, "p"), (8, "r"), (16, "x")]
+    for j, (sz, kd) in enumerate(kinds):
+        L.append(cmp_load(j, sz, kd))
+        L.append(swap_store(4 + j, sz, kd, 0))
+        L.append(dcs(8 + j, sz, kd))
+        L.append(swap_store(12 + j, sz, kd, 1))
+        L.append(swap_store(16 + j, sz, kd, 2))
+        L.append(swap_store(20 + j, sz, kd, 3))
+    L.append("<done>")
+    return "\n".join(L)
+
 def semantics(ctx):
     n, o, k = ctx["name"], ctx["ops"], ctx["kinds"]
     p = ctx["pairs"]
@@ -693,4 +895,27 @@ def semantics(ctx):
         return f"local v:8 = {o[1]}; local m:8 = (v & -v) - 1; {o[0]} = popcount(m);"
     if n == "lgg":             # guarded-storage events are not modelled: a plain load
         return f"{o[0]} = *:8 {o[1]};"
+    if re.fullmatch(r"l?lxa[bhfgq]", n) and x:
+        return lxa(n, o, x)
+    if n in ("cal", "calg", "calgf"):
+        return cal(n, o)
+    if n in ("bdepg", "bextg"):
+        return bitdep(o, n == "bextg")
+    if n in ("trte", "trtre") and 0 in p and x:
+        return trte(o, p, x, n == "trtre")
+    if n == "cuse" and 0 in p and 1 in p and x:
+        return cuse(o, p, x)
+    if n == "cfc":
+        return cfc(o)
+    if n == "upt":
+        return UPT
+    if n == "plo" and x:
+        return plo(o, x)
+    if n == "ntstg":           # nontransactional store: in p-code a plain store
+        return f"*:8 {o[1]} = {o[0]};"
+    if n == "mvcos":           # address-space and key controls (GR0) are not modelled
+        return "\n".join([f"local d:8 = {o[0]}; local s:8 = {o[1]}; local tl:8 = {o[2]}; local n:8 = tl; cc = 0;",
+                           "if (tl <= 4096) goto <mv>; n = 4096; cc = 3;",
+                           "<mv> local i:8 = 0;\n<lp> if (i == n) goto <done>; *:1 (d + i) = *:1 (s + i); i = i + 1; goto <lp>;",
+                           "<done>"])
     return None
