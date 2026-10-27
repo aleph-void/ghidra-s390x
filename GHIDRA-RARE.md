@@ -54,6 +54,21 @@ p-code. That includes:
   rounding methods and the rounding modifiers, quantum and clamp handling, NaN propagation.
 - **Vector facility:** integer, BFP, string, z15-z17 additions, and the vector packed decimal
   instructions (VAP ... VTZ, VSCHP/VSCSHP/VCSPH).
+- **PERFORM FLOATING-POINT OPERATION:** every radix conversion between BFP, HFP and DFP (short,
+  long, extended) with the function-code and return-code handling, all rounding methods, the HFP
+  overflow/underflow controls and NaN payloads, in exact big-integer arithmetic.
+- **Message-security assist (CPACF), all functions the architecture defines from program state:**
+  KIMD/KLMD (SHA-1, SHA-224/256/384/512, SHA3, SHAKE-128/256, GHASH), KM/KMC/KMF/KMO/KMCTR (DEA,
+  TDEA, AES; KM also XTS and full XTS), KMA (AES-GCM), KMAC (CBC-MAC and HMAC-SHA-224/256/384/512
+  with the IKP/IIMP/CCUP protocol), PCC (CMAC of the last block, the XTS parameter, scalar
+  multiplication on P256/P384/P521/Ed25519/Ed448/X25519/X448), PRNO (the SHA-512 DRNG, seed and
+  generate), KDSA (ECDSA and EdDSA verify and sign) and PCKMO. The protected-key (encrypted)
+  functions of all of them work over the machine's wrapping keys, which are the registers `wka`,
+  `wkavp`, `wkd`, `wkdvp` (hardware state no program can read; set them to test).
+- **COMPRESSION CALL** (compression and expansion, symbol translation, order preservation,
+  entropy encoding), **SORT LISTS** (SFLR and SVLR, merge mode 0 and 1) and the
+  **DEFLATE CONVERSION CALL** query and expand functions (DEFLATE decoder with history, check
+  value and resumable state).
 
 The condition code is kept both as `cc` (0-3, for IPM/EPSW and the emulator) and as four
 flags, so branches decompile to `if (a == b)` instead of condition-code bit arithmetic.
@@ -67,31 +82,28 @@ What stays a named pcodeop, and why:
   (LGSC/STGSC, LLGFSG's shift).
 - **Run-time events:** program exceptions (compare-and-trap and load-and-trap compare and load
   in p-code and then call a trap pcodeop; fixed-point divide exceptions; MONITOR CALL), transactional
-  execution (TBEGIN's abort path), true random numbers (PRNO TRNG). EX/EXRL execute an
-  instruction modified at run time, which a decompiler cannot follow.
+  execution (TBEGIN's abort path), true random numbers (`s390_trng_byte()`: PRNO-TRNG output and the
+  random number mixed into ECDSA signing when the deterministic bit is zero or the key is protected).
+  EX/EXRL execute an instruction modified at run time, which a decompiler cannot follow.
 - **Model-dependent results:** NNPA and the NNP-data-type-1 conversions (VCNF, VCFN, VCRNF,
-  VCLFNH/L: the Principles of Operation leave the format to the model), DEFLATE output of
-  DFLTCC.
-- **Not implemented (expressible, deliberately left out):** the CPACF message-security
-  instructions (KM, KMC, KMA, KMAC, KMCTR, KMF, KMO, KIMD, KLMD, KDSA, PCC, PCKMO; the
-  protected-key functions also depend on a hidden wrapping key), CMPSC, SORTL, and PFPO
-  (correctly rounded conversion between BFP, HFP and DFP over their whole exponent ranges).
-  Each needs thousands of p-code lines (multi-thousand-bit radix conversion for PFPO, cipher
-  and hash rounds for CPACF) in a `.sla` already at 75% of Ghidra's 16 MiB limit; they were
-  not attempted in this round. gcc emits PFPO for `_Decimal64` <-> `double` conversions with
-  hardware DFP, so that one is the most visible gap.
+  VCLFNH/L: the Principles of Operation leave the format to the model); DFLTCC-CMPR and DFLTCC-GDHT
+  (`s390_dfltcc_cmpr`, `s390_dfltcc_gdht`: the duplicate-string search and the Huffman-table
+  construction are left to the model, so there is no result to model).
+- **Firmware identity:** the query-authentication-information functions (code 127) of the
+  message-security-assist instructions return the model's firmware code level hash and version;
+  they are reported as not installed (specification exception).
 
 ## Results
 
 | Check | Result |
 |---|---|
-| SLEIGH | Compiles on Ghidra 12.1.3, 12.1.4 and 12.2 (extension zips built with each). `s390x.sla` is 1.5 MB and inflates to 12.5 MB, 75% of the 16 MiB Ghidra accepts |
+| SLEIGH | Compiles on Ghidra 12.1.3, 12.1.4 and 12.2 (extension zips built with each). `s390x.sla` is 1.7 MB and inflates to 13.7 MB, 81% of the 16 MiB Ghidra accepts |
 | Decode vs GNU objdump 2.45, every opcode-table entry (8 encodings each, 21,984 instructions) | 100% exact+semantic (94.0% exact), 0 differences, 0 decoded by one side only; **2,748/2,748 entries** at every level g5-z17 |
 | Decode vs objdump, 60,000 random words | objdump decodes 42,020: 100% agree (99.92% exact). 32 more decode only in Ghidra (nonzero reserved fields, e.g. DLR, VLR); 17,071 neither |
 | Decode vs llvm-objdump 21 (`-mcpu=arch15`), opcode-table words | llvm decodes 17,303 of the 21,984 (it rejects nonzero reserved fields); 16,850 agree, the 453 others are llvm spellings (`%fN` for vector registers 0-15 of scalar FP instructions, an omitted zero base, RNSBG's test bit inside I3) |
-| Emulator, hand-computed (`emu_tests.py`) | 97/97, incl. PLO, CUSE, CFC, UPT, TRTE, z17, DFP, vector packed decimal. A deliberately wrong expectation fails |
+| Emulator, hand-computed and library-checked (`emu_tests.py`) | 784/784, incl. PLO, CUSE, CFC, UPT, TRTE, z17, DFP, vector packed decimal, PFPO, and every CPACF function against `hashlib`/`hmac`/`cryptography` (SHA, AES/DES/TDES modes, GCM, XTS, CMAC, HMAC, ECDSA, EdDSA, X25519/X448, protected keys), PRNO, CMPSC (the manual's example plus a dictionary-builder model), SORTL (the manual's figures 26-108/109), DFLTCC expand against `zlib`. A deliberately wrong expectation fails |
 | Emulator vs qemu-s390x 10.2 (random instructions of every entry qemu runs, plus hand-built specials) | 22,080/22,080 tests, 1,334 mnemonics, 0 differences, storage identical. Includes 9,000 random and 2,400 edge-case FMA tests in a separate run, all agreeing |
-| Emulator vs reference models (qemu lacks these) | packed decimal 2,100/2,100 (7 mnemonics); HFP 6,240/6,240 (104); DFP 12,900/12,900 (86, Python `decimal`); vector packed decimal 5,250/5,250 (32) |
+| Emulator vs reference models (qemu lacks these) | packed decimal 2,100/2,100 (7 mnemonics); HFP 6,240/6,240 (104); DFP 12,900/12,900 (86, Python `decimal`); vector packed decimal 5,250/5,250 (32); PFPO 1,500/1,500 |
 | Debian 13 `libz.so.1.3.1`, `ls`, `sort`, `libc.so.6`, `busybox` (static); Ubuntu 25.04 `libc.so.6` | The ELF opinion picks the language for all. 1,007,254 instructions, 100% agree with objdump at the same addresses. 0 decompile failures, 0 timeouts (12,092 functions). libz 0 bad-instruction bookmarks; ls/sort 1 each and libc 3, busybox 4 in `.text`, all at a 0x0000 trap halfword that flow reaches after a non-returning call (e.g. `__libc_start_main`) or a branch analysis cannot prove dead; libc 240/244 and busybox 41 in `.rodata` from the generic Ghidra issues below. 1,176-1,297 relocations applied per libc; 13-14 TLS relocations unsupported, as on x86-64 |
 
 Before these fixes the upstream module decoded 1,159 of the 2,748 table entries as objdump
@@ -150,8 +162,9 @@ test/real-binaries.sh samples /tmp/s390x-real
   instructions of every entry qemu-s390x executes, plus hand-built tests for register pairs,
   long operations, valid decimal and Unicode data, FMA edge cases; registers, cc, FPRs, vector
   registers and a 256-byte storage window are compared.
-- `test/model-check.sh` (`model_diff.py` with `hfp_model.py`, `dfp_model.py`): decimal, HFP,
-  DFP and vector packed decimal against reference models.
+- `test/model-check.sh` (`model_diff.py` with `hfp_model.py`, `dfp_model.py`, `pfpo_model.py`): decimal, HFP,
+  DFP, vector packed decimal and PFPO against reference models.
+- `test/pcode_defcheck.py`: static check that every temporary is written before it is read on every path.
 - `test/real-binaries.sh` (`RealCheck.java`, `real_compare.py`): import with no processor
   flag, auto-analysis, every instruction compared with objdump, every function decompiled.
 

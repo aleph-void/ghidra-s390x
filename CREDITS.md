@@ -84,3 +84,26 @@ Commits on branch `ghidra-rare` (upstream `3f0cfcd..`), oldest first:
 26. `633ec02` PLO, TRTE/TRTRE, CUSE, CFC, UPT, MVCOS, NTSTG, z17 LXA/LLXA, CAL, BDEPG/BEXTG.
 27. `940a057` MVCK/MVCP/MVCS/MVCSK/MVCDK, TAM, SACF.
 28. The tests (`test/`), these notes, and the README update.
+
+Second verification round (Ghidra-Rare), on top of the release workflow commit:
+
+29. `70c0a20` PERFORM FLOATING-POINT OPERATION: every BFP/HFP/DFP radix conversion, differential
+    tests against Python `decimal`/`fractions` models (`test/pfpo_model.py`), `test/pcode_defcheck.py`.
+30. `5691d50` `hlasm_batches/` moved under `tests/` so every build leaves it out of the zip.
+31. `d33c32e` KIMD/KLMD: SHA-1, SHA-2, SHA-3, SHAKE, GHASH (checked against `hashlib`).
+32. `e817242` KM, KMC, KMF, KMO, KMCTR (AES, DEA, TDEA; checked against `cryptography`).
+33. `82c3e59` KMAC, PCC (CMAC of the last block) and KMA (AES-GCM).
+34. `297e22d` KM-XTS, KM-Full-XTS, PCC-Compute-XTS-Parameter.
+35. `acbf23e` KMAC-HMAC-SHA-224/256/384/512.
+36. `2a66bfd` PRNO: SHA-512 DRNG seed and generate.
+37. `803340c` SORT LISTS (the manual's figures 26-108 and 26-109 are tests).
+38. `9415f8b` COMPRESSION CALL (compression, expansion, ST, OP, EE; the manual's expansion example).
+39. `ac1356e`, `d285aad` PCC scalar multiplication and KDSA on P256/P384/P521/Ed25519/Ed448/X25519/X448.
+40. `76801ed` Wrapping-key registers, PCKMO and every protected-key function.
+41. `1d91666` DEFLATE CONVERSION CALL query and expand (checked against `zlib`).
+
+Round-2 references: z/Architecture Principles of Operation SA22-7832-14 (chapters 7, 10 and 26,
+appendix D: parameter blocks, flowcharts and the CMPSC dictionary formats), FIPS 180-4 / 202 /
+197 / 186-5 and RFC 1951 / 7748 / 8032 (algorithms; constants re-derived through the
+`cryptography` library), SP 800-90A (Hash_DRBG), NIST SP 800-38A/B/D/E (modes). Test oracles:
+Python `hashlib`, `hmac`, `zlib`, `decimal`, `cryptography`, qemu-s390x.

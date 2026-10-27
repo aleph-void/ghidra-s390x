@@ -41,9 +41,12 @@ Ghidra and get back disassembly and decompiled C:
   100%. Upstream's HLASM corpus (4,308 encodings assembled with IBM HLASM R6.0 on z/OS) is
   kept in `tests/`.
 - **Semantics:** p-code for the general, binary/hexadecimal/decimal floating-point, decimal,
-  vector (integer, BFP, packed decimal, string) instructions, checked by differential tests
-  against qemu-s390x and against reference models for what qemu lacks (decimal, HFP, DFP,
-  vector packed decimal). Privileged, I/O and hardware-state instructions stay named pcodeops.
+  vector (integer, BFP, packed decimal, string) instructions, PERFORM FLOATING-POINT OPERATION,
+  the whole message-security assist (hashes, ciphers, GCM, XTS, HMAC, CMAC, DRNG, ECDSA/EdDSA,
+  elliptic-curve scalar multiplication, protected keys), COMPRESSION CALL, SORT LISTS and DEFLATE
+  expansion, checked by differential tests against qemu-s390x, reference models for what qemu
+  lacks (decimal, HFP, DFP, vector packed decimal, PFPO) and the Python `hashlib`/`cryptography`/
+  `zlib` libraries. Privileged, I/O and hardware-state instructions stay named pcodeops.
 - **Loaders:** Linux s390x ELF (opinion, relocations, PLT), z/OS classic load modules
   (CESD/ESD/text/RLD with relocation), GOFF and program objects, all included in the
   extension.
@@ -118,11 +121,13 @@ Upstream's list, with what changed (details in `GHIDRA-RARE.md`):
 - ~~Some privileged/crypto operations use opaque semantics; vector semantics are incomplete;
   approximate HFP semantics~~ **Fixed** for everything the architecture defines from program
   state: all vector, BFP, HFP, DFP and decimal instructions, PLO, CUSE, TRTE and the z17
-  additions have real p-code. **Remaining**, with reasons: privileged, I/O, timing and
-  configuration instructions (hardware state outside the program), transactional execution
-  (the abort outcome is a run-time event), NNPA and the NNP-data-type conversions (the
-  Principles of Operation leave the format model-dependent), the CPACF crypto, CMPSC, SORTL,
-  DFLTCC and PFPO instructions (not implemented; see `GHIDRA-RARE.md`).
+  additions have real p-code, and so do PFPO, the CPACF crypto, CMPSC, SORTL and DFLTCC
+  expansion. **Remaining**, with reasons: privileged, I/O, timing and configuration instructions
+  (hardware state outside the program), transactional execution (the abort outcome is a run-time
+  event), true random numbers (PRNO-TRNG, and the random mix of ECDSA signing without the
+  deterministic bit), NNPA and the NNP-data-type conversions (the Principles of Operation leave
+  the format model-dependent), DFLTCC compression and Huffman-table generation (model-dependent
+  search and tree construction), and the firmware-identity query functions.
 - ~~ELF relocations are handled only by the optional handler~~ **Fixed:** the relocation
   handler and the loaders are part of the extension.
 - ~~Decompiled branch conditions show condition-code bit manipulation~~ **Fixed:** branches
